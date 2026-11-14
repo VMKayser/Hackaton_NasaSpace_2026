@@ -1,21 +1,18 @@
 import type { FeatureCollection } from 'geojson'
-import { LngLat, LngLatBounds, Map as MlMap, NavigationControl, Popup, setWorkerUrl } from 'maplibre-gl'
+import { LngLat, LngLatBounds, Map as MlMap, NavigationControl, Popup } from 'maplibre-gl'
 import type { GeoJSONSource, MapLayerMouseEvent } from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
-import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { RankedSite } from '../lib/ranking'
 import type { View } from '../lib/state'
 import { baseStyle, DEM_SOURCE, siteLayers, SITES_HIT_LAYER, SITES_SOURCE } from './style'
-
-// MapLibre 6 calcula la URL del worker relativa a su propio módulo, que Vite mueve al empaquetar.
-setWorkerUrl(workerUrl)
+import { hasWebgl2, prefersReducedMotion } from './runtime'
 
 interface Props {
   rows: RankedSite[]
   /** Sin objetivo elegido: todos los sitios en blanco, sin puntaje. */
   neutral: boolean
   selectedId: string | null
+  compareIds: string[] | null
   view: View
   /** Cambia cuando cambian el propósito o el objetivo: vuelve a encuadrar los sitios. */
   frameKey: string
@@ -25,15 +22,7 @@ interface Props {
   onSelect: (id: string) => void
 }
 
-function hasWebgl2(): boolean {
-  try {
-    return !!document.createElement('canvas').getContext('webgl2')
-  } catch {
-    return false
-  }
-}
-
-function toGeoJson(rows: RankedSite[], selectedId: string | null, neutral: boolean): FeatureCollection {
+function toGeoJson(rows: RankedSite[], selectedId: string | null, compareIds: string[] | null, neutral: boolean): FeatureCollection {
   return {
     type: 'FeatureCollection',
     features: rows.map((r) => ({
@@ -47,7 +36,7 @@ function toGeoJson(rows: RankedSite[], selectedId: string | null, neutral: boole
         known: r.site.known,
         reference: r.site.reference,
         control: r.site.control,
-        selected: r.site.id === selectedId,
+        selected: compareIds ? compareIds.includes(r.site.id) : r.site.id === selectedId,
       },
     })),
   }
@@ -60,9 +49,7 @@ function boundsOf(rows: RankedSite[]): LngLatBounds | null {
   return b
 }
 
-const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-export function MapView({ rows, neutral, selectedId, view, frameKey, label, noWebglText, scoreLabel, onSelect }: Props) {
+export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey, label, noWebglText, scoreLabel, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MlMap | null>(null)
   const [ready, setReady] = useState(false)
@@ -74,7 +61,7 @@ export function MapView({ rows, neutral, selectedId, view, frameKey, label, noWe
     latest.current = { rows, onSelect, scoreLabel }
   })
 
-  const data = useMemo(() => toGeoJson(rows, selectedId, neutral), [rows, selectedId, neutral])
+  const data = useMemo(() => toGeoJson(rows, selectedId, compareIds, neutral), [rows, selectedId, compareIds, neutral])
 
   // Crear el mapa una sola vez.
   useEffect(() => {
@@ -160,6 +147,7 @@ export function MapView({ rows, neutral, selectedId, view, frameKey, label, noWe
   // Encuadre: al elegir un sitio, volar hacia él; si no, mostrar todos los sitios.
   const selected = rows.find((r) => r.site.id === selectedId)
   const selectedLngLat = selected ? `${selected.site.lon},${selected.site.lat}` : null
+  const comparedKey = compareIds?.join(',') ?? ''
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map) return
@@ -175,11 +163,14 @@ export function MapView({ rows, neutral, selectedId, view, frameKey, label, noWe
       })
       return
     }
-    const bounds = boundsOf(latest.current.rows)
+    const compared = comparedKey.split(',')
+    const bounds = boundsOf(comparedKey
+      ? latest.current.rows.filter((row) => compared.includes(row.site.id))
+      : latest.current.rows)
     if (!bounds) return
-    const isSmall = window.innerWidth < 1024
+    const isSmall = map.getContainer().clientWidth < 420
     map.fitBounds(bounds, {
-      padding: isSmall ? 40 : { top: 90, bottom: 70, left: 70, right: 70 },
+      padding: isSmall ? 28 : { top: 70, bottom: 50, left: 48, right: 48 },
       maxZoom: 7,
       pitch: view === '2d' ? 50 : 0,
       duration: reduced ? 0 : 2600,
@@ -187,7 +178,7 @@ export function MapView({ rows, neutral, selectedId, view, frameKey, label, noWe
     })
     // view no entra en las dependencias: cambiar de vista no debe volver a encuadrar.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, selectedLngLat, frameKey])
+  }, [ready, selectedLngLat, frameKey, comparedKey])
 
   if (!webgl) {
     return (

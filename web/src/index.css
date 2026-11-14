@@ -69,3 +69,57 @@ body {
     animation-duration: 0.01ms !important;
   }
 }
+
+.planet-pin {
+  z-index: 1;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.planet-pin.maplibregl-marker-covered {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.planet-pin:hover,
+.planet-pin:focus-visible,
+.planet-pin[aria-pressed="true"] {
+  z-index: 2;
+}
+
+.planet-pin-dot {
+  width: 15px;
+  height: 15px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #153047;
+  box-shadow: 0 0 0 3px rgb(8 16 26 / 58%);
+}
+
+.planet-pin[aria-pressed="true"] .planet-pin-dot {
+  width: 19px;
+  height: 19px;
+  background: #d36237;
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 28%), 0 1px 9px #111;
+}
+
+.planet-pin-label {
+  position: absolute;
+  bottom: calc(100% - 7px);
+  max-width: min(9rem, 40vw);
+  width: max-content;
+  padding: 3px 6px;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 5px;
+  background: rgb(11 23 38 / 92%);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+}

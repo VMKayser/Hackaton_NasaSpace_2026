@@ -213,5 +213,33 @@
       }
     }
   },
-  "story": []
+  "story": [
+    {
+      "targetId": "jezero",
+      "view": "globe",
+      "caption": {
+        "en": "Start at Jezero. The crater’s delta preserves evidence of an ancient lake. Explore its setting alongside the sites on Earth.",
+        "es": "Empieza en Jezero. El delta del cráter conserva evidencias de un lago antiguo. Explora sus alrededores junto al mapa de los sitios terrestres."
+      }
+    },
+    {
+      "purposeId": "ancient-lakes",
+      "targetId": "jezero",
+      "view": "globe",
+      "caption": {
+        "en": "Use the ranking to explore candidates in Bolivia. The Atacama reference and the negative controls give the team a way to check the ranking once measured data are available.",
+        "es": "Usa el ranking para explorar los candidatos de Bolivia. La referencia de Atacama y los controles negativos permiten comprobar el ranking cuando estén disponibles las mediciones."
+      }
+    },
+    {
+      "purposeId": "ancient-lakes",
+      "targetId": "jezero",
+      "siteId": "uyuni",
+      "view": "2d",
+      "caption": {
+        "en": "Compare the Salar de Uyuni with Jezero. Look at the values, sources and limits in the site sheet to judge what this analog could help you study.",
+        "es": "Compara el salar de Uyuni con Jezero. Revisa los valores, las fuentes y los límites de la ficha para decidir qué podrías estudiar con este análogo."
+      }
+    }
+  ]
 }

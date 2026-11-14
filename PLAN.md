@@ -9,6 +9,21 @@ Marte o la Luna, y qué datos respaldan esa elección?
 Confirmar el horario de la presentación y cualquier entrega adicional con el evento local.
 **Meta interna:** enviar el domingo a las **21:00**. Las horas de este plan son de Bolivia (UTC-4).
 
+## Estado al 14 de noviembre de 2026
+
+El prototipo funciona en local con 15 sitios terrestres (12 de núcleo, Atacama y dos controles),
+dos objetivos marcianos (Jezero y Columbia Hills), tres propósitos y nueve dimensiones. El archivo
+de demostración tiene `meta.mock: true`. La Luna se puede explorar, y el catálogo admite incorporar
+objetivos lunares cuando lleguen sus datos.
+
+1. **Ahora, P0:** confirmar el contrato con el rol 4 y conseguir la primera entrega real.
+   En cuanto llegue, comprobar el ranking, las fichas y el recorrido con el archivo recibido.
+2. **En paralelo:** preparar la página **Método y datos**, pasar los borradores de las fichas
+   a `texts.json` para revisión del rol 1 y avanzar el guion de la demo.
+3. **Para cerrar, P0:** validar qué pasó con Atacama y los controles, publicar un enlace
+   persistente de Vercel y probarlo en Chrome y Firefox. Actualizar el recorrido y grabar la demo
+   con los resultados verificados.
+
 ## Cómo trabajamos
 
 - Con IA, escribir código no es el cuello de botella. Lo que no se acelera: los datos del rol 4,
@@ -66,76 +81,80 @@ Son lo que el jurado tiene que ver. Cada uno tiene su tarea en las fases de abaj
 - [ ] Pedir al rol 3 los valores y las imágenes de los objetivos con su fuente para las 20:00.
 
 ### Fase 0. Base, P0 (sáb 12:30 a 14:00)
-- [ ] `git init -b main`, añadir como remoto el repositorio que ya existe (es público) y traer su `README.md`.
-      `.gitignore` con `node_modules`, `dist`, `.env*` y `.vercel`.
-- [ ] Crear `web/` con React, Vite, TypeScript y Tailwind.
-- [ ] Configurar `typecheck`, `lint`, `test` y `build`.
-- [ ] Idiomas desde el inicio: `i18n/en.ts`, `i18n/es.ts` y selector; TypeScript falla si falta una clave.
-- [ ] Estado en la URL (propósito, objetivo, sitio, vista, idioma, paso).
-- [ ] Preparar el despliegue inicial en Vercel.
+- [x] Repositorio con rama `main`, remoto en GitHub y `README.md`. El `.gitignore` cubre
+      `node_modules`, `dist`, `.env*` y `.vercel`.
+- [x] Crear `web/` con React, Vite, TypeScript y Tailwind.
+- [x] Configurar `typecheck`, `lint`, `test` y `build`.
+- [x] Archivos de interfaz `i18n/en.ts` e `i18n/es.ts`, selector de idioma y claves comprobadas por TypeScript.
+- [x] Estado compartible en la URL con propósito, objetivo, sitio, comparación, vista, cuerpo, idioma y paso.
+- [x] Configurar Vite y el directorio `web` para el despliegue en Vercel.
 
 ### Fase 1. Datos de prueba, P0 (sáb 14:00 a 15:00)
-- [ ] Esquemas Zod y tipos según el contrato v2.1, para `analogs.json` y `texts.json`.
-- [ ] Partir del `analogs.json` de ejemplo (un objetivo, dos candidatos, Atacama, un control y un
-      propósito). Ampliar la muestra con sitios del catálogo si hace falta para probar el ranking.
-- [ ] Mover `docs/texts.json` a `web/public/data/`. Cargar los dos archivos y mezclar: gana `texts.json`;
-      un texto ausente o vacío se muestra como «texto pendiente».
-- [ ] Validación con mensaje claro si el formato no coincide. Convertir longitudes de 0 a 360.
-- [ ] Aviso visible de "datos de demostración".
+- [x] Esquemas Zod y tipos según el contrato v2.1 para `analogs.json` y `texts.json`.
+- [x] Ampliar los datos de ejemplo con sitios del catálogo, la referencia de Atacama y los dos controles.
+- [x] Cargar los dos archivos de `web/public/data/`. El texto presente en `texts.json` tiene
+      prioridad y, si tampoco hay contenido en `analogs.json`, aparece «texto pendiente».
+- [x] Mensajes de validación cuando el formato no coincide y conversión de longitudes entre 180° y 360°.
+- [x] Aviso visible de «Datos de demostración».
 
 ### Fase 2. Mapa (sáb 15:00 a 17:30)
-- [ ] P0: mapa con MapLibre 6 (solo ESM, exige WebGL2) y capa base con atribución. Las URL probadas
-      están en `AGENTS.md`; confirmar licencia y texto de atribución antes de usarlas.
-- [ ] P0: mapa centrado en Bolivia y selección de sitios.
-- [ ] P1: globo 3D, vista 2D con relieve (Terrain Tiles de AWS), botón para alternar y vuelo inicial.
+- [x] P0: mapa con MapLibre 6 y atribuciones visibles en las capas base de NASA GIBS,
+      Sentinel-2 cloudless y Terrain Tiles. Fuentes documentadas en [web/README.md](web/README.md).
+- [x] P0: mapa centrado en Bolivia y selección de sitios.
+- [x] P1: globo 3D, vista 2D con relieve (Terrain Tiles de AWS), botón para alternar y vuelo inicial.
+- [x] Carga diferida de MapLibre y del radar. En el modo de un solo cuerpo se carga un mapa.
 
 ### Fase 3. Propósitos, sitios y ranking, P0 (sáb 17:30 a 19:00)
-- [ ] Inicio «¿Qué quieres estudiar o ensayar?» con los propósitos de `meta.purposes`. Si el archivo
+- [x] Inicio «¿Qué quieres estudiar o ensayar?» con los propósitos de `meta.purposes`. Si el archivo
       no trae propósitos, selector de sitio objetivo.
-- [ ] Sitios candidatos en el mapa, coloreados por puntaje, con leyenda.
-- [ ] Forma distinta (no solo color) para sitios conocidos, la referencia de Atacama, los controles
+- [x] Sitios candidatos en el mapa, coloreados por puntaje, con leyenda.
+- [x] Forma distinta para sitios conocidos, la referencia de Atacama, los controles
       y los no evaluados.
-- [ ] Panel lateral con el ranking ordenado por `purposeScores`, o por `similarity` si faltan.
+- [x] Panel lateral con el ranking ordenado por `purposeScores`, o por `similarity` si faltan.
       Cada fila lleva una línea de por qué: las dos dimensiones más altas y la más baja.
-- [ ] Los sitios sin puntaje para el objetivo van al final, como «no evaluado».
-- [ ] Al elegir un sitio en la lista o en el mapa, el mapa vuela hacia él.
+- [x] Los sitios sin puntaje para el objetivo van al final, como «no evaluado».
+- [x] Al elegir un sitio en la lista o en el mapa, el mapa vuela hacia él.
 
 ### Fase 4. Ficha y comparación básica (sáb 19:00 a 20:00)
-- [ ] P0: ficha con nombre, descripción y puntaje total.
-- [ ] P0: tabla Tierra–objetivo por dimensión con valores, unidades, puntaje y estado «sin dato».
+- [x] P0: ficha con nombre, descripción y puntaje total.
+- [x] P0: tabla Tierra–objetivo por dimensión con valores, unidades, puntaje y estado «sin dato».
       Mostrar cuántas dimensiones se pudieron puntuar junto al total.
-- [ ] P0: fuentes de datos de cada dimensión (`sources`), con nombre, agencia y enlace, en la misma tabla.
-- [ ] P0: límites de la analogía y bloque «qué se puede probar aquí» (`exploration`).
-- [ ] P0: enlace directo a cada sitio (URL que se puede compartir).
-- [ ] P1: gráfico de radar por dimensión.
+- [x] P0: fuentes de datos de cada dimensión (`sources`), con nombre, agencia y enlace, en la misma tabla.
+- [x] P0: límites de la analogía y bloque «qué se puede probar aquí» (`exploration`).
+- [x] P0: enlace directo a cada sitio (URL que se puede compartir).
+- [x] P1: radar con las mediciones del sitio terrestre y del objetivo en los mismos ejes.
+      Cada serie identifica el cuerpo y el sitio. El detalle de la dimensión muestra ambos valores con su unidad.
 
-**Sáb 20:00, punto de control:** publicar el flujo principal con la etiqueta de demostración. Cuando llegue
-la entrega parcial del rol 4, probarla en la web y corregir cualquier diferencia de formato.
+**Sáb 20:00, punto de control:** el flujo local está listo con la etiqueta de demostración.
+Pendientes la publicación estable y la prueba de la primera entrega real del rol 4.
 
 ### Fase 5. Modo historia, P1 (sáb 20:30 a 23:00)
-- [ ] Botones anterior y siguiente que recorren los pasos de `story` en `texts.json`. Cada paso fija
+- [x] Botones anterior y siguiente que recorren los pasos de `story` en `texts.json`. Cada paso fija
       propósito, sitio, vista y un texto. Ningún ID va en el código.
-- [ ] Tres pasos de prueba que usen el mapa y la ficha existentes: objetivo, candidatos bolivianos
+- [x] Tres pasos de prueba que usen el mapa y la ficha existentes: objetivo, candidatos bolivianos
       y comparación de un candidato con el objetivo.
-- [ ] Usar imágenes fijas del objetivo con atribución cuando estén disponibles.
+- [x] Usar imágenes fijas del objetivo con atribución cuando estén disponibles.
 
 ### Fase 6. Comparaciones y capa continua, P1 (dom 08:00 a 10:00)
 Sustituye a los pesos en el navegador, que quedan fuera del plan.
 - [ ] Capa continua de similitud, si el rol 4 la entregó: imagen con sus cuatro esquinas, interruptor
       y opacidad. Comprobar que queda alineada con los sitios.
-- [ ] Sitio frente a sitio: elegir dos o tres sitios y ver sus valores en columnas. Sirve para
+- [x] Sitio frente a sitio: elegir dos o tres sitios y ver sus valores en columnas. Sirve para
       distinguir sitios de puntaje parecido.
-- [ ] Mapa del objetivo junto al de la Tierra. Dedicar 30 minutos como máximo; si no funciona, queda
-      la imagen fija.
+- [x] Mapa del objetivo junto al de la Tierra, con imágenes fijas de respaldo.
+- [x] Selección de objetivos desde el globo o el selector de sitios planetarios, con mediciones,
+      fuentes y ranking. Al cambiar de objetivo se conservan los sitios terrestres de la comparación.
 
 ### Pulido previo a la integración final (dom 10:00 a 12:00)
-- [ ] P0: estados de carga y de error.
+- [x] P0: estados de carga y de error. El ranking y las fichas siguen disponibles si falla WebGL2.
 - [ ] P1: página "Método y datos": pregunta central, criterios del catálogo, cómo se calcula el
       puntaje (`meta.scoring` y pesos), datos usados por agencia, validación y límites generales.
-- [ ] P1: diseño para móvil.
-- [ ] P1: accesibilidad básica: contraste y uso con teclado.
+- [x] P1: diseño para móvil, probado en el flujo de selección, comparación y radar.
+- [x] P1: controles principales, selección planetaria y radar utilizables con teclado.
+- [ ] P1: revisión de contraste y navegación por teclado en el flujo final.
 
 ### Fase 7. Datos reales, P0 (dom 12:00 a 14:00)
+- [ ] Recibir y probar la entrega parcial del rol 4. La app usa el catálogo de demostración.
 - [ ] Cargar el archivo real del rol 4 con `meta.mock: false` y comprobar que el ranking, la ficha y
       los enlaces de la historia funcionen para los sitios disponibles.
 - [ ] Mostrar el resultado observado de Atacama y de los controles. Explicar qué se esperaba en
@@ -143,16 +162,21 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
 - [ ] Enviar los textos científicos al rol 1 para revisión (respuesta antes de las 15:00).
 
 ### Fase 8. Cierre (dom 14:00 a 16:00)
+- [x] Verificar la compilación, el análisis de tipos, el lint y las 16 pruebas automáticas del prototipo.
+- [x] Probar en Chromium el recorrido, la selección de objetivos y la comparación en inglés y español.
 - [ ] P0: revisión completa en inglés. P1: revisión en español.
 - [ ] P0: prueba en Chrome y Firefox, y rendimiento del mapa en un portátil modesto.
 - [ ] P0: correcciones del rol 1.
-- [ ] P0: enlace de Vercel funcionando y repositorio sin secretos.
+- [ ] P0: enlace público y persistente de Vercel. La publicación temporal devolvió HTTP 403.
+- [ ] P0: comprobar que el repositorio de entrega esté libre de secretos.
 - [ ] **16:00: código congelado.**
 
 ### Extras, P2
-- [ ] Globo del objetivo y capas planetarias interactivas más allá del mapa lado a lado.
-- [ ] Un objetivo lunar, si el rol 1 entrega sus datos. Para la web son solo datos. Si está en el polo
-      sur lunar, usar una imagen fija: no cabe en el mapa.
+- [x] Globos interactivos de Marte y la Luna con mosaicos orbitales de NASA Trek.
+- [x] Detalle de Marte a gran aumento con el mosaico CTX y créditos visibles.
+- [x] Soporte para objetivos lunares y respaldo con imagen fija para el polo sur lunar.
+- [ ] Capas planetarias temáticas adicionales.
+- [ ] Incorporar un objetivo lunar si el rol 1 confirma el sitio y se reciben sus mediciones.
 
 ## Propuestas para el rol 1
 
@@ -193,21 +217,24 @@ Más dimensiones permiten distinguir sitios que se parecen. Las fuentes son suge
 ### Sábado
 - [ ] Registrar en el plan la frase de una línea y la paleta de colores cuando estén definidas.
       Meta del sábado a las 14:00. El nombre (Galaxy Match) y el estilo (tema claro) ya están decididos.
-- [ ] **`texts.json`:** escribir `description`, `limits` y `exploration` de los 12 sitios de núcleo,
-      Atacama y los 2 controles, en inglés y español. El esqueleto está en `docs/texts.json`.
-      No depende de los datos: se puede empezar ya.
+- [x] Borradores bilingües de descripción, límites y exploración para los 12 sitios de núcleo,
+      Atacama y los dos controles. La app los muestra desde `analogs.json` de demostración.
+- [ ] Pasar esos textos a `web/public/data/texts.json` para que estén disponibles cuando se sustituya
+      el archivo de demostración. Revisarlos con el rol 1 para la entrega.
 - [ ] Texto del problema, usuario y propuesta de valor (base: el canvas ya acordado).
-- [ ] Texto de los límites generales de la analogía (gravedad, vacío o atmósfera fina, radiación).
+- [x] Texto bilingüe de los límites generales de la analogía en la ficha y el comparador
+      (gravedad, vacío o atmósfera fina, radiación).
 - [ ] Guion del video de 30 segundos (unas 75 palabras en inglés) y esqueleto de las
       7 diapositivas, con huecos marcados para resultados. La demo recorre los seis huecos:
       propósito, sitio ganador, valores con sus agencias, validación, límite principal y qué se puede probar ahí.
 - [ ] Fotos e imágenes de los sitios bolivianos, anotando autor y licencia de cada una.
-- [ ] `docs/uso-de-ia.md`: registro de lo hecho con IA (se va llenando durante todo el hackatón).
+- [x] `docs/uso-de-ia.md`: registro de lo hecho con IA (se va llenando durante todo el hackatón).
 - [ ] Confirmar con el evento local la hora de cierre y si hay presentación oral además del envío.
 
 ### Domingo
-- [ ] Mañana: borradores del README en inglés y del texto del envío. Escribir los pasos de `story`
-      en `texts.json`: son el guion del video.
+- [x] README técnico en inglés en `web/README.md` y tres pasos de demostración en `texts.json`.
+- [ ] Mañana: redactar el README principal y el texto del envío. Adaptar los pasos de `story` a
+      los sitios con resultados reales cuando llegue el archivo del rol 4.
 - [ ] Tabla «datos usados» por agencia para el formulario, sacada de `meta.dimensions[].sources`.
 - [ ] 12:00 a 16:00, con datos reales: 2 o 3 sitios destacados con su historia y resultado de la validación.
 - [ ] 16:00 a 19:00: capturas y grabación de la app con datos reales; subtítulos en inglés;

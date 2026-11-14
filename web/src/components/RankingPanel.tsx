@@ -6,6 +6,7 @@ import { formatCoords, score100 } from '../lib/format'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
 import { BackButton, BodyChip, KindIcon, Pending, ScoreBar, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
+import { TargetMeasurements } from './TargetMeasurements'
 
 interface Props {
   model: Model
@@ -16,6 +17,7 @@ interface Props {
   selectedId: string | null
   onSelect: (id: string) => void
   onBack: () => void
+  onCompare: () => void
 }
 
 export function TargetCard({ model, target }: { model: Model; target: Target }) {
@@ -30,11 +32,12 @@ export function TargetCard({ model, target }: { model: Model; target: Target }) 
       <p className="mt-1.5 font-serif text-lg font-semibold leading-tight">{target.name}</p>
       <p className="font-mono text-[11px] text-faint">{formatCoords(target.lat, target.lon, lang)}</p>
       <p className="mt-2 text-sm leading-snug text-muted">{summary ?? <Pending />}</p>
+      <TargetMeasurements key={target.id} model={model} target={target} />
     </div>
   )
 }
 
-export function RankingPanel({ model, purpose, target, rows, mode, selectedId, onSelect, onBack }: Props) {
+export function RankingPanel({ model, purpose, target, rows, mode, selectedId, onSelect, onBack, onCompare }: Props) {
   const { t, lang } = useI18n()
   const evaluated = rows.filter((r) => r.score !== null).length
   const dimLabel = (id: string) => model.dimensionById.get(id)?.label[lang] ?? id
@@ -58,6 +61,11 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
       <div className="mt-5">
         <TargetCard model={model} target={target} />
       </div>
+      {rows.length >= 2 && (
+        <button type="button" onClick={onCompare} className="mt-3 rounded-lg border border-line px-3 py-1.5 text-sm font-medium hover:border-ink/30">
+          {t('compare.title')}
+        </button>
+      )}
 
       <div className="mt-7 flex items-end justify-between gap-3">
         <div>

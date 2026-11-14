@@ -35,23 +35,19 @@ async function fetchJson(url: string, optional: boolean): Promise<unknown> {
 export async function loadData(base: string): Promise<LoadResult> {
   const analogsUrl = `${base}data/analogs.json`
   const textsUrl = `${base}data/texts.json`
-
-  let analogsJson: unknown
-  let textsJson: unknown
-  try {
-    analogsJson = await fetchJson(analogsUrl, false)
-  } catch (err) {
-    return { ok: false, file: 'analogs.json', problems: [String(err)] }
+  const [analogsResult, textsResult] = await Promise.allSettled([
+    fetchJson(analogsUrl, false),
+    fetchJson(textsUrl, true),
+  ])
+  if (analogsResult.status === 'rejected') {
+    return { ok: false, file: 'analogs.json', problems: [String(analogsResult.reason)] }
   }
-  try {
-    textsJson = await fetchJson(textsUrl, true)
-  } catch (err) {
-    return { ok: false, file: 'texts.json', problems: [String(err)] }
+  if (textsResult.status === 'rejected') {
+    return { ok: false, file: 'texts.json', problems: [String(textsResult.reason)] }
   }
-
-  const analogs = parseAnalogs(analogsJson)
+  const analogs = parseAnalogs(analogsResult.value)
   if (!analogs.success) return { ok: false, file: 'analogs.json', problems: formatIssues(analogs.error) }
-  const texts = parseTexts(textsJson)
+  const texts = parseTexts(textsResult.value)
   if (!texts.success) return { ok: false, file: 'texts.json', problems: formatIssues(texts.error) }
 
   return { ok: true, analogs: analogs.data, texts: texts.data }

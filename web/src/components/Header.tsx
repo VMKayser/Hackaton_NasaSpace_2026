@@ -2,7 +2,7 @@ import { LANGS, useI18n } from '../i18n'
 import type { Lang } from '../i18n'
 import { Logo } from './ui'
 
-export function Header({ onHome, onLang }: { onHome: () => void; onLang: (lang: Lang) => void }) {
+export function Header({ onHome, onLang, onStory }: { onHome: () => void; onLang: (lang: Lang) => void; onStory?: () => void }) {
   const { t, lang } = useI18n()
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-line bg-surface px-4 sm:px-6">
@@ -13,20 +13,27 @@ export function Header({ onHome, onLang }: { onHome: () => void; onLang: (lang: 
           <span className="hidden text-xs text-muted sm:block">{t('app.tagline')}</span>
         </span>
       </button>
-      <div role="group" aria-label={t('lang.label')} className="flex rounded-lg border border-line bg-paper p-0.5">
-        {LANGS.map((l) => (
-          <button
-            key={l}
-            type="button"
-            aria-pressed={l === lang}
-            onClick={() => onLang(l)}
-            className={`rounded-md px-2.5 py-1 text-xs font-semibold uppercase tracking-wide transition ${
-              l === lang ? 'bg-surface text-ink shadow-sm' : 'text-muted hover:text-ink'
-            }`}
-          >
-            {l}
+      <div className="flex items-center gap-2">
+        {onStory && (
+          <button type="button" onClick={onStory} className="rounded-lg bg-earth-soft px-2 py-1.5 text-xs font-semibold text-earth hover:bg-earth/15 sm:px-3">
+            {t('story.start')}
           </button>
-        ))}
+        )}
+        <div role="group" aria-label={t('lang.label')} className="flex rounded-lg border border-line bg-paper p-0.5">
+          {LANGS.map((l) => (
+            <button
+              key={l}
+              type="button"
+              aria-pressed={l === lang}
+              onClick={() => onLang(l)}
+              className={`rounded-md px-2.5 py-1 text-xs font-semibold uppercase tracking-wide transition ${
+                l === lang ? 'bg-surface text-ink shadow-sm' : 'text-muted hover:text-ink'
+              }`}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
     </header>
   )

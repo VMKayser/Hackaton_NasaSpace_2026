@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DemoBanner, Header } from './components/Header'
-import { Legend, TargetBadge, ViewToggle } from './components/MapOverlays'
+import { ComparisonPanel } from './components/ComparisonPanel'
+import { MapWorkspace } from './components/MapWorkspace'
 import { PurposePicker } from './components/PurposePicker'
 import { RankingPanel } from './components/RankingPanel'
 import { SiteDetail } from './components/SiteDetail'
+import { StoryControls } from './components/StoryControls'
 import { ErrorScreen, LoadingScreen } from './components/StatusScreens'
 import { loadData } from './data/load'
 import type { LoadResult } from './data/load'
@@ -13,14 +15,13 @@ import type { I18n, Lang } from './i18n'
 import { formatDate, score100 } from './lib/format'
 import { rankSites, scoreMode } from './lib/ranking'
 import type { RankedSite } from './lib/ranking'
-import { isNavigation, parseSearch, reducer, toSearch } from './lib/state'
-import type { View } from './lib/state'
-import { MapView } from './map/MapView'
+import { isNavigation, MAX_COMPARE, parseSearch, reducer, resolveStory, toSearch } from './lib/state'
+import type { Action } from './lib/state'
 
 const REPO_URL = 'https://github.com/VMKayser/Hackaton_NasaSpace_2026'
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, window.location.search, parseSearch)
+  const [requested, update] = useState(() => parseSearch(window.location.search))
   const [result, setResult] = useState<LoadResult | null>(null)
   const panelRef = useRef<HTMLElement>(null)
 
@@ -32,31 +33,44 @@ export default function App() {
     }
   }, [])
 
+  const model = useMemo(() => (result?.ok ? buildModel(result.analogs, result.texts) : null), [result])
+  const state = useMemo(() => resolveStory(requested, model), [requested, model])
+  const dispatch = useCallback((action: Action) => {
+    update((previous) => {
+      const current = resolveStory(previous, model)
+      if (action.type === 'selectPlanetTarget' && current.purpose &&
+          model?.purposeById.get(current.purpose)?.targetId === action.target) return previous
+      return reducer(current, action)
+    })
+  }, [model])
+
   const i18n = useMemo<I18n>(() => ({ lang: state.lang, t: (key, vars) => translate(state.lang, key, vars) }), [state.lang])
   const { t, lang } = i18n
-
   useEffect(() => {
     document.documentElement.lang = lang
   }, [lang])
 
   // Estado en la URL, con historial para el botón atrás.
   const prevState = useRef(state)
+  const fromHistory = useRef(false)
   useEffect(() => {
     const qs = toSearch(state)
     if (qs !== window.location.search) {
       const url = `${window.location.pathname}${qs}${window.location.hash}`
-      if (isNavigation(prevState.current, state)) window.history.pushState(null, '', url)
+      if (!fromHistory.current && isNavigation(prevState.current, requested)) window.history.pushState(null, '', url)
       else window.history.replaceState(null, '', url)
     }
-    prevState.current = state
-  }, [state])
+    prevState.current = requested
+    fromHistory.current = false
+  }, [state, requested])
   useEffect(() => {
-    const onPop = () => dispatch({ type: 'hydrate', state: parseSearch(window.location.search) })
+    const onPop = () => {
+      fromHistory.current = true
+      update(parseSearch(window.location.search))
+    }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
-
-  const model = useMemo(() => (result?.ok ? buildModel(result.analogs, result.texts) : null), [result])
 
   // Lo que pide la URL, comprobado contra los datos. El propósito decide el objetivo.
   const purpose = (model && state.purpose && model.purposeById.get(state.purpose)) || null
@@ -71,15 +85,25 @@ export default function App() {
     return rankSites(model.file, target.id, purpose)
   }, [model, target, purpose])
   const mode = model ? scoreMode(model.file, purpose) : 'similarity'
-  const selected = (target && rows.find((r) => r.site.id === state.site)) || null
+  const compareIds = target && state.compare ? state.compare.filter((id) => model?.siteById.has(id)) : null
+  const selected = (!compareIds && target && rows.find((r) => r.site.id === state.site)) || null
+  const story = model?.texts.story ?? []
+  const step = state.step === null ? null : story[state.step]
   const evaluatedCount = rows.filter((r) => r.score !== null).length
 
-  const selectSite = useCallback((id: string | null) => dispatch({ type: 'selectSite', site: id }), [])
+  const selectSite = useCallback((id: string | null) => dispatch({ type: 'selectSite', site: id }), [dispatch])
+  const selectPlanetTarget = useCallback((id: string) => dispatch({ type: 'selectPlanetTarget', target: id }), [dispatch])
   const onMapSelect = useCallback(
     (id: string) => {
-      if (target) selectSite(id)
+      if (!target) return
+      if (compareIds) {
+        if (compareIds.includes(id)) dispatch({ type: 'setCompare', sites: compareIds.filter((site) => site !== id) })
+        else if (compareIds.length < MAX_COMPARE) dispatch({ type: 'setCompare', sites: [...compareIds, id] })
+      } else {
+        selectSite(id)
+      }
     },
-    [target, selectSite],
+    [target, compareIds, dispatch, selectSite],
   )
   const scoreLabel = useCallback(
     (row: RankedSite) => {
@@ -89,23 +113,30 @@ export default function App() {
     [target, lang, t],
   )
 
-  // Escape cierra la ficha.
+  // Escape cierra la vista activa.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && state.site) selectSite(null)
+      if (e.key !== 'Escape') return
+      if (state.step !== null) dispatch({ type: 'setStep', step: null })
+      else if (compareIds) dispatch({ type: 'setCompare', sites: null })
+      else if (state.site) selectSite(null)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [state.site, selectSite])
+  }, [state.site, state.step, compareIds, dispatch, selectSite])
 
   // Cada pantalla nueva del panel empieza arriba.
-  const screenKey = `${purpose?.id ?? ''}|${target?.id ?? ''}|${selected?.site.id ?? ''}`
+  const screenKey = `${purpose?.id ?? ''}|${target?.id ?? ''}|${selected?.site.id ?? ''}|${compareIds !== null}|${state.step ?? ''}`
   useEffect(() => {
     panelRef.current?.scrollTo({ top: 0 })
   }, [screenKey])
 
   const setLang = (l: Lang) => dispatch({ type: 'setLang', lang: l })
-  const setView = (v: View) => dispatch({ type: 'setView', view: v })
+  const setStep = (step: number | null) => dispatch({ type: 'setStep', step })
+  const openComparison = (sites: string[]) => {
+    dispatch({ type: 'setCompare', sites })
+    if (state.world !== 'earth') dispatch({ type: 'setWorld', world: 'auto' })
+  }
 
   let panel: React.ReactNode = null
   if (model) {
@@ -115,6 +146,18 @@ export default function App() {
           model={model}
           onPurpose={(p) => dispatch({ type: 'choosePurpose', purpose: p.id, target: p.targetId })}
           onTarget={(tg) => dispatch({ type: 'chooseTarget', target: tg.id })}
+        />
+      )
+    } else if (compareIds !== null) {
+      panel = (
+        <ComparisonPanel
+          model={model}
+          target={target}
+          rows={rows}
+          ids={compareIds}
+          mode={mode}
+          onChange={(sites) => dispatch({ type: 'setCompare', sites })}
+          onBack={() => dispatch({ type: 'selectSite', site: null })}
         />
       )
     } else if (selected) {
@@ -127,6 +170,7 @@ export default function App() {
           purpose={purpose}
           mode={mode}
           onBack={() => selectSite(null)}
+          onCompare={() => openComparison([selected.site.id])}
         />
       )
     } else {
@@ -140,6 +184,7 @@ export default function App() {
           selectedId={state.site}
           onSelect={selectSite}
           onBack={() => dispatch({ type: 'home' })}
+          onCompare={() => openComparison([])}
         />
       )
     }
@@ -148,7 +193,7 @@ export default function App() {
   return (
     <I18nContext.Provider value={i18n}>
       <div className="flex h-dvh flex-col">
-        <Header onHome={() => dispatch({ type: 'home' })} onLang={setLang} />
+        <Header onHome={() => dispatch({ type: 'home' })} onLang={setLang} onStory={story.length && !step ? () => setStep(0) : undefined} />
         {model?.file.meta.mock && <DemoBanner />}
 
         {!result ? (
@@ -156,33 +201,29 @@ export default function App() {
         ) : !result.ok ? (
           <ErrorScreen file={result.file} problems={result.problems} />
         ) : (
-          <main className="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[minmax(380px,460px)_1fr]">
-            <section className="relative h-[42vh] shrink-0 overflow-hidden bg-space lg:order-2 lg:h-auto">
-              <MapView
-                rows={rows}
-                neutral={!target}
-                selectedId={selected?.site.id ?? null}
-                view={state.view}
-                frameKey={`${purpose?.id ?? ''}|${target?.id ?? ''}`}
-                label={t('map.label')}
-                noWebglText={t('map.noWebgl')}
-                scoreLabel={scoreLabel}
-                onSelect={onMapSelect}
-              />
-              <div className="pointer-events-none absolute inset-x-3 top-3 flex items-start justify-between gap-3">
-                <div className="pointer-events-auto">{target && <TargetBadge target={target} />}</div>
-                <div className="pointer-events-auto">
-                  <ViewToggle view={state.view} onView={setView} />
-                </div>
-              </div>
-              {target && (
-                <div className="absolute bottom-3 left-3">
-                  <Legend />
-                </div>
-              )}
-            </section>
+          <main className={`flex min-h-0 flex-1 flex-col lg:grid ${compareIds !== null
+            ? 'lg:grid-cols-[minmax(430px,42%)_minmax(0,1fr)]'
+            : 'lg:grid-cols-[minmax(380px,460px)_minmax(0,1fr)]'}`}>
+            <MapWorkspace
+              rows={rows}
+              targets={model?.file.targets ?? []}
+              target={target}
+              selectedId={selected?.site.id ?? null}
+              compareIds={compareIds}
+              view={state.view}
+              world={state.world}
+              frameKey={`${purpose?.id ?? ''}|${target?.id ?? ''}|${state.step ?? ''}`}
+              onWorld={(world) => dispatch({ type: 'setWorld', world })}
+              onView={(view) => dispatch({ type: 'setView', view })}
+              scoreLabel={scoreLabel}
+              onSelect={onMapSelect}
+              onTarget={selectPlanetTarget}
+            />
 
             <aside ref={panelRef} className="min-h-0 flex-1 overflow-y-auto bg-surface lg:order-1 lg:border-r lg:border-line">
+              {step && state.step !== null && (
+                <StoryControls step={state.step} total={story.length} caption={step.caption} onStep={setStep} />
+              )}
               {panel}
               {model && (
                 <footer className="border-t border-line px-5 py-4 text-[11px] text-faint sm:px-7">

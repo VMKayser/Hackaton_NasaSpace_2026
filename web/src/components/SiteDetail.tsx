@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import type { Model } from '../data/model'
 import { siteText } from '../data/model'
-import type { Dimension, Purpose, Source, Target } from '../data/schema'
+import type { Dimension, Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import { formatCoords, formatNumber, formatValue, score100 } from '../lib/format'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
@@ -9,6 +9,9 @@ import { activeWeights, scoredCount } from '../lib/ranking'
 import { BODIES } from '../map/bodies'
 import { BackButton, BodyChip, Pending, ScoreBar, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
+import { SourceLinks } from './SourceLinks'
+
+const DimensionRadar = lazy(() => import('./DimensionRadar'))
 
 interface Props {
   model: Model
@@ -18,28 +21,7 @@ interface Props {
   purpose: Purpose | null
   mode: ScoreMode
   onBack: () => void
-}
-
-function SourceLinks({ sources }: { sources: Source[] }) {
-  const { t } = useI18n()
-  if (!sources.length) return null
-  return (
-    <span className="flex flex-wrap gap-x-3 gap-y-0.5">
-      {sources.map((s) => (
-        <a
-          key={`${s.name}-${s.url}`}
-          href={s.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[11px] leading-snug text-earth underline decoration-earth/25 underline-offset-2 hover:decoration-earth"
-        >
-          {s.name}
-          <span className="text-faint"> · {s.agency}</span>
-          {s.body && <span className="sr-only"> ({t(`body.${s.body}`)})</span>}
-        </a>
-      ))}
-    </span>
-  )
+  onCompare: () => void
 }
 
 function DimensionRows({
@@ -142,7 +124,7 @@ function ShareButton() {
   )
 }
 
-export function SiteDetail({ model, row, total, target, purpose, mode, onBack }: Props) {
+export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare }: Props) {
   const { t, lang } = useI18n()
   const { site } = row
   const description = siteText(model, site, 'description', lang)
@@ -208,6 +190,13 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack }:
         <p className="mt-2 text-[15px] leading-relaxed text-ink">{description ?? <Pending />}</p>
       </section>
 
+      <section className="mt-6 rounded-xl border border-line bg-paper/55 p-3">
+        <h2 className="font-serif text-lg font-semibold">{t('radar.title')}</h2>
+        <Suspense fallback={<div className="h-[200px]" />}>
+          <DimensionRadar key={`${site.id}|${target.id}`} model={model} site={site} target={target} />
+        </Suspense>
+      </section>
+
       <section className="mt-7">
         <h2 className="font-serif text-lg font-semibold leading-tight">{t('detail.evidence')}</h2>
         <p className="mt-1 text-xs text-muted">{t('detail.evidenceLead')}</p>
@@ -262,8 +251,11 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack }:
         <p className="mt-2 text-sm leading-relaxed text-ink">{exploration ?? <Pending />}</p>
       </section>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-wrap gap-2">
         <ShareButton />
+        <button type="button" onClick={onCompare} className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium hover:border-ink/30">
+          {t('compare.add')}
+        </button>
       </div>
     </article>
   )

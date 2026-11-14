@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import type { Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import type { View } from '../lib/state'
 import { SCORE_GRADIENT } from '../map/colors'
-import { BodyChip, SiteGlyph } from './ui'
+import { SiteGlyph } from './ui'
 
 export function ViewToggle({ view, onView }: { view: View; onView: (v: View) => void }) {
   const { t } = useI18n()
@@ -30,17 +29,6 @@ export function ViewToggle({ view, onView }: { view: View; onView: (v: View) => 
   )
 }
 
-export function TargetBadge({ target }: { target: Target }) {
-  const { t } = useI18n()
-  return (
-    <div className="flex max-w-[60vw] items-center gap-2 rounded-lg bg-surface/95 px-3 py-1.5 text-xs shadow-lg backdrop-blur lg:max-w-none">
-      <span className="hidden text-muted sm:inline">{t('target.comparing')}</span>
-      <strong className="truncate font-semibold text-ink">{target.name}</strong>
-      <BodyChip body={target.body} />
-    </div>
-  )
-}
-
 export function Legend() {
   const { t } = useI18n()
   const [open, setOpen] = useState(() => window.innerWidth >= 1024)
@@ -52,7 +40,7 @@ export function Legend() {
     { label: t('badge.notEvaluated'), glyph: { score: null, known: false, reference: false, control: false } },
   ]
   return (
-    <div className="w-52 rounded-xl bg-surface/95 text-xs shadow-lg backdrop-blur">
+    <div className={`${open ? 'w-44 max-w-[43vw] sm:w-52' : 'w-28'} rounded-xl bg-surface/95 text-xs shadow-lg backdrop-blur`}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
