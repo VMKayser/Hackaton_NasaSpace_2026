@@ -1,0 +1,1889 @@
+{
+  "meta": {
+    "mock": true,
+    "version": "2.1.0",
+    "generated": "2026-11-14T00:00:00Z",
+    "scoring": {
+      "en": "Demo data: measurements and scores are illustrative. The total is the weighted mean of the available dimension scores; dimensions without data or with weight 0 do not count. Area analysed: circle of radius radiusKm around each site.",
+      "es": "Datos de demostración: las mediciones y los puntajes son ilustrativos. El total es la media ponderada de los puntajes disponibles por dimensión; las dimensiones sin dato o con peso 0 no cuentan. Área analizada: círculo de radio radiusKm alrededor de cada sitio."
+    },
+    "dimensions": [
+      {
+        "id": "slope",
+        "label": {
+          "en": "Median slope",
+          "es": "Pendiente mediana"
+        },
+        "weight": 0.15,
+        "sources": [
+          {
+            "name": "NASADEM HGT v001",
+            "agency": "NASA / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/nasadem_hgtv001/",
+            "body": "earth"
+          },
+          {
+            "name": "MOLA MEGDR",
+            "agency": "NASA / PDS Geosciences",
+            "url": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
+            "body": "mars"
+          }
+        ]
+      },
+      {
+        "id": "roughness",
+        "label": {
+          "en": "Terrain roughness",
+          "es": "Rugosidad del terreno"
+        },
+        "weight": 0.1,
+        "sources": [
+          {
+            "name": "NASADEM HGT v001",
+            "agency": "NASA / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/nasadem_hgtv001/",
+            "body": "earth"
+          },
+          {
+            "name": "MOLA MEGDR",
+            "agency": "NASA / PDS Geosciences",
+            "url": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
+            "body": "mars"
+          }
+        ]
+      },
+      {
+        "id": "temperature",
+        "label": {
+          "en": "Mean surface temperature",
+          "es": "Temperatura media de superficie"
+        },
+        "weight": 0.15,
+        "sources": [
+          {
+            "name": "MODIS Land Surface Temperature (MOD11A2 v061)",
+            "agency": "NASA / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/mod11a2v061/",
+            "body": "earth"
+          },
+          {
+            "name": "Mars Climate Database",
+            "agency": "LMD / ESA / CNES",
+            "url": "https://www-mars.lmd.jussieu.fr/",
+            "body": "mars"
+          }
+        ]
+      },
+      {
+        "id": "thermal_range",
+        "label": {
+          "en": "Day–night temperature range",
+          "es": "Amplitud térmica día–noche"
+        },
+        "weight": 0.1,
+        "sources": [
+          {
+            "name": "MODIS Land Surface Temperature (MOD11A2 v061)",
+            "agency": "NASA / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/mod11a2v061/",
+            "body": "earth"
+          },
+          {
+            "name": "Mars Climate Database",
+            "agency": "LMD / ESA / CNES",
+            "url": "https://www-mars.lmd.jussieu.fr/",
+            "body": "mars"
+          }
+        ]
+      },
+      {
+        "id": "aridity",
+        "label": {
+          "en": "Annual precipitation",
+          "es": "Precipitación anual"
+        },
+        "weight": 0.15,
+        "sources": [
+          {
+            "name": "GPM IMERG",
+            "agency": "NASA / JAXA",
+            "url": "https://gpm.nasa.gov/data/imerg",
+            "body": "earth"
+          }
+        ]
+      },
+      {
+        "id": "albedo",
+        "label": {
+          "en": "Surface albedo",
+          "es": "Albedo de superficie"
+        },
+        "weight": 0.1,
+        "sources": [
+          {
+            "name": "MODIS Albedo (MCD43A3 v061)",
+            "agency": "NASA / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/mcd43a3v061/",
+            "body": "earth"
+          },
+          {
+            "name": "MGS Thermal Emission Spectrometer",
+            "agency": "NASA / ASU",
+            "url": "https://tes.asu.edu/",
+            "body": "mars"
+          }
+        ]
+      },
+      {
+        "id": "vegetation",
+        "label": {
+          "en": "Vegetation cover (NDVI)",
+          "es": "Cobertura vegetal (NDVI)"
+        },
+        "weight": 0.1,
+        "sources": [
+          {
+            "name": "MODIS Vegetation Indices (MOD13A3 v061)",
+            "agency": "NASA / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/mod13a3v061/",
+            "body": "earth"
+          }
+        ]
+      },
+      {
+        "id": "geology",
+        "label": {
+          "en": "Geological setting",
+          "es": "Origen geológico"
+        },
+        "weight": 0.15,
+        "sources": [
+          {
+            "name": "GLiM Global Lithological Map",
+            "agency": "Universität Hamburg / PANGAEA",
+            "url": "https://doi.org/10.1594/PANGAEA.788537",
+            "body": "earth"
+          },
+          {
+            "name": "Geologic Map of Mars (SIM 3292)",
+            "agency": "USGS / NASA",
+            "url": "https://pubs.usgs.gov/sim/3292/",
+            "body": "mars"
+          }
+        ],
+        "categories": {
+          "lacustrine": {
+            "en": "Lake bed",
+            "es": "Lecho de lago"
+          },
+          "evaporite": {
+            "en": "Evaporite",
+            "es": "Evaporita"
+          },
+          "hydrothermal": {
+            "en": "Hydrothermal",
+            "es": "Hidrotermal"
+          },
+          "volcanic": {
+            "en": "Volcanic",
+            "es": "Volcánico"
+          },
+          "aeolian": {
+            "en": "Wind-eroded",
+            "es": "Erosión eólica"
+          },
+          "fluvial": {
+            "en": "Fluvial",
+            "es": "Fluvial"
+          },
+          "metamorphic": {
+            "en": "Metamorphic",
+            "es": "Metamórfico"
+          }
+        }
+      },
+      {
+        "id": "pressure",
+        "label": {
+          "en": "Surface pressure",
+          "es": "Presión en superficie"
+        },
+        "weight": 0.0,
+        "sources": [
+          {
+            "name": "MERRA-2",
+            "agency": "NASA GMAO",
+            "url": "https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/",
+            "body": "earth"
+          },
+          {
+            "name": "Mars Climate Database",
+            "agency": "LMD / ESA / CNES",
+            "url": "https://www-mars.lmd.jussieu.fr/",
+            "body": "mars"
+          }
+        ]
+      }
+    ],
+    "purposes": [
+      {
+        "id": "ancient-lakes",
+        "kind": "phenomenon",
+        "targetId": "jezero",
+        "weights": {
+          "geology": 0.45,
+          "aridity": 0.2,
+          "vegetation": 0.2,
+          "albedo": 0.15
+        },
+        "label": {
+          "en": "Ancient lakes and evaporites",
+          "es": "Lagos antiguos y evaporitas"
+        },
+        "question": {
+          "en": "Where can we study how a lake dries out and what minerals it leaves behind?",
+          "es": "¿Dónde estudiar cómo se seca un lago y qué minerales deja?"
+        }
+      },
+      {
+        "id": "hydrothermal",
+        "kind": "phenomenon",
+        "targetId": "columbia-hills",
+        "weights": {
+          "geology": 0.5,
+          "vegetation": 0.2,
+          "aridity": 0.15,
+          "temperature": 0.15
+        },
+        "label": {
+          "en": "Hydrothermal systems and biosignatures",
+          "es": "Sistemas hidrotermales y biofirmas"
+        },
+        "question": {
+          "en": "Where can we practise looking for traces of life around hot springs?",
+          "es": "¿Dónde practicar la búsqueda de rastros de vida en fuentes termales?"
+        }
+      },
+      {
+        "id": "rover-mobility",
+        "kind": "task",
+        "targetId": "jezero",
+        "weights": {
+          "slope": 0.5,
+          "roughness": 0.35,
+          "albedo": 0.15
+        },
+        "label": {
+          "en": "Rover mobility on rocky terrain",
+          "es": "Movilidad de rover en terreno rocoso"
+        },
+        "question": {
+          "en": "Where can a rover rehearse driving on similar slopes and roughness?",
+          "es": "¿Dónde puede un rover ensayar la conducción con pendientes y rugosidad parecidas?"
+        }
+      }
+    ]
+  },
+  "targets": [
+    {
+      "id": "jezero",
+      "name": "Jezero",
+      "body": "mars",
+      "lat": 18.44,
+      "lon": 77.45,
+      "summary": {
+        "en": "Crater that held a lake about 3.5 billion years ago. Perseverance has explored its delta since 2021.",
+        "es": "Cráter que albergó un lago hace unos 3500 millones de años. Perseverance explora su delta desde 2021."
+      },
+      "values": {
+        "slope": {
+          "value": 4.2,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 35,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -55,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 80,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.2,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0,
+          "unit": null
+        },
+        "geology": {
+          "value": "lacustrine",
+          "unit": null
+        },
+        "pressure": {
+          "value": 7.2,
+          "unit": "hPa"
+        }
+      }
+    },
+    {
+      "id": "columbia-hills",
+      "name": "Columbia Hills, Gusev",
+      "body": "mars",
+      "lat": -14.64,
+      "lon": 175.53,
+      "summary": {
+        "en": "Hills in Gusev crater where Spirit found silica deposits that likely formed around hot springs.",
+        "es": "Colinas del cráter Gusev donde Spirit halló depósitos de sílice probablemente formados junto a fuentes termales."
+      },
+      "values": {
+        "slope": {
+          "value": 6.5,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 60,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -60,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 85,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.22,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0,
+          "unit": null
+        },
+        "geology": {
+          "value": "hydrothermal",
+          "unit": null
+        },
+        "pressure": {
+          "value": 6.6,
+          "unit": "hPa"
+        }
+      }
+    }
+  ],
+  "sites": [
+    {
+      "id": "uyuni",
+      "name": "Salar de Uyuni",
+      "lat": -20.13,
+      "lon": -67.49,
+      "known": true,
+      "reference": false,
+      "control": false,
+      "radiusKm": 5.0,
+      "type": {
+        "en": "Salt lake",
+        "es": "Salar o laguna salina"
+      },
+      "description": {
+        "en": "World's largest salt flat, about 10,000 km² at 3,650 m: a flat halite crust over brine.",
+        "es": "El salar más grande del mundo, unos 10 000 km² a 3650 m: una costra plana de halita sobre salmuera."
+      },
+      "limits": {
+        "en": "Its bright, wet salt crust is far more reflective and flatter than most Martian terrain. The analogy is about evaporites, not landscape.",
+        "es": "Su costra de sal, brillante y húmeda, refleja mucha más luz y es más plana que casi todo el terreno marciano. La analogía es de evaporitas, no de paisaje."
+      },
+      "exploration": {
+        "en": "Calibrate orbital altimeters and spectrometers on a flat, uniform surface; test evaporite-detection instruments.",
+        "es": "Calibrar altímetros y espectrómetros orbitales sobre una superficie plana y uniforme; probar instrumentos que detectan evaporitas."
+      },
+      "values": {
+        "slope": {
+          "value": 0.3,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 1,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 9,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 30,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 180,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.62,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.02,
+          "unit": null
+        },
+        "geology": {
+          "value": "evaporite",
+          "unit": null
+        },
+        "pressure": {
+          "value": 650,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.555,
+          "dimensions": {
+            "slope": 0.74,
+            "roughness": 0.89,
+            "temperature": 0.36,
+            "thermal_range": 0.38,
+            "aridity": 0.35,
+            "albedo": 0.16,
+            "vegetation": 0.97,
+            "geology": 0.65,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.43,
+          "dimensions": {
+            "slope": 0.59,
+            "roughness": 0.8,
+            "temperature": 0.31,
+            "thermal_range": 0.31,
+            "aridity": 0.35,
+            "albedo": 0.2,
+            "vegetation": 0.97,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.581,
+        "rover-mobility": 0.706,
+        "hydrothermal": 0.343
+      }
+    },
+    {
+      "id": "coipasa",
+      "name": "Salar de Coipasa",
+      "lat": -19.38,
+      "lon": -68.13,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 5.0,
+      "type": {
+        "en": "Salt lake",
+        "es": "Salar o laguna salina"
+      },
+      "description": {
+        "en": "Bolivia's second-largest salt flat, next to the Chilean border, with a seasonal lake.",
+        "es": "El segundo salar más grande de Bolivia, junto a la frontera con Chile, con un lago estacional."
+      },
+      "limits": {
+        "en": "Seasonal flooding and active brines make it wetter than any present-day Martian surface.",
+        "es": "Las inundaciones estacionales y las salmueras activas lo hacen más húmedo que cualquier superficie actual de Marte."
+      },
+      "exploration": {
+        "en": "Sample salt crusts and brines to rehearse the search for chloride deposits.",
+        "es": "Muestrear costras de sal y salmueras para ensayar la búsqueda de depósitos de cloruros."
+      },
+      "values": {
+        "slope": {
+          "value": 0.4,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 2,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 8,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 29,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 220,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.55,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.03,
+          "unit": null
+        },
+        "geology": {
+          "value": "evaporite",
+          "unit": null
+        },
+        "pressure": {
+          "value": 655,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.566,
+          "dimensions": {
+            "slope": 0.75,
+            "roughness": 0.89,
+            "temperature": 0.37,
+            "thermal_range": 0.36,
+            "aridity": 0.33,
+            "albedo": 0.3,
+            "vegetation": 0.96,
+            "geology": 0.65,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.442,
+          "dimensions": {
+            "slope": 0.59,
+            "roughness": 0.81,
+            "temperature": 0.32,
+            "thermal_range": 0.3,
+            "aridity": 0.33,
+            "albedo": 0.34,
+            "vegetation": 0.96,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.596,
+        "rover-mobility": 0.732,
+        "hydrothermal": 0.34
+      }
+    },
+    {
+      "id": "sol-de-manana",
+      "name": "Sol de Mañana",
+      "lat": -22.43,
+      "lon": -67.76,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Hydrothermal field",
+        "es": "Campo hidrotermal"
+      },
+      "description": {
+        "en": "Geothermal field at about 4,900 m with fumaroles and boiling mud pools.",
+        "es": "Campo geotérmico a unos 4900 m con fumarolas y pozas de lodo hirviente."
+      },
+      "limits": {
+        "en": "Hydrothermal activity on Mars is ancient; here it is active and hosts living microbes.",
+        "es": "La actividad hidrotermal en Marte es antigua; aquí sigue activa y alberga microbios vivos."
+      },
+      "exploration": {
+        "en": "Test drills and spectrometers on hydrothermal alteration minerals; practise biosignature sampling protocols.",
+        "es": "Probar taladros y espectrómetros en minerales de alteración hidrotermal; practicar protocolos de muestreo de biofirmas."
+      },
+      "values": {
+        "slope": {
+          "value": 5.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 45,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 2,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 34,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 90,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.24,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.03,
+          "unit": null
+        },
+        "geology": {
+          "value": "hydrothermal",
+          "unit": null
+        },
+        "pressure": {
+          "value": 560,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.616,
+          "dimensions": {
+            "slope": 0.95,
+            "roughness": 0.97,
+            "temperature": 0.43,
+            "thermal_range": 0.43,
+            "aridity": 0.44,
+            "albedo": 0.92,
+            "vegetation": 0.96,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.731,
+          "dimensions": {
+            "slope": 0.9,
+            "roughness": 0.95,
+            "temperature": 0.38,
+            "thermal_range": 0.36,
+            "aridity": 0.44,
+            "albedo": 0.96,
+            "vegetation": 0.96,
+            "geology": 1.0,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.463,
+        "rover-mobility": 0.952,
+        "hydrothermal": 0.815
+      }
+    },
+    {
+      "id": "laguna-colorada",
+      "name": "Laguna Colorada",
+      "lat": -22.2,
+      "lon": -67.78,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Salt lake",
+        "es": "Salar o laguna salina"
+      },
+      "description": {
+        "en": "Shallow red saline lake at about 4,280 m, coloured by algae and sediments, with borax deposits.",
+        "es": "Laguna salina poco profunda a unos 4280 m, teñida de rojo por algas y sedimentos, con depósitos de bórax."
+      },
+      "limits": {
+        "en": "Open water and abundant life, from algae to flamingos, have no Martian counterpart today.",
+        "es": "El agua abierta y la vida abundante, desde algas hasta flamencos, no tienen equivalente en el Marte actual."
+      },
+      "exploration": {
+        "en": "Study how evaporite minerals and microbial mats record a drying lake.",
+        "es": "Estudiar cómo los minerales evaporíticos y los tapetes microbianos registran el secado de un lago."
+      },
+      "values": {
+        "slope": {
+          "value": 1.5,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 8,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 4,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 32,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 110,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.21,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.06,
+          "unit": null
+        },
+        "geology": {
+          "value": "lacustrine",
+          "unit": null
+        },
+        "pressure": {
+          "value": 600,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.718,
+          "dimensions": {
+            "slope": 0.82,
+            "roughness": 0.91,
+            "temperature": 0.41,
+            "thermal_range": 0.4,
+            "aridity": 0.41,
+            "albedo": 0.98,
+            "vegetation": 0.93,
+            "geology": 1.0,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.539,
+          "dimensions": {
+            "slope": 0.67,
+            "roughness": 0.83,
+            "temperature": 0.36,
+            "thermal_range": 0.34,
+            "aridity": 0.41,
+            "albedo": 0.98,
+            "vegetation": 0.93,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.865,
+        "rover-mobility": 0.875,
+        "hydrothermal": 0.352
+      }
+    },
+    {
+      "id": "siloli",
+      "name": "Desierto de Siloli",
+      "lat": -22.05,
+      "lon": -67.88,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Desert",
+        "es": "Desierto"
+      },
+      "description": {
+        "en": "High desert of wind-sculpted volcanic rock, home of the Árbol de Piedra.",
+        "es": "Desierto de altura con rocas volcánicas esculpidas por el viento, donde está el Árbol de Piedra."
+      },
+      "limits": {
+        "en": "Wind erodes rock here under a thick atmosphere; erosion rates and grain transport differ on Mars.",
+        "es": "Aquí el viento erosiona bajo una atmósfera densa; en Marte cambian la velocidad de erosión y el transporte de granos."
+      },
+      "exploration": {
+        "en": "Rehearse rover navigation among isolated boulders and wind-carved features.",
+        "es": "Ensayar la navegación de un rover entre bloques aislados y formas talladas por el viento."
+      },
+      "values": {
+        "slope": {
+          "value": 3.8,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 30,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 3,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 35,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 70,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.27,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.02,
+          "unit": null
+        },
+        "geology": {
+          "value": "aeolian",
+          "unit": null
+        },
+        "pressure": {
+          "value": 585,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.619,
+          "dimensions": {
+            "slope": 0.97,
+            "roughness": 0.98,
+            "temperature": 0.42,
+            "thermal_range": 0.44,
+            "aridity": 0.47,
+            "albedo": 0.86,
+            "vegetation": 0.97,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.579,
+          "dimensions": {
+            "slope": 0.82,
+            "roughness": 0.9,
+            "temperature": 0.37,
+            "thermal_range": 0.38,
+            "aridity": 0.47,
+            "albedo": 0.9,
+            "vegetation": 0.97,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.462,
+        "rover-mobility": 0.957,
+        "hydrothermal": 0.37
+      }
+    },
+    {
+      "id": "dali",
+      "name": "Desierto Salvador Dalí",
+      "lat": -22.6,
+      "lon": -67.63,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Desert",
+        "es": "Desierto"
+      },
+      "description": {
+        "en": "Barren, colour-banded volcanic desert in the Eduardo Avaroa reserve, at about 4,750 m.",
+        "es": "Desierto volcánico árido y de colores en franjas, en la reserva Eduardo Avaroa, a unos 4750 m."
+      },
+      "limits": {
+        "en": "Seasonal snow and sparse vegetation differ from Martian surfaces.",
+        "es": "La nieve estacional y la vegetación escasa lo diferencian de las superficies marcianas."
+      },
+      "exploration": {
+        "en": "Test long-range traverse planning on open, rock-strewn plains.",
+        "es": "Probar la planificación de recorridos largos en llanuras abiertas y pedregosas."
+      },
+      "values": {
+        "slope": {
+          "value": 4.5,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 40,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 1,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 36,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 60,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": null,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.01,
+          "unit": null
+        },
+        "geology": {
+          "value": "aeolian",
+          "unit": null
+        },
+        "pressure": {
+          "value": 570,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.604,
+          "dimensions": {
+            "slope": 0.98,
+            "roughness": 0.98,
+            "temperature": 0.44,
+            "thermal_range": 0.45,
+            "aridity": 0.49,
+            "albedo": null,
+            "vegetation": 0.99,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.565,
+          "dimensions": {
+            "slope": 0.87,
+            "roughness": 0.93,
+            "temperature": 0.39,
+            "thermal_range": 0.39,
+            "aridity": 0.49,
+            "albedo": null,
+            "vegetation": 0.99,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.401,
+        "rover-mobility": 0.98,
+        "hydrothermal": 0.38
+      }
+    },
+    {
+      "id": "licancabur-laguna-verde",
+      "name": "Laguna Verde y Licancabur",
+      "lat": -22.79,
+      "lon": -67.82,
+      "known": true,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Volcano",
+        "es": "Volcán"
+      },
+      "description": {
+        "en": "Saline lake at the foot of Licancabur volcano (5,916 m), whose summit lake has been studied as a Mars analog.",
+        "es": "Laguna salina al pie del volcán Licancabur (5916 m), cuyo lago de cumbre se ha estudiado como análogo de Marte."
+      },
+      "limits": {
+        "en": "Already a studied analog: included for comparison, not as a discovery.",
+        "es": "Ya es un análogo estudiado: se incluye para comparar, no como hallazgo."
+      },
+      "exploration": {
+        "en": "Compare instrument results with published high-lake studies.",
+        "es": "Comparar los resultados de los instrumentos con los estudios publicados sobre lagos de altura."
+      },
+      "values": {
+        "slope": {
+          "value": 9.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 120,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 0,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": null,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 100,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.23,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.02,
+          "unit": null
+        },
+        "geology": {
+          "value": "volcanic",
+          "unit": null
+        },
+        "pressure": {
+          "value": 560,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.567,
+          "dimensions": {
+            "slope": 0.68,
+            "roughness": 0.72,
+            "temperature": 0.45,
+            "thermal_range": null,
+            "aridity": 0.42,
+            "albedo": 0.94,
+            "vegetation": 0.97,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.672,
+          "dimensions": {
+            "slope": 0.83,
+            "roughness": 0.8,
+            "temperature": 0.4,
+            "thermal_range": null,
+            "aridity": 0.42,
+            "albedo": 0.98,
+            "vegetation": 0.97,
+            "geology": 0.55,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.464,
+        "rover-mobility": 0.733,
+        "hydrothermal": 0.592
+      }
+    },
+    {
+      "id": "uturuncu",
+      "name": "Volcán Uturuncu",
+      "lat": -22.27,
+      "lon": -67.18,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Volcano",
+        "es": "Volcán"
+      },
+      "description": {
+        "en": "Dormant volcano (6,008 m) above a large magma body whose slow uplift is measured from orbit.",
+        "es": "Volcán dormido (6008 m) sobre un gran cuerpo de magma cuyo lento levantamiento se mide desde órbita."
+      },
+      "limits": {
+        "en": "Its steep relief and seasonal snow are unlike most Martian volcanic plains.",
+        "es": "Su relieve empinado y la nieve estacional no se parecen a la mayoría de las llanuras volcánicas de Marte."
+      },
+      "exploration": {
+        "en": "Rehearse remote detection of volcanic heat and ground deformation.",
+        "es": "Ensayar la detección remota de calor volcánico y de deformación del terreno."
+      },
+      "values": {
+        "slope": {
+          "value": 14.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 220,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -3,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 33,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 120,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.3,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.02,
+          "unit": null
+        },
+        "geology": {
+          "value": "volcanic",
+          "unit": null
+        },
+        "pressure": {
+          "value": 520,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.456,
+          "dimensions": {
+            "slope": 0.35,
+            "roughness": 0.38,
+            "temperature": 0.48,
+            "thermal_range": 0.41,
+            "aridity": 0.4,
+            "albedo": 0.8,
+            "vegetation": 0.97,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.545,
+          "dimensions": {
+            "slope": 0.5,
+            "roughness": 0.47,
+            "temperature": 0.43,
+            "thermal_range": 0.35,
+            "aridity": 0.4,
+            "albedo": 0.84,
+            "vegetation": 0.97,
+            "geology": 0.55,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.439,
+        "rover-mobility": 0.428,
+        "hydrothermal": 0.594
+      }
+    },
+    {
+      "id": "sajama",
+      "name": "Nevado Sajama",
+      "lat": -18.11,
+      "lon": -68.88,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Volcano",
+        "es": "Volcán"
+      },
+      "description": {
+        "en": "Bolivia's highest peak (6,542 m), a stratovolcano with a summit ice cap.",
+        "es": "La cumbre más alta de Bolivia (6542 m), un estratovolcán con un casquete de hielo."
+      },
+      "limits": {
+        "en": "Glacial ice and precipitation make it a poor match for dry Martian terrain.",
+        "es": "El hielo glaciar y las precipitaciones lo alejan del terreno seco de Marte."
+      },
+      "exploration": {
+        "en": "Test cold-weather operations and ice-related instruments at high altitude.",
+        "es": "Probar operaciones en frío e instrumentos para hielo a gran altitud."
+      },
+      "values": {
+        "slope": {
+          "value": 18.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 300,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -6,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 30,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 320,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.42,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.04,
+          "unit": null
+        },
+        "geology": {
+          "value": "volcanic",
+          "unit": null
+        },
+        "pressure": {
+          "value": 510,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.347,
+          "dimensions": {
+            "slope": 0.08,
+            "roughness": 0.12,
+            "temperature": 0.51,
+            "thermal_range": 0.38,
+            "aridity": 0.28,
+            "albedo": 0.56,
+            "vegetation": 0.95,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.434,
+          "dimensions": {
+            "slope": 0.23,
+            "roughness": 0.2,
+            "temperature": 0.46,
+            "thermal_range": 0.31,
+            "aridity": 0.28,
+            "albedo": 0.6,
+            "vegetation": 0.95,
+            "geology": 0.55,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.375,
+        "rover-mobility": 0.166,
+        "hydrothermal": 0.576
+      }
+    },
+    {
+      "id": "ollague",
+      "name": "Volcán Ollagüe",
+      "lat": -21.3,
+      "lon": -68.18,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Volcano",
+        "es": "Volcán"
+      },
+      "description": {
+        "en": "Andesitic stratovolcano on the Bolivia–Chile border with an active fumarole.",
+        "es": "Estratovolcán andesítico en la frontera entre Bolivia y Chile, con una fumarola activa."
+      },
+      "limits": {
+        "en": "Volcanic slopes on Mars are gentler and far older.",
+        "es": "Las laderas volcánicas de Marte son más suaves y mucho más antiguas."
+      },
+      "exploration": {
+        "en": "Practise mapping lava flows and volcanic deposits with aerial drones.",
+        "es": "Practicar el mapeo de coladas de lava y depósitos volcánicos con drones."
+      },
+      "values": {
+        "slope": {
+          "value": 13.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 200,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -1,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 33,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 110,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.28,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.02,
+          "unit": null
+        },
+        "geology": {
+          "value": "volcanic",
+          "unit": null
+        },
+        "pressure": {
+          "value": 540,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.474,
+          "dimensions": {
+            "slope": 0.41,
+            "roughness": 0.45,
+            "temperature": 0.46,
+            "thermal_range": 0.41,
+            "aridity": 0.41,
+            "albedo": 0.84,
+            "vegetation": 0.97,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.564,
+          "dimensions": {
+            "slope": 0.57,
+            "roughness": 0.53,
+            "temperature": 0.41,
+            "thermal_range": 0.35,
+            "aridity": 0.41,
+            "albedo": 0.88,
+            "vegetation": 0.97,
+            "geology": 0.55,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.447,
+        "rover-mobility": 0.488,
+        "hydrothermal": 0.592
+      }
+    },
+    {
+      "id": "tunupa",
+      "name": "Volcán Tunupa",
+      "lat": -19.83,
+      "lon": -67.63,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Volcano",
+        "es": "Volcán"
+      },
+      "description": {
+        "en": "Volcano rising from the north shore of Salar de Uyuni, with colour-banded slopes.",
+        "es": "Volcán que se alza en la orilla norte del Salar de Uyuni, con laderas de colores en franjas."
+      },
+      "limits": {
+        "en": "Vegetation and grazing on its lower slopes differ from Mars.",
+        "es": "La vegetación y el pastoreo en sus laderas bajas lo diferencian de Marte."
+      },
+      "exploration": {
+        "en": "Study contacts between volcanic rock and salt deposits.",
+        "es": "Estudiar los contactos entre roca volcánica y depósitos de sal."
+      },
+      "values": {
+        "slope": {
+          "value": 11.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 180,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 2,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 31,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 190,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.29,
+          "unit": null
+        },
+        "vegetation": {
+          "value": null,
+          "unit": null
+        },
+        "geology": {
+          "value": "volcanic",
+          "unit": null
+        },
+        "pressure": {
+          "value": 560,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.429,
+          "dimensions": {
+            "slope": 0.55,
+            "roughness": 0.52,
+            "temperature": 0.43,
+            "thermal_range": 0.39,
+            "aridity": 0.34,
+            "albedo": 0.82,
+            "vegetation": null,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.526,
+          "dimensions": {
+            "slope": 0.7,
+            "roughness": 0.6,
+            "temperature": 0.38,
+            "thermal_range": 0.32,
+            "aridity": 0.34,
+            "albedo": 0.86,
+            "vegetation": null,
+            "geology": 0.55,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.295,
+        "rover-mobility": 0.58,
+        "hydrothermal": 0.479
+      }
+    },
+    {
+      "id": "poopo",
+      "name": "Lago Poopó (lecho seco)",
+      "lat": -18.8,
+      "lon": -67.0,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 5.0,
+      "type": {
+        "en": "Salt lake",
+        "es": "Salar o laguna salina"
+      },
+      "description": {
+        "en": "Formerly Bolivia's second-largest lake; it largely dried up in 2015–2016.",
+        "es": "Fue el segundo lago más grande de Bolivia; se secó casi por completo en 2015 y 2016."
+      },
+      "limits": {
+        "en": "Its drying is recent and partly human-driven; Martian lakes dried billions of years ago.",
+        "es": "Su secado es reciente y en parte causado por personas; los lagos de Marte se secaron hace miles de millones de años."
+      },
+      "exploration": {
+        "en": "Observe how a drying lake leaves salt and mud: a modern view of an ancient process.",
+        "es": "Observar cómo un lago que se seca deja sal y lodo: una mirada actual a un proceso antiguo."
+      },
+      "values": {
+        "slope": {
+          "value": 0.5,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 3,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 10,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 28,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 350,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.33,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.08,
+          "unit": null
+        },
+        "geology": {
+          "value": "lacustrine",
+          "unit": null
+        },
+        "pressure": {
+          "value": 645,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.643,
+          "dimensions": {
+            "slope": 0.75,
+            "roughness": 0.89,
+            "temperature": 0.35,
+            "thermal_range": 0.35,
+            "aridity": 0.27,
+            "albedo": 0.74,
+            "vegetation": 0.9,
+            "geology": 1.0,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.469,
+          "dimensions": {
+            "slope": 0.6,
+            "roughness": 0.81,
+            "temperature": 0.3,
+            "thermal_range": 0.29,
+            "aridity": 0.27,
+            "albedo": 0.78,
+            "vegetation": 0.9,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.795,
+        "rover-mobility": 0.797,
+        "hydrothermal": 0.316
+      }
+    },
+    {
+      "id": "yungay-atacama",
+      "name": "Yungay, Atacama (Chile)",
+      "lat": -24.08,
+      "lon": -69.92,
+      "known": true,
+      "reference": true,
+      "control": false,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Desert",
+        "es": "Desierto"
+      },
+      "description": {
+        "en": "Hyperarid core of the Atacama Desert, a well-studied Mars analog.",
+        "es": "Núcleo hiperárido del desierto de Atacama, un análogo de Marte muy estudiado."
+      },
+      "limits": {
+        "en": "Already a known analog: used to check that the method ranks it as expected.",
+        "es": "Ya es un análogo conocido: sirve para comprobar que el método lo ubica como se espera."
+      },
+      "exploration": {
+        "en": "Validation reference for the scoring, not a new site.",
+        "es": "Referencia de validación del puntaje, no un sitio nuevo."
+      },
+      "values": {
+        "slope": {
+          "value": 3.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 25,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 17,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 30,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 1.5,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.3,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.01,
+          "unit": null
+        },
+        "geology": {
+          "value": "evaporite",
+          "unit": null
+        },
+        "pressure": {
+          "value": 900,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.725,
+          "dimensions": {
+            "slope": 0.92,
+            "roughness": 0.97,
+            "temperature": 0.28,
+            "thermal_range": 0.38,
+            "aridity": 0.89,
+            "albedo": 0.8,
+            "vegetation": 0.99,
+            "geology": 0.65,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.601,
+          "dimensions": {
+            "slope": 0.77,
+            "roughness": 0.88,
+            "temperature": 0.23,
+            "thermal_range": 0.31,
+            "aridity": 0.89,
+            "albedo": 0.84,
+            "vegetation": 0.99,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.789,
+        "rover-mobility": 0.919,
+        "hydrothermal": 0.416
+      }
+    },
+    {
+      "id": "trinidad-control",
+      "name": "Trinidad, Beni",
+      "lat": -14.83,
+      "lon": -64.9,
+      "known": false,
+      "reference": false,
+      "control": true,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Humid lowland",
+        "es": "Llanura húmeda"
+      },
+      "description": {
+        "en": "Humid tropical lowland in the Amazon basin, in Beni.",
+        "es": "Llanura tropical húmeda de la cuenca amazónica, en el Beni."
+      },
+      "limits": {
+        "en": "Negative control: dense vegetation, heavy rain and low altitude. Expected to score low.",
+        "es": "Control negativo: vegetación densa, lluvias intensas y baja altitud. Se espera un puntaje bajo."
+      },
+      "exploration": {
+        "en": "Checks that the score drops where it should.",
+        "es": "Comprueba que el puntaje baja donde debe."
+      },
+      "values": {
+        "slope": {
+          "value": 0.3,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 2,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 27,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 12,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 1800,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.15,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.62,
+          "unit": null
+        },
+        "geology": {
+          "value": "fluvial",
+          "unit": null
+        },
+        "pressure": {
+          "value": 1000,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.424,
+          "dimensions": {
+            "slope": 0.74,
+            "roughness": 0.89,
+            "temperature": 0.18,
+            "thermal_range": 0.15,
+            "aridity": 0.06,
+            "albedo": 0.9,
+            "vegetation": 0.23,
+            "geology": 0.4,
+            "pressure": 0.01
+          }
+        },
+        {
+          "targetId": "columbia-hills",
+          "similarity": 0.331,
+          "dimensions": {
+            "slope": 0.59,
+            "roughness": 0.81,
+            "temperature": 0.13,
+            "thermal_range": 0.09,
+            "aridity": 0.06,
+            "albedo": 0.86,
+            "vegetation": 0.23,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.373,
+        "rover-mobility": 0.817,
+        "hydrothermal": 0.125
+      }
+    },
+    {
+      "id": "coroico-control",
+      "name": "Coroico, Yungas",
+      "lat": -16.19,
+      "lon": -67.73,
+      "known": false,
+      "reference": false,
+      "control": true,
+      "radiusKm": 2.0,
+      "type": {
+        "en": "Humid mountain",
+        "es": "Montaña húmeda"
+      },
+      "description": {
+        "en": "Steep, humid cloud-forest valley in the Yungas.",
+        "es": "Valle empinado y húmedo de bosque nublado en los Yungas."
+      },
+      "limits": {
+        "en": "Negative control: forest, rain and humidity. Expected to score low despite steep terrain.",
+        "es": "Control negativo: bosque, lluvia y humedad. Se espera un puntaje bajo pese al terreno empinado."
+      },
+      "exploration": {
+        "en": "Checks that steep slopes alone do not produce a high score.",
+        "es": "Comprueba que la pendiente por sí sola no da un puntaje alto."
+      },
+      "values": {
+        "slope": {
+          "value": 24.0,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 320,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": 20,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 14,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 1600,
+          "unit": "mm/yr"
+        },
+        "albedo": {
+          "value": 0.12,
+          "unit": null
+        },
+        "vegetation": {
+          "value": 0.8,
+          "unit": null
+        },
+        "geology": {
+          "value": "metamorphic",
+          "unit": null
+        },
+        "pressure": {
+          "value": 830,
+          "unit": "hPa"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.172,
+          "dimensions": {
+            "slope": 0.0,
+            "roughness": 0.05,
+            "temperature": 0.25,
+            "thermal_range": 0.18,
+            "aridity": 0.08,
+            "albedo": 0.84,
+            "vegetation": 0.0,
+            "geology": 0.1,
+            "pressure": 0.01
+          }
+        }
+      ],
+      "purposeScores": {
+        "ancient-lakes": 0.187,
+        "rover-mobility": 0.143,
+        "hydrothermal": null
+      }
+    }
+  ]
+}

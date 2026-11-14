@@ -1,0 +1,217 @@
+{
+  "targets": {},
+  "purposes": {},
+  "sites": {
+    "uyuni": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "coipasa": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "sol-de-manana": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "laguna-colorada": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "siloli": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "dali": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "licancabur-laguna-verde": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "uturuncu": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "sajama": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "ollague": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "tunupa": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "poopo": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "yungay-atacama": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "trinidad-control": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    },
+    "coroico-control": {
+      "description": {
+        "en": "",
+        "es": ""
+      },
+      "limits": {
+        "en": "",
+        "es": ""
+      },
+      "exploration": {
+        "en": "",
+        "es": ""
+      }
+    }
+  },
+  "story": []
+}
