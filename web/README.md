@@ -77,3 +77,10 @@ dragging, tilting or zooming one map moves the other.
 - **Conditions** panel: every dimension grouped as alike (score ≥ 66), partly alike (33–65), not alike (< 33) or
   without data, with both measured values, plus the site's limits and the general limits of the analogy.
 - The previous and next buttons, or the site menu, move through the ranking without leaving the 3D view.
+- **Rover route**: the real Perseverance traverse and stops (NASA/JPL MMGIS, sols 14 to 2022, 46 km) draped on
+  the Jezero terrain, and the same route moved to the Earth site at the same scale and bearing as a labelled
+  simulation (`src/lib/route.ts`). A profile every 100 m compares elevation, total climb, steepest segment and
+  share of steep ground, next to the rover's real tilt at its stops. `tools/mars_tracks.py` prepares the route
+  (run it after `tools/mars_terrain.py`).
+- **3D tour**: six captioned steps (overview, close-up, slope, relative relief, rover route, conditions) for
+  presenting or recording the demo.

@@ -1,4 +1,5 @@
 import { addProtocol } from 'maplibre-gl'
+import type * as GeoJSON from 'geojson'
 import { z } from 'zod'
 import { elevationAt, encodeTerrarium, decodeTerrarium } from '../lib/terrain'
 import type { ElevationGrid } from '../lib/terrain'
@@ -17,10 +18,38 @@ const Region = z.object({
   grids: z.array(Grid).min(1),
   sources: z.array(z.object({ name: z.string(), agency: z.string(), url: z.string() })),
   elevationRangeM: z.tuple([z.number(), z.number()]),
+  tracks: z.array(z.object({
+    id: z.string(),
+    name: z.string(),
+    file: z.string(),
+    sols: z.tuple([z.number(), z.number()]),
+    lengthKm: z.number(),
+    maxTiltDeg: z.number().nullable(),
+    medianTiltDeg: z.number().nullable(),
+    source: z.object({ name: z.string(), agency: z.string(), url: z.string() }),
+  })).optional(),
 })
 const Manifest = z.object({ encoding: z.literal('terrarium'), datum: z.string(), regions: z.array(Region) })
 
 export type TerrainRegion = z.infer<typeof Region>
+export type TerrainTrack = NonNullable<TerrainRegion['tracks']>[number]
+
+export interface TrackData {
+  line: [number, number][]
+  stops: GeoJSON.FeatureCollection
+}
+
+/** Ruta real del rover (tools/mars_tracks.py): la línea y las paradas. */
+export async function loadTrack(body: Planet, file: string): Promise<TrackData> {
+  const res = await fetch(terrainUrl(body, file))
+  if (!res.ok) throw new Error(`Track returned ${res.status}`)
+  const fc = (await res.json()) as GeoJSON.FeatureCollection
+  const lineFeature = fc.features.find((f) => f.geometry.type === 'LineString')
+  if (!lineFeature || lineFeature.geometry.type !== 'LineString') throw new Error('Track without line')
+  const line = lineFeature.geometry.coordinates.map((c) => [c[0], c[1]] as [number, number])
+  const stops: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: fc.features.filter((f) => f.geometry.type === 'Point') }
+  return { line, stops }
+}
 
 const manifests = new Map<Planet, Promise<TerrainRegion[]>>()
 const decoded = new Map<string, Promise<ElevationGrid[]>>()

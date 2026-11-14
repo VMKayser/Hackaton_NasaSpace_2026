@@ -1,7 +1,7 @@
 import type { FeatureCollection } from 'geojson'
-import { AttributionControl, Map as MlMap } from 'maplibre-gl'
+import { AttributionControl, LngLat, Map as MlMap } from 'maplibre-gl'
 import type { GeoJSONSource, MapLibreEvent, RasterTileSource, SkySpecification, StyleSpecification } from 'maplibre-gl'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Model } from '../data/model'
 import { siteText } from '../data/model'
 import type { Dimension, Purpose, Target } from '../data/schema'
@@ -25,12 +25,17 @@ import { BODIES } from '../map/bodies'
 import { scoreColor } from '../map/colors'
 import { IMAGERY, MARS_DETAIL } from '../map/planetaryImagery'
 import type { Planet } from '../map/planetaryImagery'
-import { loadTerrainRegions } from '../map/planetTerrain'
-import type { TerrainRegion } from '../map/planetTerrain'
+import { loadTerrainRegions, loadTrack, planetElevationAt } from '../map/planetTerrain'
+import type { TerrainRegion, TrackData } from '../map/planetTerrain'
 import { EARTH_LENS_MAX_ZOOM, elevationAtPoint } from '../map/reliefLens'
 import { prefersReducedMotion } from '../map/runtime'
 import { baseStyle, DEM_SOURCE } from '../map/style'
 import '../map/planetTiles'
+import { boundsOf, profileStats, resample, transplant } from '../lib/route'
+import type { LonLat } from '../lib/route'
+import { STEEP_THRESHOLDS } from '../lib/route'
+import { RouteProfile } from './RouteProfile'
+import type { RouteProfileData } from './RouteProfile'
 import { BodyChip, Pending, ScoreBar } from './ui'
 
 // Vista inmersiva: el sitio de la Tierra y el objetivo, con relieve real, a la misma escala horizontal
@@ -43,6 +48,37 @@ const ORBIT_DEG_PER_S = 5
 const LENSES: Lens[] = ['imagery', 'slope', 'relative']
 const LENS_LAYERS = { slope: 'lens-slope', relative: 'lens-relative' } as const
 const GROUPS: Likeness[] = ['similar', 'partial', 'different', 'noData']
+const TRACK_LAYERS = ['track-glow', 'track-line', 'track-stops']
+
+// Recorrido guiado: qué se muestra en cada paso y cuánto dura.
+type TourStep = 'overview' | 'close' | 'slope' | 'relative' | 'route' | 'conditions'
+const TOUR_ORDER: TourStep[] = ['overview', 'close', 'slope', 'relative', 'route', 'conditions']
+const TOUR: Record<TourStep, { lens: Lens; route: boolean; panel: boolean; orbit: boolean; ms: number }> = {
+  overview: { lens: 'imagery', route: false, panel: false, orbit: true, ms: 7000 },
+  close: { lens: 'imagery', route: false, panel: false, orbit: true, ms: 8000 },
+  slope: { lens: 'slope', route: false, panel: false, orbit: true, ms: 7000 },
+  relative: { lens: 'relative', route: false, panel: false, orbit: true, ms: 7000 },
+  route: { lens: 'imagery', route: true, panel: false, orbit: false, ms: 11000 },
+  conditions: { lens: 'imagery', route: false, panel: true, orbit: true, ms: 8000 },
+}
+const PROFILE_STEP_M = 100
+
+/** Ruta del rover: real (degradado por sol) o trasladada a la Tierra (discontinua). */
+function trackLayers(simulated: boolean): StyleSpecification['layers'] {
+  const layout = { 'line-join': 'round' as const, 'line-cap': 'round' as const, visibility: 'none' as const }
+  return [
+    { id: 'track-glow', type: 'line', source: 'track', layout, paint: { 'line-color': simulated ? '#7dd3fc' : '#fde68a', 'line-width': 9, 'line-blur': 6, 'line-opacity': 0.45 } },
+    {
+      id: 'track-line',
+      type: 'line',
+      source: 'track',
+      layout,
+      paint: simulated
+        ? { 'line-color': '#e0f2fe', 'line-width': 2.4, 'line-dasharray': [2, 1.4] }
+        : { 'line-width': 2.6, 'line-gradient': ['interpolate', ['linear'], ['line-progress'], 0, '#fde68a', 1, '#38bdf8'] },
+    },
+  ]
+}
 
 const SKIES: Record<'earth' | Planet, SkySpecification> = {
   earth: {
@@ -310,9 +346,35 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   const orbitRef = useRef(orbiting)
   const [ready, setReady] = useState(false)
   const [region, setRegion] = useState<TerrainRegion | null | undefined>(undefined)
-  const [lens, setLens] = useState<Lens>('imagery')
-  const lensRef = useRef(lens)
-  const [panelOpen, setPanelOpen] = useState(() => window.innerWidth >= 1024)
+  // Elección del usuario; durante el recorrido guiado manda el paso actual.
+  const [lensChoice, setLensChoice] = useState<Lens>('imagery')
+  const [panelChoice, setPanelChoice] = useState(() => window.innerWidth >= 1024)
+  const [routeChoice, setRouteChoice] = useState(false)
+  const [tour, setTour] = useState<number | null>(null)
+  const framedFor = useRef('')
+  const [trackData, setTrackData] = useState<TrackData | null>(null)
+  // El perfil se guarda con la clave del sitio para el que se calculó; si no coincide, se está calculando.
+  const [profileState, setProfileState] = useState<{ key: string; data: RouteProfileData } | null>(null)
+  const profileKey = `${site.id}|${target.id}`
+  const profile = profileState?.key === profileKey ? profileState.data : null
+  const track = region?.tracks?.[0] ?? null
+  const tourSteps = useMemo(() => (track ? TOUR_ORDER : TOUR_ORDER.filter((step) => step !== 'route')), [track])
+  const tourStep = tour === null ? null : (tourSteps[tour] ?? null)
+  const lens: Lens = tourStep ? TOUR[tourStep].lens : lensChoice
+  const route = tourStep ? TOUR[tourStep].route && !!track : routeChoice
+  const panelOpen = tourStep ? TOUR[tourStep].panel : panelChoice
+  const setLens = (l: Lens) => {
+    setTour(null)
+    setLensChoice(l)
+  }
+  const setRoute = (next: (r: boolean) => boolean) => {
+    setTour(null)
+    setRouteChoice(next(route))
+  }
+  const setPanelOpen = (next: (o: boolean) => boolean) => {
+    setTour(null)
+    setPanelChoice(next(panelOpen))
+  }
   const [centres, setCentres] = useState<{ earth: number | null; planet: number | null } | null>(null)
   const offsetRef = useRef(0)
   const shownSite = useRef<string | null>(null)
@@ -365,6 +427,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     const zPlanet = sameScaleZoom(zEarth, first.lat, target.lat, BODIES[body].radiusKm)
     offsetRef.current = zPlanet - zEarth
     shownSite.current = first.id
+    framedFor.current = first.id
 
     const common = { attributionControl: false, maxPitch: 85, fadeDuration: 0 } as const
     const earth = new MlMap({
@@ -441,27 +504,157 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     }
   }, [region, target, body])
 
-  // Cambio de sitio de la Tierra sin salir de la vista.
+  // Datos del sitio de la Tierra al cambiar de sitio: anillo, punto y centro del relieve relativo.
   useEffect(() => {
     const { earth, planet } = maps.current
     if (!ready || !earth || !planet || shownSite.current === site.id) return
     shownSite.current = site.id
-    const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer().clientWidth)
-    const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
-    offsetRef.current = zPlanet - zEarth
     ;(earth.getSource('area') as GeoJSONSource).setData(ring(site.lon, site.lat, radiusKm, EARTH_RADIUS_KM))
     ;(earth.getSource('site') as GeoJSONSource).setData(dot(site.lon, site.lat))
     ;(earth.getSource(LENS_LAYERS.relative) as RasterTileSource).setTiles([lensUrl('earth', '-', 'relative', site.lon, site.lat)])
     earth.setPaintProperty('site-dot', 'circle-color', color)
     ;(planet.getSource('area') as GeoJSONSource).setData(ring(target.lon, target.lat, radiusKm, BODIES[body].radiusKm))
-    const duration = prefersReducedMotion() ? 0 : 3200
-    earth.flyTo({ center: [site.lon, site.lat], zoom: zEarth, duration, essential: true })
-    planet.easeTo({ zoom: zPlanet, duration })
   }, [ready, site, radiusKm, color, target, body])
+
+  // Cámaras sobre el sitio y el objetivo, a la misma escala.
+  const frameSite = useCallback((duration: number) => {
+    const { earth, planet } = maps.current
+    if (!earth || !planet) return
+    const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer().clientWidth)
+    const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
+    offsetRef.current = zPlanet - zEarth
+    earth.flyTo({ center: [site.lon, site.lat], zoom: zEarth, pitch: PITCH, duration, essential: true })
+    planet.flyTo({ center: [target.lon, target.lat], zoom: zPlanet, pitch: PITCH, duration, essential: true })
+  }, [site, radiusKm, target, body])
+
+  // Se encuadra el sitio salvo cuando se muestra la ruta completa o la vista general del recorrido.
+  useEffect(() => {
+    if (!ready) return
+    if (route || tourStep === 'overview') {
+      framedFor.current = ''
+      return
+    }
+    if (framedFor.current === site.id) return
+    framedFor.current = site.id
+    frameSite(prefersReducedMotion() ? 0 : 3200)
+  }, [ready, route, tourStep, site.id, frameSite])
+
+  // Recorrido guiado: cámara de la vista general y avance automático de los pasos.
+  useEffect(() => {
+    if (tour === null || !ready || !tourStep) return
+    const { earth, planet } = maps.current
+    orbitRef.current = TOUR[tourStep].orbit && !prefersReducedMotion()
+    if (tourStep === 'overview' && earth && planet) {
+      const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer().clientWidth) - 2.6
+      const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
+      offsetRef.current = zPlanet - zEarth
+      const duration = prefersReducedMotion() ? 0 : 3500
+      earth.flyTo({ center: [site.lon, site.lat], zoom: zEarth, pitch: 45, duration, essential: true })
+      planet.flyTo({ center: [target.lon, target.lat], zoom: zPlanet, pitch: 45, duration, essential: true })
+    }
+    const id = window.setTimeout(() => setTour((n) => (n === null || n + 1 >= tourSteps.length ? null : n + 1)), TOUR[tourStep].ms)
+    return () => window.clearTimeout(id)
+  }, [tour, tourStep, ready, tourSteps.length, site, radiusKm, target, body])
+
+  // Al terminar el recorrido, el giro vuelve a lo que eligió el usuario.
+  useEffect(() => {
+    if (tour === null) orbitRef.current = orbiting
+  }, [tour, orbiting])
+
+  // Ruta real del rover, si la región la tiene.
+  useEffect(() => {
+    if (!track) return
+    let alive = true
+    loadTrack(body, track.file).then((d) => alive && setTrackData(d)).catch(() => undefined)
+    return () => {
+      alive = false
+    }
+  }, [body, track])
+
+  const earthTrack = useMemo<LonLat[] | null>(
+    () => (trackData ? transplant(trackData.line, trackData.line[0], BODIES[body].radiusKm, [site.lon, site.lat], EARTH_RADIUS_KM) : null),
+    [trackData, body, site.lon, site.lat],
+  )
+
+  // Capas de la ruta: se añaden cuando hay mapas y datos; en la Tierra se mueven con el sitio.
+  useEffect(() => {
+    const { earth, planet } = maps.current
+    if (!ready || !earth || !planet || !trackData || !earthTrack) return
+    const lineFc = (coords: LonLat[]): Fc => ({ type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } }] })
+    if (!planet.getSource('track')) {
+      planet.addSource('track', { type: 'geojson', lineMetrics: true, data: lineFc(trackData.line) })
+      planet.addSource('track-stops', { type: 'geojson', data: trackData.stops })
+      for (const layer of trackLayers(false)) planet.addLayer(layer, 'site-dot')
+      planet.addLayer({
+        id: 'track-stops',
+        type: 'circle',
+        source: 'track-stops',
+        minzoom: 11.5,
+        layout: { visibility: 'none' },
+        paint: { 'circle-radius': 2.6, 'circle-color': '#ffffff', 'circle-stroke-color': '#0b1726', 'circle-stroke-width': 1 },
+      }, 'site-dot')
+    }
+    const source = earth.getSource('track') as GeoJSONSource | undefined
+    if (source) source.setData(lineFc(earthTrack))
+    else {
+      earth.addSource('track', { type: 'geojson', data: lineFc(earthTrack) })
+      for (const layer of trackLayers(true)) earth.addLayer(layer, 'site-dot')
+    }
+    for (const m of [earth, planet]) {
+      for (const id of TRACK_LAYERS) if (m.getLayer(id)) m.setLayoutProperty(id, 'visibility', route ? 'visible' : 'none')
+    }
+  }, [ready, trackData, earthTrack, route])
+
+  // Encuadre de la ruta completa en los dos mapas, a la misma escala.
+  useEffect(() => {
+    const { earth, planet } = maps.current
+    if (!ready || !earth || !planet || !trackData || !earthTrack || !route) return
+    const eb = boundsOf(earthTrack)
+    const cam = earth.cameraForBounds([[eb[0], eb[1]], [eb[2], eb[3]]], { padding: 50 })
+    if (!cam?.center || cam.zoom === undefined) return
+    const ec = LngLat.convert(cam.center)
+    const pb = boundsOf(trackData.line)
+    const pc: LonLat = [(pb[0] + pb[2]) / 2, (pb[1] + pb[3]) / 2]
+    const zEarth = cam.zoom - 0.2
+    const zPlanet = sameScaleZoom(zEarth, ec.lat, pc[1], BODIES[body].radiusKm)
+    offsetRef.current = zPlanet - zEarth
+    const duration = prefersReducedMotion() ? 0 : 3500
+    earth.flyTo({ center: [ec.lng, ec.lat], zoom: zEarth, pitch: 55, bearing: 0, duration, essential: true })
+    planet.flyTo({ center: pc, zoom: zPlanet, pitch: 55, bearing: 0, duration, essential: true })
+  }, [ready, trackData, earthTrack, route, body])
+
+  // Perfil de elevación cada 100 m: la ruta real en el objetivo y la trasladada en la Tierra.
+  useEffect(() => {
+    if (!route || !trackData || !region) return
+    let alive = true
+    const key = `${site.id}|${target.id}`
+    const radius = BODIES[body].radiusKm
+    const { points, dist } = resample(trackData.line, PROFILE_STEP_M, radius)
+    const earthPoints = transplant(points, trackData.line[0], radius, [site.lon, site.lat], EARTH_RADIUS_KM)
+    Promise.all([
+      Promise.all(points.map(([lon, lat]) => planetElevationAt(body, target.id, lon, lat).catch(() => null))),
+      Promise.all(earthPoints.map(([lon, lat]) => elevationAtPoint('earth', '-', lon, lat).catch(() => null))),
+    ]).then(([planetElev, earthElev]) => {
+      if (!alive) return
+      const relative = (v: (number | null)[]) => {
+        const first = v.find((x) => x !== null) ?? 0
+        return v.map((x) => (x === null ? null : x - first))
+      }
+      setProfileState({ key, data: {
+        dist: dist.map((d) => d / 1000),
+        earth: relative(earthElev),
+        planet: relative(planetElev),
+        earthStats: profileStats(dist, earthElev, STEEP_THRESHOLDS),
+        planetStats: profileStats(dist, planetElev, STEEP_THRESHOLDS),
+      } })
+    })
+    return () => {
+      alive = false
+    }
+  }, [route, trackData, region, body, target.id, site.id, site.lon, site.lat])
 
   // Capa de comparación visible en los dos mapas.
   useEffect(() => {
-    lensRef.current = lens
     if (!ready) return
     for (const m of [maps.current.earth, maps.current.planet]) {
       if (!m) continue
@@ -537,6 +730,23 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            onClick={() => setTour((n) => (n === null ? 0 : null))}
+            aria-pressed={tour !== null}
+            className={`${chip} ${tour !== null ? 'bg-[#fde68a] text-ink' : 'bg-white/10 hover:bg-white/20'}`}
+          >
+            {tour !== null ? t('explore.tour.stop') : t('explore.tour')}
+          </button>
+          {track && (
+            <button type="button" onClick={() => {
+                orbitRef.current = false
+                setOrbiting(false)
+                setRoute((r) => !r)
+              }} aria-pressed={route} className={`${chip} ${route ? 'bg-[#38bdf8] text-ink' : 'bg-white/10 hover:bg-white/20'}`}>
+              {t('explore.route.toggle')}
+            </button>
+          )}
           <button type="button" onClick={() => setPanelOpen((o) => !o)} aria-pressed={panelOpen} className={`${chip} ${panelOpen ? 'bg-white/25' : 'bg-white/10 hover:bg-white/20'}`}>
             {t('explore.conditions')}
           </button>
@@ -561,6 +771,26 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
           </button>
         </div>
       </header>
+
+      {tourStep && tour !== null && (
+        <div role="status" aria-live="polite" className="flex shrink-0 items-center gap-3 border-b border-white/10 bg-[#13243a] px-4 py-2">
+          <span className="shrink-0 font-mono text-[11px] text-[#fde68a]">{t('explore.tour.step', { n: tour + 1, total: tourSteps.length })}</span>
+          <p className="min-w-0 flex-1 text-sm leading-snug">
+            {t(`explore.tour.${tourStep}`, {
+              site: site.name,
+              target: target.name,
+              body: t(`body.${body}`),
+              km: formatNumber(radiusKm, lang),
+              name: track?.name ?? '',
+            })}
+          </p>
+          <div className="hidden shrink-0 gap-1 sm:flex" aria-hidden="true">
+            {tourSteps.map((step, i) => (
+              <span key={step} className={`h-1.5 w-5 rounded-full ${i <= tour ? 'bg-[#fde68a]' : 'bg-white/20'}`} />
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="relative flex min-h-0 flex-1">
         <div className="relative grid min-h-0 min-w-0 flex-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1">
@@ -600,14 +830,20 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
           ))}
 
           {lens !== 'imagery' && (
-            <div className="pointer-events-none absolute left-1/2 top-3 z-10 w-[min(26rem,calc(100%-1.5rem))] -translate-x-1/2 rounded-xl bg-space/85 px-3 py-2 shadow-xl backdrop-blur md:top-auto md:bottom-40">
+            <div className={`pointer-events-none absolute left-1/2 top-3 z-10 w-[min(26rem,calc(100%-1.5rem))] -translate-x-1/2 rounded-xl bg-space/85 px-3 py-2 shadow-xl backdrop-blur ${route ? '' : 'md:top-auto md:bottom-40'}`}>
               <RampLegend ramp={lens === 'slope' ? SLOPE_RAMP : RELATIVE_RAMP} unit={lens === 'slope' ? '°' : ' m'} />
               <p className="mt-1.5 text-[11px] leading-snug text-white/80">{t(lens === 'slope' ? 'explore.lens.slopeNote' : 'explore.lens.relativeNote')}</p>
               {region === null && <p className="mt-1 text-[11px] text-[#f3d27a]">{t('explore.lens.noTerrain', { body: t(`body.${body}`) })}</p>}
             </div>
           )}
 
-          {!panelOpen && keyDims.length > 0 && (
+          {route && track && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-10 z-10 flex justify-center px-3">
+              <RouteProfile track={track} target={target} data={profile} />
+            </div>
+          )}
+
+          {!route && !panelOpen && keyDims.length > 0 && (
             <div className="pointer-events-none absolute inset-x-0 bottom-14 z-10 flex justify-center px-3 sm:bottom-10">
               <div className="pointer-events-auto grid w-full max-w-3xl grid-cols-3 gap-px overflow-hidden rounded-xl bg-white/15 shadow-2xl backdrop-blur">
                 {keyDims.map((d) => {

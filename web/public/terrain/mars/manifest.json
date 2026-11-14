@@ -63,6 +63,25 @@
       "elevationRangeM": [
         -3850,
         268
+      ],
+      "tracks": [
+        {
+          "id": "perseverance",
+          "name": "Perseverance (Mars 2020)",
+          "file": "jezero-perseverance.geojson",
+          "sols": [
+            14,
+            2022
+          ],
+          "lengthKm": 46.05,
+          "maxTiltDeg": 20.7,
+          "medianTiltDeg": 7.0,
+          "source": {
+            "name": "Mars 2020 rover traverse and waypoints (MMGIS)",
+            "agency": "NASA / JPL-Caltech",
+            "url": "https://science.nasa.gov/mission/mars-2020-perseverance/location-map/"
+          }
+        }
       ]
     },
     {
