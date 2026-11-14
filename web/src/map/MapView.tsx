@@ -4,7 +4,8 @@ import type { GeoJSONSource, MapLayerMouseEvent } from 'maplibre-gl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { RankedSite } from '../lib/ranking'
 import type { View } from '../lib/state'
-import { baseStyle, DEM_SOURCE, siteLayers, SITES_HIT_LAYER, SITES_SOURCE } from './style'
+import { circleRing, EARTH_RADIUS_KM } from '../lib/terrain'
+import { AREA_SOURCE, areaLayers, baseStyle, columnLayer, COLUMNS_SOURCE, DEM_SOURCE, siteLayers, SITES_HIT_LAYER, SITES_SOURCE } from './style'
 import { hasWebgl2, prefersReducedMotion } from './runtime'
 
 interface Props {
@@ -39,6 +40,30 @@ function toGeoJson(rows: RankedSite[], selectedId: string | null, compareIds: st
         selected: compareIds ? compareIds.includes(r.site.id) : r.site.id === selectedId,
       },
     })),
+  }
+}
+
+/** Columnas hexagonales de 10 km de radio, solo para los sitios con puntaje. */
+function toColumns(rows: RankedSite[]): FeatureCollection {
+  return {
+    type: 'FeatureCollection',
+    features: rows.filter((r) => r.score !== null).map((r) => ({
+      type: 'Feature',
+      geometry: { type: 'Polygon', coordinates: [circleRing(r.site.lon, r.site.lat, 10, EARTH_RADIUS_KM, 6)] },
+      properties: { id: r.site.id, score: r.score },
+    })),
+  }
+}
+
+function toArea(row: RankedSite | undefined): FeatureCollection {
+  if (!row?.site.radiusKm) return { type: 'FeatureCollection', features: [] }
+  return {
+    type: 'FeatureCollection',
+    features: [{
+      type: 'Feature',
+      geometry: { type: 'LineString', coordinates: circleRing(row.site.lon, row.site.lat, row.site.radiusKm, EARTH_RADIUS_KM) },
+      properties: {},
+    }],
   }
 }
 
@@ -84,6 +109,10 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
     map.on('load', () => {
       map.setProjection({ type: 'globe' })
       map.addSource(SITES_SOURCE, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addSource(COLUMNS_SOURCE, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addSource(AREA_SOURCE, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addLayer(columnLayer)
+      for (const layer of areaLayers) map.addLayer(layer)
       for (const layer of siteLayers) map.addLayer(layer)
 
       map.on('click', SITES_HIT_LAYER, (e: MapLayerMouseEvent) => {
@@ -124,7 +153,16 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
     const map = mapRef.current
     if (!ready || !map) return
     ;(map.getSource(SITES_SOURCE) as GeoJSONSource | undefined)?.setData(data)
-  }, [ready, data])
+    ;(map.getSource(COLUMNS_SOURCE) as GeoJSONSource | undefined)?.setData(neutral ? toColumns([]) : toColumns(rows))
+  }, [ready, data, rows, neutral])
+
+  // Anillo del área analizada del sitio elegido.
+  const selectedRow = rows.find((r) => r.site.id === selectedId)
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    ;(map.getSource(AREA_SOURCE) as GeoJSONSource | undefined)?.setData(toArea(selectedRow))
+  }, [ready, selectedRow])
 
   // Vista: globo o 2D con relieve.
   useEffect(() => {
@@ -135,10 +173,12 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
       map.setProjection({ type: 'mercator' })
       map.setTerrain({ source: DEM_SOURCE, exaggeration: 1.5 })
       map.setLayoutProperty('hillshade', 'visibility', 'visible')
+      map.setLayoutProperty(columnLayer.id, 'visibility', 'visible')
       map.easeTo({ pitch: 60, duration })
     } else {
       map.setTerrain(null)
       map.setLayoutProperty('hillshade', 'visibility', 'none')
+      map.setLayoutProperty(columnLayer.id, 'visibility', 'none')
       map.easeTo({ pitch: 0, duration })
       map.setProjection({ type: 'globe' })
     }

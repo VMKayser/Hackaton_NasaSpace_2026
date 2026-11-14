@@ -122,4 +122,15 @@ export const es: Record<keyof typeof en, string> = {
   'footer.event': 'NASA Space Apps Challenge 2026',
   'footer.data': 'Datos v{version} · generados el {date}',
   'footer.code': 'Código fuente',
+
+  'explore.open': 'Explorar en 3D',
+  'explore.openHint': 'Vuela hasta este sitio y su objetivo, lado a lado, con relieve real',
+  'explore.title': 'Explorar en 3D',
+  'explore.close': 'Cerrar',
+  'explore.orbit': 'Girar',
+  'explore.pause': 'Detener giro',
+  'explore.loading': 'Cargando el relieve real…',
+  'explore.noTerrain': 'Todavía no hay modelo de elevación para este objetivo: solo imágenes, sin relieve.',
+  'explore.elevation': 'Elevación en esta región: de {min} a {max} m',
+  'explore.scaleNote': 'Relieve real a la misma escala horizontal · exageración vertical ×{x} en ambos · círculo de {km} km en ambos como referencia',
 }

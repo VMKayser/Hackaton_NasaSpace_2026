@@ -120,4 +120,15 @@ export const en = {
   'footer.event': 'NASA Space Apps Challenge 2026',
   'footer.data': 'Data v{version} · generated {date}',
   'footer.code': 'Source code',
+
+  'explore.open': 'Explore in 3D',
+  'explore.openHint': 'Fly into this site and its target, side by side, with real terrain',
+  'explore.title': 'Explore in 3D',
+  'explore.close': 'Close',
+  'explore.orbit': 'Orbit',
+  'explore.pause': 'Pause orbit',
+  'explore.loading': 'Loading real terrain…',
+  'explore.noTerrain': 'No elevation model for this target yet: imagery only, without relief.',
+  'explore.elevation': 'Elevation in this region: {min} to {max} m',
+  'explore.scaleNote': 'Real terrain at the same horizontal scale · vertical exaggeration ×{x} on both · circle of {km} km on both for scale',
 } as const

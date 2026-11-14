@@ -22,6 +22,8 @@ interface Props {
   mode: ScoreMode
   onBack: () => void
   onCompare: () => void
+  /** Abre la vista 3D; null si el objetivo no se puede mostrar en 3D. */
+  onExplore: (() => void) | null
 }
 
 function DimensionRows({
@@ -124,7 +126,7 @@ function ShareButton() {
   )
 }
 
-export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare }: Props) {
+export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare, onExplore }: Props) {
   const { t, lang } = useI18n()
   const { site } = row
   const description = siteText(model, site, 'description', lang)
@@ -184,6 +186,28 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
           </span>
         </div>
       </section>
+
+      {onExplore && (
+        <button
+          type="button"
+          onClick={onExplore}
+          className="group mt-3 flex w-full items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-space via-[#1c2f46] to-[#7a3416] px-4 py-3 text-left text-white shadow-lg shadow-rust/10 transition hover:shadow-xl hover:shadow-rust/20"
+        >
+          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-white/10" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <path d="M3 18l5-8 4 5 3-4 6 7z" strokeLinejoin="round" />
+              <circle cx="17" cy="6" r="2" />
+            </svg>
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold">{t('explore.open')}</span>
+            <span className="block text-xs text-white/70">{t('explore.openHint')}</span>
+          </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 transition group-hover:translate-x-0.5" aria-hidden="true">
+            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
 
       <section className="mt-6">
         <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{t('detail.about')}</h2>

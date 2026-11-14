@@ -52,3 +52,21 @@ See [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite).
 - The browser reprojects the source imagery into Web Mercator for MapLibre. The imagery provides visual context for the independently supplied scores and measurements.
 - The locally bundled WebP images come from [Mars Planet Globe](https://science.nasa.gov/resource/mars-planet-globe/) (NASA/JPL-Caltech), [Nearside Spectacular](https://science.nasa.gov/photojournal/nearside-spectacular/) (NASA/GSFC/Arizona State University) and the [Illumination Map of the Moon’s South Pole](https://science.nasa.gov/resource/illumination-map-of-the-moons-south-pole/) (NASA/GSFC/Arizona State University). See the [NASA media usage guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/).
 - Earth's detailed Sentinel-2 cloudless 2016 imagery is [CC BY 4.0](https://cloudless.eox.at/documentation/faq). See the [Terrain Tiles attribution](https://github.com/tilezen/joerd/blob/master/docs/attribution.md) for the sources used in the Earth relief layer.
+
+## 3D exploration with real terrain
+
+From a site sheet, **Explore in 3D** opens the Earth site and its target side by side with real relief,
+at the same horizontal scale and the same vertical exaggeration (×1.5). Both cameras orbit together, and
+dragging, tilting or zooming one map moves the other.
+
+- Earth relief: [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) (Mapzen, AWS Open Data; SRTM in the Andes).
+- Mars relief: [HRSC-MOLA Blended DEM 200 m v2](https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m)
+  (USGS Astrogeology, ESA Mars Express, NASA MGS) around each target, and the
+  [Mars 2020 TRN CTX DTM, 20 m](https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_context_camera_digital_terrain_model)
+  (USGS, NASA JPL) at Jezero. `tools/mars_terrain.py` reads the targets from `analogs.json`, downloads only the
+  needed windows and writes the grids and `manifest.json` to `public/terrain/mars/`. The browser turns the grids into
+  terrain tiles (`src/map/planetTerrain.ts`).
+- MapLibre draws every body with Earth's radius. To keep real proportions, the target map zooms out by
+  `log2(R_body·cos φ_body / R_earth·cos φ_earth)` and its relief is multiplied by `R_earth / R_body` (`src/lib/terrain.ts`).
+- A target without an entry in the manifest is shown with imagery only, and the view says so.
+- In relief view, each evaluated site also rises as a column whose height and color are its score.

@@ -123,3 +123,8 @@ body {
   text-align: center;
   pointer-events: none;
 }
+
+/* Vista 3D: atribución plegada hasta que se pulsa el botón de información. */
+.gm-explore .maplibregl-ctrl-attrib.maplibregl-compact-show:not(:hover):not(:focus-within) .maplibregl-ctrl-attrib-inner {
+  display: none;
+}

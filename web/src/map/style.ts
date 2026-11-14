@@ -180,3 +180,38 @@ export const siteLayers: LayerSpecification[] = [
     },
   },
 ]
+
+// Vista de relieve: columnas 3D cuyo alto y color son el puntaje, y anillo del área analizada del sitio elegido.
+export const COLUMNS_SOURCE = 'site-columns'
+export const AREA_SOURCE = 'site-area'
+export const COLUMN_MAX_HEIGHT_M = 110000
+export const columnLayer: LayerSpecification = {
+  id: 'site-columns',
+  type: 'fill-extrusion',
+  source: COLUMNS_SOURCE,
+  maxzoom: 9.5,
+  layout: { visibility: 'none' },
+  paint: {
+    'fill-extrusion-color': scoreColor,
+    'fill-extrusion-height': ['*', ['get', 'score'], COLUMN_MAX_HEIGHT_M],
+    'fill-extrusion-base': 0,
+    'fill-extrusion-opacity': ['interpolate', ['linear'], ['zoom'], 7.5, 0.88, 9.5, 0],
+    'fill-extrusion-vertical-gradient': true,
+  },
+}
+export const areaLayers: LayerSpecification[] = [
+  {
+    id: 'site-area-glow',
+    type: 'line',
+    source: AREA_SOURCE,
+    minzoom: 8,
+    paint: { 'line-color': '#ffb36b', 'line-width': 12, 'line-blur': 8, 'line-opacity': 0.5 },
+  },
+  {
+    id: 'site-area-line',
+    type: 'line',
+    source: AREA_SOURCE,
+    minzoom: 8,
+    paint: { 'line-color': '#fff7ee', 'line-width': 2.2 },
+  },
+]

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DemoBanner, Header } from './components/Header'
 import { ComparisonPanel } from './components/ComparisonPanel'
 import { MapWorkspace } from './components/MapWorkspace'
@@ -18,12 +18,15 @@ import type { RankedSite } from './lib/ranking'
 import { isNavigation, MAX_COMPARE, parseSearch, reducer, resolveStory, toSearch } from './lib/state'
 import type { Action } from './lib/state'
 
+const Explore3D = lazy(() => import('./components/Explore3D').then(({ Explore3D }) => ({ default: Explore3D })))
+
 const REPO_URL = 'https://github.com/VMKayser/Hackaton_NasaSpace_2026'
 
 export default function App() {
   const [requested, update] = useState(() => parseSearch(window.location.search))
   const [result, setResult] = useState<LoadResult | null>(null)
   const panelRef = useRef<HTMLElement>(null)
+  const [exploring, setExploring] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -171,6 +174,7 @@ export default function App() {
           mode={mode}
           onBack={() => selectSite(null)}
           onCompare={() => openComparison([selected.site.id])}
+          onExplore={Math.abs(target.lat) <= 80 ? () => setExploring(true) : null}
         />
       )
     } else {
@@ -245,6 +249,11 @@ export default function App() {
           </main>
         )}
       </div>
+      {exploring && model && selected && target && (
+        <Suspense fallback={<div className="fixed inset-0 z-50 grid place-items-center bg-space text-sm text-white/85">{t('explore.loading')}</div>}>
+          <Explore3D model={model} row={selected} target={target} purpose={purpose} onClose={() => setExploring(false)} />
+        </Suspense>
+      )}
     </I18nContext.Provider>
   )
 }

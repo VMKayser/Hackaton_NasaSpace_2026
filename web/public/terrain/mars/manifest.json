@@ -1,0 +1,87 @@
+{
+  "encoding": "terrarium",
+  "datum": "MOLA areoid",
+  "regions": [
+    {
+      "targetId": "jezero",
+      "body": "mars",
+      "bounds": [
+        75.94731,
+        16.940162,
+        78.946903,
+        19.939755
+      ],
+      "grids": [
+        {
+          "file": "jezero-hrsc-mola-200m.png",
+          "bounds": [
+            75.94731,
+            16.940162,
+            78.946903,
+            19.939755
+          ],
+          "resolutionM": 200
+        },
+        {
+          "file": "jezero-ctx-jezero-20m.png",
+          "bounds": [
+            77.160465,
+            18.211027,
+            77.698975,
+            18.721194
+          ],
+          "resolutionM": 20
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        },
+        {
+          "name": "Mars 2020 Terrain Relative Navigation CTX DTM mosaic (20 m)",
+          "agency": "USGS Astrogeology / NASA JPL",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_context_camera_digital_terrain_model"
+        }
+      ],
+      "elevationRangeM": [
+        -3850,
+        268
+      ]
+    },
+    {
+      "targetId": "columbia-hills",
+      "body": "mars",
+      "bounds": [
+        174.029628,
+        -16.139719,
+        177.029222,
+        -13.140126
+      ],
+      "grids": [
+        {
+          "file": "columbia-hills-hrsc-mola-200m.png",
+          "bounds": [
+            174.029628,
+            -16.139719,
+            177.029222,
+            -13.140126
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        }
+      ],
+      "elevationRangeM": [
+        -2888,
+        1445
+      ]
+    }
+  ]
+}
