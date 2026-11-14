@@ -61,12 +61,19 @@ dragging, tilting or zooming one map moves the other.
 
 - Earth relief: [Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) (Mapzen, AWS Open Data; SRTM in the Andes).
 - Mars relief: [HRSC-MOLA Blended DEM 200 m v2](https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m)
-  (USGS Astrogeology, ESA Mars Express, NASA MGS) around each target, and the
+  (USGS Astrogeology, ESA Mars Express, NASA MGS) around each target and, at Jezero, the
   [Mars 2020 TRN CTX DTM, 20 m](https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_context_camera_digital_terrain_model)
-  (USGS, NASA JPL) at Jezero. `tools/mars_terrain.py` reads the targets from `analogs.json`, downloads only the
+  and a 5 km window of the [Mars 2020 TRN HiRISE DTM, 1 m](https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_hirise_dtm_mosaic)
+  averaged to 3 m (USGS, NASA JPL, University of Arizona). `tools/mars_terrain.py` reads the targets from `analogs.json`, downloads only the
   needed windows and writes the grids and `manifest.json` to `public/terrain/mars/`. The browser turns the grids into
   terrain tiles (`src/map/planetTerrain.ts`).
 - MapLibre draws every body with Earth's radius. To keep real proportions, the target map zooms out by
   `log2(R_body·cos φ_body / R_earth·cos φ_earth)` and its relief is multiplied by `R_earth / R_body` (`src/lib/terrain.ts`).
 - A target without an entry in the manifest is shown with imagery only, and the view says so.
 - In relief view, each evaluated site also rises as a column whose height and color are its score.
+- **Compare** layers, computed in the browser from the same real terrain shown and drawn with the same color
+  ramp on both maps (`src/map/reliefLens.ts`): **Slope** (degrees) and **Relative relief** (metres above or below
+  the centre of each site, so landforms can be compared even though absolute altitudes differ by kilometres).
+- **Conditions** panel: every dimension grouped as alike (score ≥ 66), partly alike (33–65), not alike (< 33) or
+  without data, with both measured values, plus the site's limits and the general limits of the analogy.
+- The previous and next buttons, or the site menu, move through the ranking without leaving the 3D view.

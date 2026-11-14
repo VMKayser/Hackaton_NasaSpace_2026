@@ -8,6 +8,14 @@ import {
   proportionalExaggeration,
   sameScaleZoom,
   terrainMaxZoom,
+  likeness,
+  metresPerPixel,
+  rampColor,
+  RELATIVE_RAMP,
+  slopeDegrees,
+  SLOPE_RAMP,
+  tileCenterLat,
+  tileOf,
 } from './terrain'
 import type { ElevationGrid } from './terrain'
 
@@ -82,5 +90,38 @@ describe('circleRing', () => {
     const dLon = ((lon + 67.78) * Math.PI) / 180 * Math.cos((-22.2 * Math.PI) / 180)
     expect(Math.hypot(dLat, dLon) * EARTH_RADIUS_KM).toBeCloseTo(2, 2)
     expect(ring[0]).toEqual(ring[ring.length - 1])
+  })
+})
+
+describe('comparison lenses', () => {
+  it('measures the slope of a tilted plane', () => {
+    const size = 8
+    const mpp = 10
+    const elev = new Float32Array(size * size)
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) elev[y * size + x] = x * mpp * Math.tan((20 * Math.PI) / 180)
+    const s = slopeDegrees(elev, size, mpp)
+    expect(s[3 * size + 3]).toBeCloseTo(20, 5)
+    expect(s[0]).toBeCloseTo(20, 5) // borde: diferencia de un lado
+  })
+
+  it('maps values to the ramp ends and interpolates between stops', () => {
+    expect(rampColor(SLOPE_RAMP, -5)).toEqual([13, 8, 135])
+    expect(rampColor(SLOPE_RAMP, 99)).toEqual([240, 249, 33])
+    expect(rampColor(RELATIVE_RAMP, 0)).toEqual([247, 247, 247])
+  })
+
+  it('finds the tile and pixel of a point', () => {
+    const { x, y } = tileOf(-67.78, -22.2, 12)
+    expect(tileCenterLat(12, y)).toBeCloseTo(-22.2, 0)
+    expect(x).toBe(Math.floor(((-67.78 + 180) / 360) * 4096))
+  })
+
+  it('groups dimensions by how alike they are', () => {
+    expect([0.9, 0.5, 0.1, null].map(likeness)).toEqual(['similar', 'partial', 'different', 'noData'])
+  })
+
+  it('gives real metres per pixel on each body', () => {
+    expect(metresPerPixel(0, 0, EARTH_RADIUS_KM)).toBeCloseTo((2 * Math.PI * 6371008.8) / 256, 3)
+    expect(metresPerPixel(0, 0, 3389.5)).toBeCloseTo(83191, 0)
   })
 })

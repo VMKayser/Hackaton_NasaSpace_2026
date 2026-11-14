@@ -251,7 +251,7 @@ export default function App() {
       </div>
       {exploring && model && selected && target && (
         <Suspense fallback={<div className="fixed inset-0 z-50 grid place-items-center bg-space text-sm text-white/85">{t('explore.loading')}</div>}>
-          <Explore3D model={model} row={selected} target={target} purpose={purpose} onClose={() => setExploring(false)} />
+          <Explore3D model={model} rows={rows} row={selected} target={target} purpose={purpose} mode={mode} onSite={selectSite} onLang={setLang} onClose={() => setExploring(false)} />
         </Suspense>
       )}
     </I18nContext.Provider>

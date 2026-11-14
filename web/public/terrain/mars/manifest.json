@@ -23,7 +23,7 @@
           "resolutionM": 200
         },
         {
-          "file": "jezero-ctx-jezero-20m.png",
+          "file": "jezero-ctx-20m.png",
           "bounds": [
             77.160465,
             18.211027,
@@ -31,6 +31,16 @@
             18.721194
           ],
           "resolutionM": 20
+        },
+        {
+          "file": "jezero-hirise-3m.png",
+          "bounds": [
+            77.407818,
+            18.397867,
+            77.492137,
+            18.482186
+          ],
+          "resolutionM": 3
         }
       ],
       "sources": [
@@ -43,6 +53,11 @@
           "name": "Mars 2020 Terrain Relative Navigation CTX DTM mosaic (20 m)",
           "agency": "USGS Astrogeology / NASA JPL",
           "url": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_context_camera_digital_terrain_model"
+        },
+        {
+          "name": "Mars 2020 Terrain Relative Navigation HiRISE DTM mosaic (1 m, averaged to 3 m)",
+          "agency": "USGS Astrogeology / NASA JPL / University of Arizona",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_hirise_dtm_mosaic"
         }
       ],
       "elevationRangeM": [

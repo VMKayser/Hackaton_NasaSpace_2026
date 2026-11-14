@@ -16,3 +16,4 @@ El formulario de envío es la referencia para el campo exacto de declaración. L
 - Revisó el plan frente al reto y propuso el contrato v2, el plan de 36 horas y la primera versión de la web (esquemas, ranking, ficha, mapa con globo y relieve, idiomas).
 - Escribió `tools/mars_terrain.py`, que descarga ventanas del DEM HRSC-MOLA de 200 m y el DTM CTX de Jezero de 20 m de USGS, y las guarda como rejillas de elevación con sus fuentes. Los datos de elevación son reales; la IA no los genera ni los modifica, salvo el fundido de 25 píxeles en el borde del DTM de Jezero.
 - Programó la vista «Explorar en 3D» (Tierra y objetivo a la misma escala, con relieve real), las columnas 3D de puntaje y sus pruebas, y la revisó en el navegador.
+- Añadió el DTM de HiRISE de Jezero, las capas de comparación (pendiente y relieve relativo calculados del relieve real), el panel de condiciones con los límites de la analogía y la navegación entre sitios dentro de la vista 3D.
