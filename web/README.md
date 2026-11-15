@@ -82,8 +82,11 @@ dragging, tilting or zooming one map moves the other.
   or orange (the target); in the overlay the two add up, so ground that is bright on both sides shows white.
   **Animate** sweeps the divider or the opacity back and forth. Only the display color changes, not the data.
 - **Free pin (pilot)**: a pin anywhere on Earth and one on Mars or the Moon. Slope and relief are measured
-  inside the same radius with the same sampling step (the coarser of the two models). These are measurements
-  of real elevation models, not a similarity score. Pins can also be opened in 3D.
+  inside the same radius with the same sampling step (the coarser of the two models). Pins can also be opened
+  in 3D. For any point on Mars, the panel also lists the Earth sites with the most similar **terrain**: the
+  browser measures the point as the tools measure the targets (200 m step, 5 km circle) and applies the same
+  scale and weights as `tools/build_analogs.py` to the terrain dimensions only (`src/lib/terrainMatch.ts`).
+  It is the only comparison the app computes, and it is labelled as terrain-only.
 - In relief view, each evaluated site also rises as a column whose height and color are its score.
 - **Compare** layers, computed in the browser from the same real terrain shown and drawn with the same color
   ramp on both maps (`src/map/reliefLens.ts`): **Slope** (degrees) and **Relative relief** (metres above or below

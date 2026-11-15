@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
+import type { Model } from '../data/model'
 import type { Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import { formatCoords, formatNumber, formatPercent } from '../lib/format'
@@ -7,6 +8,8 @@ import { SLOPE_BINS, STEEP_DEG } from '../lib/patch'
 import type { PatchStats } from '../lib/patch'
 import type { PlanetPoint, Point } from '../lib/state'
 import { BODIES } from '../map/bodies'
+import { terrainMatches } from '../lib/terrainMatch'
+import type { TerrainMatch } from '../lib/terrainMatch'
 import type { PinMeasurement } from '../map/pinMeasure'
 import { SourceLinks } from './SourceLinks'
 import { BackButton, BodyChip, SectionTitle } from './ui'
@@ -19,6 +22,7 @@ const EARTH_DEM = { name: 'Terrain Tiles', agency: 'Mapzen · AWS Open Data', ur
 const BUTTON = 'inline-flex min-h-10 items-center gap-1.5 rounded-md border border-line px-2.5 py-1.5 text-xs font-semibold text-ink transition hover:border-ink/30'
 
 interface Props {
+  model: Model
   target: Target
   pin: Point | null
   tpin: PlanetPoint | null
@@ -31,11 +35,13 @@ interface Props {
   onShowMap: () => void
   /** Abre los dos pines en la vista 3D; null mientras falte el pin de la Tierra. */
   onExplore: (() => void) | null
+  /** Abre la ficha de un sitio de la Tierra. */
+  onSite: (id: string) => void
 }
 
 type Result = { key: string; data: PinMeasurement } | { key: string; failed: true }
 
-export function PinPanel({ target, pin, tpin, radiusKm, onRadius, pinMode, onPinMode, onResetTargetPin, onClose, onShowMap, onExplore }: Props) {
+export function PinPanel({ model, target, pin, tpin, radiusKm, onRadius, pinMode, onPinMode, onResetTargetPin, onClose, onShowMap, onExplore, onSite }: Props) {
   const { t, lang } = useI18n()
   // El pin del otro cuerpo puede estar en Marte o en la Luna; sin pin se mide el centro del objetivo.
   const body = tpin?.body ?? target.body
@@ -59,6 +65,31 @@ export function PinPanel({ target, pin, tpin, radiusKm, onRadius, pinMode, onPin
     // `key` resume el pin, el punto del objetivo, el objetivo y el radio.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
+
+  // Parecido de relieve del punto de Marte con los sitios de la Tierra (no hace falta el pin de la Tierra).
+  const matchKey = JSON.stringify([planet.lon, planet.lat, body])
+  const [match, setMatch] = useState<{ key: string; stats: PatchStats | null; list: TerrainMatch[] | null } | { key: string; failed: true } | null>(null)
+  const matchCurrent = match?.key === matchKey ? match : null
+  const canMatch = body === 'mars'
+  useEffect(() => {
+    if (!canMatch) return
+    let alive = true
+    import('../map/pinMeasure')
+      .then(({ measurePlanetPoint }) => measurePlanetPoint({ lon: planet.lon, lat: planet.lat }, body))
+      .then((stats) => {
+        if (!alive) return
+        const list = stats && Number.isFinite(stats.triMedian)
+          ? terrainMatches(model.file, { slope_median_deg: stats.slopeMedian, slope_p90_deg: stats.slopeP90, roughness_tri_m: stats.triMedian })
+          : null
+        setMatch({ key: matchKey, stats, list })
+      })
+      .catch(() => alive && setMatch({ key: matchKey, failed: true }))
+    return () => {
+      alive = false
+    }
+    // `matchKey` resume el punto y el cuerpo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matchKey, canMatch])
 
   const data = current && 'data' in current ? current.data : null
   const deg = (v: number) => `${formatNumber(v, lang)}°`
@@ -148,6 +179,47 @@ export function PinPanel({ target, pin, tpin, radiusKm, onRadius, pinMode, onPin
         </button>
       </div>
       <p className="mt-2 text-xs leading-snug text-muted">{t(body === 'moon' ? 'pin.mapHintMoon' : 'pin.mapHint', { body: bodyName })}</p>
+
+      {canMatch && (
+        <section className="mt-5 rounded-xl border border-line bg-paper px-3.5 py-3" aria-live="polite">
+          <h2 className="font-serif text-lg font-semibold leading-tight">{t('pin.match', { body: bodyName })}</h2>
+          <p className="mt-1 text-xs leading-relaxed text-muted">{t('pin.matchLead')}</p>
+          {!matchCurrent ? (
+            <p className="mt-2 text-sm text-muted" role="status">{t('pin.matchLoading')}</p>
+          ) : 'failed' in matchCurrent ? (
+            <p className="mt-2 text-sm text-caution" role="alert">{t('pin.error')}</p>
+          ) : !matchCurrent.stats || !matchCurrent.list ? (
+            <p className="mt-2 text-sm text-muted">{t('pin.matchNone', { body: bodyName })}</p>
+          ) : (
+            <>
+              <p className="mt-2 font-mono text-[11px] text-muted">
+                {t('pin.matchPoint', {
+                  slope: deg(matchCurrent.stats.slopeMedian),
+                  p90: deg(matchCurrent.stats.slopeP90),
+                  tri: `${formatNumber(Math.round(matchCurrent.stats.triMedian * 10) / 10, lang)} m`,
+                })}
+              </p>
+              <ol className="mt-2 divide-y divide-line">
+                {matchCurrent.list.slice(0, 5).map((m, i) => {
+                  const site = model.siteById.get(m.siteId)
+                  if (!site) return null
+                  return (
+                    <li key={m.siteId} className="flex min-h-11 items-center gap-2 py-1.5">
+                      <span className="w-5 shrink-0 text-right font-mono text-xs text-muted">{i + 1}</span>
+                      <span className="min-w-0 flex-1 text-sm font-medium leading-snug wrap-anywhere">{site.name}</span>
+                      <span className="w-14 shrink-0 text-right text-sm tabular-nums">{formatPercent(m.similarity, lang)}</span>
+                      <button type="button" onClick={() => onSite(m.siteId)} className="min-h-9 shrink-0 text-xs font-semibold text-earth underline underline-offset-2">
+                        {t('pin.matchOpen')}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ol>
+              <p className="mt-2 text-[11px] leading-snug text-muted">{t('pin.matchNote')}</p>
+            </>
+          )}
+        </section>
+      )}
 
       {!pin ? (
         <p className="mt-5 rounded-lg border border-dashed border-line px-3 py-3 text-sm text-ink">{t('pin.earthPrompt')}</p>

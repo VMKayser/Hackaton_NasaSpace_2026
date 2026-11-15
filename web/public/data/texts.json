@@ -30,6 +30,127 @@
           "url": "https://doi.org/10.1038/ncomms13554"
         }
       ]
+    },
+    "gale": {
+      "summary": {
+        "en": "Crater where Curiosity found fine-grained rocks recording an ancient lake that could have been habitable. The point is Bradbury Landing, where it landed in 2012.",
+        "es": "Cráter donde Curiosity halló rocas de grano fino que registran un lago antiguo que pudo ser habitable. El punto es Bradbury Landing, donde aterrizó en 2012."
+      },
+      "sources": [
+        {
+          "name": "Grotzinger et al. (2014), A Habitable Fluvio-Lacustrine Environment at Yellowknife Bay, Gale Crater, Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1242777"
+        },
+        {
+          "name": "Bradbury Landing",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Bradbury_Landing"
+        }
+      ]
+    },
+    "meridiani": {
+      "summary": {
+        "en": "Plain where Opportunity landed in 2004, in Eagle crater. Its rocks, with sulfates and hematite, record shallow flooding, evaporation and drying.",
+        "es": "Llanura donde Opportunity aterrizó en 2004, en el cráter Eagle. Sus rocas, con sulfatos y hematita, registran inundaciones de agua poco profunda, evaporación y secado."
+      },
+      "sources": [
+        {
+          "name": "Squyres et al. (2004), In Situ Evidence for an Ancient Aqueous Environment at Meridiani Planum, Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1104559"
+        },
+        {
+          "name": "List of artificial objects on Mars",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_Mars"
+        }
+      ]
+    },
+    "elysium-insight": {
+      "summary": {
+        "en": "Plain where InSight landed in 2018: impact-fragmented regolith over basaltic lava flows.",
+        "es": "Llanura donde aterrizó InSight en 2018: regolito fragmentado por impactos sobre coladas de lava basáltica."
+      },
+      "sources": [
+        {
+          "name": "Golombek et al. (2020), Geology of the InSight landing site on Mars",
+          "agency": "Nature Communications",
+          "url": "https://doi.org/10.1038/s41467-020-14679-1"
+        }
+      ]
+    },
+    "shackleton-rim": {
+      "summary": {
+        "en": "A point on the rim of Shackleton crater, near the lunar south pole, that gets sunlight for much of the year. NASA chose candidate regions for Artemis III in this area for their slope, lighting and communications.",
+        "es": "Punto del borde del cráter Shackleton, cerca del polo sur lunar, que recibe luz solar buena parte del año. La NASA eligió en esta zona regiones candidatas para Artemis III por su pendiente, su luz y sus comunicaciones."
+      },
+      "sources": [
+        {
+          "name": "Bussey et al. (2010), Illumination conditions of the south pole of the Moon derived using Kaguya topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.03.028"
+        },
+        {
+          "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
+    },
+    "connecting-ridge": {
+      "summary": {
+        "en": "A point on the ridge joining Shackleton and de Gerlache craters, among the best-lit places at the south pole. Connecting Ridge is one of the 13 Artemis III candidate regions.",
+        "es": "Punto de la cresta que une los cráteres Shackleton y de Gerlache, entre los mejor iluminados del polo sur. «Connecting Ridge» es una de las 13 regiones candidatas de Artemis III."
+      },
+      "sources": [
+        {
+          "name": "Bussey et al. (2010), Illumination conditions of the south pole of the Moon derived using Kaguya topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.03.028"
+        },
+        {
+          "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
+    },
+    "de-gerlache-rim": {
+      "summary": {
+        "en": "A well-lit point on the rim of de Gerlache crater. de Gerlache Rim 1 and 2 are among the Artemis III candidate regions.",
+        "es": "Punto del borde del cráter de Gerlache con mucha luz solar. «de Gerlache Rim 1» y «de Gerlache Rim 2» están entre las regiones candidatas de Artemis III."
+      },
+      "sources": [
+        {
+          "name": "Bussey et al. (2010), Illumination conditions of the south pole of the Moon derived using Kaguya topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.03.028"
+        },
+        {
+          "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
+    },
+    "malapert-massif": {
+      "summary": {
+        "en": "A point on Malapert Mountain, at about 86° S, with good lighting. Malapert Massif is an Artemis III candidate region.",
+        "es": "Punto de la montaña Malapert, a unos 86° S, con buena iluminación. «Malapert Massif» es una región candidata de Artemis III."
+      },
+      "sources": [
+        {
+          "name": "Bussey et al. (2010), Illumination conditions of the south pole of the Moon derived using Kaguya topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.03.028"
+        },
+        {
+          "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
     }
   },
   "purposes": {
@@ -61,6 +182,16 @@
       "question": {
         "en": "Where can a rover rehearse driving on similar slopes and roughness?",
         "es": "¿Dónde puede un rover ensayar la conducción con pendientes y rugosidad parecidas?"
+      }
+    },
+    "lunar-base": {
+      "label": {
+        "en": "Landing and surface operations at the lunar south pole",
+        "es": "Alunizaje y operaciones en el polo sur lunar"
+      },
+      "question": {
+        "en": "Where can a lander and a rover rehearse on slopes like those of the Artemis III candidate regions?",
+        "es": "¿Dónde ensayar un alunizaje y el tránsito de un rover con pendientes como las de las regiones candidatas de Artemis III?"
       }
     }
   },

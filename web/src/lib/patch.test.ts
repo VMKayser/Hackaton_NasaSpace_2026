@@ -25,6 +25,8 @@ describe('measurePatch', () => {
       expect(stats.reliefM).toBeGreaterThan(full * 0.5)
       expect(stats.reliefM).toBeLessThan(full)
       expect(stats.elevationMean).toBeCloseTo(3700, 0)
+      // TRI de un plano: 6 de las 8 vecinas difieren en paso × tan(pendiente), las otras 2 en 0.
+      expect(stats.triMedian).toBeCloseTo((6 / 8) * 50 * Math.tan(10 * RAD), 3)
     }
   })
 

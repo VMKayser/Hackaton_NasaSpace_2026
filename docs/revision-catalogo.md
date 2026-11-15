@@ -25,11 +25,11 @@ carácter de laguna salina describen Laguna Verde.
 - `pastos-grandes` coincide con Laguna Pastos Grandes en OpenStreetMap (−21.6453, −67.7931).
 - `jayu-khota` coincide con Wikipedia (−19.463, −67.432).
 
-## Geología de los objetivos
+## Geología
 
-En `docs/valores/puntaje.json`: Jezero es una cuenca de lago (Mangold et al., 2021) y Columbia Hills es
-hidrotermal (Squyres et al., 2008). En los sitios se usa el tipo del catálogo; los salares y las lagunas
-salinas cuentan como cuenca de lago.
+El entorno geológico de cada sitio está en `docs/valores/geologia.csv`, con la frase que lo respalda y su
+fuente, junto con la unidad del mapa geológico de Sudamérica 1:5 000 000 (CGMW, 2019) en su punto. El de
+cada objetivo está en `docs/valores/objetivos.csv`, también con su fuente.
 
 ## Fuentes
 

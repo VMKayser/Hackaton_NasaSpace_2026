@@ -168,6 +168,15 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
       movidos; Laguna Verde como laguna salina ([revisión del catálogo](docs/revision-catalogo.md)).
 - [x] Textos de los 31 sitios y de los objetivos con fuentes en `texts.json`; la ficha muestra
       «Fuentes de los textos».
+- [x] Pesos por reglas publicadas (OCDE/JRC 2008, análogos funcionales de Foucher et al. 2021) y
+      propósitos con las dimensiones que nombra su fuente.
+- [x] Geología de cada sitio y objetivo con su fuente; unidad del mapa geológico de Sudamérica
+      1:5 000 000 como dato de contexto.
+- [x] Nueve objetivos: cinco sitios de aterrizaje en Marte (Jezero, Columbia Hills, Gale, Meridiani,
+      InSight) y cuatro puntos del polo sur lunar (Bussey et al. 2010) con el propósito «Alunizaje y
+      operaciones en el polo sur lunar».
+- [x] Cualquier punto de Marte: el pin libre lista los sitios de la Tierra con relieve más parecido
+      (mismo método y pesos que los puntajes, solo relieve; excepción a la regla 10 de AGENTS.md).
 - [ ] Mostrar el resultado observado de Atacama y de los controles. Explicar qué se esperaba en
       cada comparación y qué pasó, incluso si el resultado difiere de lo esperado.
 - [ ] Enviar los textos científicos al rol 1 para revisión (respuesta antes de las 15:00).

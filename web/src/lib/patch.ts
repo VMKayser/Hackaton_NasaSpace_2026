@@ -29,6 +29,8 @@ export interface PatchStats {
   belowZeroShare: number
   /** Fracción del área en cada clase de SLOPE_BINS. */
   histogram: number[]
+  /** Rugosidad: mediana del TRI, la diferencia media de altura con las 8 celdas vecinas (m). */
+  triMedian: number
 }
 
 /** Percentil de un arreglo ya ordenado, con interpolación lineal. */
@@ -82,6 +84,7 @@ export function measurePatch(
   const r2 = ((radiusKm * 1000) / stepM) ** 2
   const slopes: number[] = []
   const heights: number[] = []
+  const tris: number[] = []
   let inside = 0
   for (let j = 1; j < size - 1; j++) {
     for (let i = 1; i < size - 1; i++) {
@@ -94,6 +97,17 @@ export function measurePatch(
       const dzdx = (elev[c + 1] - elev[c - 1]) / (2 * stepM)
       const dzdy = (elev[c - size] - elev[c + size]) / (2 * stepM)
       slopes.push(Math.atan(Math.hypot(dzdx, dzdy)) / RAD)
+      // TRI: con las 8 vecinas, como tools/measure_values.py.
+      let sum = 0
+      let all = true
+      for (const k of [c - size - 1, c - size, c - size + 1, c - 1, c + 1, c + size - 1, c + size, c + size + 1]) {
+        if (!valid[k]) {
+          all = false
+          break
+        }
+        sum += Math.abs(elev[k] - elev[c])
+      }
+      if (all) tris.push(sum / 8)
     }
   }
   if (!slopes.length || !heights.length) return null
@@ -125,6 +139,7 @@ export function measurePatch(
     elevationMean: sum / h.length,
     belowZeroShare: belowZero / h.length,
     histogram: histogram.map((n) => n / s.length),
+    triMedian: tris.length ? percentile(Float64Array.from(tris).sort(), 0.5) : NaN,
   }
 }
 

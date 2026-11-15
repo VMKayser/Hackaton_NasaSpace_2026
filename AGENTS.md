@@ -16,7 +16,8 @@ la Tierra y en el objetivo, las fuentes de esos datos y una explicación de dón
 
 **Decisiones de enfoque ya tomadas:**
 
-- Cuerpo objetivo: **Marte**. La app es neutral respecto al cuerpo: un objetivo lunar es solo otra fila.
+- Cuerpos objetivo: **Marte** (cinco sitios de aterrizaje) y **la Luna** (cuatro puntos del polo sur en
+  regiones candidatas de Artemis III). La app es neutral respecto al cuerpo: un objetivo es solo otra fila.
 - Región piloto: **Bolivia** (Altiplano y Sur de Lípez), con un **catálogo fijo de sitios**
   (`docs/catalogo-sitios.csv`). El método es general; Bolivia es el caso de estudio.
 - **Atacama** se incluye como referencia para comprobar una analogía documentada, y hay **controles
@@ -104,7 +105,9 @@ web/                 app del rol 5
     map/             mapa, capas, cambio globo/2D, bodies.ts (mapa base y radio por cuerpo)
     i18n/            en.ts y es.ts
     data/            esquemas Zod, carga y mezcla de los dos archivos
+tools/               mediciones (measure_values.py) y generación de analogs.json (build_analogs.py)
 docs/                rol 6 y coordinación
+  valores/                 objetivos, geología, valores medidos, pesos y sus fuentes (ver su README)
   contrato-rol-4.md        guía de entrega que se envía al rol 4
   analogs.example.json     ejemplo del formato
   catalogo-sitios.csv      catálogo fijo: 12 de núcleo, 16 de ampliación, 3 de validación
@@ -145,6 +148,7 @@ interface AnalogsFile {
         body?: "earth" | "mars" | "moon";
       }[];
       categories?: Record<string, Text>;   // código de categoría a texto
+      measure?: string;                    // medición que guarda (columna de docs/valores), p. ej. "slope_median_deg"
     }[];
     purposes?: {                           // qué se quiere estudiar o ensayar
       id: string;
@@ -246,7 +250,10 @@ Si el contrato cambia, se actualiza en `docs/contrato-rol-4.md`, aquí y en `web
 8. **Uso de IA:** anotar en `docs/uso-de-ia.md` qué se hizo con IA, para declararlo en el envío.
    Confirmar la regla exacta de Space Apps 2026.
 9. No añadir dependencias ni funciones fuera de `PLAN.md` sin acordarlo.
-10. **La app no calcula ni recalcula puntajes.**
+10. **La app no calcula ni recalcula puntajes.** Única excepción (15 de noviembre): con el pin libre en
+    Marte, el navegador calcula el **parecido de relieve** del punto con los sitios de la Tierra, con la
+    escala y los pesos de `tools/build_analogs.py` y solo con las dimensiones cuyo `measure` sabe medir
+    (`web/src/lib/terrainMatch.ts`). Se rotula como cálculo del navegador y solo de relieve.
 11. **Ningún identificador de datos en el código:** dimensiones, sitios, objetivos, propósitos y
     pasos de la historia salen de los archivos.
 12. **Ningún texto fijo dice "Marte".** Se usa el `body` del objetivo.

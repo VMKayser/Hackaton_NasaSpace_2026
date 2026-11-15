@@ -15,9 +15,9 @@
         "body": "mars"
       },
       {
-        "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
-        "agency": "USGS Astrogeology / NASA LRO / JAXA SELENE",
-        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+        "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+        "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
         "body": "moon"
       }
     ]
@@ -38,9 +38,9 @@
         "body": "mars"
       },
       {
-        "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
-        "agency": "USGS Astrogeology / NASA LRO / JAXA SELENE",
-        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+        "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+        "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
         "body": "moon"
       }
     ]
@@ -61,9 +61,9 @@
         "body": "mars"
       },
       {
-        "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
-        "agency": "USGS Astrogeology / NASA LRO / JAXA SELENE",
-        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+        "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+        "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
         "body": "moon"
       }
     ]

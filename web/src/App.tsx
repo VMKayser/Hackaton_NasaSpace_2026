@@ -243,6 +243,7 @@ export default function App() {
     } else if (pinActive) {
       panel = (
         <PinPanel
+          model={model}
           target={target}
           pin={state.pin}
           tpin={state.tpin}
@@ -258,6 +259,12 @@ export default function App() {
             setMapFocus((previous) => previous + 1)
           }}
           onExplore={pinExplore ? openExplore : null}
+          onSite={(id) => {
+            // La ficha se ve cuando no hay pines: se quitan los dos y se abre el sitio.
+            closePins()
+            dispatch({ type: 'setTargetPin', pin: null })
+            selectSite(id)
+          }}
         />
       )
     } else if (selected) {

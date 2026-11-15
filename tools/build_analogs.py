@@ -4,12 +4,16 @@ Entradas:
 - docs/catalogo-sitios.csv: sitios, coordenadas, radio, tipo y marcas.
 - docs/valores/sitios_valores.csv y objetivos_valores.csv: valores medidos (tools/measure_values.py).
 - docs/valores/fuentes.json: unidad y fuentes de cada columna medida.
-- docs/valores/puntaje.json: dimensiones, pesos, propósitos y categorías (provisionales, rol 1).
+- docs/valores/objetivos.csv: objetivos, coordenadas y entorno geológico, cada uno con su fuente.
+- docs/valores/geologia.csv: entorno geológico de cada sitio con su fuente y la unidad del mapa
+  geológico de Sudamérica 1:5 000 000 (CGMW, 2019) en su punto.
+- docs/valores/puntaje.json: dimensiones, pesos y propósitos (justificados en docs/valores/pesos.md).
 
 Método (docs/metodo-similitud.md):
 - Escala de cada dimensión numérica: rango entre los percentiles 5 y 95 de los sitios del catálogo,
   ampliado para incluir los valores de los objetivos.
-- Similitud por dimensión: 1 − min(1, |Tierra − objetivo| / escala); en categorías, 1 si coinciden y 0 si no.
+- Similitud por dimensión: 1 − min(1, |Tierra − objetivo| / escala); en categorías, 1 si comparten alguna
+  categoría (un sitio puede tener varias, separadas por «+») y 0 si no.
   Si falta un dato, la dimensión queda sin puntaje (null), nunca en 0.
 - Total: media ponderada de las dimensiones con puntaje y peso positivo. Por propósito, con sus pesos.
 
@@ -43,7 +47,7 @@ def dim_score(earth, target, kind, scale):
     if earth is None or target is None:
         return None
     if kind == "category":
-        return 1.0 if earth == target else 0.0
+        return 1.0 if set(earth.split("+")) & set(target.split("+")) else 0.0
     if scale is None or scale <= 0:
         return None
     return 1 - min(1.0, abs(earth - target) / scale)
@@ -69,6 +73,12 @@ def main():
     targets = read_csv(VAL / "objetivos_valores.csv")
     sources = json.loads((VAL / "fuentes.json").read_text(encoding="utf-8"))
     cfg = json.loads((VAL / "puntaje.json").read_text(encoding="utf-8"))
+    geology = read_csv(VAL / "geologia.csv")
+    target_info = read_csv(VAL / "objetivos.csv")
+    if set(geology) != set(catalog):
+        sys.exit("docs/valores/geologia.csv no tiene los mismos sitios que el catálogo")
+    if set(target_info) != set(targets):
+        sys.exit("Los objetivos medidos no coinciden con docs/valores/objetivos.csv. Ejecuta tools/measure_values.py")
 
     missing = set(catalog) ^ set(sites)
     if missing:
@@ -82,10 +92,11 @@ def main():
     site_vals, target_vals = {s: {} for s in catalog}, {t: {} for t in targets}
     for d in dims:
         if d.get("kind") == "category":
-            for s, row in catalog.items():
-                site_vals[s][d["id"]] = d.get("siteTypeMap", {}).get(row["type"], row["type"]) or None
+            # Entorno geológico: archivos con fuente. Litología: unidad del mapa en el punto del sitio.
+            for s in catalog:
+                site_vals[s][d["id"]] = geology[s][d["siteColumn"]] or None
             for t in targets:
-                target_vals[t][d["id"]] = d.get("targetValues", {}).get(t)
+                target_vals[t][d["id"]] = target_info[t].get(d.get("targetColumn", ""), "") or None
         else:
             for s in catalog:
                 site_vals[s][d["id"]] = num(sites[s][d["column"]])
@@ -150,8 +161,19 @@ def main():
         srcs = d["sources"] if "sources" in d else sources[d["column"]]["sources"]
         entry = {"id": d["id"], "label": d["label"], "weight": d["weight"],
                  "sources": [x for x in srcs if x.get("body", "earth") in bodies]}
+        if "column" in d:
+            entry["measure"] = d["column"]  # la web reconoce las medidas de relieve que sabe medir
         if "categories" in d:
-            entry["categories"] = d["categories"]
+            cats = dict(d["categories"])
+            # Etiqueta de las combinaciones («lacustrine+hydrothermal»).
+            for v in {*(site_vals[x][d["id"]] for x in catalog), *(target_vals[x][d["id"]] for x in targets)}:
+                if v and v not in cats and "+" in v:
+                    parts = [cats[p] for p in v.split("+")]
+                    cats[v] = {lang: " + ".join(p[lang] for p in parts) for lang in ("en", "es")}
+            missing_labels = {v for v in (*(site_vals[x][d["id"]] for x in catalog), *(target_vals[x][d["id"]] for x in targets)) if v and v not in cats}
+            if missing_labels:
+                sys.exit(f"{d['id']}: faltan etiquetas para {sorted(missing_labels)} en puntaje.json")
+            entry["categories"] = cats
         meta_dims.append(entry)
 
     out = {

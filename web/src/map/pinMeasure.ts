@@ -6,6 +6,7 @@ import { BODIES } from './bodies'
 import type { Planet } from './planetaryImagery'
 import { loadTerrainRegions, regionGrids } from './planetTerrain'
 import { EARTH_LENS_MAX_ZOOM, earthTileElevations } from './reliefLens'
+import { MATCH_RADIUS_KM, MATCH_STEP_M } from '../lib/terrainMatch'
 import { boxAround, demCovers, GLOBAL_DEMS, readDemWindow } from './usgsDem'
 
 // Pin libre: mide el relieve real alrededor de un punto de la Tierra y de un punto del objetivo con
@@ -87,6 +88,18 @@ async function earthSampler(point: PinPoint, radiusKm: number, stepM: number, zo
     const fy = y - py
     return (a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy
   }
+}
+
+/**
+ * Mide un punto de Marte o de la Luna como las herramientas miden los objetivos: modelo global de USGS,
+ * paso de MATCH_STEP_M y círculo de MATCH_RADIUS_KM. null si el modelo no cubre el punto.
+ */
+export async function measurePlanetPoint(point: PinPoint, body: Planet): Promise<PatchStats | null> {
+  const dem = GLOBAL_DEMS[body]
+  if (!demCovers(dem, point.lat)) return null
+  const radius = BODIES[body].radiusKm
+  const g = await readDemWindow(dem, ...boxAround(point.lon, point.lat, MATCH_RADIUS_KM + 1, radius))
+  return measurePatch((lon, lat) => sampleGrid(g, lon, lat, false), point.lon, point.lat, MATCH_RADIUS_KM, radius, MATCH_STEP_M)
 }
 
 /**

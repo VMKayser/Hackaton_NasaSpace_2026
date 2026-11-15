@@ -1,0 +1,10 @@
+id,name,body,lat,lon,setting,coord_source,coord_url,setting_source,setting_url
+jezero,Jezero,mars,18.4457,77.4508,lacustrine,"Sitio de aterrizaje de Perseverance (Wikipedia, List of artificial objects on Mars)",https://en.wikipedia.org/wiki/List_of_artificial_objects_on_Mars,"Mangold et al. (2021), Science",https://doi.org/10.1126/science.abl4051
+columbia-hills,"Columbia Hills, Gusev",mars,-14.6,175.5,hydrothermal,Home Plate (Wikipedia),https://en.wikipedia.org/wiki/Home_Plate_(Mars),"Squyres et al. (2008), Science",https://doi.org/10.1126/science.1155429
+gale,Gale (Bradbury Landing),mars,-4.5895,137.4417,lacustrine,Bradbury Landing de Curiosity (Wikipedia),https://en.wikipedia.org/wiki/Bradbury_Landing,"Grotzinger et al. (2014), Science",https://doi.org/10.1126/science.1242777
+meridiani,Meridiani Planum (Eagle),mars,-1.9462,-5.5266,lacustrine,"Sitio de aterrizaje de Opportunity (Wikipedia, List of artificial objects on Mars)",https://en.wikipedia.org/wiki/List_of_artificial_objects_on_Mars,"Squyres et al. (2004), Science",https://doi.org/10.1126/science.1104559
+elysium-insight,Elysium Planitia (InSight),mars,4.502,135.623,volcanic,"Golombek et al. (2020), Nature Communications",https://doi.org/10.1038/s41467-020-14679-1,"Golombek et al. (2020), Nature Communications",https://doi.org/10.1038/s41467-020-14679-1
+shackleton-rim,Shackleton Rim,moon,-89.68,-166.0,,"Bussey et al. (2010), Icarus, punto A",https://doi.org/10.1016/j.icarus.2010.03.028,,
+connecting-ridge,Connecting Ridge,moon,-89.44,-141.8,,"Bussey et al. (2010), Icarus, punto B",https://doi.org/10.1016/j.icarus.2010.03.028,,
+de-gerlache-rim,de Gerlache Rim,moon,-88.71,-68.7,,"Bussey et al. (2010), Icarus, punto C",https://doi.org/10.1016/j.icarus.2010.03.028,,
+malapert-massif,Malapert Massif,moon,-86.04,2.7,,"Bussey et al. (2010), Icarus, punto M1",https://doi.org/10.1016/j.icarus.2010.03.028,,

@@ -31,6 +31,8 @@ const Dimension = z.object({
   weight: z.number().min(0),
   sources: z.array(Source),
   categories: z.record(z.string(), Text).optional(),
+  /** Medición que guarda la dimensión (columna de docs/valores), p. ej. "slope_median_deg". */
+  measure: z.string().optional(),
 })
 
 const Purpose = z.object({

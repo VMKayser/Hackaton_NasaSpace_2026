@@ -2,10 +2,10 @@
   "meta": {
     "mock": false,
     "version": "2.1.0",
-    "generated": "2026-11-15T06:45:18Z",
+    "generated": "2026-11-15T08:56:32Z",
     "scoring": {
-      "en": "Values measured from open sources (see each dimension) inside a circle of radiusKm around each site and of 5 km around each target; terrain uses the same 200 m step on both bodies. Score per dimension: 1 − min(1, |Earth − target| / scale), where the scale is the range between the 5th and 95th percentiles of the 31 catalog sites, widened to include the targets; for geology, 1 if the category matches and 0 if not. The total is the weighted mean of the dimensions with data and a positive weight; missing data never counts as zero. Pressure is shown but has weight 0: on Earth it is 80 to 150 times that of Mars. Precipitation on Mars is 0 by definition, not measured. Earth climate comes from cells about 55 km wide, so on summits it describes a lower altitude. Slope, 90th percentile slope and roughness rank the sites almost identically (Spearman correlation 0.97 to 1.00), so they share a single weight. Rationale for weights and purposes: docs/valores/pesos.md. Method: docs/metodo-similitud.md; values and limits: docs/valores/.",
-      "es": "Valores medidos con fuentes abiertas (ver cada dimensión) en un círculo de radiusKm alrededor de cada sitio y de 5 km alrededor de cada objetivo; el relieve usa el mismo paso de 200 m en los dos cuerpos. Puntaje por dimensión: 1 − min(1, |Tierra − objetivo| / escala), donde la escala es el rango entre los percentiles 5 y 95 de los 31 sitios del catálogo, ampliado para incluir a los objetivos; en geología, 1 si la categoría coincide y 0 si no. El total es la media ponderada de las dimensiones con dato y peso positivo; un dato faltante nunca cuenta como cero. La presión se muestra pero pesa 0: en la Tierra es de 80 a 150 veces la de Marte. La precipitación de Marte es 0 por definición, no medida. El clima de la Tierra viene de celdas de unos 55 km, así que en las cumbres describe una altura menor. Pendiente, percentil 90 y rugosidad ordenan los sitios casi igual (correlación de Spearman de 0,97 a 1,00), así que comparten un solo peso. Justificación de pesos y propósitos: docs/valores/pesos.md. Método: docs/metodo-similitud.md; valores y límites: docs/valores/."
+      "en": "Values measured from open sources (see each dimension) inside a circle of radiusKm around each site and of 5 km around each target; terrain uses the same 200 m step on every body. Score per dimension: 1 − min(1, |Earth − target| / scale), where the scale is the range between the 5th and 95th percentiles of the 31 catalog sites, widened to include the targets; for geology, 1 if the site and the target share a setting and 0 if not. The total is the weighted mean of the dimensions with data and a positive weight; missing data never counts as zero. Weights follow the OECD/JRC Handbook on Constructing Composite Indicators (2008): equal weights, and measures of the same property that are highly correlated share one weight (slope, 90th percentile slope and roughness: Spearman 0.97 to 1.00). Each purpose uses only the dimensions that its source names. The rock unit of the geological map is shown but not scored. Precipitation on Mars and the Moon and pressure on the Moon are 0 by definition, not measured; there is no lunar temperature source yet. Earth climate comes from cells about 55 km wide, so on summits it describes a lower altitude. Rules and sources: docs/valores/pesos.md.",
+      "es": "Valores medidos con fuentes abiertas (ver cada dimensión) en un círculo de radiusKm alrededor de cada sitio y de 5 km alrededor de cada objetivo; el relieve usa el mismo paso de 200 m en todos los cuerpos. Puntaje por dimensión: 1 − min(1, |Tierra − objetivo| / escala), donde la escala es el rango entre los percentiles 5 y 95 de los 31 sitios del catálogo, ampliado para incluir a los objetivos; en geología, 1 si el sitio y el objetivo comparten entorno y 0 si no. El total es la media ponderada de las dimensiones con dato y peso positivo; un dato faltante nunca cuenta como cero. Los pesos siguen el Manual de indicadores compuestos de la OCDE y el JRC (2008): pesos iguales, y las medidas de una misma propiedad muy correlacionadas comparten un peso (pendiente, percentil 90 y rugosidad: Spearman de 0,97 a 1,00). Cada propósito usa solo las dimensiones que nombra su fuente. La unidad de roca del mapa geológico se muestra pero no puntúa. La precipitación en Marte y la Luna y la presión en la Luna son 0 por definición, no medidas; todavía no hay fuente de temperatura lunar. El clima de la Tierra viene de celdas de unos 55 km, así que en las cumbres describe una altura menor. Reglas y fuentes: docs/valores/pesos.md."
     },
     "dimensions": [
       {
@@ -14,7 +14,7 @@
           "en": "Median slope",
           "es": "Pendiente mediana"
         },
-        "weight": 0.5,
+        "weight": 0.3333,
         "sources": [
           {
             "name": "Terrain Tiles (SRTM and other sources)",
@@ -27,8 +27,15 @@
             "agency": "USGS Astrogeology / ESA / NASA",
             "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
             "body": "mars"
+          },
+          {
+            "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+            "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+            "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
+            "body": "moon"
           }
-        ]
+        ],
+        "measure": "slope_median_deg"
       },
       {
         "id": "steep",
@@ -36,7 +43,7 @@
           "en": "Steepest ground (90th percentile slope)",
           "es": "Terreno más empinado (percentil 90 de la pendiente)"
         },
-        "weight": 0.25,
+        "weight": 0.3333,
         "sources": [
           {
             "name": "Terrain Tiles (SRTM and other sources)",
@@ -49,8 +56,15 @@
             "agency": "USGS Astrogeology / ESA / NASA",
             "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
             "body": "mars"
+          },
+          {
+            "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+            "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+            "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
+            "body": "moon"
           }
-        ]
+        ],
+        "measure": "slope_p90_deg"
       },
       {
         "id": "roughness",
@@ -58,7 +72,7 @@
           "en": "Terrain roughness (TRI)",
           "es": "Rugosidad del terreno (TRI)"
         },
-        "weight": 0.25,
+        "weight": 0.3333,
         "sources": [
           {
             "name": "Terrain Tiles (SRTM and other sources)",
@@ -71,8 +85,15 @@
             "agency": "USGS Astrogeology / ESA / NASA",
             "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
             "body": "mars"
+          },
+          {
+            "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+            "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+            "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
+            "body": "moon"
           }
-        ]
+        ],
+        "measure": "roughness_tri_m"
       },
       {
         "id": "temperature",
@@ -94,7 +115,8 @@
             "url": "https://www-mars.lmd.jussieu.fr/",
             "body": "mars"
           }
-        ]
+        ],
+        "measure": "surface_temp_c"
       },
       {
         "id": "thermal_range",
@@ -116,7 +138,8 @@
             "url": "https://www-mars.lmd.jussieu.fr/",
             "body": "mars"
           }
-        ]
+        ],
+        "measure": "diurnal_range_c"
       },
       {
         "id": "aridity",
@@ -132,7 +155,8 @@
             "url": "https://power.larc.nasa.gov/",
             "body": "earth"
           }
-        ]
+        ],
+        "measure": "precip_mm_yr"
       },
       {
         "id": "pressure",
@@ -140,7 +164,7 @@
           "en": "Surface pressure",
           "es": "Presión en la superficie"
         },
-        "weight": 0,
+        "weight": 1,
         "sources": [
           {
             "name": "NASA POWER Climatology 2001-2025 (MERRA-2)",
@@ -154,7 +178,8 @@
             "url": "https://www-mars.lmd.jussieu.fr/",
             "body": "mars"
           }
-        ]
+        ],
+        "measure": "pressure_hpa"
       },
       {
         "id": "geology",
@@ -165,21 +190,39 @@
         "weight": 1,
         "sources": [
           {
-            "name": "Galaxy Match site catalog (type of each site)",
-            "agency": "Galaxy Match team, role 1",
-            "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/catalogo-sitios.csv",
+            "name": "Geological setting of each site, with its source (docs/valores/geologia.csv)",
+            "agency": "Galaxy Match",
+            "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/geologia.csv",
             "body": "earth"
           },
           {
-            "name": "Mangold et al. (2021), Perseverance rover reveals an ancient delta-lake system and flood deposits at Jezero crater, Mars",
-            "agency": "Science / NASA Mars 2020",
+            "name": "Mangold et al. (2021), Jezero delta-lake system",
+            "agency": "Science",
             "url": "https://doi.org/10.1126/science.abl4051",
             "body": "mars"
           },
           {
-            "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars (Columbia Hills, Gusev)",
-            "agency": "Science / NASA Mars Exploration Rover",
+            "name": "Squyres et al. (2008), Silica-rich deposits, Columbia Hills",
+            "agency": "Science",
             "url": "https://doi.org/10.1126/science.1155429",
+            "body": "mars"
+          },
+          {
+            "name": "Grotzinger et al. (2014), Fluvio-lacustrine environment at Gale",
+            "agency": "Science",
+            "url": "https://doi.org/10.1126/science.1242777",
+            "body": "mars"
+          },
+          {
+            "name": "Squyres et al. (2004), Ancient aqueous environment at Meridiani Planum",
+            "agency": "Science",
+            "url": "https://doi.org/10.1126/science.1104559",
+            "body": "mars"
+          },
+          {
+            "name": "Golombek et al. (2020), Geology of the InSight landing site",
+            "agency": "Nature Communications",
+            "url": "https://doi.org/10.1038/s41467-020-14679-1",
             "body": "mars"
           }
         ],
@@ -219,6 +262,90 @@
           "humid_mountain": {
             "en": "Humid mountain",
             "es": "Montaña húmeda"
+          },
+          "sedimentary": {
+            "en": "Sedimentary rock",
+            "es": "Roca sedimentaria"
+          },
+          "volcanic+lacustrine": {
+            "en": "Volcanic + Lake basin (salt flat or ancient lake)",
+            "es": "Volcánico + Cuenca de lago (salar o lago antiguo)"
+          },
+          "volcanic+glacial": {
+            "en": "Volcanic + Glacial",
+            "es": "Volcánico + Glaciar"
+          },
+          "hydrothermal+lacustrine": {
+            "en": "Hydrothermal + Lake basin (salt flat or ancient lake)",
+            "es": "Hidrotermal + Cuenca de lago (salar o lago antiguo)"
+          },
+          "lacustrine+hydrothermal": {
+            "en": "Lake basin (salt flat or ancient lake) + Hydrothermal",
+            "es": "Cuenca de lago (salar o lago antiguo) + Hidrotermal"
+          }
+        }
+      },
+      {
+        "id": "lithology",
+        "label": {
+          "en": "Rock unit on the geological map (1:5,000,000)",
+          "es": "Unidad de roca del mapa geológico (1:5 000 000)"
+        },
+        "weight": 0,
+        "sources": [
+          {
+            "name": "Geological Map of South America 2018, 1:5,000,000 (Gómez, Schobbenhaus & Montes, 2019)",
+            "agency": "CGMW / Colombian Geological Survey / Geological Survey of Brazil",
+            "url": "https://www.arcgis.com/home/item.html?id=7ecc9e7e0c1f46c8ad44f5e5b476150d",
+            "body": "earth"
+          },
+          {
+            "name": "Macrostrat geologic map API (point query)",
+            "agency": "Macrostrat, University of Wisconsin–Madison",
+            "url": "https://macrostrat.org/",
+            "body": "earth"
+          }
+        ],
+        "categories": {
+          "Quaternary Evaporitic": {
+            "en": "Quaternary evaporites",
+            "es": "Evaporitas del Cuaternario"
+          },
+          "Quaternary Andesitic and related": {
+            "en": "Quaternary andesites and related rocks",
+            "es": "Andesitas y rocas afines del Cuaternario"
+          },
+          "Neogene Andesitic and related": {
+            "en": "Neogene andesites and related rocks",
+            "es": "Andesitas y rocas afines del Neógeno"
+          },
+          "Neogene Rhyolitic": {
+            "en": "Neogene rhyolites",
+            "es": "Riolitas del Neógeno"
+          },
+          "Quaternary Siliciclastic": {
+            "en": "Quaternary siliciclastic sediments",
+            "es": "Sedimentos siliciclásticos del Cuaternario"
+          },
+          "Cretaceous Siliciclastic": {
+            "en": "Cretaceous siliciclastic rocks",
+            "es": "Rocas siliciclásticas del Cretácico"
+          },
+          "Devonian Siliciclastic": {
+            "en": "Devonian siliciclastic rocks",
+            "es": "Rocas siliciclásticas del Devónico"
+          },
+          "Ordovician Siliciclastic": {
+            "en": "Ordovician siliciclastic rocks",
+            "es": "Rocas siliciclásticas del Ordovícico"
+          },
+          "Triassic Granitic": {
+            "en": "Triassic granites",
+            "es": "Granitos del Triásico"
+          },
+          "Cretaceous Granitic": {
+            "en": "Cretaceous granites",
+            "es": "Granitos del Cretácico"
           }
         }
       }
@@ -229,10 +356,10 @@
         "kind": "phenomenon",
         "targetId": "jezero",
         "weights": {
-          "geology": 3,
-          "aridity": 2,
-          "temperature": 1,
-          "slope": 0.5
+          "geology": 1,
+          "aridity": 1,
+          "thermal_range": 1,
+          "pressure": 1
         }
       },
       {
@@ -240,10 +367,10 @@
         "kind": "phenomenon",
         "targetId": "columbia-hills",
         "weights": {
-          "geology": 3,
-          "aridity": 2,
+          "geology": 1,
+          "aridity": 1,
           "thermal_range": 1,
-          "temperature": 1
+          "pressure": 1
         }
       },
       {
@@ -251,9 +378,19 @@
         "kind": "task",
         "targetId": "jezero",
         "weights": {
-          "slope": 2,
-          "steep": 2,
-          "roughness": 1
+          "slope": 0.3333,
+          "steep": 0.3333,
+          "roughness": 0.3333
+        }
+      },
+      {
+        "id": "lunar-base",
+        "kind": "task",
+        "targetId": "connecting-ridge",
+        "weights": {
+          "slope": 0.3333,
+          "steep": 0.3333,
+          "roughness": 0.3333
         }
       }
     ]
@@ -263,27 +400,27 @@
       "id": "jezero",
       "name": "Jezero",
       "body": "mars",
-      "lat": 18.44,
-      "lon": 77.45,
+      "lat": 18.4457,
+      "lon": 77.4508,
       "values": {
         "slope": {
-          "value": 2.07,
+          "value": 2.0,
           "unit": "°"
         },
         "steep": {
-          "value": 3.98,
+          "value": 3.88,
           "unit": "°"
         },
         "roughness": {
-          "value": 5.98,
+          "value": 5.64,
           "unit": "m"
         },
         "temperature": {
-          "value": -49.03,
+          "value": -49.04,
           "unit": "°C"
         },
         "thermal_range": {
-          "value": 84.89,
+          "value": 84.88,
           "unit": "°C"
         },
         "aridity": {
@@ -297,6 +434,10 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
         }
       }
     },
@@ -304,27 +445,27 @@
       "id": "columbia-hills",
       "name": "Columbia Hills, Gusev",
       "body": "mars",
-      "lat": -14.64,
-      "lon": 175.53,
+      "lat": -14.6,
+      "lon": 175.5,
       "values": {
         "slope": {
-          "value": 2.45,
+          "value": 2.16,
           "unit": "°"
         },
         "steep": {
-          "value": 8.77,
+          "value": 8.59,
           "unit": "°"
         },
         "roughness": {
-          "value": 6.77,
+          "value": 6.05,
           "unit": "m"
         },
         "temperature": {
-          "value": -58.03,
+          "value": -58.08,
           "unit": "°C"
         },
         "thermal_range": {
-          "value": 100.96,
+          "value": 101.13,
           "unit": "°C"
         },
         "aridity": {
@@ -332,11 +473,330 @@
           "unit": "mm/yr"
         },
         "pressure": {
-          "value": 6.79,
+          "value": 6.8,
           "unit": "hPa"
         },
         "geology": {
           "value": "hydrothermal",
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "gale",
+      "name": "Gale (Bradbury Landing)",
+      "body": "mars",
+      "lat": -4.5895,
+      "lon": 137.4417,
+      "values": {
+        "slope": {
+          "value": 1.42,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 4.38,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 4.14,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -51.64,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 90.72,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 8.5,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": "lacustrine",
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "meridiani",
+      "name": "Meridiani Planum (Eagle)",
+      "body": "mars",
+      "lat": -1.9462,
+      "lon": -5.5266,
+      "values": {
+        "slope": {
+          "value": 0.56,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 2.18,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 1.54,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -46.88,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 94.55,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 6.41,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": "lacustrine",
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "elysium-insight",
+      "name": "Elysium Planitia (InSight)",
+      "body": "mars",
+      "lat": 4.502,
+      "lon": 135.623,
+      "values": {
+        "slope": {
+          "value": 0.42,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 0.58,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 1.11,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -50.85,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 88.08,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 7.2,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": "volcanic",
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "shackleton-rim",
+      "name": "Shackleton Rim",
+      "body": "moon",
+      "lat": -89.68,
+      "lon": -166.0,
+      "values": {
+        "slope": {
+          "value": 16.07,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 32.02,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 44.94,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": null,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": null,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 0.0,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": null,
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "connecting-ridge",
+      "name": "Connecting Ridge",
+      "body": "moon",
+      "lat": -89.44,
+      "lon": -141.8,
+      "values": {
+        "slope": {
+          "value": 9.93,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 18.39,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 27.43,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": null,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": null,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 0.0,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": null,
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "de-gerlache-rim",
+      "name": "de Gerlache Rim",
+      "body": "moon",
+      "lat": -88.71,
+      "lon": -68.7,
+      "values": {
+        "slope": {
+          "value": 14.59,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 23.58,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 40.26,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": null,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": null,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 0.0,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": null,
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "malapert-massif",
+      "name": "Malapert Massif",
+      "body": "moon",
+      "lat": -86.04,
+      "lon": 2.7,
+      "values": {
+        "slope": {
+          "value": 14.36,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 20.34,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 39.86,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": null,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": null,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 0.0,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": null,
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
           "unit": null
         }
       }
@@ -388,42 +848,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Evaporitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.622,
+          "similarity": 0.56,
           "dimensions": {
-            "slope": 0.929,
-            "steep": 0.899,
-            "roughness": 0.932,
-            "temperature": 0.255,
-            "thermal_range": 0.318,
+            "slope": 0.931,
+            "steep": 0.902,
+            "roughness": 0.937,
+            "temperature": 0.256,
+            "thermal_range": 0.319,
             "aridity": 0.615,
-            "pressure": 0.241,
-            "geology": 1.0
+            "pressure": 0.247,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.352,
+          "similarity": 0.334,
           "dimensions": {
-            "slope": 0.915,
-            "steep": 0.77,
-            "roughness": 0.923,
+            "slope": 0.925,
+            "steep": 0.775,
+            "roughness": 0.932,
             "temperature": 0.138,
             "thermal_range": 0.127,
             "aridity": 0.615,
-            "pressure": 0.24,
-            "geology": 0.0
+            "pressure": 0.246,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.545,
+          "dimensions": {
+            "slope": 0.953,
+            "steep": 0.889,
+            "roughness": 0.955,
+            "temperature": 0.222,
+            "thermal_range": 0.25,
+            "aridity": 0.615,
+            "pressure": 0.248,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.554,
+          "dimensions": {
+            "slope": 0.984,
+            "steep": 0.948,
+            "roughness": 0.987,
+            "temperature": 0.284,
+            "thermal_range": 0.205,
+            "aridity": 0.615,
+            "pressure": 0.246,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.394,
+          "dimensions": {
+            "slope": 0.99,
+            "steep": 0.991,
+            "roughness": 0.992,
+            "temperature": 0.232,
+            "thermal_range": 0.281,
+            "aridity": 0.615,
+            "pressure": 0.247,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.396,
+          "dimensions": {
+            "slope": 0.412,
+            "steep": 0.141,
+            "roughness": 0.455,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.486,
+          "dimensions": {
+            "slope": 0.639,
+            "steep": 0.51,
+            "roughness": 0.669,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.434,
+          "dimensions": {
+            "slope": 0.467,
+            "steep": 0.369,
+            "roughness": 0.512,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.446,
+          "dimensions": {
+            "slope": 0.475,
+            "steep": 0.457,
+            "roughness": 0.517,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.761,
-        "hydrothermal": 0.214,
-        "rover-mobility": 0.918
+        "ancient-lakes": 0.545,
+        "hydrothermal": 0.247,
+        "rover-mobility": 0.923,
+        "lunar-base": 0.606
       }
     },
     {
@@ -471,42 +1043,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Evaporitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.649,
+          "similarity": 0.583,
           "dimensions": {
-            "slope": 0.924,
-            "steep": 0.899,
-            "roughness": 0.927,
+            "slope": 0.926,
+            "steep": 0.902,
+            "roughness": 0.931,
             "temperature": 0.221,
-            "thermal_range": 0.365,
+            "thermal_range": 0.366,
             "aridity": 0.739,
-            "pressure": 0.245,
-            "geology": 1.0
+            "pressure": 0.251,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.379,
+          "similarity": 0.357,
           "dimensions": {
-            "slope": 0.91,
-            "steep": 0.77,
-            "roughness": 0.917,
+            "slope": 0.92,
+            "steep": 0.774,
+            "roughness": 0.926,
             "temperature": 0.104,
             "thermal_range": 0.174,
             "aridity": 0.739,
-            "pressure": 0.245,
-            "geology": 0.0
+            "pressure": 0.251,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.568,
+          "dimensions": {
+            "slope": 0.948,
+            "steep": 0.888,
+            "roughness": 0.949,
+            "temperature": 0.188,
+            "thermal_range": 0.297,
+            "aridity": 0.739,
+            "pressure": 0.253,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.577,
+          "dimensions": {
+            "slope": 0.979,
+            "steep": 0.948,
+            "roughness": 0.981,
+            "temperature": 0.249,
+            "thermal_range": 0.252,
+            "aridity": 0.739,
+            "pressure": 0.25,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.417,
+          "dimensions": {
+            "slope": 0.984,
+            "steep": 0.991,
+            "roughness": 0.986,
+            "temperature": 0.198,
+            "thermal_range": 0.328,
+            "aridity": 0.739,
+            "pressure": 0.251,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.438,
+          "dimensions": {
+            "slope": 0.407,
+            "steep": 0.141,
+            "roughness": 0.449,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.739,
+            "pressure": 0.243,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.528,
+          "dimensions": {
+            "slope": 0.633,
+            "steep": 0.509,
+            "roughness": 0.664,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.739,
+            "pressure": 0.243,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.476,
+          "dimensions": {
+            "slope": 0.461,
+            "steep": 0.369,
+            "roughness": 0.506,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.739,
+            "pressure": 0.243,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.487,
+          "dimensions": {
+            "slope": 0.47,
+            "steep": 0.457,
+            "roughness": 0.511,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.739,
+            "pressure": 0.243,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.794,
-        "hydrothermal": 0.251,
-        "rover-mobility": 0.914
+        "ancient-lakes": 0.589,
+        "hydrothermal": 0.291,
+        "rover-mobility": 0.92,
+        "lunar-base": 0.602
       }
     },
     {
@@ -554,42 +1238,154 @@
         "geology": {
           "value": "hydrothermal",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Andesitic and related",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.487,
+          "similarity": 0.46,
           "dimensions": {
-            "slope": 0.956,
-            "steep": 0.844,
-            "roughness": 0.957,
-            "temperature": 0.324,
-            "thermal_range": 0.338,
+            "slope": 0.953,
+            "steep": 0.842,
+            "roughness": 0.953,
+            "temperature": 0.325,
+            "thermal_range": 0.339,
             "aridity": 0.843,
-            "pressure": 0.332,
-            "geology": 0.0
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.634,
+          "similarity": 0.583,
           "dimensions": {
-            "slope": 0.97,
-            "steep": 0.974,
-            "roughness": 0.967,
+            "slope": 0.959,
+            "steep": 0.969,
+            "roughness": 0.958,
             "temperature": 0.207,
             "thermal_range": 0.147,
             "aridity": 0.843,
-            "pressure": 0.331,
-            "geology": 1.0
+            "pressure": 0.337,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.442,
+          "dimensions": {
+            "slope": 0.932,
+            "steep": 0.855,
+            "roughness": 0.935,
+            "temperature": 0.291,
+            "thermal_range": 0.27,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.437,
+          "dimensions": {
+            "slope": 0.9,
+            "steep": 0.796,
+            "roughness": 0.903,
+            "temperature": 0.353,
+            "thermal_range": 0.225,
+            "aridity": 0.843,
+            "pressure": 0.336,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.438,
+          "dimensions": {
+            "slope": 0.895,
+            "steep": 0.752,
+            "roughness": 0.897,
+            "temperature": 0.301,
+            "thermal_range": 0.301,
+            "aridity": 0.843,
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.556,
+          "dimensions": {
+            "slope": 0.528,
+            "steep": 0.397,
+            "roughness": 0.565,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.646,
+          "dimensions": {
+            "slope": 0.754,
+            "steep": 0.766,
+            "roughness": 0.78,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.594,
+          "dimensions": {
+            "slope": 0.582,
+            "steep": 0.626,
+            "roughness": 0.623,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.605,
+          "dimensions": {
+            "slope": 0.591,
+            "steep": 0.713,
+            "roughness": 0.628,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.383,
-        "hydrothermal": 0.72,
-        "rover-mobility": 0.911
+        "ancient-lakes": 0.38,
+        "hydrothermal": 0.582,
+        "rover-mobility": 0.916,
+        "lunar-base": 0.767
       }
     },
     {
@@ -607,7 +1403,7 @@
       },
       "values": {
         "slope": {
-          "value": 0.07,
+          "value": 0.06,
           "unit": "°"
         },
         "steep": {
@@ -637,42 +1433,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.68,
+          "similarity": 0.621,
           "dimensions": {
-            "slope": 0.926,
-            "steep": 0.926,
-            "roughness": 0.929,
+            "slope": 0.928,
+            "steep": 0.928,
+            "roughness": 0.933,
             "temperature": 0.298,
-            "thermal_range": 0.348,
+            "thermal_range": 0.349,
             "aridity": 0.828,
-            "pressure": 0.316,
-            "geology": 1.0
+            "pressure": 0.321,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.41,
+          "similarity": 0.395,
           "dimensions": {
-            "slope": 0.912,
-            "steep": 0.796,
-            "roughness": 0.919,
+            "slope": 0.922,
+            "steep": 0.801,
+            "roughness": 0.928,
             "temperature": 0.181,
-            "thermal_range": 0.158,
+            "thermal_range": 0.157,
             "aridity": 0.828,
-            "pressure": 0.315,
-            "geology": 0.0
+            "pressure": 0.321,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.606,
+          "dimensions": {
+            "slope": 0.95,
+            "steep": 0.915,
+            "roughness": 0.952,
+            "temperature": 0.264,
+            "thermal_range": 0.28,
+            "aridity": 0.828,
+            "pressure": 0.323,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.615,
+          "dimensions": {
+            "slope": 0.982,
+            "steep": 0.974,
+            "roughness": 0.984,
+            "temperature": 0.326,
+            "thermal_range": 0.235,
+            "aridity": 0.828,
+            "pressure": 0.32,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.454,
+          "dimensions": {
+            "slope": 0.987,
+            "steep": 0.982,
+            "roughness": 0.989,
+            "temperature": 0.275,
+            "thermal_range": 0.312,
+            "aridity": 0.828,
+            "pressure": 0.321,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.494,
+          "dimensions": {
+            "slope": 0.409,
+            "steep": 0.167,
+            "roughness": 0.451,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.584,
+          "dimensions": {
+            "slope": 0.636,
+            "steep": 0.536,
+            "roughness": 0.666,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.532,
+          "dimensions": {
+            "slope": 0.464,
+            "steep": 0.396,
+            "roughness": 0.509,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.543,
+          "dimensions": {
+            "slope": 0.472,
+            "steep": 0.483,
+            "roughness": 0.514,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.833,
-        "hydrothermal": 0.285,
-        "rover-mobility": 0.927
+        "ancient-lakes": 0.625,
+        "hydrothermal": 0.326,
+        "rover-mobility": 0.93,
+        "lunar-base": 0.613
       }
     },
     {
@@ -720,42 +1628,154 @@
         "geology": {
           "value": "desert",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.521,
+          "similarity": 0.485,
           "dimensions": {
-            "slope": 0.991,
-            "steep": 0.998,
-            "roughness": 0.993,
+            "slope": 0.993,
+            "steep": 0.995,
+            "roughness": 0.998,
             "temperature": 0.284,
-            "thermal_range": 0.378,
+            "thermal_range": 0.379,
             "aridity": 0.951,
-            "pressure": 0.296,
-            "geology": 0.0
+            "pressure": 0.301,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.452,
+          "similarity": 0.426,
           "dimensions": {
-            "slope": 0.977,
-            "steep": 0.873,
-            "roughness": 0.984,
+            "slope": 0.987,
+            "steep": 0.877,
+            "roughness": 0.993,
             "temperature": 0.167,
             "thermal_range": 0.187,
             "aridity": 0.951,
-            "pressure": 0.295,
-            "geology": 0.0
+            "pressure": 0.301,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.467,
+          "dimensions": {
+            "slope": 0.985,
+            "steep": 0.991,
+            "roughness": 0.984,
+            "temperature": 0.251,
+            "thermal_range": 0.31,
+            "aridity": 0.951,
+            "pressure": 0.303,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.463,
+          "dimensions": {
+            "slope": 0.953,
+            "steep": 0.949,
+            "roughness": 0.952,
+            "temperature": 0.313,
+            "thermal_range": 0.265,
+            "aridity": 0.951,
+            "pressure": 0.3,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.465,
+          "dimensions": {
+            "slope": 0.948,
+            "steep": 0.906,
+            "roughness": 0.947,
+            "temperature": 0.261,
+            "thermal_range": 0.341,
+            "aridity": 0.951,
+            "pressure": 0.301,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.552,
+          "dimensions": {
+            "slope": 0.474,
+            "steep": 0.244,
+            "roughness": 0.516,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.951,
+            "pressure": 0.293,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.642,
+          "dimensions": {
+            "slope": 0.701,
+            "steep": 0.612,
+            "roughness": 0.73,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.951,
+            "pressure": 0.293,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.59,
+          "dimensions": {
+            "slope": 0.529,
+            "steep": 0.472,
+            "roughness": 0.573,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.951,
+            "pressure": 0.293,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.601,
+          "dimensions": {
+            "slope": 0.537,
+            "steep": 0.56,
+            "roughness": 0.578,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.951,
+            "pressure": 0.293,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.413,
-        "hydrothermal": 0.322,
-        "rover-mobility": 0.994
+        "ancient-lakes": 0.408,
+        "hydrothermal": 0.36,
+        "rover-mobility": 0.995,
+        "lunar-base": 0.681
       }
     },
     {
@@ -803,42 +1823,154 @@
         "geology": {
           "value": "desert",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.492,
+          "similarity": 0.467,
           "dimensions": {
-            "slope": 0.946,
-            "steep": 0.973,
-            "roughness": 0.958,
-            "temperature": 0.324,
-            "thermal_range": 0.338,
+            "slope": 0.944,
+            "steep": 0.97,
+            "roughness": 0.954,
+            "temperature": 0.325,
+            "thermal_range": 0.339,
             "aridity": 0.843,
-            "pressure": 0.332,
-            "geology": 0.0
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.429,
+          "similarity": 0.412,
           "dimensions": {
-            "slope": 0.96,
-            "steep": 0.898,
-            "roughness": 0.967,
+            "slope": 0.949,
+            "steep": 0.903,
+            "roughness": 0.959,
             "temperature": 0.207,
             "thermal_range": 0.147,
             "aridity": 0.843,
-            "pressure": 0.331,
-            "geology": 0.0
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.448,
+          "dimensions": {
+            "slope": 0.922,
+            "steep": 0.984,
+            "roughness": 0.935,
+            "temperature": 0.291,
+            "thermal_range": 0.27,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.444,
+          "dimensions": {
+            "slope": 0.89,
+            "steep": 0.924,
+            "roughness": 0.903,
+            "temperature": 0.353,
+            "thermal_range": 0.225,
+            "aridity": 0.843,
+            "pressure": 0.336,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.445,
+          "dimensions": {
+            "slope": 0.885,
+            "steep": 0.881,
+            "roughness": 0.898,
+            "temperature": 0.301,
+            "thermal_range": 0.301,
+            "aridity": 0.843,
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.543,
+          "dimensions": {
+            "slope": 0.537,
+            "steep": 0.269,
+            "roughness": 0.565,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.633,
+          "dimensions": {
+            "slope": 0.764,
+            "steep": 0.638,
+            "roughness": 0.779,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.581,
+          "dimensions": {
+            "slope": 0.592,
+            "steep": 0.497,
+            "roughness": 0.622,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.592,
+          "dimensions": {
+            "slope": 0.6,
+            "steep": 0.585,
+            "roughness": 0.627,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.382,
-        "hydrothermal": 0.292,
-        "rover-mobility": 0.959
+        "ancient-lakes": 0.38,
+        "hydrothermal": 0.332,
+        "rover-mobility": 0.956,
+        "lunar-base": 0.727
       }
     },
     {
@@ -886,42 +2018,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Andesitic and related",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.701,
+          "similarity": 0.613,
           "dimensions": {
-            "slope": 0.986,
-            "steep": 0.996,
-            "roughness": 0.985,
+            "slope": 0.989,
+            "steep": 0.994,
+            "roughness": 0.989,
             "temperature": 0.172,
-            "thermal_range": 0.38,
+            "thermal_range": 0.382,
             "aridity": 0.965,
-            "pressure": 0.162,
-            "geology": 1.0
+            "pressure": 0.169,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.432,
+          "similarity": 0.388,
           "dimensions": {
-            "slope": 0.972,
-            "steep": 0.874,
-            "roughness": 0.975,
+            "slope": 0.983,
+            "steep": 0.879,
+            "roughness": 0.984,
             "temperature": 0.055,
             "thermal_range": 0.19,
             "aridity": 0.965,
-            "pressure": 0.162,
-            "geology": 0.0
+            "pressure": 0.169,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.596,
+          "dimensions": {
+            "slope": 0.99,
+            "steep": 0.993,
+            "roughness": 0.993,
+            "temperature": 0.138,
+            "thermal_range": 0.313,
+            "aridity": 0.965,
+            "pressure": 0.171,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.593,
+          "dimensions": {
+            "slope": 0.958,
+            "steep": 0.948,
+            "roughness": 0.961,
+            "temperature": 0.2,
+            "thermal_range": 0.267,
+            "aridity": 0.965,
+            "pressure": 0.168,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.427,
+          "dimensions": {
+            "slope": 0.953,
+            "steep": 0.905,
+            "roughness": 0.956,
+            "temperature": 0.149,
+            "thermal_range": 0.344,
+            "aridity": 0.965,
+            "pressure": 0.169,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.511,
+          "dimensions": {
+            "slope": 0.47,
+            "steep": 0.245,
+            "roughness": 0.507,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.965,
+            "pressure": 0.161,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.601,
+          "dimensions": {
+            "slope": 0.696,
+            "steep": 0.614,
+            "roughness": 0.722,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.965,
+            "pressure": 0.161,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.549,
+          "dimensions": {
+            "slope": 0.524,
+            "steep": 0.473,
+            "roughness": 0.564,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.965,
+            "pressure": 0.161,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.56,
+          "dimensions": {
+            "slope": 0.533,
+            "steep": 0.561,
+            "roughness": 0.569,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.965,
+            "pressure": 0.161,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.861,
-        "hydrothermal": 0.311,
-        "rover-mobility": 0.99
+        "ancient-lakes": 0.629,
+        "hydrothermal": 0.331,
+        "rover-mobility": 0.991,
+        "lunar-base": 0.677
       }
     },
     {
@@ -969,42 +2213,154 @@
         "geology": {
           "value": "volcanic",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Andesitic and related",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.357,
+          "similarity": 0.352,
           "dimensions": {
-            "slope": 0.422,
-            "steep": 0.428,
-            "roughness": 0.415,
-            "temperature": 0.302,
-            "thermal_range": 0.334,
+            "slope": 0.42,
+            "steep": 0.425,
+            "roughness": 0.411,
+            "temperature": 0.303,
+            "thermal_range": 0.335,
             "aridity": 0.727,
-            "pressure": 0.324,
-            "geology": 0.0
+            "pressure": 0.329,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.304,
+          "similarity": 0.308,
           "dimensions": {
-            "slope": 0.436,
-            "steep": 0.558,
-            "roughness": 0.425,
+            "slope": 0.426,
+            "steep": 0.553,
+            "roughness": 0.416,
             "temperature": 0.185,
             "thermal_range": 0.143,
             "aridity": 0.727,
-            "pressure": 0.323,
-            "geology": 0.0
+            "pressure": 0.329,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.334,
+          "dimensions": {
+            "slope": 0.399,
+            "steep": 0.439,
+            "roughness": 0.392,
+            "temperature": 0.269,
+            "thermal_range": 0.266,
+            "aridity": 0.727,
+            "pressure": 0.331,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.329,
+          "dimensions": {
+            "slope": 0.367,
+            "steep": 0.379,
+            "roughness": 0.361,
+            "temperature": 0.331,
+            "thermal_range": 0.221,
+            "aridity": 0.727,
+            "pressure": 0.328,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.497,
+          "dimensions": {
+            "slope": 0.362,
+            "steep": 0.336,
+            "roughness": 0.355,
+            "temperature": 0.279,
+            "thermal_range": 0.297,
+            "aridity": 0.727,
+            "pressure": 0.329,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.643,
+          "dimensions": {
+            "slope": 0.939,
+            "steep": 0.814,
+            "roughness": 0.893,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.727,
+            "pressure": 0.321,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.594,
+          "dimensions": {
+            "slope": 0.713,
+            "steep": 0.818,
+            "roughness": 0.678,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.727,
+            "pressure": 0.321,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.647,
+          "dimensions": {
+            "slope": 0.885,
+            "steep": 0.958,
+            "roughness": 0.835,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.727,
+            "pressure": 0.321,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.635,
+          "dimensions": {
+            "slope": 0.876,
+            "steep": 0.87,
+            "roughness": 0.83,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.727,
+            "pressure": 0.321,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.303,
-        "hydrothermal": 0.255,
-        "rover-mobility": 0.423
+        "ancient-lakes": 0.348,
+        "hydrothermal": 0.3,
+        "rover-mobility": 0.419,
+        "lunar-base": 0.736
       }
     },
     {
@@ -1050,44 +2406,156 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "volcanic",
+          "value": "volcanic+glacial",
+          "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Andesitic and related",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.23,
+          "similarity": 0.241,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.0,
             "roughness": 0.0,
-            "temperature": 0.245,
-            "thermal_range": 0.341,
+            "temperature": 0.246,
+            "thermal_range": 0.343,
             "aridity": 0.564,
-            "pressure": 0.291,
-            "geology": 0.0
+            "pressure": 0.296,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.174,
+          "similarity": 0.196,
           "dimensions": {
             "slope": 0.0,
-            "steep": 0.115,
+            "steep": 0.11,
             "roughness": 0.0,
             "temperature": 0.128,
             "thermal_range": 0.151,
             "aridity": 0.564,
-            "pressure": 0.29,
-            "geology": 0.0
+            "pressure": 0.296,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.225,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.0,
+            "roughness": 0.0,
+            "temperature": 0.212,
+            "thermal_range": 0.274,
+            "aridity": 0.564,
+            "pressure": 0.298,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.227,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.0,
+            "roughness": 0.0,
+            "temperature": 0.274,
+            "thermal_range": 0.228,
+            "aridity": 0.564,
+            "pressure": 0.295,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.398,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.0,
+            "roughness": 0.0,
+            "temperature": 0.222,
+            "thermal_range": 0.305,
+            "aridity": 0.564,
+            "pressure": 0.296,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.442,
+          "dimensions": {
+            "slope": 0.379,
+            "steep": 0.744,
+            "roughness": 0.301,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.352,
+          "dimensions": {
+            "slope": 0.152,
+            "steep": 0.375,
+            "roughness": 0.086,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.404,
+          "dimensions": {
+            "slope": 0.324,
+            "steep": 0.515,
+            "roughness": 0.243,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.393,
+          "dimensions": {
+            "slope": 0.316,
+            "steep": 0.428,
+            "roughness": 0.239,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.211,
-        "hydrothermal": 0.201,
-        "rover-mobility": 0.0
+        "ancient-lakes": 0.301,
+        "hydrothermal": 0.253,
+        "rover-mobility": 0.0,
+        "lunar-base": 0.205
       }
     },
     {
@@ -1105,7 +2573,7 @@
       },
       "values": {
         "slope": {
-          "value": 27.27,
+          "value": 27.28,
           "unit": "°"
         },
         "steep": {
@@ -1135,42 +2603,154 @@
         "geology": {
           "value": "volcanic",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Andesitic and related",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.337,
+          "similarity": 0.331,
           "dimensions": {
-            "slope": 0.069,
-            "steep": 0.207,
-            "roughness": 0.059,
-            "temperature": 0.267,
-            "thermal_range": 0.384,
+            "slope": 0.067,
+            "steep": 0.204,
+            "roughness": 0.055,
+            "temperature": 0.268,
+            "thermal_range": 0.386,
             "aridity": 0.931,
-            "pressure": 0.29,
-            "geology": 0.0
+            "pressure": 0.295,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.284,
+          "similarity": 0.288,
           "dimensions": {
-            "slope": 0.083,
-            "steep": 0.337,
-            "roughness": 0.069,
+            "slope": 0.073,
+            "steep": 0.332,
+            "roughness": 0.06,
             "temperature": 0.15,
             "thermal_range": 0.194,
             "aridity": 0.931,
-            "pressure": 0.289,
-            "geology": 0.0
+            "pressure": 0.295,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.313,
+          "dimensions": {
+            "slope": 0.045,
+            "steep": 0.218,
+            "roughness": 0.037,
+            "temperature": 0.234,
+            "thermal_range": 0.317,
+            "aridity": 0.931,
+            "pressure": 0.297,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.309,
+          "dimensions": {
+            "slope": 0.014,
+            "steep": 0.158,
+            "roughness": 0.005,
+            "temperature": 0.296,
+            "thermal_range": 0.271,
+            "aridity": 0.931,
+            "pressure": 0.294,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.477,
+          "dimensions": {
+            "slope": 0.008,
+            "steep": 0.115,
+            "roughness": 0.0,
+            "temperature": 0.244,
+            "thermal_range": 0.348,
+            "aridity": 0.931,
+            "pressure": 0.295,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.638,
+          "dimensions": {
+            "slope": 0.586,
+            "steep": 0.965,
+            "roughness": 0.537,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.548,
+          "dimensions": {
+            "slope": 0.36,
+            "steep": 0.597,
+            "roughness": 0.322,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.6,
+          "dimensions": {
+            "slope": 0.532,
+            "steep": 0.737,
+            "roughness": 0.48,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.589,
+          "dimensions": {
+            "slope": 0.523,
+            "steep": 0.649,
+            "roughness": 0.475,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.333,
-        "hydrothermal": 0.315,
-        "rover-mobility": 0.122
+        "ancient-lakes": 0.403,
+        "hydrothermal": 0.355,
+        "rover-mobility": 0.109,
+        "lunar-base": 0.426
       }
     },
     {
@@ -1188,7 +2768,7 @@
       },
       "values": {
         "slope": {
-          "value": 16.44,
+          "value": 16.45,
           "unit": "°"
         },
         "steep": {
@@ -1218,42 +2798,154 @@
         "geology": {
           "value": "volcanic",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Andesitic and related",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.323,
+          "similarity": 0.307,
           "dimensions": {
-            "slope": 0.469,
-            "steep": 0.292,
-            "roughness": 0.473,
-            "temperature": 0.255,
-            "thermal_range": 0.318,
+            "slope": 0.467,
+            "steep": 0.29,
+            "roughness": 0.469,
+            "temperature": 0.256,
+            "thermal_range": 0.319,
             "aridity": 0.615,
-            "pressure": 0.241,
-            "geology": 0.0
+            "pressure": 0.247,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.27,
+          "similarity": 0.264,
           "dimensions": {
-            "slope": 0.483,
-            "steep": 0.422,
-            "roughness": 0.482,
+            "slope": 0.472,
+            "steep": 0.417,
+            "roughness": 0.474,
             "temperature": 0.138,
             "thermal_range": 0.127,
             "aridity": 0.615,
-            "pressure": 0.24,
-            "geology": 0.0
+            "pressure": 0.246,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.289,
+          "dimensions": {
+            "slope": 0.445,
+            "steep": 0.303,
+            "roughness": 0.45,
+            "temperature": 0.222,
+            "thermal_range": 0.25,
+            "aridity": 0.615,
+            "pressure": 0.248,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.285,
+          "dimensions": {
+            "slope": 0.413,
+            "steep": 0.244,
+            "roughness": 0.418,
+            "temperature": 0.284,
+            "thermal_range": 0.205,
+            "aridity": 0.615,
+            "pressure": 0.246,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.453,
+          "dimensions": {
+            "slope": 0.408,
+            "steep": 0.201,
+            "roughness": 0.413,
+            "temperature": 0.232,
+            "thermal_range": 0.281,
+            "aridity": 0.615,
+            "pressure": 0.247,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.605,
+          "dimensions": {
+            "slope": 0.986,
+            "steep": 0.949,
+            "roughness": 0.95,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.526,
+          "dimensions": {
+            "slope": 0.759,
+            "steep": 0.682,
+            "roughness": 0.736,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.579,
+          "dimensions": {
+            "slope": 0.931,
+            "steep": 0.823,
+            "roughness": 0.893,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.567,
+          "dimensions": {
+            "slope": 0.923,
+            "steep": 0.735,
+            "roughness": 0.888,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.615,
+            "pressure": 0.239,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.265,
-        "hydrothermal": 0.214,
-        "rover-mobility": 0.399
+        "ancient-lakes": 0.295,
+        "hydrothermal": 0.247,
+        "rover-mobility": 0.408,
+        "lunar-base": 0.726
       }
     },
     {
@@ -1301,42 +2993,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.581,
+          "similarity": 0.529,
           "dimensions": {
-            "slope": 0.924,
-            "steep": 0.892,
-            "roughness": 0.927,
+            "slope": 0.926,
+            "steep": 0.895,
+            "roughness": 0.931,
             "temperature": 0.229,
-            "thermal_range": 0.294,
+            "thermal_range": 0.296,
             "aridity": 0.467,
-            "pressure": 0.262,
-            "geology": 1.0
+            "pressure": 0.267,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.312,
+          "similarity": 0.303,
           "dimensions": {
-            "slope": 0.91,
-            "steep": 0.763,
-            "roughness": 0.917,
+            "slope": 0.92,
+            "steep": 0.768,
+            "roughness": 0.926,
             "temperature": 0.112,
             "thermal_range": 0.104,
             "aridity": 0.467,
-            "pressure": 0.261,
-            "geology": 0.0
+            "pressure": 0.267,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.514,
+          "dimensions": {
+            "slope": 0.948,
+            "steep": 0.882,
+            "roughness": 0.949,
+            "temperature": 0.195,
+            "thermal_range": 0.227,
+            "aridity": 0.467,
+            "pressure": 0.269,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.523,
+          "dimensions": {
+            "slope": 0.979,
+            "steep": 0.941,
+            "roughness": 0.981,
+            "temperature": 0.257,
+            "thermal_range": 0.182,
+            "aridity": 0.467,
+            "pressure": 0.267,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.364,
+          "dimensions": {
+            "slope": 0.984,
+            "steep": 0.984,
+            "roughness": 0.986,
+            "temperature": 0.206,
+            "thermal_range": 0.258,
+            "aridity": 0.467,
+            "pressure": 0.267,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.352,
+          "dimensions": {
+            "slope": 0.407,
+            "steep": 0.134,
+            "roughness": 0.449,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.467,
+            "pressure": 0.259,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.442,
+          "dimensions": {
+            "slope": 0.633,
+            "steep": 0.503,
+            "roughness": 0.664,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.467,
+            "pressure": 0.259,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.39,
+          "dimensions": {
+            "slope": 0.461,
+            "steep": 0.362,
+            "roughness": 0.506,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.467,
+            "pressure": 0.259,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.401,
+          "dimensions": {
+            "slope": 0.47,
+            "steep": 0.45,
+            "roughness": 0.511,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.467,
+            "pressure": 0.259,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.711,
-        "hydrothermal": 0.164,
-        "rover-mobility": 0.912
+        "ancient-lakes": 0.508,
+        "hydrothermal": 0.209,
+        "rover-mobility": 0.917,
+        "lunar-base": 0.6
       }
     },
     {
@@ -1384,42 +3188,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.688,
+          "similarity": 0.617,
           "dimensions": {
-            "slope": 0.932,
-            "steep": 0.92,
-            "roughness": 0.936,
+            "slope": 0.934,
+            "steep": 0.923,
+            "roughness": 0.94,
             "temperature": 0.254,
-            "thermal_range": 0.359,
+            "thermal_range": 0.36,
             "aridity": 0.898,
-            "pressure": 0.249,
-            "geology": 1.0
+            "pressure": 0.255,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.418,
+          "similarity": 0.391,
           "dimensions": {
-            "slope": 0.918,
-            "steep": 0.79,
-            "roughness": 0.926,
+            "slope": 0.928,
+            "steep": 0.795,
+            "roughness": 0.935,
             "temperature": 0.137,
-            "thermal_range": 0.169,
+            "thermal_range": 0.168,
             "aridity": 0.898,
-            "pressure": 0.249,
-            "geology": 0.0
+            "pressure": 0.255,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.601,
+          "dimensions": {
+            "slope": 0.956,
+            "steep": 0.909,
+            "roughness": 0.958,
+            "temperature": 0.22,
+            "thermal_range": 0.291,
+            "aridity": 0.898,
+            "pressure": 0.257,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.61,
+          "dimensions": {
+            "slope": 0.987,
+            "steep": 0.969,
+            "roughness": 0.99,
+            "temperature": 0.282,
+            "thermal_range": 0.246,
+            "aridity": 0.898,
+            "pressure": 0.254,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.45,
+          "dimensions": {
+            "slope": 0.993,
+            "steep": 0.988,
+            "roughness": 0.995,
+            "temperature": 0.231,
+            "thermal_range": 0.322,
+            "aridity": 0.898,
+            "pressure": 0.255,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.496,
+          "dimensions": {
+            "slope": 0.415,
+            "steep": 0.162,
+            "roughness": 0.458,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.898,
+            "pressure": 0.247,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.586,
+          "dimensions": {
+            "slope": 0.642,
+            "steep": 0.53,
+            "roughness": 0.673,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.898,
+            "pressure": 0.247,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.534,
+          "dimensions": {
+            "slope": 0.47,
+            "steep": 0.39,
+            "roughness": 0.515,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.898,
+            "pressure": 0.247,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.546,
+          "dimensions": {
+            "slope": 0.478,
+            "steep": 0.477,
+            "roughness": 0.52,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.898,
+            "pressure": 0.247,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.848,
-        "hydrothermal": 0.3,
-        "rover-mobility": 0.928
+        "ancient-lakes": 0.628,
+        "hydrothermal": 0.33,
+        "rover-mobility": 0.932,
+        "lunar-base": 0.615
       }
     },
     {
@@ -1467,42 +3383,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.7,
+          "similarity": 0.63,
           "dimensions": {
-            "slope": 0.939,
-            "steep": 0.996,
-            "roughness": 0.943,
-            "temperature": 0.24,
-            "thermal_range": 0.391,
+            "slope": 0.941,
+            "steep": 0.999,
+            "roughness": 0.947,
+            "temperature": 0.241,
+            "thermal_range": 0.393,
             "aridity": 0.913,
-            "pressure": 0.265,
-            "geology": 1.0
+            "pressure": 0.27,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.43,
+          "similarity": 0.404,
           "dimensions": {
-            "slope": 0.925,
-            "steep": 0.867,
-            "roughness": 0.933,
-            "temperature": 0.124,
+            "slope": 0.935,
+            "steep": 0.872,
+            "roughness": 0.942,
+            "temperature": 0.123,
             "thermal_range": 0.201,
             "aridity": 0.913,
-            "pressure": 0.264,
-            "geology": 0.0
+            "pressure": 0.27,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.614,
+          "dimensions": {
+            "slope": 0.963,
+            "steep": 0.986,
+            "roughness": 0.965,
+            "temperature": 0.207,
+            "thermal_range": 0.324,
+            "aridity": 0.913,
+            "pressure": 0.272,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.619,
+          "dimensions": {
+            "slope": 0.994,
+            "steep": 0.955,
+            "roughness": 0.997,
+            "temperature": 0.269,
+            "thermal_range": 0.278,
+            "aridity": 0.913,
+            "pressure": 0.269,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.454,
+          "dimensions": {
+            "slope": 1.0,
+            "steep": 0.912,
+            "roughness": 0.997,
+            "temperature": 0.217,
+            "thermal_range": 0.355,
+            "aridity": 0.913,
+            "pressure": 0.27,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.517,
+          "dimensions": {
+            "slope": 0.422,
+            "steep": 0.238,
+            "roughness": 0.465,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.913,
+            "pressure": 0.262,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.607,
+          "dimensions": {
+            "slope": 0.649,
+            "steep": 0.607,
+            "roughness": 0.68,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.913,
+            "pressure": 0.262,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.554,
+          "dimensions": {
+            "slope": 0.477,
+            "steep": 0.466,
+            "roughness": 0.523,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.913,
+            "pressure": 0.262,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.566,
+          "dimensions": {
+            "slope": 0.485,
+            "steep": 0.554,
+            "roughness": 0.527,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.913,
+            "pressure": 0.262,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.852,
-        "hydrothermal": 0.307,
-        "rover-mobility": 0.963
+        "ancient-lakes": 0.644,
+        "hydrothermal": 0.346,
+        "rover-mobility": 0.963,
+        "lunar-base": 0.645
       }
     },
     {
@@ -1528,7 +3556,7 @@
           "unit": "°"
         },
         "roughness": {
-          "value": 0.6,
+          "value": 0.59,
           "unit": "m"
         },
         "temperature": {
@@ -1550,42 +3578,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.686,
+          "similarity": 0.629,
           "dimensions": {
-            "slope": 0.93,
-            "steep": 0.912,
-            "roughness": 0.934,
-            "temperature": 0.324,
-            "thermal_range": 0.338,
+            "slope": 0.932,
+            "steep": 0.914,
+            "roughness": 0.938,
+            "temperature": 0.325,
+            "thermal_range": 0.339,
             "aridity": 0.843,
-            "pressure": 0.332,
-            "geology": 1.0
+            "pressure": 0.337,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.416,
+          "similarity": 0.403,
           "dimensions": {
-            "slope": 0.916,
-            "steep": 0.782,
-            "roughness": 0.924,
+            "slope": 0.927,
+            "steep": 0.787,
+            "roughness": 0.933,
             "temperature": 0.207,
             "thermal_range": 0.147,
             "aridity": 0.843,
-            "pressure": 0.331,
-            "geology": 0.0
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.613,
+          "dimensions": {
+            "slope": 0.954,
+            "steep": 0.901,
+            "roughness": 0.956,
+            "temperature": 0.291,
+            "thermal_range": 0.27,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.622,
+          "dimensions": {
+            "slope": 0.986,
+            "steep": 0.96,
+            "roughness": 0.988,
+            "temperature": 0.353,
+            "thermal_range": 0.225,
+            "aridity": 0.843,
+            "pressure": 0.336,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.463,
+          "dimensions": {
+            "slope": 0.991,
+            "steep": 0.996,
+            "roughness": 0.994,
+            "temperature": 0.301,
+            "thermal_range": 0.301,
+            "aridity": 0.843,
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.504,
+          "dimensions": {
+            "slope": 0.413,
+            "steep": 0.153,
+            "roughness": 0.456,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.594,
+          "dimensions": {
+            "slope": 0.64,
+            "steep": 0.522,
+            "roughness": 0.671,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.542,
+          "dimensions": {
+            "slope": 0.468,
+            "steep": 0.381,
+            "roughness": 0.514,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.553,
+          "dimensions": {
+            "slope": 0.476,
+            "steep": 0.469,
+            "roughness": 0.519,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.842,
-        "hydrothermal": 0.292,
-        "rover-mobility": 0.923
+        "ancient-lakes": 0.63,
+        "hydrothermal": 0.332,
+        "rover-mobility": 0.928,
+        "lunar-base": 0.611
       }
     },
     {
@@ -1633,42 +3773,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.68,
+          "similarity": 0.617,
           "dimensions": {
-            "slope": 0.987,
-            "steep": 0.75,
-            "roughness": 0.988,
+            "slope": 0.984,
+            "steep": 0.747,
+            "roughness": 0.984,
             "temperature": 0.298,
-            "thermal_range": 0.348,
+            "thermal_range": 0.349,
             "aridity": 0.828,
-            "pressure": 0.316,
-            "geology": 1.0
+            "pressure": 0.321,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.427,
+          "similarity": 0.406,
           "dimensions": {
-            "slope": 0.999,
-            "steep": 0.879,
-            "roughness": 0.998,
+            "slope": 0.99,
+            "steep": 0.875,
+            "roughness": 0.989,
             "temperature": 0.181,
-            "thermal_range": 0.158,
+            "thermal_range": 0.157,
             "aridity": 0.828,
-            "pressure": 0.315,
-            "geology": 0.0
+            "pressure": 0.321,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.599,
+          "dimensions": {
+            "slope": 0.963,
+            "steep": 0.761,
+            "roughness": 0.966,
+            "temperature": 0.264,
+            "thermal_range": 0.28,
+            "aridity": 0.828,
+            "pressure": 0.323,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.594,
+          "dimensions": {
+            "slope": 0.931,
+            "steep": 0.701,
+            "roughness": 0.934,
+            "temperature": 0.326,
+            "thermal_range": 0.235,
+            "aridity": 0.828,
+            "pressure": 0.32,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.429,
+          "dimensions": {
+            "slope": 0.926,
+            "steep": 0.658,
+            "roughness": 0.929,
+            "temperature": 0.275,
+            "thermal_range": 0.312,
+            "aridity": 0.828,
+            "pressure": 0.321,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.549,
+          "dimensions": {
+            "slope": 0.496,
+            "steep": 0.492,
+            "roughness": 0.534,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.639,
+          "dimensions": {
+            "slope": 0.723,
+            "steep": 0.86,
+            "roughness": 0.749,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.587,
+          "dimensions": {
+            "slope": 0.551,
+            "steep": 0.72,
+            "roughness": 0.591,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.598,
+          "dimensions": {
+            "slope": 0.559,
+            "steep": 0.808,
+            "roughness": 0.596,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.828,
+            "pressure": 0.313,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.838,
-        "hydrothermal": 0.285,
-        "rover-mobility": 0.892
+        "ancient-lakes": 0.625,
+        "hydrothermal": 0.326,
+        "rover-mobility": 0.905,
+        "lunar-base": 0.777
       }
     },
     {
@@ -1714,44 +3966,156 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "lacustrine",
+          "value": "lacustrine+hydrothermal",
+          "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.67,
+          "similarity": 0.607,
           "dimensions": {
-            "slope": 0.939,
-            "steep": 0.917,
-            "roughness": 0.944,
-            "temperature": 0.261,
-            "thermal_range": 0.354,
+            "slope": 0.942,
+            "steep": 0.92,
+            "roughness": 0.948,
+            "temperature": 0.262,
+            "thermal_range": 0.356,
             "aridity": 0.8,
-            "pressure": 0.284,
-            "geology": 1.0
+            "pressure": 0.289,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.4,
+          "similarity": 0.548,
           "dimensions": {
-            "slope": 0.925,
-            "steep": 0.787,
-            "roughness": 0.934,
+            "slope": 0.936,
+            "steep": 0.792,
+            "roughness": 0.943,
             "temperature": 0.144,
             "thermal_range": 0.164,
             "aridity": 0.8,
-            "pressure": 0.283,
-            "geology": 0.0
+            "pressure": 0.289,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.592,
+          "dimensions": {
+            "slope": 0.963,
+            "steep": 0.906,
+            "roughness": 0.966,
+            "temperature": 0.228,
+            "thermal_range": 0.287,
+            "aridity": 0.8,
+            "pressure": 0.291,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.601,
+          "dimensions": {
+            "slope": 0.995,
+            "steep": 0.966,
+            "roughness": 0.998,
+            "temperature": 0.29,
+            "thermal_range": 0.242,
+            "aridity": 0.8,
+            "pressure": 0.288,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.44,
+          "dimensions": {
+            "slope": 1.0,
+            "steep": 0.991,
+            "roughness": 0.996,
+            "temperature": 0.238,
+            "thermal_range": 0.318,
+            "aridity": 0.8,
+            "pressure": 0.289,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.477,
+          "dimensions": {
+            "slope": 0.422,
+            "steep": 0.159,
+            "roughness": 0.466,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.567,
+          "dimensions": {
+            "slope": 0.649,
+            "steep": 0.527,
+            "roughness": 0.681,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.514,
+          "dimensions": {
+            "slope": 0.477,
+            "steep": 0.387,
+            "roughness": 0.524,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.526,
+          "dimensions": {
+            "slope": 0.485,
+            "steep": 0.475,
+            "roughness": 0.528,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.82,
-        "hydrothermal": 0.273,
-        "rover-mobility": 0.931
+        "ancient-lakes": 0.611,
+        "hydrothermal": 0.563,
+        "rover-mobility": 0.936,
+        "lunar-base": 0.619
       }
     },
     {
@@ -1777,7 +4141,7 @@
           "unit": "°"
         },
         "roughness": {
-          "value": 6.78,
+          "value": 6.77,
           "unit": "m"
         },
         "temperature": {
@@ -1799,42 +4163,154 @@
         "geology": {
           "value": "lacustrine",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.707,
+          "similarity": 0.636,
           "dimensions": {
-            "slope": 0.984,
-            "steep": 0.848,
-            "roughness": 0.99,
-            "temperature": 0.267,
-            "thermal_range": 0.384,
+            "slope": 0.981,
+            "steep": 0.845,
+            "roughness": 0.986,
+            "temperature": 0.268,
+            "thermal_range": 0.386,
             "aridity": 0.931,
-            "pressure": 0.29,
-            "geology": 1.0
+            "pressure": 0.295,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.454,
+          "similarity": 0.426,
           "dimensions": {
-            "slope": 0.998,
-            "steep": 0.977,
-            "roughness": 1.0,
+            "slope": 0.987,
+            "steep": 0.972,
+            "roughness": 0.991,
             "temperature": 0.15,
             "thermal_range": 0.194,
             "aridity": 0.931,
-            "pressure": 0.289,
-            "geology": 0.0
+            "pressure": 0.295,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.618,
+          "dimensions": {
+            "slope": 0.96,
+            "steep": 0.859,
+            "roughness": 0.968,
+            "temperature": 0.234,
+            "thermal_range": 0.317,
+            "aridity": 0.931,
+            "pressure": 0.297,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.613,
+          "dimensions": {
+            "slope": 0.928,
+            "steep": 0.799,
+            "roughness": 0.936,
+            "temperature": 0.296,
+            "thermal_range": 0.271,
+            "aridity": 0.931,
+            "pressure": 0.294,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.448,
+          "dimensions": {
+            "slope": 0.923,
+            "steep": 0.756,
+            "roughness": 0.931,
+            "temperature": 0.244,
+            "thermal_range": 0.348,
+            "aridity": 0.931,
+            "pressure": 0.295,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.564,
+          "dimensions": {
+            "slope": 0.499,
+            "steep": 0.394,
+            "roughness": 0.532,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.654,
+          "dimensions": {
+            "slope": 0.726,
+            "steep": 0.763,
+            "roughness": 0.747,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.602,
+          "dimensions": {
+            "slope": 0.554,
+            "steep": 0.622,
+            "roughness": 0.589,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.613,
+          "dimensions": {
+            "slope": 0.563,
+            "steep": 0.71,
+            "roughness": 0.594,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.931,
+            "pressure": 0.287,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.865,
-        "hydrothermal": 0.315,
-        "rover-mobility": 0.931
+        "ancient-lakes": 0.653,
+        "hydrothermal": 0.355,
+        "rover-mobility": 0.937,
+        "lunar-base": 0.745
       }
     },
     {
@@ -1860,7 +4336,7 @@
           "unit": "°"
         },
         "roughness": {
-          "value": 28.36,
+          "value": 28.35,
           "unit": "m"
         },
         "temperature": {
@@ -1880,44 +4356,156 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "hydrothermal",
+          "value": "hydrothermal+lacustrine",
+          "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.433,
+          "similarity": 0.579,
           "dimensions": {
-            "slope": 0.753,
-            "steep": 0.417,
-            "roughness": 0.726,
-            "temperature": 0.324,
-            "thermal_range": 0.338,
+            "slope": 0.75,
+            "steep": 0.414,
+            "roughness": 0.722,
+            "temperature": 0.325,
+            "thermal_range": 0.339,
             "aridity": 0.843,
-            "pressure": 0.332,
-            "geology": 0.0
+            "pressure": 0.337,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.58,
+          "similarity": 0.535,
           "dimensions": {
-            "slope": 0.767,
-            "steep": 0.546,
-            "roughness": 0.735,
+            "slope": 0.756,
+            "steep": 0.541,
+            "roughness": 0.727,
             "temperature": 0.207,
             "thermal_range": 0.147,
             "aridity": 0.843,
-            "pressure": 0.331,
-            "geology": 1.0
+            "pressure": 0.337,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.56,
+          "dimensions": {
+            "slope": 0.729,
+            "steep": 0.427,
+            "roughness": 0.703,
+            "temperature": 0.291,
+            "thermal_range": 0.27,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.556,
+          "dimensions": {
+            "slope": 0.697,
+            "steep": 0.368,
+            "roughness": 0.671,
+            "temperature": 0.353,
+            "thermal_range": 0.225,
+            "aridity": 0.843,
+            "pressure": 0.336,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.391,
+          "dimensions": {
+            "slope": 0.692,
+            "steep": 0.325,
+            "roughness": 0.666,
+            "temperature": 0.301,
+            "thermal_range": 0.301,
+            "aridity": 0.843,
+            "pressure": 0.337,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.652,
+          "dimensions": {
+            "slope": 0.73,
+            "steep": 0.825,
+            "roughness": 0.797,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.696,
+          "dimensions": {
+            "slope": 0.957,
+            "steep": 0.806,
+            "roughness": 0.989,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.678,
+          "dimensions": {
+            "slope": 0.785,
+            "steep": 0.947,
+            "roughness": 0.854,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.67,
+          "dimensions": {
+            "slope": 0.793,
+            "steep": 0.859,
+            "roughness": 0.859,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.843,
+            "pressure": 0.329,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.367,
-        "hydrothermal": 0.72,
-        "rover-mobility": 0.613
+        "ancient-lakes": 0.63,
+        "hydrothermal": 0.582,
+        "rover-mobility": 0.629,
+        "lunar-base": 0.917
       }
     },
     {
@@ -1965,42 +4553,154 @@
         "geology": {
           "value": "hydrothermal",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.425,
+          "similarity": 0.403,
           "dimensions": {
-            "slope": 0.988,
-            "steep": 0.931,
-            "roughness": 0.993,
-            "temperature": 0.245,
-            "thermal_range": 0.341,
+            "slope": 0.986,
+            "steep": 0.928,
+            "roughness": 0.989,
+            "temperature": 0.246,
+            "thermal_range": 0.343,
             "aridity": 0.564,
-            "pressure": 0.291,
-            "geology": 0.0
+            "pressure": 0.296,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.565,
+          "similarity": 0.519,
           "dimensions": {
-            "slope": 0.998,
-            "steep": 0.939,
-            "roughness": 0.997,
+            "slope": 0.992,
+            "steep": 0.944,
+            "roughness": 0.994,
             "temperature": 0.128,
             "thermal_range": 0.151,
             "aridity": 0.564,
-            "pressure": 0.29,
-            "geology": 1.0
+            "pressure": 0.296,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.384,
+          "dimensions": {
+            "slope": 0.964,
+            "steep": 0.942,
+            "roughness": 0.971,
+            "temperature": 0.212,
+            "thermal_range": 0.274,
+            "aridity": 0.564,
+            "pressure": 0.298,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.38,
+          "dimensions": {
+            "slope": 0.932,
+            "steep": 0.882,
+            "roughness": 0.939,
+            "temperature": 0.274,
+            "thermal_range": 0.228,
+            "aridity": 0.564,
+            "pressure": 0.295,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.381,
+          "dimensions": {
+            "slope": 0.927,
+            "steep": 0.839,
+            "roughness": 0.934,
+            "temperature": 0.222,
+            "thermal_range": 0.305,
+            "aridity": 0.564,
+            "pressure": 0.296,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.432,
+          "dimensions": {
+            "slope": 0.495,
+            "steep": 0.311,
+            "roughness": 0.529,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.522,
+          "dimensions": {
+            "slope": 0.722,
+            "steep": 0.679,
+            "roughness": 0.744,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.47,
+          "dimensions": {
+            "slope": 0.55,
+            "steep": 0.539,
+            "roughness": 0.586,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.481,
+          "dimensions": {
+            "slope": 0.558,
+            "steep": 0.627,
+            "roughness": 0.591,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.564,
+            "pressure": 0.288,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.287,
-        "hydrothermal": 0.63,
-        "rover-mobility": 0.966
+        "ancient-lakes": 0.301,
+        "hydrothermal": 0.503,
+        "rover-mobility": 0.968,
+        "lunar-base": 0.715
       }
     },
     {
@@ -2048,42 +4748,154 @@
         "geology": {
           "value": "volcanic",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Andesitic and related",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.475,
+          "similarity": 0.445,
           "dimensions": {
-            "slope": 0.958,
-            "steep": 0.955,
-            "roughness": 0.97,
+            "slope": 0.961,
+            "steep": 0.958,
+            "roughness": 0.974,
             "temperature": 0.252,
-            "thermal_range": 0.373,
+            "thermal_range": 0.375,
             "aridity": 0.788,
-            "pressure": 0.284,
-            "geology": 0.0
+            "pressure": 0.29,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.405,
+          "similarity": 0.385,
           "dimensions": {
-            "slope": 0.944,
-            "steep": 0.826,
-            "roughness": 0.961,
-            "temperature": 0.135,
+            "slope": 0.955,
+            "steep": 0.83,
+            "roughness": 0.969,
+            "temperature": 0.134,
             "thermal_range": 0.183,
             "aridity": 0.788,
-            "pressure": 0.284,
-            "geology": 0.0
+            "pressure": 0.29,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.429,
+          "dimensions": {
+            "slope": 0.982,
+            "steep": 0.944,
+            "roughness": 0.993,
+            "temperature": 0.218,
+            "thermal_range": 0.306,
+            "aridity": 0.788,
+            "pressure": 0.292,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.434,
+          "dimensions": {
+            "slope": 0.986,
+            "steep": 0.996,
+            "roughness": 0.975,
+            "temperature": 0.28,
+            "thermal_range": 0.26,
+            "aridity": 0.788,
+            "pressure": 0.289,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.602,
+          "dimensions": {
+            "slope": 0.981,
+            "steep": 0.953,
+            "roughness": 0.97,
+            "temperature": 0.228,
+            "thermal_range": 0.337,
+            "aridity": 0.788,
+            "pressure": 0.29,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.482,
+          "dimensions": {
+            "slope": 0.441,
+            "steep": 0.197,
+            "roughness": 0.493,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.788,
+            "pressure": 0.282,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.572,
+          "dimensions": {
+            "slope": 0.668,
+            "steep": 0.565,
+            "roughness": 0.707,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.788,
+            "pressure": 0.282,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.52,
+          "dimensions": {
+            "slope": 0.496,
+            "steep": 0.425,
+            "roughness": 0.55,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.788,
+            "pressure": 0.282,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.531,
+          "dimensions": {
+            "slope": 0.504,
+            "steep": 0.513,
+            "roughness": 0.555,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.788,
+            "pressure": 0.282,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.355,
-        "hydrothermal": 0.271,
-        "rover-mobility": 0.959
+        "ancient-lakes": 0.363,
+        "hydrothermal": 0.315,
+        "rover-mobility": 0.964,
+        "lunar-base": 0.647
       }
     },
     {
@@ -2131,42 +4943,154 @@
         "geology": {
           "value": "volcanic",
           "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.386,
+          "similarity": 0.37,
           "dimensions": {
-            "slope": 0.895,
-            "steep": 0.825,
-            "roughness": 0.886,
-            "temperature": 0.265,
-            "thermal_range": 0.317,
+            "slope": 0.892,
+            "steep": 0.822,
+            "roughness": 0.881,
+            "temperature": 0.266,
+            "thermal_range": 0.318,
             "aridity": 0.471,
-            "pressure": 0.297,
-            "geology": 0.0
+            "pressure": 0.303,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.332,
+          "similarity": 0.327,
           "dimensions": {
-            "slope": 0.909,
-            "steep": 0.954,
-            "roughness": 0.895,
+            "slope": 0.898,
+            "steep": 0.949,
+            "roughness": 0.886,
             "temperature": 0.148,
-            "thermal_range": 0.127,
+            "thermal_range": 0.126,
             "aridity": 0.471,
-            "pressure": 0.297,
-            "geology": 0.0
+            "pressure": 0.302,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.352,
+          "dimensions": {
+            "slope": 0.871,
+            "steep": 0.836,
+            "roughness": 0.863,
+            "temperature": 0.232,
+            "thermal_range": 0.249,
+            "aridity": 0.471,
+            "pressure": 0.304,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.348,
+          "dimensions": {
+            "slope": 0.839,
+            "steep": 0.776,
+            "roughness": 0.831,
+            "temperature": 0.294,
+            "thermal_range": 0.204,
+            "aridity": 0.471,
+            "pressure": 0.302,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.516,
+          "dimensions": {
+            "slope": 0.834,
+            "steep": 0.733,
+            "roughness": 0.826,
+            "temperature": 0.242,
+            "thermal_range": 0.28,
+            "aridity": 0.471,
+            "pressure": 0.303,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.438,
+          "dimensions": {
+            "slope": 0.588,
+            "steep": 0.417,
+            "roughness": 0.637,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.471,
+            "pressure": 0.295,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.527,
+          "dimensions": {
+            "slope": 0.815,
+            "steep": 0.786,
+            "roughness": 0.851,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.471,
+            "pressure": 0.295,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.475,
+          "dimensions": {
+            "slope": 0.643,
+            "steep": 0.645,
+            "roughness": 0.694,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.471,
+            "pressure": 0.295,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.487,
+          "dimensions": {
+            "slope": 0.652,
+            "steep": 0.733,
+            "roughness": 0.699,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.471,
+            "pressure": 0.295,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.254,
-        "hydrothermal": 0.174,
-        "rover-mobility": 0.865
+        "ancient-lakes": 0.273,
+        "hydrothermal": 0.225,
+        "rover-mobility": 0.865,
+        "lunar-base": 0.817
       }
     },
     {
@@ -2212,44 +5136,156 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "volcanic",
+          "value": "volcanic+lacustrine",
+          "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.416,
+          "similarity": 0.556,
           "dimensions": {
-            "slope": 0.954,
-            "steep": 0.949,
-            "roughness": 0.956,
-            "temperature": 0.226,
-            "thermal_range": 0.344,
+            "slope": 0.956,
+            "steep": 0.952,
+            "roughness": 0.96,
+            "temperature": 0.227,
+            "thermal_range": 0.345,
             "aridity": 0.554,
-            "pressure": 0.247,
-            "geology": 0.0
+            "pressure": 0.253,
+            "geology": 1.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.346,
+          "similarity": 0.33,
           "dimensions": {
-            "slope": 0.94,
-            "steep": 0.82,
-            "roughness": 0.946,
+            "slope": 0.951,
+            "steep": 0.824,
+            "roughness": 0.955,
             "temperature": 0.109,
-            "thermal_range": 0.154,
+            "thermal_range": 0.153,
             "aridity": 0.554,
-            "pressure": 0.246,
-            "geology": 0.0
+            "pressure": 0.252,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.54,
+          "dimensions": {
+            "slope": 0.978,
+            "steep": 0.938,
+            "roughness": 0.979,
+            "temperature": 0.193,
+            "thermal_range": 0.276,
+            "aridity": 0.554,
+            "pressure": 0.254,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.547,
+          "dimensions": {
+            "slope": 0.99,
+            "steep": 0.998,
+            "roughness": 0.989,
+            "temperature": 0.255,
+            "thermal_range": 0.231,
+            "aridity": 0.554,
+            "pressure": 0.252,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.549,
+          "dimensions": {
+            "slope": 0.985,
+            "steep": 0.959,
+            "roughness": 0.984,
+            "temperature": 0.203,
+            "thermal_range": 0.308,
+            "aridity": 0.554,
+            "pressure": 0.253,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.389,
+          "dimensions": {
+            "slope": 0.437,
+            "steep": 0.191,
+            "roughness": 0.478,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.554,
+            "pressure": 0.244,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.479,
+          "dimensions": {
+            "slope": 0.664,
+            "steep": 0.559,
+            "roughness": 0.693,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.554,
+            "pressure": 0.244,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.427,
+          "dimensions": {
+            "slope": 0.492,
+            "steep": 0.419,
+            "roughness": 0.536,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.554,
+            "pressure": 0.244,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.438,
+          "dimensions": {
+            "slope": 0.5,
+            "steep": 0.507,
+            "roughness": 0.541,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.554,
+            "pressure": 0.244,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.279,
-        "hydrothermal": 0.196,
-        "rover-mobility": 0.952
+        "ancient-lakes": 0.538,
+        "hydrothermal": 0.24,
+        "rover-mobility": 0.956,
+        "lunar-base": 0.639
       }
     },
     {
@@ -2295,44 +5331,156 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "desert",
+          "value": "volcanic",
+          "unit": null
+        },
+        "lithology": {
+          "value": "Neogene Rhyolitic",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.482,
+          "similarity": 0.45,
           "dimensions": {
-            "slope": 0.991,
-            "steep": 1.0,
-            "roughness": 0.994,
-            "temperature": 0.261,
-            "thermal_range": 0.354,
+            "slope": 0.989,
+            "steep": 0.997,
+            "roughness": 0.99,
+            "temperature": 0.262,
+            "thermal_range": 0.356,
             "aridity": 0.8,
-            "pressure": 0.284,
-            "geology": 0.0
+            "pressure": 0.289,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.415,
+          "similarity": 0.392,
           "dimensions": {
-            "slope": 0.995,
-            "steep": 0.87,
-            "roughness": 0.996,
+            "slope": 0.994,
+            "steep": 0.875,
+            "roughness": 0.995,
             "temperature": 0.144,
             "thermal_range": 0.164,
             "aridity": 0.8,
-            "pressure": 0.283,
-            "geology": 0.0
+            "pressure": 0.289,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.43,
+          "dimensions": {
+            "slope": 0.967,
+            "steep": 0.989,
+            "roughness": 0.971,
+            "temperature": 0.228,
+            "thermal_range": 0.287,
+            "aridity": 0.8,
+            "pressure": 0.291,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.427,
+          "dimensions": {
+            "slope": 0.935,
+            "steep": 0.951,
+            "roughness": 0.939,
+            "temperature": 0.29,
+            "thermal_range": 0.242,
+            "aridity": 0.8,
+            "pressure": 0.288,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.595,
+          "dimensions": {
+            "slope": 0.93,
+            "steep": 0.908,
+            "roughness": 0.934,
+            "temperature": 0.238,
+            "thermal_range": 0.318,
+            "aridity": 0.8,
+            "pressure": 0.289,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.5,
+          "dimensions": {
+            "slope": 0.492,
+            "steep": 0.242,
+            "roughness": 0.528,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.59,
+          "dimensions": {
+            "slope": 0.719,
+            "steep": 0.61,
+            "roughness": 0.743,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.538,
+          "dimensions": {
+            "slope": 0.547,
+            "steep": 0.47,
+            "roughness": 0.586,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.55,
+          "dimensions": {
+            "slope": 0.555,
+            "steep": 0.558,
+            "roughness": 0.591,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.8,
+            "pressure": 0.281,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.363,
-        "hydrothermal": 0.273,
-        "rover-mobility": 0.995
+        "ancient-lakes": 0.361,
+        "hydrothermal": 0.313,
+        "rover-mobility": 0.992,
+        "lunar-base": 0.691
       }
     },
     {
@@ -2350,7 +5498,7 @@
       },
       "values": {
         "slope": {
-          "value": 5.57,
+          "value": 5.58,
           "unit": "°"
         },
         "steep": {
@@ -2358,7 +5506,7 @@
           "unit": "°"
         },
         "roughness": {
-          "value": 19.4,
+          "value": 19.41,
           "unit": "m"
         },
         "temperature": {
@@ -2378,44 +5526,156 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "erosion",
+          "value": "sedimentary",
+          "unit": null
+        },
+        "lithology": {
+          "value": "Ordovician Siliciclastic",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.359,
+          "similarity": 0.332,
           "dimensions": {
-            "slope": 0.871,
-            "steep": 0.659,
-            "roughness": 0.835,
-            "temperature": 0.196,
-            "thermal_range": 0.341,
+            "slope": 0.868,
+            "steep": 0.656,
+            "roughness": 0.831,
+            "temperature": 0.197,
+            "thermal_range": 0.342,
             "aridity": 0.451,
-            "pressure": 0.214,
-            "geology": 0.0
+            "pressure": 0.22,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.306,
+          "similarity": 0.288,
           "dimensions": {
-            "slope": 0.885,
-            "steep": 0.788,
-            "roughness": 0.845,
+            "slope": 0.874,
+            "steep": 0.783,
+            "roughness": 0.836,
             "temperature": 0.079,
-            "thermal_range": 0.151,
+            "thermal_range": 0.15,
             "aridity": 0.451,
-            "pressure": 0.213,
-            "geology": 0.0
+            "pressure": 0.219,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.314,
+          "dimensions": {
+            "slope": 0.846,
+            "steep": 0.67,
+            "roughness": 0.813,
+            "temperature": 0.163,
+            "thermal_range": 0.273,
+            "aridity": 0.451,
+            "pressure": 0.221,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.31,
+          "dimensions": {
+            "slope": 0.815,
+            "steep": 0.61,
+            "roughness": 0.781,
+            "temperature": 0.225,
+            "thermal_range": 0.228,
+            "aridity": 0.451,
+            "pressure": 0.219,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.311,
+          "dimensions": {
+            "slope": 0.81,
+            "steep": 0.567,
+            "roughness": 0.776,
+            "temperature": 0.173,
+            "thermal_range": 0.304,
+            "aridity": 0.451,
+            "pressure": 0.22,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.43,
+          "dimensions": {
+            "slope": 0.613,
+            "steep": 0.583,
+            "roughness": 0.687,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.451,
+            "pressure": 0.211,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.52,
+          "dimensions": {
+            "slope": 0.839,
+            "steep": 0.952,
+            "roughness": 0.902,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.451,
+            "pressure": 0.211,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.468,
+          "dimensions": {
+            "slope": 0.667,
+            "steep": 0.811,
+            "roughness": 0.744,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.451,
+            "pressure": 0.211,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.479,
+          "dimensions": {
+            "slope": 0.676,
+            "steep": 0.899,
+            "roughness": 0.749,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.451,
+            "pressure": 0.211,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.236,
-        "hydrothermal": 0.162,
-        "rover-mobility": 0.779
+        "ancient-lakes": 0.253,
+        "hydrothermal": 0.205,
+        "rover-mobility": 0.785,
+        "lunar-base": 0.898
       }
     },
     {
@@ -2463,42 +5723,154 @@
         "geology": {
           "value": "erosion",
           "unit": null
+        },
+        "lithology": {
+          "value": "Devonian Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.267,
+          "similarity": 0.264,
           "dimensions": {
-            "slope": 0.629,
-            "steep": 0.499,
-            "roughness": 0.629,
+            "slope": 0.626,
+            "steep": 0.496,
+            "roughness": 0.625,
             "temperature": 0.239,
-            "thermal_range": 0.252,
+            "thermal_range": 0.254,
             "aridity": 0.248,
-            "pressure": 0.257,
-            "geology": 0.0
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.214,
+          "similarity": 0.22,
           "dimensions": {
-            "slope": 0.643,
-            "steep": 0.629,
-            "roughness": 0.639,
+            "slope": 0.632,
+            "steep": 0.624,
+            "roughness": 0.63,
             "temperature": 0.122,
             "thermal_range": 0.062,
             "aridity": 0.248,
-            "pressure": 0.256,
-            "geology": 0.0
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.246,
+          "dimensions": {
+            "slope": 0.605,
+            "steep": 0.51,
+            "roughness": 0.607,
+            "temperature": 0.205,
+            "thermal_range": 0.185,
+            "aridity": 0.248,
+            "pressure": 0.264,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.242,
+          "dimensions": {
+            "slope": 0.573,
+            "steep": 0.45,
+            "roughness": 0.575,
+            "temperature": 0.267,
+            "thermal_range": 0.139,
+            "aridity": 0.248,
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.243,
+          "dimensions": {
+            "slope": 0.568,
+            "steep": 0.407,
+            "roughness": 0.569,
+            "temperature": 0.216,
+            "thermal_range": 0.216,
+            "aridity": 0.248,
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.444,
+          "dimensions": {
+            "slope": 0.854,
+            "steep": 0.743,
+            "roughness": 0.893,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.467,
+          "dimensions": {
+            "slope": 0.919,
+            "steep": 0.889,
+            "roughness": 0.892,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.482,
+          "dimensions": {
+            "slope": 0.909,
+            "steep": 0.971,
+            "roughness": 0.951,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.48,
+          "dimensions": {
+            "slope": 0.917,
+            "steep": 0.942,
+            "roughness": 0.955,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.162,
-        "hydrothermal": 0.097,
-        "rover-mobility": 0.577
+        "ancient-lakes": 0.191,
+        "hydrothermal": 0.143,
+        "rover-mobility": 0.583,
+        "lunar-base": 0.9
       }
     },
     {
@@ -2524,7 +5896,7 @@
           "unit": "°"
         },
         "roughness": {
-          "value": 80.61,
+          "value": 80.62,
           "unit": "m"
         },
         "temperature": {
@@ -2546,42 +5918,154 @@
         "geology": {
           "value": "glacial",
           "unit": null
+        },
+        "lithology": {
+          "value": "Triassic Granitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.16,
+          "similarity": 0.176,
           "dimensions": {
-            "slope": 0.081,
+            "slope": 0.079,
             "steep": 0.0,
-            "roughness": 0.085,
+            "roughness": 0.081,
             "temperature": 0.239,
-            "thermal_range": 0.252,
+            "thermal_range": 0.254,
             "aridity": 0.248,
-            "pressure": 0.257,
-            "geology": 0.0
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.107,
+          "similarity": 0.132,
           "dimensions": {
-            "slope": 0.095,
-            "steep": 0.124,
-            "roughness": 0.095,
+            "slope": 0.085,
+            "steep": 0.119,
+            "roughness": 0.086,
             "temperature": 0.122,
             "thermal_range": 0.062,
             "aridity": 0.248,
-            "pressure": 0.256,
-            "geology": 0.0
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.157,
+          "dimensions": {
+            "slope": 0.057,
+            "steep": 0.005,
+            "roughness": 0.062,
+            "temperature": 0.205,
+            "thermal_range": 0.185,
+            "aridity": 0.248,
+            "pressure": 0.264,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.156,
+          "dimensions": {
+            "slope": 0.025,
+            "steep": 0.0,
+            "roughness": 0.03,
+            "temperature": 0.267,
+            "thermal_range": 0.139,
+            "aridity": 0.248,
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.16,
+          "dimensions": {
+            "slope": 0.02,
+            "steep": 0.0,
+            "roughness": 0.025,
+            "temperature": 0.216,
+            "thermal_range": 0.216,
+            "aridity": 0.248,
+            "pressure": 0.262,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.38,
+          "dimensions": {
+            "slope": 0.598,
+            "steep": 0.753,
+            "roughness": 0.563,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.29,
+          "dimensions": {
+            "slope": 0.371,
+            "steep": 0.384,
+            "roughness": 0.348,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.342,
+          "dimensions": {
+            "slope": 0.543,
+            "steep": 0.525,
+            "roughness": 0.505,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.331,
+          "dimensions": {
+            "slope": 0.535,
+            "steep": 0.437,
+            "roughness": 0.5,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.248,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.119,
-        "hydrothermal": 0.097,
-        "rover-mobility": 0.049
+        "ancient-lakes": 0.191,
+        "hydrothermal": 0.143,
+        "rover-mobility": 0.053,
+        "lunar-base": 0.368
       }
     },
     {
@@ -2629,42 +6113,154 @@
         "geology": {
           "value": "karst",
           "unit": null
+        },
+        "lithology": {
+          "value": "Cretaceous Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.299,
+          "similarity": 0.272,
           "dimensions": {
-            "slope": 0.765,
-            "steep": 0.426,
-            "roughness": 0.793,
-            "temperature": 0.161,
-            "thermal_range": 0.27,
+            "slope": 0.762,
+            "steep": 0.423,
+            "roughness": 0.789,
+            "temperature": 0.162,
+            "thermal_range": 0.271,
             "aridity": 0.378,
-            "pressure": 0.158,
-            "geology": 0.0
+            "pressure": 0.164,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.246,
+          "similarity": 0.228,
           "dimensions": {
-            "slope": 0.779,
-            "steep": 0.556,
-            "roughness": 0.803,
+            "slope": 0.768,
+            "steep": 0.551,
+            "roughness": 0.794,
             "temperature": 0.044,
-            "thermal_range": 0.08,
+            "thermal_range": 0.079,
             "aridity": 0.378,
-            "pressure": 0.157,
-            "geology": 0.0
+            "pressure": 0.164,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.254,
+          "dimensions": {
+            "slope": 0.741,
+            "steep": 0.437,
+            "roughness": 0.771,
+            "temperature": 0.128,
+            "thermal_range": 0.202,
+            "aridity": 0.378,
+            "pressure": 0.166,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.249,
+          "dimensions": {
+            "slope": 0.709,
+            "steep": 0.377,
+            "roughness": 0.739,
+            "temperature": 0.19,
+            "thermal_range": 0.157,
+            "aridity": 0.378,
+            "pressure": 0.163,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.251,
+          "dimensions": {
+            "slope": 0.704,
+            "steep": 0.334,
+            "roughness": 0.733,
+            "temperature": 0.138,
+            "thermal_range": 0.234,
+            "aridity": 0.378,
+            "pressure": 0.164,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.429,
+          "dimensions": {
+            "slope": 0.718,
+            "steep": 0.816,
+            "roughness": 0.729,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.378,
+            "pressure": 0.156,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.478,
+          "dimensions": {
+            "slope": 0.945,
+            "steep": 0.816,
+            "roughness": 0.944,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.378,
+            "pressure": 0.156,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.457,
+          "dimensions": {
+            "slope": 0.773,
+            "steep": 0.956,
+            "roughness": 0.787,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.378,
+            "pressure": 0.156,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.449,
+          "dimensions": {
+            "slope": 0.781,
+            "steep": 0.869,
+            "roughness": 0.791,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.378,
+            "pressure": 0.156,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.2,
-        "hydrothermal": 0.126,
-        "rover-mobility": 0.635
+        "ancient-lakes": 0.203,
+        "hydrothermal": 0.155,
+        "rover-mobility": 0.658,
+        "lunar-base": 0.902
       }
     },
     {
@@ -2712,42 +6308,154 @@
         "geology": {
           "value": "desert",
           "unit": null
+        },
+        "lithology": {
+          "value": "Cretaceous Granitic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.473,
+          "similarity": 0.394,
           "dimensions": {
-            "slope": 0.945,
-            "steep": 0.861,
-            "roughness": 0.949,
+            "slope": 0.948,
+            "steep": 0.858,
+            "roughness": 0.954,
             "temperature": 0.117,
-            "thermal_range": 0.333,
+            "thermal_range": 0.335,
             "aridity": 0.991,
             "pressure": 0.0,
-            "geology": 0.0
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.416,
+          "similarity": 0.349,
           "dimensions": {
-            "slope": 0.931,
-            "steep": 0.99,
-            "roughness": 0.94,
+            "slope": 0.942,
+            "steep": 0.985,
+            "roughness": 0.949,
             "temperature": 0.0,
             "thermal_range": 0.143,
             "aridity": 0.991,
             "pressure": 0.0,
-            "geology": 0.0
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.38,
+          "dimensions": {
+            "slope": 0.969,
+            "steep": 0.872,
+            "roughness": 0.972,
+            "temperature": 0.083,
+            "thermal_range": 0.266,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.382,
+          "dimensions": {
+            "slope": 0.999,
+            "steep": 0.812,
+            "roughness": 0.996,
+            "temperature": 0.145,
+            "thermal_range": 0.221,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.383,
+          "dimensions": {
+            "slope": 0.994,
+            "steep": 0.769,
+            "roughness": 0.991,
+            "temperature": 0.093,
+            "thermal_range": 0.297,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.473,
+          "dimensions": {
+            "slope": 0.429,
+            "steep": 0.381,
+            "roughness": 0.472,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.563,
+          "dimensions": {
+            "slope": 0.655,
+            "steep": 0.75,
+            "roughness": 0.687,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.51,
+          "dimensions": {
+            "slope": 0.483,
+            "steep": 0.609,
+            "roughness": 0.529,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.522,
+          "dimensions": {
+            "slope": 0.492,
+            "steep": 0.697,
+            "roughness": 0.534,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.395,
-        "hydrothermal": 0.303,
-        "rover-mobility": 0.912
+        "ancient-lakes": 0.331,
+        "hydrothermal": 0.283,
+        "rover-mobility": 0.92,
+        "lunar-base": 0.697
       }
     },
     {
@@ -2795,42 +6503,154 @@
         "geology": {
           "value": "humid_lowland",
           "unit": null
+        },
+        "lithology": {
+          "value": "Quaternary Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.214,
+          "similarity": 0.179,
           "dimensions": {
-            "slope": 0.93,
-            "steep": 0.902,
-            "roughness": 0.934,
-            "temperature": 0.019,
-            "thermal_range": 0.129,
+            "slope": 0.933,
+            "steep": 0.904,
+            "roughness": 0.938,
+            "temperature": 0.02,
+            "thermal_range": 0.131,
             "aridity": 0.0,
             "pressure": 0.0,
-            "geology": 0.0
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.176,
+          "similarity": 0.146,
           "dimensions": {
-            "slope": 0.916,
-            "steep": 0.772,
-            "roughness": 0.924,
+            "slope": 0.927,
+            "steep": 0.777,
+            "roughness": 0.933,
             "temperature": 0.0,
             "thermal_range": 0.0,
             "aridity": 0.0,
             "pressure": 0.0,
-            "geology": 0.0
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.166,
+          "dimensions": {
+            "slope": 0.954,
+            "steep": 0.891,
+            "roughness": 0.956,
+            "temperature": 0.0,
+            "thermal_range": 0.062,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.173,
+          "dimensions": {
+            "slope": 0.986,
+            "steep": 0.95,
+            "roughness": 0.988,
+            "temperature": 0.048,
+            "thermal_range": 0.016,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.181,
+          "dimensions": {
+            "slope": 0.991,
+            "steep": 0.994,
+            "roughness": 0.993,
+            "temperature": 0.0,
+            "thermal_range": 0.093,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.113,
+          "dimensions": {
+            "slope": 0.413,
+            "steep": 0.143,
+            "roughness": 0.456,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.202,
+          "dimensions": {
+            "slope": 0.64,
+            "steep": 0.512,
+            "roughness": 0.671,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.15,
+          "dimensions": {
+            "slope": 0.468,
+            "steep": 0.371,
+            "roughness": 0.513,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.162,
+          "dimensions": {
+            "slope": 0.477,
+            "steep": 0.459,
+            "roughness": 0.518,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.075,
+        "ancient-lakes": 0.033,
         "hydrothermal": 0.0,
-        "rover-mobility": 0.919
+        "rover-mobility": 0.925,
+        "lunar-base": 0.608
       }
     },
     {
@@ -2852,7 +6672,7 @@
           "unit": "°"
         },
         "steep": {
-          "value": 27.31,
+          "value": 27.32,
           "unit": "°"
         },
         "roughness": {
@@ -2878,42 +6698,154 @@
         "geology": {
           "value": "humid_mountain",
           "unit": null
+        },
+        "lithology": {
+          "value": "Ordovician Siliciclastic",
+          "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.119,
+          "similarity": 0.105,
           "dimensions": {
-            "slope": 0.328,
-            "steep": 0.369,
-            "roughness": 0.378,
-            "temperature": 0.117,
-            "thermal_range": 0.128,
+            "slope": 0.326,
+            "steep": 0.366,
+            "roughness": 0.374,
+            "temperature": 0.118,
+            "thermal_range": 0.13,
             "aridity": 0.0,
-            "pressure": 0.019,
-            "geology": 0.0
+            "pressure": 0.026,
+            "geology": 0.0,
+            "lithology": null
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.079,
+          "similarity": 0.071,
           "dimensions": {
-            "slope": 0.342,
-            "steep": 0.499,
-            "roughness": 0.388,
+            "slope": 0.331,
+            "steep": 0.493,
+            "roughness": 0.379,
             "temperature": 0.0,
             "thermal_range": 0.0,
             "aridity": 0.0,
+            "pressure": 0.026,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "gale",
+          "similarity": 0.087,
+          "dimensions": {
+            "slope": 0.304,
+            "steep": 0.38,
+            "roughness": 0.355,
+            "temperature": 0.084,
+            "thermal_range": 0.061,
+            "aridity": 0.0,
+            "pressure": 0.028,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "meridiani",
+          "similarity": 0.082,
+          "dimensions": {
+            "slope": 0.272,
+            "steep": 0.32,
+            "roughness": 0.323,
+            "temperature": 0.146,
+            "thermal_range": 0.016,
+            "aridity": 0.0,
+            "pressure": 0.026,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "elysium-insight",
+          "similarity": 0.083,
+          "dimensions": {
+            "slope": 0.267,
+            "steep": 0.277,
+            "roughness": 0.318,
+            "temperature": 0.094,
+            "thermal_range": 0.092,
+            "aridity": 0.0,
+            "pressure": 0.026,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "shackleton-rim",
+          "similarity": 0.292,
+          "dimensions": {
+            "slope": 0.845,
+            "steep": 0.873,
+            "roughness": 0.856,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
             "pressure": 0.018,
-            "geology": 0.0
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "connecting-ridge",
+          "similarity": 0.23,
+          "dimensions": {
+            "slope": 0.618,
+            "steep": 0.758,
+            "roughness": 0.641,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.018,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "de-gerlache-rim",
+          "similarity": 0.282,
+          "dimensions": {
+            "slope": 0.79,
+            "steep": 0.899,
+            "roughness": 0.798,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.018,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "malapert-massif",
+          "similarity": 0.271,
+          "dimensions": {
+            "slope": 0.782,
+            "steep": 0.811,
+            "roughness": 0.793,
+            "temperature": null,
+            "thermal_range": null,
+            "aridity": 0.0,
+            "pressure": 0.018,
+            "geology": null,
+            "lithology": null
           }
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.043,
-        "hydrothermal": 0.0,
-        "rover-mobility": 0.354
+        "ancient-lakes": 0.039,
+        "hydrothermal": 0.007,
+        "rover-mobility": 0.355,
+        "lunar-base": 0.673
       }
     }
   ]

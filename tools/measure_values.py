@@ -2,14 +2,14 @@
 
 Escribe en docs/valores/:
 - sitios_valores.csv: una fila por sitio de docs/catalogo-sitios.csv.
-- objetivos_valores.csv: una fila por objetivo (por defecto, los de web/public/data/analogs.json).
+- objetivos_valores.csv: una fila por objetivo de docs/valores/objetivos.csv.
 - fuentes.json: fuentes de cada columna, en el formato de `meta.dimensions[].sources` del contrato.
 
 Este script no calcula puntajes: solo mide. Un valor que no se puede medir queda vacío (null).
 
 Relieve, con el mismo paso en los dos cuerpos (STEP_M, la resolución del modelo global de Marte):
 - Tierra: Terrain Tiles (Mapzen, AWS Open Data), en el zoom cuyo píxel no supera el paso.
-- Marte: HRSC-MOLA Blended DEM 200 m v2 (USGS). Luna: LOLA-Kaguya 59 m (USGS), entre 60° N y 60° S.
+- Marte: HRSC-MOLA Blended DEM 200 m v2 (USGS). Luna: LOLA DEM global de 118 m (USGS), que cubre los polos.
   Se leen por rangos de bytes, sin descargar el archivo completo (mismo método que web/src/map/usgsDem.ts).
 - Cada sitio se mide dentro de su radio del catálogo; cada objetivo, dentro de TARGET_RADIUS_KM.
   Pendiente mediana, percentil 90 de la pendiente y rugosidad (TRI) no dependen del radio, solo del paso.
@@ -18,10 +18,10 @@ Clima:
 - Tierra: NASA POWER, climatología 2001–2025 (MERRA-2, celdas de 0,5° x 0,625°).
 - Marte: Mars Climate Database v6.2 (LMD/OU/IAA/ESA/CNES), escenario de clima medio, con topografía de
   alta resolución. Las medias anuales pesan cada estación por su duración real (órbita excéntrica).
-- Luna: sin fuente de clima en este script; quedan vacíos.
+- Luna: presión y precipitación 0 por definición (sin atmósfera apreciable); temperaturas vacías.
 
-Uso:  pip install -r tools/requirements.txt && python tools/measure_values.py [--targets objetivos.csv]
-      objetivos.csv: columnas id,name,body,lat,lon (body = mars o moon).
+Uso:  pip install -r tools/requirements.txt && python tools/measure_values.py [--targets otro.csv]
+      Objetivos: columnas id,name,body,lat,lon (body = mars o moon).
 """
 import argparse
 import csv
@@ -42,7 +42,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/valores"
 CATALOG = ROOT / "docs/catalogo-sitios.csv"
-ANALOGS = ROOT / "web/public/data/analogs.json"
+TARGETS = ROOT / "docs/valores/objetivos.csv"
 UA = {"User-Agent": "galaxy-match-tools/1.0"}
 
 STEP_M = 200
@@ -63,6 +63,12 @@ SRC = {
         "agency": "USGS Astrogeology / ESA / NASA",
         "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
         "body": "mars",
+    },
+    "lola_118": {
+        "name": "Moon LRO LOLA DEM Global 118m v1 (256 ppd)",
+        "agency": "USGS Astrogeology / NASA GSFC LOLA team",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_dem_118m",
+        "body": "moon",
     },
     "lola_kaguya": {
         "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
@@ -85,9 +91,9 @@ SRC = {
 }
 COLUMNS = {
     # columna: (unidad, fuentes)
-    "slope_median_deg": ("°", ["terrain_tiles", "hrsc_mola", "lola_kaguya"]),
-    "slope_p90_deg": ("°", ["terrain_tiles", "hrsc_mola", "lola_kaguya"]),
-    "roughness_tri_m": ("m", ["terrain_tiles", "hrsc_mola", "lola_kaguya"]),
+    "slope_median_deg": ("°", ["terrain_tiles", "hrsc_mola", "lola_118"]),
+    "slope_p90_deg": ("°", ["terrain_tiles", "hrsc_mola", "lola_118"]),
+    "roughness_tri_m": ("m", ["terrain_tiles", "hrsc_mola", "lola_118"]),
     "surface_temp_c": ("°C", ["power", "mcd"]),
     "diurnal_range_c": ("°C", ["power", "mcd"]),
     "precip_mm_yr": ("mm/yr", ["power"]),
@@ -112,15 +118,20 @@ def get(url: str, timeout: float = 120) -> bytes:
 
 # --- Relieve ------------------------------------------------------------------------------------
 def patch_grid(lon, lat, radius_km, body_radius_km, step_m):
-    """Rejilla regular de step_m alrededor del centro (plano tangente local), con un anillo extra."""
+    """Rejilla regular de step_m alrededor del centro, con un anillo extra. Cada celda se sitúa con la
+    proyección azimutal equidistante inversa (esfera), que también vale cerca de los polos. Las longitudes
+    se devuelven continuas alrededor del centro (pueden pasar de ±180)."""
     r = body_radius_km * 1000
     half = math.ceil(radius_km * 1000 / step_m) + 1
-    idx = np.arange(-half, half + 1)
-    d_lat = step_m / r / RAD
-    d_lon = step_m / (r * math.cos(lat * RAD)) / RAD
-    lons = lon + idx[None, :] * d_lon + 0 * idx[:, None]
-    lats = lat - idx[:, None] * d_lat + 0 * idx[None, :]
-    return half, lons, lats
+    idx = np.arange(-half, half + 1) * step_m
+    x = idx[None, :] + 0 * idx[:, None]   # este
+    y = -idx[:, None] + 0 * idx[None, :]  # norte (la fila 0 es la del norte)
+    dist = np.hypot(x, y) / r
+    az = np.arctan2(x, y)
+    p1 = math.radians(lat)
+    p2 = np.arcsin(np.sin(p1) * np.cos(dist) + math.cos(p1) * np.sin(dist) * np.cos(az))
+    dl = np.arctan2(np.sin(az) * np.sin(dist) * math.cos(p1), np.cos(dist) - math.sin(p1) * np.sin(p2))
+    return half, lon + np.degrees(dl), np.degrees(p2)
 
 
 def measure_patch(elev: np.ndarray, half: int, radius_km: float, step_m: float):
@@ -192,27 +203,40 @@ GLOBAL_DEMS = {
     "mars": {"url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif",
              "width": 106694, "height": 53347, "first_row": 854272, "row_bytes": 213388,
              "deg_per_px": 0.003374120830641, "north": 90.0, "scale": 1.0, "source": "hrsc_mola"},
-    "moon": {"url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/LolaKaguya_Topo/Lunar_LRO_LOLAKaguya_DEMmerge_60N60S_512ppd.tif",
-             "width": 184320, "height": 61440, "first_row": 984003, "row_bytes": 368640,
-             "deg_per_px": 1 / 512, "north": 60.0, "scale": 0.5, "source": "lola_kaguya"},
+    # LOLA global de 118 m (256 px/°): cubre los polos. BigTIFF sin compresión, una fila por tira; primera
+    # tira en el byte 738233 (StripOffsets) y 0,5 m por unidad (etiqueta ISIS), sobre la esfera de 1737,4 km.
+    "moon": {"url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Lunar_LRO_LOLA_Global_LDEM_118m_Mar2014.tif",
+             "width": 92160, "height": 46080, "first_row": 738233, "row_bytes": 184320,
+             "deg_per_px": 1 / 256, "north": 90.0, "scale": 0.5, "source": "lola_118"},
 }
 
 
 def dem_elevations(body: str, lons: np.ndarray, lats: np.ndarray) -> np.ndarray:
     dem = GLOBAL_DEMS[body]
     d = dem["deg_per_px"]
-    gx = (lons + 180) / d - 0.5
+    gx = (lons + 180) / d - 0.5  # columnas continuas: pueden salir de [0, width) y dar la vuelta
     gy = (dem["north"] - lats) / d - 0.5
     r0, r1 = max(0, int(np.floor(gy.min()))), min(dem["height"] - 1, int(np.floor(gy.max())) + 1)
-    c0, c1 = max(0, int(np.floor(gx.min()))), min(dem["width"] - 1, int(np.floor(gx.max())) + 1)
+    c0, c1 = int(np.floor(gx.min())), int(np.floor(gx.max())) + 1
+    w = dem["width"]
 
-    def row(r):
-        start = dem["first_row"] + r * dem["row_bytes"] + c0 * 2
-        req = urllib.request.Request(dem["url"], headers={**UA, "Range": f"bytes={start}-{start + (c1 - c0 + 1) * 2 - 1}"})
+    def read(r, a, b):
+        start = dem["first_row"] + r * dem["row_bytes"] + a * 2
+        req = urllib.request.Request(dem["url"], headers={**UA, "Range": f"bytes={start}-{start + (b - a + 1) * 2 - 1}"})
         with urllib.request.urlopen(req, timeout=60) as res:
             if res.status != 206:
                 raise RuntimeError(f"USGS DEM returned {res.status}")
             return np.frombuffer(res.read(), dtype="<i2")
+
+    def row(r):
+        # Tramos contiguos del archivo para las columnas c0..c1, dando la vuelta en ±180°.
+        parts, c = [], c0
+        while c <= c1:
+            a = c % w
+            b = min(w - 1, a + (c1 - c))
+            parts.append(read(r, a, b))
+            c += b - a + 1
+        return np.concatenate(parts)
 
     with ThreadPoolExecutor(8) as pool:
         rows = list(pool.map(row, range(r0, r1 + 1)))
@@ -278,8 +302,14 @@ def mcd_grid(var: str, lon: float, lat: float):
     if not m:
         raise RuntimeError("MCD: no data file in response")
     text = get(f"https://www-mars.lmd.jussieu.fr/mcd_python/{m.group(0)}").decode()
-    if f"Latitude {lat:.2f}" not in text and f"Latitude {abs(lat):.2f}" not in text:
-        raise RuntimeError("MCD: response is not for the requested point")
+    # Comprobar que la respuesta es del punto pedido (la cabecera dice, p. ej., «Latitude 18.4457N. Longitude 77.4508E»).
+    m = re.search(r"Latitude (-?[\d.]+)([NS])\. Longitude (-?[\d.]+)([EW])", text)
+    if not m:
+        raise RuntimeError("MCD: response without coordinates")
+    rlat = float(m.group(1)) * (-1 if m.group(2) == "S" else 1)
+    rlon = float(m.group(3)) * (-1 if m.group(4) == "W" else 1)
+    if abs(rlat - lat) > 0.01 or abs((rlon - lon + 180) % 360 - 180) > 0.01:
+        raise RuntimeError(f"MCD: response is for {rlat}, {rlon}, not {lat}, {lon}")
     hours, ls, rows = None, [], []
     for line in text.splitlines():
         if line.startswith("----") and "||" in line:
@@ -310,14 +340,18 @@ def mars_climate(lon: float, lat: float):
     }
 
 
+def moon_climate():
+    """La Luna no tiene atmósfera apreciable ni precipitación: presión y lluvia 0 por definición, no
+    medidas. Sin fuente de temperatura en este script: quedan vacías."""
+    return {"surface_temp_c": None, "diurnal_range_c": None, "precip_mm_yr": 0, "pressure_hpa": 0}
+
+
 # --- Programa -----------------------------------------------------------------------------------
 def load_targets(path):
-    if path:
-        with open(path, newline="", encoding="utf-8") as f:
-            return [{"id": r["id"], "name": r["name"], "body": r["body"], "lat": float(r["lat"]), "lon": float(r["lon"])}
-                    for r in csv.DictReader(f)]
-    data = json.loads(ANALOGS.read_text(encoding="utf-8"))
-    return [{k: t[k] for k in ("id", "name", "body", "lat", "lon")} for t in data["targets"]]
+    path = path or TARGETS
+    with open(path, newline="", encoding="utf-8") as f:
+        return [{"id": r["id"], "name": r["name"], "body": r["body"], "lat": float(r["lat"]), "lon": float(r["lon"])}
+                for r in csv.DictReader(f)]
 
 
 def write_csv(path: Path, rows: list, head: list):
@@ -330,7 +364,7 @@ def write_csv(path: Path, rows: list, head: list):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--targets", help="CSV con id,name,body,lat,lon (por defecto, los objetivos de analogs.json)")
+    ap.add_argument("--targets", help="CSV con id,name,body,lat,lon (por defecto, docs/valores/objetivos.csv)")
     args = ap.parse_args()
 
     with open(CATALOG, newline="", encoding="utf-8") as f:
@@ -357,6 +391,8 @@ def main():
         row.update(terrain(t["body"], t["lon"], t["lat"], TARGET_RADIUS_KM) or {})
         if t["body"] == "mars":
             row.update(mars_climate(t["lon"], t["lat"]))
+        elif t["body"] == "moon":
+            row.update(moon_climate())
         print(f"  {t['id']}: pendiente {row.get('slope_median_deg')}°, {row.get('surface_temp_c')} °C", file=sys.stderr)
         target_rows.append(row)
 
