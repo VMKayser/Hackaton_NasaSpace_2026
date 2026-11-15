@@ -250,4 +250,7 @@ export const en = {
   'explore.cond.noData': 'No data',
   'explore.cond.context': 'context only',
   'explore.cond.thresholds': 'Alike from 66%, partly alike from 33% up to 66%, and different below 33%. Earth values appear in blue and target values in orange.',
+
+  'adaptation.button': 'View Adaptation',
+  'adaptation.buttonHint': 'Recommendations on materials, tools, and equipment to adapt this Earth site to simulate the target',
 } as const

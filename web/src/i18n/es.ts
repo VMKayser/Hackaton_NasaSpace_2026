@@ -252,4 +252,7 @@ export const es: Record<keyof typeof en, string> = {
   'explore.cond.noData': 'Sin dato',
   'explore.cond.context': 'solo contexto',
   'explore.cond.thresholds': 'Similares desde el 66 %, parcialmente similares desde el 33 % hasta menos del 66 % y diferentes por debajo del 33 %. Los valores de la Tierra aparecen en azul y los del objetivo en naranja.',
+
+  'adaptation.button': 'Ver Adaptación',
+  'adaptation.buttonHint': 'Recomendaciones de materiales, herramientas y equipamiento para adaptar este sitio terrestre al objetivo',
 }

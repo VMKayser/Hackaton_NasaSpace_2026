@@ -14,6 +14,7 @@ import math
 from datetime import datetime
 import pandas as pd
 import numpy as np
+from enrich_all_site_texts import SITE_KNOWLEDGE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
@@ -435,6 +436,16 @@ def build_analogs_json():
                 {'name': 'NASA MERRA-2 Barometric Reanalysis', 'agency': 'NASA GMAO', 'url': 'https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/', 'body': 'earth'},
                 {'name': 'Viking 2 VL2 Avep & Mars 2020 MEDA', 'agency': 'NASA PDS Atmospheres', 'url': 'https://atmos.nmsu.edu/', 'body': 'mars'}
             ]
+        },
+        {
+            'id': 'mineralogy',
+            'label': {'en': 'Mineralogy & lithology', 'es': 'Mineralogía y litología'},
+            'weight': 0.30,
+            'sources': [
+                {'name': 'NASA CRISM / OMEGA Mineralogy Database', 'agency': 'NASA PDS Geosciences', 'url': 'https://pds-geosciences.wustl.edu/missions/mro/crism.htm', 'body': 'mars'},
+                {'name': 'LROC & Lunar Sample Compendium', 'agency': 'NASA JSC / GSFC', 'url': 'https://curator.jsc.nasa.gov/lunar/compendium.cfm', 'body': 'moon'},
+                {'name': 'SERGEOMIN Mapa Geológico de Bolivia / USGS', 'agency': 'SERGEOMIN / USGS', 'url': 'https://www.sergeomin.gob.bo/', 'body': 'earth'}
+            ]
         }
     ]
 
@@ -451,7 +462,7 @@ def build_analogs_json():
             'id': 'astrobiology-evaporites',
             'kind': 'task',
             'targetId': 'jezero',
-            'weights': {'precip': 0.45, 'temp': 0.25, 'terrain': 0.30},
+            'weights': {'mineralogy': 0.40, 'precip': 0.35, 'temp': 0.25},
             'label': {'en': 'Astrobiology in paleolake evaporite beds', 'es': 'Astrobiología y biofirmas en paleolagos salinos'},
             'question': {'en': 'Where can fossil biosignature extraction protocols be validated under extreme UV?', 'es': '¿Dónde validar protocolos de extracción de biofirmas fósiles bajo radiación UV extrema?'}
         },
@@ -464,18 +475,52 @@ def build_analogs_json():
             'question': {'en': 'Where can hazard avoidance lidar and steep slope landings be tested?', 'es': '¿Dónde ensayar evasión de obstáculos con lidar y aterrizaje en fuertes pendientes?'}
         },
         {
+            'id': 'apollo11-outpost',
+            'kind': 'task',
+            'targetId': 'tranquility',
+            'weights': {'terrain': 0.35, 'mineralogy': 0.40, 'roughness': 0.25},
+            'label': {'en': 'Lunar mare basalt base & surface operations', 'es': 'Base en basaltos de mar lunar y operaciones de superficie'},
+            'question': {'en': 'Where can lunar regolith drilling and habitat foundation deployment be simulated?', 'es': '¿Dónde simular perforación de regolito basáltico y despliegue de hábitats?'}
+        },
+        {
+            'id': 'lunar-lava-tubes',
+            'kind': 'task',
+            'targetId': 'marius-hills',
+            'weights': {'mineralogy': 0.40, 'relief': 0.35, 'terrain': 0.25},
+            'label': {'en': 'Subsurface lava tube radiation shielding & exploration', 'es': 'Exploración y blindaje en tubos de lava lunares'},
+            'question': {'en': 'Where can subterranean exploration and cave robotics be evaluated?', 'es': '¿Dónde ensayar robótica subterránea y navegación en cavernas?'}
+        },
+        {
             'id': 'subsurface-ice-isru',
             'kind': 'task',
             'targetId': 'arcadia-planitia',
-            'weights': {'terrain': 0.30, 'precip': 0.40, 'temp': 0.30},
+            'weights': {'precip': 0.40, 'temp': 0.35, 'terrain': 0.25},
             'label': {'en': 'Subsurface ice excavation and propellant ISRU', 'es': 'Excavación de hielo masivo somero y producción de propelente (ISRU)'},
             'question': {'en': 'Where can drilling and cryo-extraction of buried massive permafrost be rehearsed?', 'es': '¿Dónde ensayar perforación y extracción criogénica de permafrost masivo somero?'}
+        },
+        {
+            'id': 'hydrothermal-biosignatures',
+            'kind': 'task',
+            'targetId': 'gusev',
+            'weights': {'mineralogy': 0.45, 'temp': 0.30, 'terrain': 0.25},
+            'label': {'en': 'Hydrothermal silica deposits and volcanic vents', 'es': 'Depósitos hidrotermales de sílice y ventilas volcánicas'},
+            'question': {'en': 'Where can geochemical sensor response on silica sinter formations be calibrated?', 'es': '¿Dónde calibrar la respuesta de sensores geoquímicos en depósitos de sílice?'}
+        },
+        {
+            'id': 'polar-highland-traverse',
+            'kind': 'task',
+            'targetId': 'malapert-massif-site23',
+            'weights': {'terrain': 0.40, 'relief': 0.35, 'roughness': 0.25},
+            'label': {'en': 'Artemis III polar massif traversal and communications', 'es': 'Travesía en macizos polares y comunicaciones Artemis III'},
+            'question': {'en': 'Where can long-range rover traverse over steep anorthosite ridges be rehearsed?', 'es': '¿Dónde ensayar travesías de largo alcance sobre crestas escarpadas?'}
         }
     ]
 
     # Formatear destinos para 'targets'
     targets_output = []
     for t in PLANETARY_TARGETS:
+        t_minerals = t.get('minerals', [])
+        min_str = ', '.join(t_minerals[:3]) if isinstance(t_minerals, list) else str(t_minerals)
         t_entry = {
             'id': t['id'],
             'name': t['name'],
@@ -489,14 +534,15 @@ def build_analogs_json():
                 'roughness': {'value': t['values']['roughness'], 'unit': ''},
                 'temp': {'value': t['values']['temp'], 'unit': '°C'},
                 'precip': {'value': t['values']['precip'], 'unit': 'mm'},
-                'atm_pressure': {'value': t['values']['atm_pressure'], 'unit': 'kPa'}
+                'atm_pressure': {'value': t['values']['atm_pressure'], 'unit': 'kPa'},
+                'mineralogy': {'value': min_str, 'unit': None}
             }
         }
         targets_output.append(t_entry)
 
     # Construir lista de 'sites' con scores contra todos los targets
     sites_output = []
-    dim_keys = ['terrain', 'relief', 'roughness', 'temp', 'precip', 'atm_pressure']
+    dim_keys = ['terrain', 'relief', 'roughness', 'temp', 'precip', 'atm_pressure', 'mineralogy']
     
     for _, row in earth_df.iterrows():
         sid = str(row['id'])
@@ -508,10 +554,26 @@ def build_analogs_json():
         ctrl = bool(row.get('control', False))
         rad = float(row.get('radius_km', 2.0))
         geo = str(row.get('geology', 'mixed'))
+        site_minerals = str(row.get('minerals', row.get('geology', 'Sin clasificar')))
         
         # Tipo bilingüe
         type_es = 'Salar / Cuenca salina' if 'salt' in geo else ('Campo volcánico' if 'volcanic' in geo else ('Tierras bajas húmedas' if 'humid' in geo or 'lowland' in geo else 'Desierto árido'))
         type_en = 'Salt flat / Evaporite basin' if 'salt' in geo else ('Volcanic field' if 'volcanic' in geo else ('Humid lowland' if 'humid' in geo or 'lowland' in geo else 'Arid desert'))
+        
+        # Obtener conocimiento científico real si existe, o usar datos de campo
+        sk = SITE_KNOWLEDGE.get(sid, {})
+        site_desc = sk.get('description', {
+            'en': f"Calibrated planetary analog site: {sname}.",
+            'es': f"Sitio análogo planetario calibrado: {sname}."
+        })
+        site_limits = sk.get('limits', {
+            'en': "Terrestrial oxygenated atmosphere (21% O2) and magnetic shielding represent boundary limits against space vacuum and radiation.",
+            'es': "La atmósfera oxigenada (21% O2) y el blindaje magnético terrestre representan los límites físicos frente al vacío y radiación espacial."
+        })
+        site_expl = sk.get('exploration', {
+            'en': "Verify rover locomotion, instrument sensor calibration and operational protocols on geological analog formations.",
+            'es': "Verificar locomoción de rover, calibración de sensores instrumentales y protocolos de misión en formaciones análogas."
+        })
         
         site_entry = {
             'id': sid,
@@ -523,25 +585,17 @@ def build_analogs_json():
             'control': ctrl,
             'radiusKm': rad,
             'type': {'en': type_en, 'es': type_es},
-            'description': {
-                'en': f"Calibrated planetary analog site: {sname}.",
-                'es': f"Sitio análogo planetario calibrado: {sname}."
-            },
-            'limits': {
-                'en': "Terrestrial oxygenated atmosphere and magnetic shielding represent boundary limits.",
-                'es': "La atmósfera oxigenada y el blindaje magnético terrestre representan los límites físicos del análogo."
-            },
-            'exploration': {
-                'en': "Verify rover locomotion, instrument sensor calibration and operational protocols.",
-                'es': "Verificar locomoción de rover, calibración de sensores instrumentales y protocolos de misión."
-            },
+            'description': site_desc,
+            'limits': site_limits,
+            'exploration': site_expl,
             'values': {
                 'terrain': {'value': round(float(row['terrain']), 2), 'unit': '°'},
                 'relief': {'value': round(float(row['relief']), 1), 'unit': 'm'},
                 'roughness': {'value': round(float(row['roughness']), 2), 'unit': ''},
                 'temp': {'value': round(float(row['temp']), 1), 'unit': '°C'},
                 'precip': {'value': round(float(row['precip']), 1), 'unit': 'mm'},
-                'atm_pressure': {'value': round(float(row['atm_pressure']), 2), 'unit': 'kPa'}
+                'atm_pressure': {'value': round(float(row['atm_pressure']), 2), 'unit': 'kPa'},
+                'mineralogy': {'value': site_minerals, 'unit': None}
             },
             'scores': [],
             'purposeScores': {}
@@ -554,9 +608,17 @@ def build_analogs_json():
             w_sum = 0.0
             score_acc = 0.0
             
+            # Similitud mineralógica calculada científicamente
+            s_min = calculate_site_mineral_similarity(geo, t['geology'])
+
             for d in dimensions_meta:
                 did = d['id']
                 w = d['weight']
+                if did == 'mineralogy':
+                    dim_sims['mineralogy'] = round(s_min, 3)
+                    score_acc += w * s_min
+                    w_sum += w
+                    continue
                 eval_val = row.get(did, None)
                 tval = t['values'].get(did, None)
                 sim = calculate_dimension_similarity(eval_val, tval, did)
@@ -566,9 +628,6 @@ def build_analogs_json():
                     w_sum += w
                 else:
                     dim_sims[did] = None
-                    
-            # Similitud mineralógica
-            s_min = calculate_site_mineral_similarity(geo, t['geology'])
             
             # Subtotales
             s_topo = (dim_sims.get('terrain', 0.5) * 0.4 + dim_sims.get('relief', 0.5) * 0.4 + dim_sims.get('roughness', 0.5) * 0.2)
@@ -625,19 +684,29 @@ def build_analogs_json():
         'sites': sites_output
     }
 
-    # Guardar en output/analogs.json y data/analogs.json
+    # Guardar en output/analogs.json, data/analogs.json y sincronizar con web/public/data/analogs.json
     out_json_path = os.path.join(OUTPUT_DIR, 'analogs.json')
     data_json_path = os.path.join(DATA_DIR, 'analogs.json')
+    root_data_json_path = os.path.join(BASE_DIR, '..', 'data', 'analogs.json')
+    web_json_path = os.path.join(BASE_DIR, '..', '..', 'web', 'public', 'data', 'analogs.json')
     
     with open(out_json_path, 'w', encoding='utf-8') as f:
         json.dump(final_output, f, ensure_ascii=False, indent=2)
     with open(data_json_path, 'w', encoding='utf-8') as f:
         json.dump(final_output, f, ensure_ascii=False, indent=2)
+    if os.path.exists(os.path.dirname(root_data_json_path)):
+        with open(root_data_json_path, 'w', encoding='utf-8') as f:
+            json.dump(final_output, f, ensure_ascii=False, indent=2)
+    if os.path.exists(os.path.dirname(web_json_path)):
+        with open(web_json_path, 'w', encoding='utf-8') as f:
+            json.dump(final_output, f, ensure_ascii=False, indent=2)
         
     print(f"[✓] Archivo oficial exportado con éxito a: {out_json_path}")
+    print(f"[✓] Sincronizado automáticamente con: {web_json_path}")
     print(f"    - Total Sitios Terrestres: {len(sites_output)}")
     print(f"    - Total Objetivos Planetarios: {len(targets_output)}")
-    print(f"    - Metadatos, dimensiones y propósitos sincronizados.")
+    print(f"    - Dimensiones activas: {[d['id'] for d in dimensions_meta]}")
+    print(f"    - Propósitos de misión activos: {[p['id'] for p in purposes_meta]}")
 
 if __name__ == '__main__':
     build_analogs_json()

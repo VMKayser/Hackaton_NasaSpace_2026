@@ -180,7 +180,7 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
         <ScoreMethod model={model} purpose={mode === 'purpose' ? purpose : null} />
       </section>
 
-      {onExplore && (
+      {onExplore ? (
         <button
           type="button"
           onClick={onExplore}
@@ -196,7 +196,22 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
           </span>
           <span className="text-xs font-normal text-white/70">{t('explore.openModes')}</span>
         </button>
-      )}
+      ) : target && target.body === 'moon' && Math.abs(target.lat) > 60 ? (
+        <div className="mt-3 rounded-lg border border-line bg-paper px-3 py-2.5 text-xs">
+          <p className="flex items-center gap-1.5 font-semibold text-ink">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-earth">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4M12 8h.01" />
+            </svg>
+            {lang === 'es' ? 'Cartografía en el Polo Sur Lunar' : 'Lunar South Pole Cartography'}
+          </p>
+          <p className="mt-1 text-muted leading-relaxed">
+            {lang === 'es'
+              ? 'El modelo DEM 3D orbital de USGS cubre de 60°N a 60°S (sitios Apolo y ecuatoriales). Para las regiones polares de Artemis III (-80° a -90°S), se visualiza en la derecha la cartografía ortográfica de iluminación LROC de la NASA con zoom y marcador interactivo del objetivo.'
+              : 'The USGS orbital 3D DEM covers 60°N to 60°S (Apollo and equatorial sites). For Artemis III polar regions (-80° to -90°S), NASA uses the high-resolution LROC polar illumination orthomap on the right with interactive marker and zoom.'}
+          </p>
+        </div>
+      ) : null}
 
       <div role="group" aria-label={t('detail.actions')} className="mt-2 flex flex-wrap gap-2">
         <button type="button" onClick={() => {
