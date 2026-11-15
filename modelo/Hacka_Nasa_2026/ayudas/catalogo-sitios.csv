@@ -1,0 +1,32 @@
+id,name,lat,lon,radius_km,type,group,known,reference,control
+uyuni,Salar de Uyuni,-20.13,-67.49,5,salt_lake,core,true,false,false
+coipasa,Salar de Coipasa,-19.38,-68.13,5,salt_lake,core,false,false,false
+sol-de-manana,Sol de Mañana,-22.43,-67.76,2,hydrothermal,core,false,false,false
+laguna-colorada,Laguna Colorada,-22.20,-67.78,2,salt_lake,core,false,false,false
+siloli,Desierto de Siloli,-22.05,-67.88,2,desert,core,false,false,false
+dali,Desierto Salvador Dalí,-22.60,-67.63,2,desert,core,false,false,false
+licancabur-laguna-verde,Laguna Verde y Licancabur,-22.79,-67.82,2,volcanic,core,true,false,false
+uturuncu,Volcán Uturuncu,-22.27,-67.18,2,volcanic,core,false,false,false
+sajama,Nevado Sajama,-18.11,-68.88,2,volcanic,core,false,false,false
+ollague,Volcán Ollagüe,-21.30,-68.18,2,volcanic,core,false,false,false
+tunupa,Volcán Tunupa,-19.83,-67.63,2,volcanic,core,false,false,false
+poopo,Lago Poopó (lecho seco),-18.80,-67.00,5,salt_lake,core,false,false,false
+empexa,Salar de Empexa,-20.33,-68.45,5,salt_lake,extension,false,false,false
+chiguana,Salar de Chiguana,-21.08,-67.92,5,salt_lake,extension,false,false,false
+chalviri,Salar de Chalviri,-22.53,-67.57,5,salt_lake,extension,false,false,false
+capina,Salar de Capina,-21.90,-67.60,5,salt_lake,extension,false,false,false
+pastos-grandes,Laguna Pastos Grandes,-21.63,-67.80,2,salt_lake,extension,false,false,false
+laguna-hedionda,Laguna Hedionda,-21.57,-68.05,2,salt_lake,extension,false,false,false
+polques,Termas de Polques,-22.53,-67.65,2,hydrothermal,extension,false,false,false
+geiseres-sajama,Géiseres de Sajama,-18.08,-68.97,2,hydrothermal,extension,false,false,false
+tata-sabaya,Tata Sabaya (avalancha de escombros),-19.13,-68.53,2,volcanic,extension,false,false,false
+los-frailes,Ignimbritas de Los Frailes,-19.50,-66.30,2,volcanic,extension,false,false,false
+jayu-khota,Maar de Jayu Khota,-19.47,-67.43,2,volcanic,extension,false,false,false
+valle-de-rocas,Valle de Rocas,-21.60,-67.60,2,desert,extension,false,false,false
+tupiza,Quebradas de Tupiza,-21.42,-65.72,2,erosion,extension,false,false,false
+valle-de-la-luna,"Valle de la Luna, La Paz",-16.57,-68.09,2,erosion,extension,false,false,false
+huayna-potosi,Huayna Potosí,-16.26,-68.15,2,glacial,extension,false,false,false
+umajalanta,"Caverna de Umajalanta, Torotoro",-18.13,-65.76,2,cave,extension,false,false,false
+yungay-atacama,"Yungay, Atacama (Chile)",-24.08,-69.92,2,desert,validation,true,true,false
+trinidad-control,"Trinidad, Beni",-14.83,-64.90,2,humid_lowland,validation,false,false,true
+coroico-control,"Coroico, Yungas",-16.19,-67.73,2,humid_mountain,validation,false,false,true

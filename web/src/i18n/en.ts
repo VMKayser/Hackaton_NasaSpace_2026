@@ -112,6 +112,7 @@ export const en = {
   'pin.methodText': 'Both circles are sampled on a regular grid every {step} m, and the slope is calculated on that same grid. The step is the coarsest resolution of the two models (Earth tiles of {earthPx} m per pixel; {body} model of {grid} m), so neither side is measured in more detail than the other. Radius: {km} km. On very flat ground, a slope measured at fine resolution mostly reflects the noise of the model.',
   'pin.notScore': 'Pilot: it measures only slope and relief, the two variables that can be calculated anywhere from elevation models. Comparing the two pins does not give a score: the full score exists only for the targets in the data file and covers every dimension.',
   'pin.sources': 'Elevation data',
+  'explore.polarUnavailable': 'The 3D view is not available for {target}: it lies beyond {lat}° latitude and the 3D map does not reach that close to the pole. The map shows a still image of the area.',
   'explore.openModes': 'Side by side, swipe or overlay',
   'pin.mapHintMoon': 'Click on Earth or on the Moon to place a pin. On the Moon, between 60° N and 60° S: the area covered by the global USGS model (dashed lines).',
   'pin.noScoreShort': 'measurements of the real relief, no similarity score.',

@@ -4,6 +4,8 @@ export type Planet = Target['body']
 
 export const PLANETS: Planet[] = ['mars', 'moon']
 export const MERCATOR_LIMIT = 85.05112878
+/** Latitud máxima de un objetivo que se puede abrir en la vista 3D. */
+export const EXPLORE_MAX_LAT = 80
 export const MARS_DETAIL = {
   url: 'https://astro.arcgis.com/arcgis/rest/services/OnMars/CTX1/MapServer/tile',
   source: 'https://murray-lab.caltech.edu/CTX/V01/TilePages/',

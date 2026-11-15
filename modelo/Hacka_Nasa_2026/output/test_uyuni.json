@@ -1,0 +1,86 @@
+{
+  "input_earth_site": {
+    "name": "Ubicación Terrestre (-20.13°, -67.49°)",
+    "lat": -20.13,
+    "lon": -67.49,
+    "surface_description": "salar evaporítico de 50 km2 rico en litio y yeso",
+    "elevation": 3670.0,
+    "terrain": 0.8,
+    "relief": 1.5,
+    "roughness": 0.35,
+    "temp": 8.5,
+    "temp_swing": 25.0,
+    "precip": 120.0,
+    "solar_flux": 24.2,
+    "uv_index": 22.0,
+    "atm_pressure": 64.34,
+    "geology": "salt_lake",
+    "minerals": [
+      "Halita (NaCl)",
+      "Yeso (CaSO4·2H2O)",
+      "Cloruro de Litio (LiCl)",
+      "Ulexita (Borato de Na-Ca)",
+      "Sulfato de Magnesio"
+    ]
+  },
+  "assigned_cluster": {
+    "nombre": "Cluster 4: Planicies Salinas & Cuencas Evaporíticas Altiplánicas",
+    "centroide_representativo": "Salar de Uyuni / Salar de Coipasa",
+    "descripcion": "Planicies ultra-horizontales, costras masivas de halita, yeso y sales de litio/boro, hiperaridez y radiación UV extrema.",
+    "analogia_primaria": "Paleolagos salinos y evaporitas de Marte (Cráter Jezero, Meridiani Planum)."
+  },
+  "matched_target": {
+    "id": "meridiani_planum",
+    "name": "Meridiani Planum",
+    "body": "Marte",
+    "mission": "NASA MER-B / Rover Opportunity",
+    "lat": -2.05,
+    "lon": -5.5,
+    "elevation": -1200.0,
+    "terrain": 2.1,
+    "relief": 15.0,
+    "roughness": 1.2,
+    "temp": -52.0,
+    "temp_swing": 80.0,
+    "precip": 0.0,
+    "solar_flux": 10.2,
+    "atm_pressure": 0.68,
+    "geology": "hematite_plain",
+    "minerals": [
+      "Esférulas de hematita (\"blueberries\")",
+      "Jarosita",
+      "Yeso",
+      "Sulfatos hidratados"
+    ],
+    "summary": "Planicie eólica hiperplana con evidencias de aguas ácidas freáticas en el pasado marciano."
+  },
+  "similarity_breakdown": {
+    "psi_global_pct": 61.4,
+    "topography_pct": 39.5,
+    "climate_pct": 61.7,
+    "mineralogy_pct": 86.7,
+    "pca_cosine_pct": 39.5,
+    "pca_latent_distance": 0.844
+  },
+  "top_3_targets": [
+    {
+      "name": "Meridiani Planum",
+      "body": "Marte",
+      "psi": 61.4
+    },
+    {
+      "name": "Cráter Jezero",
+      "body": "Marte",
+      "psi": 47.0
+    },
+    {
+      "name": "Arcadia Planitia",
+      "body": "Marte",
+      "psi": 45.3
+    }
+  ],
+  "mission_recommendations": [
+    "TRÁNSITO DE LARGO ALCANCE: Terreno ideal para pruebas de velocidad y navegación autónoma en llanuras eólicas planas.",
+    "ESPECTROSCOPÍA DE HIERRO: Ensayar sensores Mössbauer e infrarrojos térmicos para detección de óxidos férricos e hidratados."
+  ]
+}

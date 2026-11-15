@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA Space Apps - Dual-Globe Planetary Mission Control</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="data/mission_dataset.js"></script>
+  <style>
+    :root {
+      --bg: #060913;
+      --panel-bg: rgba(13, 20, 38, 0.88);
+      --border: rgba(45, 66, 110, 0.6);
+      --accent: #00f2fe;
+      --accent-glow: rgba(0, 242, 254, 0.35);
+      --mars-color: #f97316;
+      --mars-glow: rgba(249, 115, 22, 0.4);
+      --moon-color: #e2e8f0;
+      --moon-glow: rgba(226, 232, 240, 0.35);
+      --bolivia-gold: #fbbf24;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP HEADER & CONTROL BAR */
+    header {
+      background: rgba(7, 11, 22, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: radial-gradient(circle, #38bdf8 0%, #0369a1 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: white;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .brand h1 {
+      font-size: 1.1rem;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .brand span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* SEARCH & FILTER CONTROLS */
+    .controls-center {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .search-box {
+      position: relative;
+      width: 280px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(18, 28, 52, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.45rem 1rem 0.45rem 2.2rem;
+      color: white;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .pill-btn {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .pill-btn:hover, .pill-btn.active {
+      background: var(--accent);
+      color: #040814;
+      border-color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .pill-bolivia {
+      border-color: rgba(251, 191, 36, 0.5);
+      color: #fbbf24;
+    }
+
+    .pill-bolivia:hover, .pill-bolivia.active {
+      background: linear-gradient(135deg, #ef4444, #f59e0b, #10b981);
+      color: white;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+    }
+
+    /* PLANET TOGGLE (MARS / MOON) */
+    .planet-selector {
+      display: flex;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 0.2rem;
+    }
+
+    .planet-btn {
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      background: transparent;
+      transition: all 0.25s;
+    }
+
+    .planet-btn.active.mars-btn {
+      background: var(--mars-color);
+      color: white;
+      box-shadow: 0 0 12px var(--mars-glow);
+    }
+
+    .planet-btn.active.moon-btn {
+      background: var(--moon-color);
+      color: #040814;
+      box-shadow: 0 0 12px var(--moon-glow);
+    }
+
+    /* MAIN DUAL GLOBE CONTAINER */
+    #dual-globes-container {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .globe-viewport {
+      flex: 1;
+      height: 100%;
+      position: relative;
+    }
+
+    .globe-canvas-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .viewport-overlay {
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .viewport-overlay h2 {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .viewport-overlay p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .divider-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, var(--border), var(--accent), var(--border), transparent);
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    /* BOTTOM INTELLIGENCE HUD */
+    #mission-hud {
+      height: 290px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(15px);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+
+    .hud-header {
+      padding: 0.5rem 1.2rem;
+      background: rgba(10, 16, 32, 0.95);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hud-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hud-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 280px 1.2fr;
+      overflow-y: auto;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .hud-column {
+      background: var(--panel-bg);
+      padding: 0.8rem 1.1rem;
+      overflow-y: auto;
+    }
+
+    .hud-col-header {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 0.3rem;
+    }
+
+    .site-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .site-badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .badge-bolivia-gem {
+      background: linear-gradient(135deg, #ef4444, #f59e0b, #10b981);
+      color: white;
+    }
+
+    .badge-mars {
+      background: var(--mars-color);
+      color: white;
+    }
+
+    .badge-moon {
+      background: var(--moon-color);
+      color: #040814;
+    }
+
+    .data-row {
+      margin-bottom: 0.45rem;
+      font-size: 0.8rem;
+    }
+
+    .data-label {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      margin-bottom: 0.1rem;
+    }
+
+    .data-value {
+      color: #e2e8f0;
+      line-height: 1.35;
+    }
+
+    /* PSI MATCH BOX */
+    .psi-meter-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .psi-circle {
+      width: 105px;
+      height: 105px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0deg, var(--accent) 270deg, rgba(255,255,255,0.1) 270deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.6rem;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .psi-inner {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: #090e1d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .psi-number {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+
+    .psi-sub {
+      font-size: 0.65rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .subscore-bar {
+      width: 100%;
+      margin: 0.25rem 0;
+      font-size: 0.7rem;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    /* MISSION GEAR LIST */
+    .gear-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .gear-item {
+      font-size: 0.75rem;
+      margin-bottom: 0.35rem;
+      display: flex;
+      gap: 0.4rem;
+      align-items: flex-start;
+      color: #cbd5e1;
+    }
+
+    .gear-bullet {
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    /* TOOLTIP */
+    #globe-tooltip {
+      position: absolute;
+      background: rgba(10, 16, 32, 0.95);
+      border: 1px solid var(--accent);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      pointer-events: none;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">NASA</div>
+      <div>
+        <h1>PLANETARY MISSION CONTROL <span style="font-size:0.8rem; color:#f59e0b;">| BEYOND KNOWN ANALOGUES</span></h1>
+        <span>Bolivia Altiplano & Global Earth Analogs ◄► Mars & Moon Bases</span>
+      </div>
+    </div>
+
+    <!-- SEARCH & REGION FILTER -->
+    <div class="controls-center">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="region-search" placeholder="Buscar país o región (ej. Bolivia)...">
+      </div>
+      <div class="filter-pills">
+        <button class="pill-btn pill-bolivia active" data-filter="bolivia">🇧🇴 Bolivia (5 Gemas)</button>
+        <button class="pill-btn" data-filter="all">Todos los Análogos</button>
+        <button class="pill-btn" data-filter="sal">Evaporitas / Sal</button>
+        <button class="pill-btn" data-filter="volcano">Volcánicos</button>
+        <button class="pill-btn" data-filter="cryo">Criogénicos / Frío</button>
+      </div>
+    </div>
+
+    <!-- TARGET CELESTIAL BODY SELECTOR -->
+    <div class="planet-selector">
+      <button class="planet-btn mars-btn active" id="btn-mars">
+        <span>🔴</span> MARTE (6 Misiones)
+      </button>
+      <button class="planet-btn moon-btn" id="btn-moon">
+        <span>⚪</span> LUNA (4 Misiones)
+      </button>
+    </div>
+  </header>
+
+  <!-- DUAL GLOBES WORKSPACE -->
+  <main id="dual-globes-container">
+    <!-- LEFT GLOBE: EARTH -->
+    <div class="globe-viewport" id="viewport-earth">
+      <div class="viewport-overlay">
+        <h2 style="color: #38bdf8;">🌍 Planeta Tierra</h2>
+        <p>Análogos Terrestres de Misión • Haz clic en un punto para explorar</p>
+      </div>
+      <div class="globe-canvas-wrapper" id="canvas-earth"></div>
+    </div>
+
+    <!-- CENTER DIVIDER -->
+    <div class="divider-line"></div>
+
+    <!-- RIGHT GLOBE: MARS / MOON -->
+    <div class="globe-viewport" id="viewport-target">
+      <div class="viewport-overlay">
+        <h2 id="target-globe-title" style="color: var(--mars-color);">🔴 Planeta Marte</h2>
+        <p id="target-globe-sub">Sitios de Rovers, Misiones Activas y Futuras Bases</p>
+      </div>
+      <div class="globe-canvas-wrapper" id="canvas-target"></div>
+    </div>
+  </main>
+
+  <!-- BOTTOM INTELLIGENCE HUD -->
+  <section id="mission-hud">
+    <div class="hud-header">
+      <div class="hud-title">
+        <span>🛰️</span> INTELLIGENCE HUD: ANÁLOGOS TERRESTRES & PREPARACIÓN DE MISIÓN
+      </div>
+      <div style="font-size: 0.75rem; color: var(--text-muted);">
+        NASA PDS & Peer-Reviewed Science Audit • Actualización en Tiempo Real
+      </div>
+    </div>
+
+    <div class="hud-grid">
+      <!-- COL 1: EARTH ANALOG DETAILS -->
+      <div class="hud-column" id="hud-earth-col">
+        <div class="hud-col-header">
+          <span>Análogo Terrestre Seleccionado</span>
+          <span id="earth-badge" class="site-badge badge-bolivia-gem">BOLIVIA</span>
+        </div>
+        <div class="site-title" id="earth-name">Salar de Uyuni</div>
+        <div class="data-row">
+          <div class="data-label">Ubicación y Elevación</div>
+          <div class="data-value" id="earth-coords">Potosí, Bolivia • 3,656 msnm (-20.13°, -67.49°)</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Gases y Presión Atmosférica</div>
+          <div class="data-value" id="earth-gases">Presión: 65.2 kPa (~35% menor que nivel del mar) • N2/O2 terrestre</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Mineralogía y Litología</div>
+          <div class="data-value" id="earth-minerals">Halita (NaCl), Yeso, Cloruro de Litio, Ulexita/Boratos, Calcita</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Clima, UV y Topografía</div>
+          <div class="data-value" id="earth-climate">T: -15°C a 20°C • UV: Extremo (96%) • Pendiente media: 0.8° • Rugosidad: 0.35m</div>
+        </div>
+      </div>
+
+      <!-- COL 2: PLANETARY TARGET DETAILS -->
+      <div class="hud-column" id="hud-target-col">
+        <div class="hud-col-header">
+          <span id="target-type-label">Destino Extraterrestre</span>
+          <span id="target-badge" class="site-badge badge-mars">MARTE</span>
+        </div>
+        <div class="site-title" id="target-name">Cráter Jezero</div>
+        <div class="data-row">
+          <div class="data-label">Misión y Contexto</div>
+          <div class="data-value" id="target-mission">NASA Mars 2020 / Rover Perseverance + Ingenuity (Paleolago)</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Atmósfera y Presión Real</div>
+          <div class="data-value" id="target-gases">Presión: 0.61 kPa • 95.3% CO2, 2.6% N2, 1.9% Ar • Densidad: 0.015 kg/m³</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Fases Minerales y Regolito</div>
+          <div class="data-value" id="target-minerals">Arcillas esmectitas, Sulfatos de yeso, Carbonato de magnesio, Basalto piroxénico</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Ambiente y Radiación</div>
+          <div class="data-value" id="target-climate">T: -95°C a -5°C (Amplitud 90°C) • Dosis: 250 mSv/año (Rayos cósmicos GCR)</div>
+        </div>
+      </div>
+
+      <!-- COL 3: PSI MATCH BREAKDOWN -->
+      <div class="hud-column psi-meter-container" id="hud-psi-col">
+        <div class="hud-col-header" style="width: 100%;">
+          <span>Índice de Similitud (PSI)</span>
+        </div>
+        <div class="psi-circle" id="psi-circle">
+          <div class="psi-inner">
+            <span class="psi-number" id="psi-score">74%</span>
+            <span class="psi-sub">Similitud</span>
+          </div>
+        </div>
+        <div style="font-size:0.7rem; font-weight:700; color:var(--accent); margin-bottom:0.4rem;" id="psi-tier">
+          Tier 2: High-Fidelity Analog
+        </div>
+        
+        <div class="subscore-bar">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Topografía:</span><strong id="sub-topo">85%</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="bar-topo" style="width:85%;"></div></div>
+        </div>
+        <div class="subscore-bar">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Mineralogía:</span><strong id="sub-min">59%</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="bar-min" style="width:59%;"></div></div>
+        </div>
+        <div class="subscore-bar">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Clima y UV:</span><strong id="sub-env">79%</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="bar-env" style="width:79%;"></div></div>
+        </div>
+      </div>
+
+      <!-- COL 4: MISSION GEAR & ACONDICIONAMIENTO -->
+      <div class="hud-column" id="hud-prep-col">
+        <div class="hud-col-header">
+          <span>Preparación & Acondicionamiento de Misión</span>
+        </div>
+        <div class="data-row">
+          <div class="data-label" style="color:#00f2fe;">🛠️ Ensayos y Equipos Requeridos en Tierra:</div>
+          <ul class="gear-list" id="gear-list">
+            <li class="gear-item"><span class="gear-bullet">►</span> Calibración de altimetría láser LiDAR y radar</li>
+            <li class="gear-item"><span class="gear-bullet">►</span> Tránsito autónomo de alta velocidad sobre costras salinas</li>
+            <li class="gear-item"><span class="gear-bullet">►</span> Penetración de brocas en evaporitas sin atascamiento</li>
+          </ul>
+        </div>
+        <div class="data-row" style="margin-top:0.4rem;">
+          <div class="data-label" style="color:#f59e0b;">🏠 Acondicionamiento y Protección en Destino:</div>
+          <ul class="gear-list" id="habitat-list">
+            <li class="gear-item"><span class="gear-bullet">★</span> Esclusas con soplado iónico para polvo de percloratos</li>
+            <li class="gear-item"><span class="gear-bullet">★</span> Blindaje del hábitat bajo 2m de regolito marciano</li>
+            <li class="gear-item"><span class="gear-bullet">★</span> Extracción de oxígeno in-situ (ISRU MOXIE)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING TOOLTIP -->
+  <div id="globe-tooltip"></div>
+
+  <!-- CORE THREE.JS DUAL GLOBE LOGIC -->
+  <script>
+    // Fallback embedded data if window.PLANETARY_MISSION_DATA is missing
+    const DB = window.PLANETARY_MISSION_DATA || {
+      earth_analogs: [],
+      mars_sites: {},
+      moon_sites: {}
+    };
+
+    let activeTargetPlanet = "mars"; // "mars" or "moon"
+    let selectedEarthAnalog = DB.earth_analogs && DB.earth_analogs[0] ? DB.earth_analogs[0] : null;
+    let selectedTargetSite = DB.mars_sites && DB.mars_sites["jezero_crater"] ? DB.mars_sites["jezero_crater"] : null;
+
+    // --- THREE.JS GLOBE SETUP ---
+    let sceneEarth, cameraEarth, rendererEarth, controlsEarth, globeEarth, earthPinsGroup;
+    let sceneTarget, cameraTarget, rendererTarget, controlsTarget, globeTarget, targetPinsGroup;
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let hoveredPin = null;
+
+    function initDualGlobes() {
+      // 1. EARTH GLOBE
+      const earthContainer = document.getElementById("canvas-earth");
+      sceneEarth = new THREE.Scene();
+      cameraEarth = new THREE.PerspectiveCamera(45, earthContainer.clientWidth / earthContainer.clientHeight, 0.1, 1000);
+      cameraEarth.position.set(0, 0, 240);
+
+      rendererEarth = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      rendererEarth.setSize(earthContainer.clientWidth, earthContainer.clientHeight);
+      rendererEarth.setPixelRatio(window.devicePixelRatio);
+      earthContainer.appendChild(rendererEarth.domElement);
+
+      controlsEarth = new THREE.OrbitControls(cameraEarth, rendererEarth.domElement);
+      controlsEarth.enableDamping = true;
+      controlsEarth.dampingFactor = 0.05;
+      controlsEarth.minDistance = 110;
+      controlsEarth.maxDistance = 400;
+
+      // Earth Lighting
+      const ambLightEarth = new THREE.AmbientLight(0xffffff, 0.85);
+      sceneEarth.add(ambLightEarth);
+      const dirLightEarth = new THREE.DirectionalLight(0xa5f3fc, 0.9);
+      dirLightEarth.position.set(150, 100, 150);
+      sceneEarth.add(dirLightEarth);
+
+      // Create Earth Sphere
+      const earthGeo = new THREE.SphereGeometry(70, 64, 64);
+      const earthMat = new THREE.MeshPhongMaterial({
+        map: createEarthTexture(),
+        bumpScale: 1.5,
+        specular: new THREE.Color(0x1e3a8a),
+        shininess: 15
+      });
+      globeEarth = new THREE.Mesh(earthGeo, earthMat);
+      sceneEarth.add(globeEarth);
+
+      // Earth Atmosphere Glow
+      const earthAtmoGeo = new THREE.SphereGeometry(72.5, 64, 64);
+      const earthAtmoMat = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.BackSide
+      });
+      sceneEarth.add(new THREE.Mesh(earthAtmoGeo, earthAtmoMat));
+
+      earthPinsGroup = new THREE.Group();
+      globeEarth.add(earthPinsGroup);
+      populateEarthPins();
+
+      // 2. TARGET GLOBE (MARS / MOON)
+      const targetContainer = document.getElementById("canvas-target");
+      sceneTarget = new THREE.Scene();
+      cameraTarget = new THREE.PerspectiveCamera(45, targetContainer.clientWidth / targetContainer.clientHeight, 0.1, 1000);
+      cameraTarget.position.set(0, 0, 240);
+
+      rendererTarget = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      rendererTarget.setSize(targetContainer.clientWidth, targetContainer.clientHeight);
+      rendererTarget.setPixelRatio(window.devicePixelRatio);
+      targetContainer.appendChild(rendererTarget.domElement);
+
+      controlsTarget = new THREE.OrbitControls(cameraTarget, rendererTarget.domElement);
+      controlsTarget.enableDamping = true;
+      controlsTarget.dampingFactor = 0.05;
+      controlsTarget.minDistance = 110;
+      controlsTarget.maxDistance = 400;
+
+      // Target Lighting
+      const ambLightTarget = new THREE.AmbientLight(0xffffff, 0.8);
+      sceneTarget.add(ambLightTarget);
+      const dirLightTarget = new THREE.DirectionalLight(0xffedd5, 1.0);
+      dirLightTarget.position.set(150, 100, 150);
+      sceneTarget.add(dirLightTarget);
+
+      // Create Target Planet Sphere
+      const targetGeo = new THREE.SphereGeometry(70, 64, 64);
+      const targetMat = new THREE.MeshPhongMaterial({
+        map: createMarsTexture(),
+        bumpScale: 2.0,
+        shininess: 5
+      });
+      globeTarget = new THREE.Mesh(targetGeo, targetMat);
+      sceneTarget.add(globeTarget);
+
+      targetPinsGroup = new THREE.Group();
+      globeTarget.add(targetPinsGroup);
+      populateTargetPins();
+
+      // Window resize
+      window.addEventListener("resize", onWindowResize);
+
+      // Mouse click raycasting
+      rendererEarth.domElement.addEventListener("pointerdown", (e) => handleGlobeClick(e, "earth"));
+      rendererTarget.domElement.addEventListener("pointerdown", (e) => handleGlobeClick(e, "target"));
+      
+      rendererEarth.domElement.addEventListener("pointermove", (e) => handleGlobeHover(e, "earth"));
+      rendererTarget.domElement.addEventListener("pointermove", (e) => handleGlobeHover(e, "target"));
+
+      // Setup initial view focus on Bolivia
+      focusEarthOnCoords(-20.13, -67.49);
+      updateHUD();
+      animate();
+    }
+
+    // --- PROCEDURAL PROCEDURAL TEXTURES FOR 100% OFFLINE ZERO DEPENDENCY RELIABILITY ---
+    function createEarthTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext("2d");
+
+      // Deep ocean base
+      ctx.fillStyle = "#0c1e3d";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw stylized continents
+      ctx.fillStyle = "#2d5a3f";
+      // South America
+      ctx.beginPath();
+      ctx.ellipse(650, 680, 130, 240, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // High Altiplano Andes Ridge (Ochre highlight)
+      ctx.fillStyle = "#8d6e3f";
+      ctx.beginPath();
+      ctx.ellipse(610, 680, 45, 170, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Salar de Uyuni brilliant white salt spot
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(635, 685, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      // North America
+      ctx.fillStyle = "#2d5a3f";
+      ctx.beginPath();
+      ctx.ellipse(520, 320, 180, 150, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eurasia & Africa
+      ctx.beginPath();
+      ctx.ellipse(1250, 320, 280, 160, 0, 0, Math.PI * 2);
+      ctx.ellipse(1180, 560, 140, 200, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Antarctica
+      ctx.fillStyle = "#dbeafe";
+      ctx.fillRect(0, 920, canvas.width, 104);
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function createMarsTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext("2d");
+
+      // Rusty ochre Martian surface
+      ctx.fillStyle = "#b44622";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark volcanic maria & canyons (Syrtis Major, Valles Marineris)
+      ctx.fillStyle = "#632717";
+      ctx.beginPath();
+      ctx.ellipse(1400, 450, 160, 120, 0.4, 0, Math.PI * 2); // Syrtis Major
+      ctx.ellipse(850, 540, 240, 45, -0.1, 0, Math.PI * 2); // Valles Marineris
+      ctx.ellipse(1050, 420, 110, 80, 0, 0, Math.PI * 2); // Jezero Crater region
+      ctx.fill();
+
+      // Giant volcanoes (Olympus Mons)
+      ctx.fillStyle = "#4a1c10";
+      ctx.beginPath();
+      ctx.arc(650, 420, 35, 0, Math.PI * 2);
+      ctx.fill();
+
+      // White Polar Ice Caps (Planum Boreum / Australe)
+      ctx.fillStyle = "#fef2f2";
+      ctx.fillRect(0, 0, canvas.width, 45); // North cap
+      ctx.fillRect(0, 980, canvas.width, 44); // South cap
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    function createMoonTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext("2d");
+
+      // Anorthositic silvery grey highlands
+      ctx.fillStyle = "#94a3b8";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dark basaltic lunar maria
+      ctx.fillStyle = "#475569";
+      ctx.beginPath();
+      ctx.ellipse(850, 450, 180, 140, 0, 0, Math.PI * 2); // Oceanus Procellarum
+      ctx.ellipse(1250, 420, 120, 90, 0, 0, Math.PI * 2); // Mare Tranquillitatis
+      ctx.ellipse(1150, 320, 100, 75, 0, 0, Math.PI * 2); // Mare Serenitatis
+      ctx.ellipse(980, 280, 110, 90, 0, 0, Math.PI * 2); // Mare Imbrium
+      ctx.fill();
+
+      // Bright impact rays (Tycho / Copernicus)
+      ctx.fillStyle = "#e2e8f0";
+      ctx.beginPath();
+      ctx.arc(1100, 720, 20, 0, Math.PI * 2); // Tycho crater
+      ctx.fill();
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    // --- LAT/LNG COORDINATE PROJECTION TO SPHERE ---
+    function latLngToVector3(lat, lng, radius) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lng + 180) * (Math.PI / 180);
+      const x = -(radius * Math.sin(phi) * Math.cos(theta));
+      const z = radius * Math.sin(phi) * Math.sin(theta);
+      const y = radius * Math.cos(phi);
+      return new THREE.Vector3(x, y, z);
+    }
+
+    // --- POPULATE PINS ---
+    function populateEarthPins() {
+      while (earthPinsGroup.children.length > 0) {
+        earthPinsGroup.remove(earthPinsGroup.children[0]);
+      }
+
+      (DB.earth_analogs || []).forEach(analog => {
+        const pos = latLngToVector3(analog.coordinates.lat, analog.coordinates.lng, 71.5);
+        
+        // Pin Mesh
+        const isBolivia = analog.is_bolivian_gem;
+        const pinColor = isBolivia ? 0xfbbf24 : 0x00f2fe;
+        const pinGeo = new THREE.SphereGeometry(isBolivia ? 2.3 : 1.7, 16, 16);
+        const pinMat = new THREE.MeshBasicMaterial({ color: pinColor });
+        const pinMesh = new THREE.Mesh(pinGeo, pinMat);
+        pinMesh.position.copy(pos);
+        pinMesh.userData = { type: "earth", data: analog };
+
+        // Outer pulsing ring for Bolivian gems
+        if (isBolivia) {
+          const ringGeo = new THREE.RingGeometry(2.8, 3.8, 16);
+          const ringMat = new THREE.MeshBasicMaterial({ color: 0xef4444, side: THREE.DoubleSide });
+          const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+          ringMesh.position.copy(pos.clone().multiplyScalar(1.02));
+          ringMesh.lookAt(new THREE.Vector3(0, 0, 0));
+          earthPinsGroup.add(ringMesh);
+        }
+
+        earthPinsGroup.add(pinMesh);
+      });
+    }
+
+    function populateTargetPins() {
+      while (targetPinsGroup.children.length > 0) {
+        targetPinsGroup.remove(targetPinsGroup.children[0]);
+      }
+
+      const sitesObj = (activeTargetPlanet === "mars") ? DB.mars_sites : DB.moon_sites;
+
+      Object.values(sitesObj || {}).forEach(site => {
+        const pos = latLngToVector3(site.coordinates.lat, site.coordinates.lng, 71.5);
+        const pinColor = (activeTargetPlanet === "mars") ? 0xf97316 : 0xffffff;
+        const pinGeo = new THREE.SphereGeometry(2.2, 16, 16);
+        const pinMat = new THREE.MeshBasicMaterial({ color: pinColor });
+        const pinMesh = new THREE.Mesh(pinGeo, pinMat);
+        pinMesh.position.copy(pos);
+        pinMesh.userData = { type: "target", data: site };
+
+        // Outer beacon ring
+        const ringGeo = new THREE.RingGeometry(2.8, 3.8, 16);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.position.copy(pos.clone().multiplyScalar(1.02));
+        ringMesh.lookAt(new THREE.Vector3(0, 0, 0));
+        targetPinsGroup.add(ringMesh);
+
+        targetPinsGroup.add(pinMesh);
+      });
+    }
+
+    // --- INTERACTION & CLICK HANDLERS ---
+    function handleGlobeClick(event, globeType) {
+      const rect = (globeType === "earth") 
+        ? rendererEarth.domElement.getBoundingClientRect()
+        : rendererTarget.domElement.getBoundingClientRect();
+
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const currentCamera = (globeType === "earth") ? cameraEarth : cameraTarget;
+      const currentPins = (globeType === "earth") ? earthPinsGroup : targetPinsGroup;
+
+      raycaster.setFromCamera(mouse, currentCamera);
+      const intersects = raycaster.intersectObjects(currentPins.children, false);
+
+      if (intersects.length > 0) {
+        const clicked = intersects[0].object.userData;
+        if (!clicked || !clicked.data) return;
+
+        if (globeType === "earth") {
+          selectedEarthAnalog = clicked.data;
+          // Smooth focus Earth
+          focusEarthOnCoords(selectedEarthAnalog.coordinates.lat, selectedEarthAnalog.coordinates.lng);
+          
+          // Auto-select best matching site on Mars/Moon
+          const topMatch = selectedEarthAnalog.top_matching_destinations && selectedEarthAnalog.top_matching_destinations[0];
+          if (topMatch) {
+            const isMars = !!DB.mars_sites[topMatch.target_id];
+            if (isMars && activeTargetPlanet !== "mars") {
+              setTargetPlanet("mars");
+            } else if (!isMars && activeTargetPlanet !== "moon") {
+              setTargetPlanet("moon");
+            }
+            selectedTargetSite = DB.mars_sites[topMatch.target_id] || DB.moon_sites[topMatch.target_id] || selectedTargetSite;
+            if (selectedTargetSite) {
+              focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+            }
+          }
+        } else {
+          selectedTargetSite = clicked.data;
+          focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+
+          // Find top Earth analog matching this target
+          const bestList = selectedTargetSite.best_earth_analogs || [];
+          if (bestList.length > 0) {
+            const matchId = bestList[0];
+            const foundAnalog = (DB.earth_analogs || []).find(a => a.id === matchId);
+            if (foundAnalog) {
+              selectedEarthAnalog = foundAnalog;
+              focusEarthOnCoords(selectedEarthAnalog.coordinates.lat, selectedEarthAnalog.coordinates.lng);
+            }
+          }
+        }
+        updateHUD();
+      }
+    }
+
+    function handleGlobeHover(event, globeType) {
+      const tooltip = document.getElementById("globe-tooltip");
+      const rect = (globeType === "earth") 
+        ? rendererEarth.domElement.getBoundingClientRect()
+        : rendererTarget.domElement.getBoundingClientRect();
+
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const currentCamera = (globeType === "earth") ? cameraEarth : cameraTarget;
+      const currentPins = (globeType === "earth") ? earthPinsGroup : targetPinsGroup;
+
+      raycaster.setFromCamera(mouse, currentCamera);
+      const intersects = raycaster.intersectObjects(currentPins.children, false);
+
+      if (intersects.length > 0) {
+        const hit = intersects[0].object.userData.data;
+        if (hit) {
+          tooltip.style.display = "block";
+          tooltip.style.left = (event.clientX + 12) + "px";
+          tooltip.style.top = (event.clientY - 25) + "px";
+          tooltip.innerHTML = `<strong>${hit.name}</strong><br><span style="color:#00f2fe;">${hit.country || hit.mission || ""}</span>`;
+          document.body.style.cursor = "pointer";
+          return;
+        }
+      }
+      tooltip.style.display = "none";
+      document.body.style.cursor = "default";
+    }
+
+    // --- SMOOTH CAMERA ROTATION TO TARGET COORDINATES ---
+    function focusEarthOnCoords(lat, lng) {
+      const targetPos = latLngToVector3(lat, lng, 230);
+      animateCameraTo(cameraEarth, controlsEarth, targetPos);
+    }
+
+    function focusTargetOnCoords(lat, lng) {
+      const targetPos = latLngToVector3(lat, lng, 230);
+      animateCameraTo(cameraTarget, controlsTarget, targetPos);
+    }
+
+    function animateCameraTo(cam, ctrl, endPos) {
+      const startPos = cam.position.clone();
+      let t = 0;
+      function step() {
+        t += 0.04;
+        if (t <= 1.0) {
+          cam.position.lerpVectors(startPos, endPos, t);
+          ctrl.update();
+          requestAnimationFrame(step);
+        } else {
+          cam.position.copy(endPos);
+          ctrl.update();
+        }
+      }
+      step();
+    }
+
+    // --- UPDATE MISSION INTELLIGENCE HUD ---
+    function updateHUD() {
+      if (!selectedEarthAnalog || !selectedTargetSite) return;
+
+      // 1. Earth Analog Card
+      const eBadge = document.getElementById("earth-badge");
+      if (selectedEarthAnalog.is_bolivian_gem) {
+        eBadge.className = "site-badge badge-bolivia-gem";
+        eBadge.textContent = "🇧🇴 JOYA DE BOLIVIA";
+      } else {
+        eBadge.className = "site-badge";
+        eBadge.style.background = "#0284c7";
+        eBadge.textContent = selectedEarthAnalog.country.toUpperCase();
+      }
+      document.getElementById("earth-name").textContent = selectedEarthAnalog.name;
+      document.getElementById("earth-coords").textContent = 
+        `${selectedEarthAnalog.region}, ${selectedEarthAnalog.country} • ${selectedEarthAnalog.coordinates.elevation_m} msnm (${selectedEarthAnalog.coordinates.lat.toFixed(2)}°, ${selectedEarthAnalog.coordinates.lng.toFixed(2)}°)`;
+      document.getElementById("earth-gases").textContent = 
+        `Presión: ${selectedEarthAnalog.gases_atmosphere.pressure_kpa} kPa • ${selectedEarthAnalog.gases_atmosphere.density_comparison}`;
+      document.getElementById("earth-minerals").textContent = 
+        selectedEarthAnalog.mineralogy.predominant.join(", ");
+      document.getElementById("earth-climate").textContent = 
+        `T: ${selectedEarthAnalog.climate_radiation.temp_min_c}°C a ${selectedEarthAnalog.climate_radiation.temp_max_c}°C • UV: ${selectedEarthAnalog.climate_radiation.uv_index} • Pendiente: ${selectedEarthAnalog.surface_roughness.mean_slope_deg}°`;
+
+      // 2. Extraterrestrial Target Card
+      const tBadge = document.getElementById("target-badge");
+      if (selectedTargetSite.body === "Mars") {
+        tBadge.className = "site-badge badge-mars";
+        tBadge.textContent = "MARTE";
+      } else {
+        tBadge.className = "site-badge badge-moon";
+        tBadge.textContent = "LUNA";
+      }
+      document.getElementById("target-name").textContent = selectedTargetSite.name;
+      document.getElementById("target-mission").textContent = `${selectedTargetSite.mission} (${selectedTargetSite.type})`;
+      document.getElementById("target-gases").textContent = 
+        `Presión: ${selectedTargetSite.gases_atmosphere.pressure_kpa} kPa • ${selectedTargetSite.gases_atmosphere.composition}`;
+      document.getElementById("target-minerals").textContent = 
+        selectedTargetSite.mineralogy.predominant.join(", ");
+      document.getElementById("target-climate").textContent = 
+        `T: ${selectedTargetSite.climate_radiation.temp_min_c}°C a ${selectedTargetSite.climate_radiation.temp_max_c}°C • Radiación: ${selectedTargetSite.climate_radiation.radiation_dose_msv_yr} mSv/año`;
+
+      // 3. PSI Score Calculation & Breakdown
+      const simEntry = selectedEarthAnalog.target_similarity_scores && selectedEarthAnalog.target_similarity_scores[selectedTargetSite.id];
+      const psiVal = simEntry ? simEntry.overall_psi : 75.0;
+      const sub = simEntry ? simEntry.subscores : { topography: 80, mineralogy: 70, environment: 75 };
+      const tierText = simEntry ? simEntry.match_tier : "Tier 2: High-Fidelity Planetary Analog";
+
+      document.getElementById("psi-score").textContent = Math.round(psiVal) + "%";
+      document.getElementById("psi-circle").style.background = 
+        `conic-gradient(var(--accent) 0deg, var(--accent) ${psiVal * 3.6}deg, rgba(255,255,255,0.1) ${psiVal * 3.6}deg)`;
+      document.getElementById("psi-tier").textContent = tierText;
+
+      document.getElementById("sub-topo").textContent = Math.round(sub.topography) + "%";
+      document.getElementById("bar-topo").style.width = sub.topography + "%";
+
+      document.getElementById("sub-min").textContent = Math.round(sub.mineralogy) + "%";
+      document.getElementById("bar-min").style.width = sub.mineralogy + "%";
+
+      document.getElementById("sub-env").textContent = Math.round(sub.environment) + "%";
+      document.getElementById("bar-env").style.width = sub.environment + "%";
+
+      // 4. Mission Preparation & Habitat Gear Lists
+      const gearUl = document.getElementById("gear-list");
+      gearUl.innerHTML = "";
+      (selectedTargetSite.mission_equipment_needed || []).slice(0, 4).forEach(item => {
+        const li = document.createElement("li");
+        li.className = "gear-item";
+        li.innerHTML = `<span class="gear-bullet">►</span> ${item}`;
+        gearUl.appendChild(li);
+      });
+
+      const habUl = document.getElementById("habitat-list");
+      habUl.innerHTML = "";
+      (selectedTargetSite.habitat_conditioning || []).slice(0, 3).forEach(item => {
+        const li = document.createElement("li");
+        li.className = "gear-item";
+        li.innerHTML = `<span class="gear-bullet">★</span> ${item}`;
+        habUl.appendChild(li);
+      });
+    }
+
+    // --- PLANET SELECTOR TOGGLE ---
+    function setTargetPlanet(planet) {
+      activeTargetPlanet = planet;
+      const btnMars = document.getElementById("btn-mars");
+      const btnMoon = document.getElementById("btn-moon");
+      const title = document.getElementById("target-globe-title");
+      const sub = document.getElementById("target-globe-sub");
+
+      if (planet === "mars") {
+        btnMars.classList.add("active");
+        btnMoon.classList.remove("active");
+        title.innerHTML = "🔴 Planeta Marte";
+        title.style.color = "var(--mars-color)";
+        sub.textContent = "Sitios de Rovers, Misiones Activas y Futuras Bases";
+        globeTarget.material.map = createMarsTexture();
+        globeTarget.material.needsUpdate = true;
+        selectedTargetSite = DB.mars_sites["jezero_crater"] || Object.values(DB.mars_sites)[0];
+      } else {
+        btnMoon.classList.add("active");
+        btnMars.classList.remove("active");
+        title.innerHTML = "⚪ Satélite Luna";
+        title.style.color = "var(--moon-color)";
+        sub.textContent = "Misiones Apollo Históricas y Base Sur Artemis III";
+        globeTarget.material.map = createMoonTexture();
+        globeTarget.material.needsUpdate = true;
+        selectedTargetSite = DB.moon_sites["shackleton_crater"] || Object.values(DB.moon_sites)[0];
+      }
+
+      populateTargetPins();
+      if (selectedTargetSite) {
+        focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+      }
+      updateHUD();
+    }
+
+    document.getElementById("btn-mars").addEventListener("click", () => setTargetPlanet("mars"));
+    document.getElementById("btn-moon").addEventListener("click", () => setTargetPlanet("moon"));
+
+    // --- SEARCH AND FILTER LOGIC ---
+    const searchInput = document.getElementById("region-search");
+    searchInput.addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) return;
+
+      const match = (DB.earth_analogs || []).find(a => 
+        a.name.toLowerCase().includes(q) || 
+        a.country.toLowerCase().includes(q) || 
+        a.region.toLowerCase().includes(q)
+      );
+
+      if (match) {
+        selectedEarthAnalog = match;
+        focusEarthOnCoords(match.coordinates.lat, match.coordinates.lng);
+        updateHUD();
+      }
+    });
+
+    document.querySelectorAll(".pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.dataset.filter;
+
+        if (filter === "bolivia") {
+          const uyuni = (DB.earth_analogs || []).find(a => a.id === "salar_de_uyuni");
+          if (uyuni) {
+            selectedEarthAnalog = uyuni;
+            focusEarthOnCoords(uyuni.coordinates.lat, uyuni.coordinates.lng);
+          }
+        } else if (filter === "volcano") {
+          const sajama = (DB.earth_analogs || []).find(a => a.id === "nevado_sajama" || a.id === "sol_de_manana");
+          if (sajama) {
+            selectedEarthAnalog = sajama;
+            focusEarthOnCoords(sajama.coordinates.lat, sajama.coordinates.lng);
+          }
+        } else if (filter === "cryo") {
+          const mcmurdo = (DB.earth_analogs || []).find(a => a.id === "mcmurdo_dry_valleys");
+          if (mcmurdo) {
+            selectedEarthAnalog = mcmurdo;
+            focusEarthOnCoords(mcmurdo.coordinates.lat, mcmurdo.coordinates.lng);
+          }
+        }
+        updateHUD();
+      });
+    });
+
+    // --- ANIMATION LOOP & RESIZE ---
+    function onWindowResize() {
+      const eContainer = document.getElementById("canvas-earth");
+      cameraEarth.aspect = eContainer.clientWidth / eContainer.clientHeight;
+      cameraEarth.updateProjectionMatrix();
+      rendererEarth.setSize(eContainer.clientWidth, eContainer.clientHeight);
+
+      const tContainer = document.getElementById("canvas-target");
+      cameraTarget.aspect = tContainer.clientWidth / tContainer.clientHeight;
+      cameraTarget.updateProjectionMatrix();
+      rendererTarget.setSize(tContainer.clientWidth, tContainer.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Slow cinematic idle spin when user is not dragging
+      if (!controlsEarth.state || controlsEarth.state === -1) {
+        globeEarth.rotation.y += 0.0006;
+      }
+      if (!controlsTarget.state || controlsTarget.state === -1) {
+        globeTarget.rotation.y += 0.0006;
+      }
+
+      controlsEarth.update();
+      controlsTarget.update();
+
+      rendererEarth.render(sceneEarth, cameraEarth);
+      rendererTarget.render(sceneTarget, cameraTarget);
+    }
+
+    // Initialize when DOM ready
+    window.addEventListener("DOMContentLoaded", initDualGlobes);
+  </script>
+</body>
+</html>
+

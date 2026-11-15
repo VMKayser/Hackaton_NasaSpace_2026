@@ -114,6 +114,7 @@ export const es: Record<keyof typeof en, string> = {
   'pin.methodText': 'Los dos círculos se muestrean en una rejilla regular cada {step} m y la pendiente se calcula en esa misma rejilla. El paso es la resolución más gruesa de los dos modelos (teselas de la Tierra de {earthPx} m por píxel; modelo de {body} de {grid} m): así ningún lado se mide con más detalle que el otro. Radio: {km} km. En terreno muy llano, la pendiente medida a resolución fina refleja sobre todo el ruido del modelo.',
   'pin.notScore': 'Piloto: solo mide pendiente y relieve, las dos variables que se pueden calcular en cualquier lugar a partir de modelos de elevación. La comparación entre los dos pines no da un puntaje: el puntaje completo solo existe para los objetivos del archivo y abarca todas las dimensiones.',
   'pin.sources': 'Datos de elevación',
+  'explore.polarUnavailable': 'La vista 3D no está disponible para {target}: está a más de {lat}° de latitud y el mapa 3D no llega tan cerca del polo. El mapa muestra una imagen fija de la zona.',
   'explore.openModes': 'Lado a lado, cortina o superposición',
   'pin.mapHintMoon': 'Haz clic en la Tierra o en la Luna para poner un pin. En la Luna, entre 60° N y 60° S: la zona que cubre el modelo global de USGS (líneas punteadas).',
   'pin.noScoreShort': 'mediciones del relieve real, sin puntaje de similitud.',

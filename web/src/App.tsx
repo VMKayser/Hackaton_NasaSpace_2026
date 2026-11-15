@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { EXPLORE_MAX_LAT } from './map/planetaryImagery'
 import { DemoBanner, Header } from './components/Header'
 import { ComparisonPanel } from './components/ComparisonPanel'
 import { MapWorkspace } from './components/MapWorkspace'
@@ -119,7 +120,7 @@ export default function App() {
       : target
     return { row, target: planet }
   }, [pinActive, state.pin, state.tpin, target, pinRadius, lang])
-  const canExplore = !!target && (pinExplore ? true : !!selected && Math.abs(target.lat) <= 80)
+  const canExplore = !!target && (pinExplore ? true : !!selected && Math.abs(target.lat) <= EXPLORE_MAX_LAT)
   const openExplore = canExplore ? () => setExploring(true) : null
   const showExplore = !!(exploring && model && target && (pinExplore || selected))
   const story = model?.texts.story ?? []

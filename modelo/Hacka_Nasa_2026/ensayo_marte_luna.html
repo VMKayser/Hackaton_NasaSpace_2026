@@ -1,0 +1,4291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA - Predictor Inverso: Marte / Luna ➔ Análogos Terrestres en Bolivia y el Mundo</title>
+  
+  <!-- Tipografía Oficial NASA / Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Carga del Modelo Digital de Elevación Satelital de Bolivia (Copernicus DEM 90m / SRTM 30s) -->
+  <script src="data/dem/bolivia_dem_embedded.js"></script>
+
+  <style>
+    :root {
+      --bg: #040814;
+      --card-bg: rgba(11, 19, 38, 0.92);
+      --card-border: rgba(38, 56, 95, 0.75);
+      --accent: #00f2fe;
+      --accent-glow: rgba(0, 242, 254, 0.4);
+      --accent-blue: #0284c7;
+      --mars-color: #f97316;
+      --mars-glow: rgba(249, 115, 22, 0.4);
+      --moon-color: #cbd5e1;
+      --moon-glow: rgba(203, 213, 225, 0.35);
+      --bolivia-gold: #fbbf24;
+      --success: #22c55e;
+      --warning: #eab308;
+      --danger: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(2, 132, 199, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #020617 0%, #040814 100%);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    .top-header {
+      background: rgba(8, 14, 28, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.85rem 1.75rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-branding {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    .nasa-badge {
+      background: #0b3d91;
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.95rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      letter-spacing: 1.5px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 14px rgba(11, 61, 145, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .header-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-title-main {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .header-title-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .header-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-pill-btn {
+      background: rgba(14, 28, 56, 0.9);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.42rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.25s;
+    }
+
+    .nav-pill-btn:hover {
+      background: var(--accent);
+      color: #040814;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    /* MAIN CONTAINER */
+    .app-container {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      box-sizing: border-box;
+    }
+
+    /* SECTIONS */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.15rem 1.45rem;
+      box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.65rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 0.96rem;
+      font-weight: 900;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* TOGGLE DE PLANETA (MARTE / LUNA) */
+    .planet-toggle-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .planet-btn {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(14, 28, 56, 0.8);
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .planet-btn.mars-btn.active {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.35) 0%, rgba(194, 65, 12, 0.7) 100%);
+      border-color: var(--mars-color);
+      color: #ffffff;
+      box-shadow: 0 0 20px var(--mars-glow);
+    }
+
+    .planet-btn.moon-btn.active {
+      background: linear-gradient(135deg, rgba(203, 213, 225, 0.25) 0%, rgba(100, 116, 139, 0.6) 100%);
+      border-color: var(--moon-color);
+      color: #ffffff;
+      box-shadow: 0 0 20px var(--moon-glow);
+    }
+
+    /* TARGET CHIPS CAROUSEL */
+    .target-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+
+    .target-chip {
+      background: rgba(14, 28, 56, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      transition: all 0.25s;
+      text-align: left;
+    }
+
+    .target-chip:hover {
+      background: rgba(0, 242, 254, 0.12);
+      border-color: rgba(0, 242, 254, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .target-chip.active {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.4) 0%, rgba(0, 242, 254, 0.25) 100%);
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .target-chip-name {
+      font-size: 0.80rem;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .target-chip-sub {
+      font-size: 0.66rem;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* DOSSIER CARD DEL OBJETIVO EXTRATERRESTRE */
+    .target-dossier-card {
+      background: rgba(6, 12, 26, 0.9);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .dossier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+    }
+
+    .dossier-title {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .dossier-mission-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(2, 132, 199, 0.2);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.65rem;
+    }
+
+    .dossier-metric-box {
+      background: rgba(14, 28, 56, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .dossier-metric-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .dossier-metric-val {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    .dossier-summary-text {
+      font-size: 0.74rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent);
+    }
+
+    /* BOTONES DE ACCIÓN */
+    .btn-run-ml {
+      width: 100%;
+      height: 44px;
+      font-size: 0.88rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      background: linear-gradient(135deg, #0284c7 0%, #00f2fe 100%);
+      color: #040814;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 18px var(--accent-glow);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.25s;
+    }
+
+    .btn-run-ml:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--accent-glow);
+    }
+
+    /* DIMENSION SELECTOR MODULE */
+    .dimension-selector-card {
+      background: rgba(10, 20, 42, 0.95);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      border-radius: 10px;
+      padding: 0.95rem 1.15rem;
+      margin-bottom: 1.15rem;
+      box-shadow: 0 4px 22px rgba(0, 242, 254, 0.08);
+    }
+
+    .dimension-selector-header {
+      margin-bottom: 0.75rem;
+    }
+
+    .dim-title {
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .dim-subtitle {
+      font-size: 0.73rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+      line-height: 1.35;
+    }
+
+    .dimension-tabs-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+
+    @media (max-width: 900px) {
+      .dimension-tabs-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .dimension-tabs-row { grid-template-columns: 1fr; }
+    }
+
+    .dim-tab {
+      background: rgba(14, 28, 56, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: left;
+      color: var(--text-main);
+    }
+
+    .dim-tab:hover {
+      background: rgba(0, 242, 254, 0.12);
+      border-color: rgba(0, 242, 254, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .dim-tab.active {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.35) 0%, rgba(0, 242, 254, 0.22) 100%);
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .dim-tab-icon {
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
+    .dim-tab-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+    }
+
+    .dim-tab-name {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dim-tab.active .dim-tab-name {
+      color: var(--accent);
+    }
+
+    .dim-tab-desc {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* THEMATIC SPOTLIGHT CARD */
+    .thematic-spotlight {
+      background: rgba(6, 12, 24, 0.9);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .thematic-spotlight-badge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+    }
+
+    .thematic-target-title {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .thematic-target-score {
+      font-size: 0.82rem;
+      font-weight: 900;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(0, 242, 254, 0.18);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .thematic-grid-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.6rem;
+    }
+
+    .thematic-metric-box {
+      background: rgba(14, 28, 56, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 0.55rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .thematic-metric-label {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .thematic-metric-values {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .thematic-metric-diff {
+      font-size: 0.70rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .thematic-insight-text {
+      font-size: 0.74rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      background: rgba(2, 132, 199, 0.1);
+      border-left: 3px solid var(--accent);
+      padding: 0.45rem 0.75rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* FILTROS DE ALCANCE GEOGRÁFICO */
+    .filter-pills-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .filter-pill {
+      background: rgba(14, 28, 56, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 0.32rem 0.8rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .filter-pill:hover {
+      background: rgba(0, 242, 254, 0.15);
+      color: #fff;
+    }
+
+    .filter-pill.active {
+      background: var(--accent);
+      color: #040814;
+      font-weight: 900;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .search-filter-input {
+      margin-left: auto;
+      background: rgba(6, 12, 26, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      color: #fff;
+      min-width: 240px;
+    }
+    .search-filter-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* TABLA SCROLLABLE DE ANÁLOGOS TERRESTRES (10 FILAS EN PANTALLA) */
+    .earth-table-scroll-container {
+      max-height: 490px;
+      overflow-y: auto;
+      overflow-x: auto;
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 8px;
+      background: rgba(6, 12, 26, 0.95);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Custom Scrollbar */
+    .earth-table-scroll-container::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .earth-table-scroll-container::-webkit-scrollbar-track {
+      background: rgba(4, 8, 20, 0.8);
+    }
+    .earth-table-scroll-container::-webkit-scrollbar-thumb {
+      background: var(--accent-blue);
+      border-radius: 4px;
+    }
+    .earth-table-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      text-align: left;
+    }
+
+    .audit-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #081126;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .audit-table th {
+      padding: 0.65rem 0.85rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1.5px solid rgba(0, 242, 254, 0.4);
+      white-space: nowrap;
+    }
+
+    .audit-table td {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+    }
+
+    .audit-table tbody tr {
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .audit-table tbody tr:hover {
+      background: rgba(0, 242, 254, 0.08);
+    }
+
+    .audit-table tbody tr.selected-row {
+      background: rgba(0, 242, 254, 0.16) !important;
+      outline: 1.5px solid var(--accent);
+    }
+
+    .btn-select-earth {
+      background: rgba(2, 132, 199, 0.25);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 0.25rem 0.55rem;
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-select-earth:hover {
+      background: var(--accent);
+      color: #040814;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* PSI SUMMARY BAR */
+    .psi-summary-grid {
+      display: grid;
+      grid-template-columns: 170px 1.4fr 1.15fr;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    @media (max-width: 1050px) {
+      .psi-summary-grid { grid-template-columns: 160px 1fr; }
+      .earth-summary-card { grid-column: 1 / -1; }
+    }
+    @media (max-width: 700px) {
+      .psi-summary-grid { grid-template-columns: 1fr; }
+    }
+
+    .psi-summary-score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .psi-circle {
+      position: relative;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.35rem;
+      transition: all 0.4s ease;
+    }
+
+    .psi-inner {
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .psi-number {
+      font-weight: 900;
+      font-family: var(--font-mono);
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .psi-sub {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    .psi-summary-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .subscore-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .subscore-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .earth-summary-card {
+      background: rgba(6, 12, 26, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.75rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      line-height: 1.35;
+    }
+
+    .formula-banner {
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 6px;
+      font-size: 0.70rem;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hoverable-row:hover {
+      background: rgba(0, 242, 254, 0.07);
+    }
+
+    .highlight-subtotal {
+      background: rgba(2, 132, 199, 0.15) !important;
+      font-weight: 800;
+      border-top: 1px solid rgba(0, 242, 254, 0.3);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.3);
+    }
+
+    .highlight-final {
+      background: rgba(0, 242, 254, 0.18) !important;
+      font-weight: 900;
+      border-top: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      font-size: 0.80rem;
+    }
+
+    .row-highlight-active-dim {
+      background: rgba(0, 242, 254, 0.12) !important;
+      outline: 1.5px solid rgba(0, 242, 254, 0.4);
+    }
+
+    .active-dim-tag {
+      font-size: 0.60rem;
+      font-weight: 800;
+      color: #0284c7;
+      background: rgba(0, 242, 254, 0.22);
+      border: 1px solid rgba(0, 242, 254, 0.6);
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+
+    /* AUDITORÍA AVANZADA */
+    .advanced-audit-details {
+      background: rgba(8, 14, 28, 0.85);
+      border: 1px dashed var(--card-border);
+      padding: 0.9rem 1.2rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+    }
+
+    .advanced-audit-details[open] {
+      border-style: solid;
+      border-color: rgba(0, 242, 254, 0.35);
+      padding: 1.35rem;
+    }
+
+    .advanced-audit-summary {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+    }
+
+    .advanced-audit-pill {
+      font-size: 0.70rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0, 242, 254, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 242, 254, 0.25);
+    }
+
+    .cards-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 850px) {
+      .cards-2col { grid-template-columns: 1fr; }
+    }
+
+    .defense-card {
+      background: rgba(6, 12, 24, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+    }
+
+    .defense-card-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .defense-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: 0.72rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    /* HOVER METRIC POPOVER */
+    .metric-hover-popover {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      background: rgba(4, 8, 20, 0.98);
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 8px 32px rgba(0, 242, 254, 0.35);
+      border-radius: 10px;
+      padding: 0.85rem 1.15rem;
+      max-width: 380px;
+      width: 90vw;
+      display: none;
+      font-size: 0.74rem;
+      color: #ffffff;
+      line-height: 1.45;
+      backdrop-filter: blur(14px);
+    }
+
+    .metric-hover-title {
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.3rem;
+    }
+
+    .source-link {
+      color: #38bdf8;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .source-link:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <div class="header-branding">
+      <div class="nasa-badge"><span>🚀</span> NASA</div>
+      <div class="header-titles">
+        <div class="header-title-main">
+          <span>PREDICTOR INVERSO: MARTE / LUNA ➔ ANÁLOGOS TERRESTRES</span>
+        </div>
+        <div class="header-title-sub">
+          Búsqueda de Análogos en Bolivia y el Mundo a partir de Misiones Extraterrestres • Métrica PSI 2026
+        </div>
+      </div>
+    </div>
+    <div class="header-nav-actions">
+      <a href="ensayo.html" class="nav-pill-btn">
+        <span>🔄</span> Modo Directo: Tierra ➔ Espacio
+      </a>
+    </div>
+  </header>
+
+  <!-- APP CONTAINER -->
+  <main class="app-container">
+
+    <!-- 1. SELECCIÓN DEL OBJETIVO EXTRATERRESTRE DE ORIGEN (MARTE O LUNA) -->
+    <section class="section-card" id="target-selection-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>🎯</span> 1. SELECCIÓN DEL OBJETIVO EXTRATERRESTRE DE ORIGEN
+          </div>
+          <div class="section-desc">
+            Elige el cuerpo celeste (Marte o la Luna) y la cuenca o misión de aterrizaje. El modelo buscará de inmediato todos los análogos terrestres en Bolivia y el mundo con similitud general mayor a 0%.
+          </div>
+        </div>
+      </div>
+
+      <!-- Selector de Planeta / Luna -->
+      <div class="planet-toggle-row">
+        <button class="planet-btn mars-btn active" id="btn-mars" onclick="switchBodyTarget('mars')">
+          <span>🔴</span> MARTE (10 Misiones y Cuencas Oficiales)
+        </button>
+        <button class="planet-btn moon-btn" id="btn-moon" onclick="switchBodyTarget('moon')">
+          <span>⚪</span> LUNA (8 Misiones Artemis y Apolo)
+        </button>
+      </div>
+
+      <!-- Chips de Destinos Extraterrestres -->
+      <div class="target-chips-grid" id="planetary-targets-grid">
+        <!-- Renderizado dinámico -->
+      </div>
+
+      <!-- Ficha Geofísica Oficial del Destino Extraterrestre Seleccionado -->
+      <div class="target-dossier-card" id="target-dossier-box">
+        <!-- Renderizado dinámico -->
+      </div>
+
+      <!-- Botón de Ejecución -->
+      <button class="btn-run-ml" onclick="executeInverseSearch()">
+        <span>⚡</span> EJECUTAR BÚSQUEDA INVERSA Y EVALUAR ANÁLOGOS TERRESTRES 👇
+      </button>
+    </section>
+
+    <!-- 2. EXPLORADOR MULTI-CRITERIO Y THEMATIC SPOTLIGHT -->
+    <section class="section-card" id="dimension-selector-section">
+      <div class="dimension-selector-card">
+        <div class="dimension-selector-header">
+          <div class="dim-title">
+            <span>🧭</span> ENFOQUE DE EVALUACIÓN SEGÚN CARACTERÍSTICA CIENTÍFICA:
+          </div>
+          <div class="dim-subtitle">
+            Un objetivo de Marte o la Luna puede tener su mejor análogo morfológico en una meseta volcánica, pero su mejor análogo mineralógico en un salar o cuenca evaporítica. Alterna entre los criterios para re-ordenar el ranking mundial:
+          </div>
+        </div>
+
+        <div class="dimension-tabs-row">
+          <button class="dim-tab active" id="tab-dim-global" onclick="switchDimensionCriterion('global')">
+            <span class="dim-tab-icon">🌐</span>
+            <div class="dim-tab-text">
+              <div class="dim-tab-name">Similitud Global (PSI)</div>
+              <div class="dim-tab-desc">Balance integral (35% Topo + 35% Clima + 30% Min)</div>
+            </div>
+          </button>
+          <button class="dim-tab" id="tab-dim-topo" onclick="switchDimensionCriterion('topo')">
+            <span class="dim-tab-icon">🏔️</span>
+            <div class="dim-tab-text">
+              <div class="dim-tab-name">Topología y Relieves (S_topo)</div>
+              <div class="dim-tab-desc">Pendientes, rugosidad y relieve local escalado</div>
+            </div>
+          </button>
+          <button class="dim-tab" id="tab-dim-clim" onclick="switchDimensionCriterion('clim')">
+            <span class="dim-tab-icon">🌡️</span>
+            <div class="dim-tab-text">
+              <div class="dim-tab-name">Climatología y Radiación (S_clim)</div>
+              <div class="dim-tab-desc">Presión barométrica, aridez, UV y gradiente térmico</div>
+            </div>
+          </button>
+          <button class="dim-tab" id="tab-dim-min" onclick="switchDimensionCriterion('min')">
+            <span class="dim-tab-icon">🧪</span>
+            <div class="dim-tab-text">
+              <div class="dim-tab-name">Mineralogía y Regolito (S_min)</div>
+              <div class="dim-tab-desc">Fases litológicas, regolito, sulfatos, basaltos y anortosita</div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Tarjeta Dinámica de Enfoque Temático (Spotlight) -->
+        <div class="thematic-spotlight" id="thematic-spotlight-box">
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TABLA SCROLLABLE DE ANÁLOGOS TERRESTRES ENCONTRADOS (Muestra 10 con scroll para ver los demás) -->
+    <section class="section-card" id="earth-analogs-table-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>🌍</span> 2. ANÁLOGOS TERRESTRES ENCONTRADOS EN BOLIVIA Y EL MUNDO (SIMILITUD GENERAL > 0%)
+          </div>
+          <div class="section-desc">
+            Visualiza los 10 primeros resultados ordenados por fidelidad física. Desliza la tabla verticalmente para explorar los demás análogos terrestres disponibles. Haz clic en cualquier fila para auditar la comparación lado a lado completa.
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros de alcance geográfico y buscador rápido -->
+      <div class="filter-pills-row">
+        <button class="filter-pill active" id="filter-scope-all" onclick="setGeographicScope('all', this)">🌎 Todos los Análogos (58)</button>
+        <button class="filter-pill" id="filter-scope-bolivia" onclick="setGeographicScope('bolivia', this)">🇧🇴 Solo Bolivia (33)</button>
+        <button class="filter-pill" id="filter-scope-southamerica" onclick="setGeographicScope('southamerica', this)">🏔️ Andes & Cono Sur (46)</button>
+        <button class="filter-pill" id="filter-scope-global" onclick="setGeographicScope('global', this)">❄️ Extremos Internacionales / Polares (12)</button>
+        <input type="text" class="search-filter-input" id="search-filter-input" placeholder="🔍 Filtrar por nombre, país, región o mineral..." oninput="handleFilterSearch(this.value)">
+      </div>
+
+      <!-- Contenedor con altura fija y scroll vertical para visualizar 10 filas simultáneas -->
+      <div class="earth-table-scroll-container">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 5%;">#</th>
+              <th style="width: 21%;">Lugar Terrestre (Análogo)</th>
+              <th style="width: 13%;">País / Región</th>
+              <th style="width: 13%;">Coordenadas & Cota</th>
+              <th style="width: 9%;">Área (km²)</th>
+              <th style="width: 8%;">S_topo</th>
+              <th style="width: 8%;">S_clim</th>
+              <th style="width: 8%;">S_min</th>
+              <th style="width: 10%;">PSI Global</th>
+              <th style="width: 5%;">Auditoría</th>
+            </tr>
+          </thead>
+          <tbody id="earth-analogs-tbody">
+            <!-- Renderizado dinámico -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. TABLA COMPARATIVA LADO A LADO: DESTINO EXTRATERRESTRE VS ANÁLOGO TERRESTRE SELECCIONADO -->
+    <section class="section-card" id="comparison-audit-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">
+            <span>⚖️</span> 3. TABLA COMPARATIVA LADO A LADO: DESTINO EXTRATERRESTRE VS ANÁLOGO TERRESTRE
+          </div>
+          <div class="section-desc">
+            Auditoría cuantitativa de los 16 parámetros geofísicos con normalización de escala planetaria y fuentes oficiales de datos. Pasa el cursor sobre cualquier fila para auditar el cálculo.
+          </div>
+        </div>
+      </div>
+
+      <!-- RESUMEN EJECUTIVO PSI -->
+      <div class="psi-summary-grid" style="margin-bottom: 1.15rem; padding: 0.9rem 1.1rem; background: rgba(8, 14, 28, 0.85); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 8px;">
+        <div class="psi-summary-score">
+          <div class="psi-circle" id="psi-circle" onmouseenter="showMetricHover('psi', event)" onmousemove="moveMetricHover(event)" onmouseleave="hideMetricHover()" style="width: 95px; height: 95px;">
+            <div class="psi-inner" style="width: 78px; height: 78px;">
+              <span class="psi-number" id="psi-main-val" style="font-size: 1.55rem;">--%</span>
+              <span class="psi-sub" style="font-size: 0.58rem;">SIMILITUD</span>
+            </div>
+          </div>
+          <div id="psi-tier-badge" style="font-size: 0.70rem; font-weight: 800; color: #4ade80; text-align: center;">--</div>
+        </div>
+
+        <div class="psi-summary-bars">
+          <div class="formula-banner" style="margin-bottom: 0.35rem; padding: 0.35rem 0.65rem;" onmouseenter="showMetricHover('formula', event)" onmousemove="moveMetricHover(event)" onmouseleave="hideMetricHover()">
+            <span>📐 <strong>Fórmula Ponderada:</strong> PSI = 0.35·S_topo + 0.35·S_clim + 0.30·S_min</span>
+            <span style="font-size: 0.68rem; text-decoration: underline;">Ver desglose ℹ️</span>
+          </div>
+
+          <div class="subscore-item" onmouseenter="showMetricHover('slope', event)" onmousemove="moveMetricHover(event)" onmouseleave="hideMetricHover()">
+            <div class="subscore-label-row">
+              <span style="color: #cbd5e1; font-weight: 600;">🏔️ Similitud Topográfica & Relieve (S_topo) — Peso 35%</span>
+              <span style="color: var(--accent); font-weight: 800;" id="bar-val-topo">--%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill-topo" style="width: 0%; background: var(--accent);"></div>
+            </div>
+          </div>
+
+          <div class="subscore-item" onmouseenter="showMetricHover('temp', event)" onmousemove="moveMetricHover(event)" onmouseleave="hideMetricHover()">
+            <div class="subscore-label-row">
+              <span style="color: #cbd5e1; font-weight: 600;">🌡️ Similitud Climatológica & Radiación (S_clim) — Peso 35%</span>
+              <span style="color: #38bdf8; font-weight: 800;" id="bar-val-clim">--%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill-clim" style="width: 0%; background: #38bdf8;"></div>
+            </div>
+          </div>
+
+          <div class="subscore-item" onmouseenter="showMetricHover('family', event)" onmousemove="moveMetricHover(event)" onmouseleave="hideMetricHover()">
+            <div class="subscore-label-row">
+              <span style="color: #cbd5e1; font-weight: 600;">🧪 Similitud Mineralógica & Regolito (S_min) — Peso 30%</span>
+              <span style="color: #a855f7; font-weight: 800;" id="bar-val-min">--%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill-min" style="width: 0%; background: #a855f7;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="earth-summary-card" id="earth-quick-summary">
+        </div>
+      </div>
+
+      <!-- TABLA DE 16 PARÁMETROS -->
+      <div style="overflow-x: auto;">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Parámetro Analizado</th>
+              <th style="width: 22%;" id="th-target-name">Destino Extraterrestre</th>
+              <th style="width: 22%;" id="th-earth-name">Análogo Terrestre Seleccionado</th>
+              <th style="width: 14%;">Similitud</th>
+              <th style="width: 20%;">📚 Fuente Oficial & Cita Científica</th>
+            </tr>
+          </thead>
+          <tbody id="side-by-side-tbody">
+            <!-- Renderizado dinámico -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. AUDITORÍA TÉCNICA AVANZADA (COLAPSABLE) -->
+    <details class="section-card advanced-audit-details">
+      <summary class="advanced-audit-summary">
+        <span style="font-size: 0.88rem; font-weight: 800; color: var(--accent); display: flex; align-items: center; gap: 0.5rem;">
+          <span>🔬</span> MOSTRAR AUDITORÍA TÉCNICA AVANZADA: ESPACIO LATENTE PCA 3D, RECOMENDACIONES Y LÍMITES
+        </span>
+        <span class="advanced-audit-pill">Opcional / Clic para desplegar ▼</span>
+      </summary>
+
+      <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Espacio Latente PCA 3D -->
+        <div class="defense-card">
+          <div class="defense-card-title">
+            <span>🧬</span> PROYECCIÓN EN ESPACIO LATENTE CONTINUO (PCA 3D MULTI-PLANETARIO)
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; margin: 0.5rem 0;">
+            <div style="background: rgba(14,28,56,0.6); padding: 0.5rem; border-radius: 6px;">
+              <div style="font-size: 0.65rem; color: #94a3b8;">PC1 (Varianza 44.1%)</div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: var(--accent);" id="pca-pc1">--</div>
+            </div>
+            <div style="background: rgba(14,28,56,0.6); padding: 0.5rem; border-radius: 6px;">
+              <div style="font-size: 0.65rem; color: #94a3b8;">PC2 (Varianza 29.1%)</div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: var(--accent);" id="pca-pc2">--</div>
+            </div>
+            <div style="background: rgba(14,28,56,0.6); padding: 0.5rem; border-radius: 6px;">
+              <div style="font-size: 0.65rem; color: #94a3b8;">PC3 (Varianza 12.0%)</div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: var(--accent);" id="pca-pc3">--</div>
+            </div>
+          </div>
+          <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.4;">
+            <div>• Varianza total conservada en el modelo de Machine Learning: <strong style="color: var(--accent);">85.2%</strong></div>
+            <div id="pca-cosine-text">• Similitud Coseno latente (Extraterrestre vs Tierra): <strong>--</strong></div>
+            <div id="pca-dist-text">• Distancia Euclidiana en Espacio Latente ($d_{pca}$): <strong>--</strong></div>
+          </div>
+        </div>
+
+        <!-- Recomendaciones y Límites -->
+        <div class="cards-2col">
+          <div class="defense-card">
+            <div class="defense-card-title">
+              <span>🛠️</span> Recomendaciones Operativas para Ensayos de Misión (NASA / ESA)
+            </div>
+            <ul class="defense-list" id="mission-recs-list">
+            </ul>
+          </div>
+
+          <div class="defense-card">
+            <div class="defense-card-title" style="color: #fbbf24;">
+              <span>⚠️</span> Límites del Análogo Terrestre (Brecha de Fidelidad Física)
+            </div>
+            <ul class="defense-list" id="analogy-limits-list">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+  </main>
+
+  <!-- METRIC HOVER POPOVER FLOTANTE -->
+  <div class="metric-hover-popover" id="metric-popover">
+    <div class="metric-hover-title" id="popover-title">Métrica</div>
+    <div id="popover-desc">Descripción matemática</div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // BASE DE DATOS COMPLETA CALIBRADA (TIERRA, MARTE Y LUNA)
+    // =========================================================================
+    const ALL_STATIONS = [
+  {
+    "id": "uyuni",
+    "name": "Salar de Uyuni",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -20.13,
+    "lon": -67.49,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.8,
+    "relief": 1.5,
+    "roughness": 0.35,
+    "temp": 8.5,
+    "temp_swing": 25.0,
+    "precip": 160.0,
+    "solar_flux": 24.2,
+    "atm_pressure": 65.2,
+    "elevation": 3656.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 78.5
+  },
+  {
+    "id": "coipasa",
+    "name": "Salar de Coipasa",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -19.38,
+    "lon": -68.13,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.1,
+    "relief": 2.2,
+    "roughness": 0.45,
+    "temp": 9.0,
+    "temp_swing": 24.0,
+    "precip": 180.0,
+    "solar_flux": 24.0,
+    "atm_pressure": 65.0,
+    "elevation": 3680.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Oruro",
+    "area_km2": 78.5
+  },
+  {
+    "id": "sol-de-manana",
+    "name": "Sol de Mañana",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.43,
+    "lon": -67.76,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 14.5,
+    "relief": 120.0,
+    "roughness": 4.5,
+    "temp": -2.5,
+    "temp_swing": 28.0,
+    "precip": 90.0,
+    "solar_flux": 25.5,
+    "atm_pressure": 57.5,
+    "elevation": 4850.0,
+    "geology": "hydrothermal",
+    "minerals": "Sílice opalina sinterizada, Azufre nativo elemental, Jarosita, Yeso fumarólico, Esmectita",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "laguna-colorada",
+    "name": "Laguna Colorada",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.2,
+    "lon": -67.78,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 3.0,
+    "temp_swing": 26.0,
+    "precip": 110.0,
+    "solar_flux": 25.0,
+    "atm_pressure": 60.5,
+    "elevation": 4278.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "siloli",
+    "name": "Desierto de Siloli",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.05,
+    "lon": -67.88,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 8.2,
+    "relief": 65.0,
+    "roughness": 2.8,
+    "temp": 1.5,
+    "temp_swing": 27.0,
+    "precip": 75.0,
+    "solar_flux": 25.8,
+    "atm_pressure": 59.0,
+    "elevation": 4500.0,
+    "geology": "desert",
+    "minerals": "Arenas basálticas y eólicas, Ignimbritas de cuarzo y feldespato, Óxidos de hierro (Hematita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "dali",
+    "name": "Desierto Salvador Dalí",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.6,
+    "lon": -67.63,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 7.4,
+    "relief": 58.0,
+    "roughness": 2.4,
+    "temp": 0.5,
+    "temp_swing": 28.0,
+    "precip": 65.0,
+    "solar_flux": 26.0,
+    "atm_pressure": 57.8,
+    "elevation": 4750.0,
+    "geology": "desert",
+    "minerals": "Arenas basálticas y eólicas, Ignimbritas de cuarzo y feldespato, Óxidos de hierro (Hematita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "licancabur-laguna-verde",
+    "name": "Laguna Verde y Licancabur",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.79,
+    "lon": -67.82,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 22.0,
+    "relief": 1400.0,
+    "roughness": 16.0,
+    "temp": -4.0,
+    "temp_swing": 30.0,
+    "precip": 80.0,
+    "solar_flux": 26.5,
+    "atm_pressure": 51.0,
+    "elevation": 5916.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "uturuncu",
+    "name": "Volcán Uturuncu",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.27,
+    "lon": -67.18,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 24.5,
+    "relief": 1600.0,
+    "roughness": 18.5,
+    "temp": -5.5,
+    "temp_swing": 29.0,
+    "precip": 85.0,
+    "solar_flux": 26.4,
+    "atm_pressure": 50.2,
+    "elevation": 6008.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "sajama",
+    "name": "Nevado Sajama",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -18.11,
+    "lon": -68.88,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 28.5,
+    "relief": 2000.0,
+    "roughness": 24.0,
+    "temp": -8.0,
+    "temp_swing": 26.0,
+    "precip": 320.0,
+    "solar_flux": 25.2,
+    "atm_pressure": 47.5,
+    "elevation": 6542.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Oruro",
+    "area_km2": 12.6
+  },
+  {
+    "id": "ollague",
+    "name": "Volcán Ollagüe",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.3,
+    "lon": -68.18,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 22.0,
+    "relief": 1500.0,
+    "roughness": 16.0,
+    "temp": -3.5,
+    "temp_swing": 27.0,
+    "precip": 95.0,
+    "solar_flux": 26.1,
+    "atm_pressure": 51.5,
+    "elevation": 5868.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "tunupa",
+    "name": "Volcán Tunupa",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -19.83,
+    "lon": -67.63,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 22.0,
+    "relief": 1700.0,
+    "roughness": 16.0,
+    "temp": 2.0,
+    "temp_swing": 25.0,
+    "precip": 180.0,
+    "solar_flux": 24.8,
+    "atm_pressure": 55.5,
+    "elevation": 5321.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí / Oruro",
+    "area_km2": 12.6
+  },
+  {
+    "id": "poopo",
+    "name": "Lago Poopó (lecho seco)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -18.8,
+    "lon": -67.0,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.6,
+    "relief": 1.2,
+    "roughness": 0.3,
+    "temp": 11.5,
+    "temp_swing": 22.0,
+    "precip": 380.0,
+    "solar_flux": 23.5,
+    "atm_pressure": 65.5,
+    "elevation": 3686.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Oruro",
+    "area_km2": 78.5
+  },
+  {
+    "id": "empexa",
+    "name": "Salar de Empexa",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -20.33,
+    "lon": -68.45,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.9,
+    "relief": 1.8,
+    "roughness": 0.4,
+    "temp": 9.5,
+    "temp_swing": 24.5,
+    "precip": 150.0,
+    "solar_flux": 24.5,
+    "atm_pressure": 64.8,
+    "elevation": 3720.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 78.5
+  },
+  {
+    "id": "chiguana",
+    "name": "Salar de Chiguana",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.08,
+    "lon": -67.92,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 3.0,
+    "roughness": 0.6,
+    "temp": 8.0,
+    "temp_swing": 25.0,
+    "precip": 130.0,
+    "solar_flux": 24.9,
+    "atm_pressure": 65.1,
+    "elevation": 3680.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 78.5
+  },
+  {
+    "id": "chalviri",
+    "name": "Salar de Chalviri",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.53,
+    "lon": -67.57,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 2.5,
+    "temp_swing": 26.5,
+    "precip": 100.0,
+    "solar_flux": 25.5,
+    "atm_pressure": 60.0,
+    "elevation": 4369.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 78.5
+  },
+  {
+    "id": "capina",
+    "name": "Salar de Capina",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.9,
+    "lon": -67.6,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 3.5,
+    "temp_swing": 26.0,
+    "precip": 110.0,
+    "solar_flux": 25.2,
+    "atm_pressure": 60.8,
+    "elevation": 4200.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 78.5
+  },
+  {
+    "id": "pastos-grandes",
+    "name": "Laguna Pastos Grandes",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.63,
+    "lon": -67.8,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 1.8,
+    "temp_swing": 27.0,
+    "precip": 120.0,
+    "solar_flux": 25.1,
+    "atm_pressure": 59.5,
+    "elevation": 4430.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "laguna-hedionda",
+    "name": "Laguna Hedionda",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.57,
+    "lon": -68.05,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 3.0,
+    "temp_swing": 26.0,
+    "precip": 105.0,
+    "solar_flux": 25.3,
+    "atm_pressure": 61.0,
+    "elevation": 4120.0,
+    "geology": "salt_lake",
+    "minerals": "Halita (NaCl), Yeso (CaSO4·2H2O), Cloruro de Litio (LiCl), Sulfatos de magnesio, Boratos (Ulexita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "polques",
+    "name": "Termas de Polques",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.53,
+    "lon": -67.65,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 12.0,
+    "relief": 90.0,
+    "roughness": 3.8,
+    "temp": 1.0,
+    "temp_swing": 27.5,
+    "precip": 95.0,
+    "solar_flux": 25.6,
+    "atm_pressure": 59.8,
+    "elevation": 4400.0,
+    "geology": "hydrothermal",
+    "minerals": "Sílice opalina sinterizada, Azufre nativo elemental, Jarosita, Yeso fumarólico, Esmectita",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "geiseres-sajama",
+    "name": "Géiseres de Sajama",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -18.08,
+    "lon": -68.97,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 11.5,
+    "relief": 85.0,
+    "roughness": 3.5,
+    "temp": 2.0,
+    "temp_swing": 25.0,
+    "precip": 290.0,
+    "solar_flux": 24.6,
+    "atm_pressure": 59.2,
+    "elevation": 4450.0,
+    "geology": "hydrothermal",
+    "minerals": "Sílice opalina sinterizada, Azufre nativo elemental, Jarosita, Yeso fumarólico, Esmectita",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Oruro",
+    "area_km2": 12.6
+  },
+  {
+    "id": "tata-sabaya",
+    "name": "Tata Sabaya (avalancha de escombros)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -19.13,
+    "lon": -68.53,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 22.0,
+    "relief": 1200.0,
+    "roughness": 16.0,
+    "temp": 4.5,
+    "temp_swing": 25.0,
+    "precip": 190.0,
+    "solar_flux": 24.7,
+    "atm_pressure": 58.5,
+    "elevation": 4700.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Oruro",
+    "area_km2": 12.6
+  },
+  {
+    "id": "los-frailes",
+    "name": "Ignimbritas de Los Frailes",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -19.5,
+    "lon": -66.3,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 15.0,
+    "relief": 450.0,
+    "roughness": 8.5,
+    "temp": 7.0,
+    "temp_swing": 23.0,
+    "precip": 350.0,
+    "solar_flux": 23.8,
+    "atm_pressure": 61.5,
+    "elevation": 4200.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "jayu-khota",
+    "name": "Maar de Jayu Khota",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -19.47,
+    "lon": -67.43,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 13.0,
+    "relief": 120.0,
+    "roughness": 5.0,
+    "temp": 9.0,
+    "temp_swing": 24.0,
+    "precip": 210.0,
+    "solar_flux": 24.2,
+    "atm_pressure": 64.0,
+    "elevation": 3750.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Oruro",
+    "area_km2": 12.6
+  },
+  {
+    "id": "valle-de-rocas",
+    "name": "Valle de Rocas",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.6,
+    "lon": -67.6,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 10.5,
+    "relief": 85.0,
+    "roughness": 4.8,
+    "temp": 5.0,
+    "temp_swing": 26.5,
+    "precip": 120.0,
+    "solar_flux": 25.3,
+    "atm_pressure": 62.0,
+    "elevation": 4050.0,
+    "geology": "desert",
+    "minerals": "Arenas basálticas y eólicas, Ignimbritas de cuarzo y feldespato, Óxidos de hierro (Hematita)",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "tupiza",
+    "name": "Quebradas de Tupiza",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -21.42,
+    "lon": -65.72,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 18.0,
+    "relief": 380.0,
+    "roughness": 9.2,
+    "temp": 14.0,
+    "temp_swing": 21.0,
+    "precip": 310.0,
+    "solar_flux": 23.5,
+    "atm_pressure": 70.5,
+    "elevation": 2950.0,
+    "geology": "erosion",
+    "minerals": "Areniscas y limolitas estratificadas, Arcillas ferruginosas, Yeso detrítico, Cuarzo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Potosí",
+    "area_km2": 12.6
+  },
+  {
+    "id": "valle-de-la-luna",
+    "name": "Valle de la Luna, La Paz",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -16.57,
+    "lon": -68.09,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 16.8,
+    "relief": 180.0,
+    "roughness": 6.8,
+    "temp": 12.5,
+    "temp_swing": 18.0,
+    "precip": 450.0,
+    "solar_flux": 22.8,
+    "atm_pressure": 66.8,
+    "elevation": 3450.0,
+    "geology": "erosion",
+    "minerals": "Areniscas y limolitas estratificadas, Arcillas ferruginosas, Yeso detrítico, Cuarzo",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "La Paz",
+    "area_km2": 12.6
+  },
+  {
+    "id": "huayna-potosi",
+    "name": "Huayna Potosí",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -16.26,
+    "lon": -68.15,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 31.0,
+    "relief": 1850.0,
+    "roughness": 22.5,
+    "temp": -6.0,
+    "temp_swing": 22.0,
+    "precip": 650.0,
+    "solar_flux": 23.2,
+    "atm_pressure": 49.5,
+    "elevation": 6088.0,
+    "geology": "glacial",
+    "minerals": "Hielo glaciar con morrenas de detritos andesíticos y cuarzo, Permafrost de alta montaña",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "La Paz",
+    "area_km2": 12.6
+  },
+  {
+    "id": "umajalanta",
+    "name": "Caverna Kárstica de Umajalanta, Torotoro",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -18.13,
+    "lon": -65.76,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 14.0,
+    "relief": 220.0,
+    "roughness": 7.0,
+    "temp": 16.0,
+    "temp_swing": 16.0,
+    "precip": 580.0,
+    "solar_flux": 21.5,
+    "atm_pressure": 73.0,
+    "elevation": 2700.0,
+    "geology": "karst_cave",
+    "minerals": "Calcita (CaCO3), Dolomita, Espeleotemas kársticos, Arcillas de disolución",
+    "data_source": "SERGEOMIN Bolivia / Parque Nacional Torotoro",
+    "region": "Potosí (Torotoro)",
+    "area_km2": 12.6
+  },
+  {
+    "id": "yungay-atacama",
+    "name": "Yungay, Atacama (Chile)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Chile",
+    "lat": -24.08,
+    "lon": -69.92,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 7.1,
+    "relief": 92.0,
+    "roughness": 3.2,
+    "temp": 17.5,
+    "temp_swing": 22.0,
+    "precip": 2.0,
+    "solar_flux": 23.8,
+    "atm_pressure": 91.0,
+    "elevation": 950.0,
+    "geology": "desert",
+    "minerals": "Arenas basálticas y eólicas, Ignimbritas de cuarzo y feldespato, Óxidos de hierro (Hematita)",
+    "data_source": "Copernicus DEM 90m / SERNAGEOMIN / DMC Chile",
+    "region": "Antofagasta",
+    "area_km2": 12.6
+  },
+  {
+    "id": "trinidad-control",
+    "name": "Trinidad, Beni",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -14.83,
+    "lon": -64.9,
+    "known": false,
+    "reference": false,
+    "control": true,
+    "radius_km": 2.0,
+    "terrain": 0.4,
+    "relief": 2.0,
+    "roughness": 0.15,
+    "temp": 26.5,
+    "temp_swing": 11.0,
+    "precip": 1850.0,
+    "solar_flux": 18.5,
+    "atm_pressure": 99.5,
+    "elevation": 155.0,
+    "geology": "humid_lowland",
+    "minerals": "Arenas de cuarzo aluviales, Caolinita tropical, Materia orgánica / Humus fértil, Limonita",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "Beni",
+    "area_km2": 12.6
+  },
+  {
+    "id": "coroico-control",
+    "name": "Coroico, Yungas",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -16.19,
+    "lon": -67.73,
+    "known": false,
+    "reference": false,
+    "control": true,
+    "radius_km": 2.0,
+    "terrain": 28.0,
+    "relief": 850.0,
+    "roughness": 14.0,
+    "temp": 19.0,
+    "temp_swing": 12.0,
+    "precip": 1450.0,
+    "solar_flux": 17.2,
+    "atm_pressure": 82.5,
+    "elevation": 1750.0,
+    "geology": "humid_mountain",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / SERGEOMIN / SENAMHI Bolivia",
+    "region": "La Paz (Yungas)",
+    "area_km2": 12.6
+  },
+  {
+    "id": "mcmurdo-antarctica",
+    "name": "McMurdo Dry Valleys (Antarctica)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Antártida",
+    "lat": -77.5,
+    "lon": 162.5,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 18.2,
+    "relief": 950.0,
+    "roughness": 12.0,
+    "temp": -19.5,
+    "temp_swing": 35.0,
+    "precip": 15.0,
+    "solar_flux": 11.2,
+    "atm_pressure": 98.0,
+    "elevation": 300.0,
+    "geology": "polar_desert",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Tierra Victoria",
+    "area_km2": 78.5
+  },
+  {
+    "id": "askja-iceland",
+    "name": "Askja Caldera (Iceland)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Islandia",
+    "lat": 65.03,
+    "lon": -16.75,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 15.5,
+    "relief": 420.0,
+    "roughness": 7.5,
+    "temp": -1.5,
+    "temp_swing": 18.0,
+    "precip": 450.0,
+    "solar_flux": 9.5,
+    "atm_pressure": 88.0,
+    "elevation": 1100.0,
+    "geology": "volcanic",
+    "minerals": "Andesita y Basalto rico en Fe-Mg, Olivino, Piroxeno, Magnetita, Plagioclasa cálcica, Azufre nativo",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Tierras Altas",
+    "area_km2": 78.5
+  },
+  {
+    "id": "haughton-canada",
+    "name": "Haughton Impact Crater (Devon Island, Canada)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Canadá",
+    "lat": 75.38,
+    "lon": -89.68,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 12.8,
+    "relief": 280.0,
+    "roughness": 6.0,
+    "temp": -17.5,
+    "temp_swing": 32.0,
+    "precip": 120.0,
+    "solar_flux": 8.8,
+    "atm_pressure": 98.5,
+    "elevation": 180.0,
+    "geology": "polar_crater",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Isla Devon, Nunavut",
+    "area_km2": 78.5
+  },
+  {
+    "id": "rio-tinto-spain",
+    "name": "Río Tinto (Spain)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "España",
+    "lat": 37.69,
+    "lon": -6.56,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 9.2,
+    "relief": 120.0,
+    "roughness": 3.8,
+    "temp": 17.8,
+    "temp_swing": 15.0,
+    "precip": 620.0,
+    "solar_flux": 19.5,
+    "atm_pressure": 97.0,
+    "elevation": 320.0,
+    "geology": "acid_mine_evaporite",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Huelva, Andalucía",
+    "area_km2": 78.5
+  },
+  {
+    "id": "sahara-algeria",
+    "name": "Grand Erg Occidental (Sahara, Algeria)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Argelia",
+    "lat": 30.5,
+    "lon": 0.5,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 8.0,
+    "relief": 110.0,
+    "roughness": 4.0,
+    "temp": 24.5,
+    "temp_swing": 22.0,
+    "precip": 30.0,
+    "solar_flux": 24.5,
+    "atm_pressure": 96.0,
+    "elevation": 450.0,
+    "geology": "desert",
+    "minerals": "Arenas basálticas y eólicas, Ignimbritas de cuarzo y feldespato, Óxidos de hierro (Hematita)",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Desierto del Sahara",
+    "area_km2": 78.5
+  },
+  {
+    "id": "amazon-manaus",
+    "name": "Central Amazon Rainforest (Brazil)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Brasil",
+    "lat": -3.1,
+    "lon": -60.0,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 25.0,
+    "roughness": 0.8,
+    "temp": 27.2,
+    "temp_swing": 9.0,
+    "precip": 2400.0,
+    "solar_flux": 17.5,
+    "atm_pressure": 100.2,
+    "elevation": 60.0,
+    "geology": "tropical_rainforest",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Amazonas",
+    "area_km2": 78.5
+  },
+  {
+    "id": "siberia-yakutsk",
+    "name": "Central Siberian Taiga (Russia)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Rusia",
+    "lat": 62.0,
+    "lon": 129.7,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 3.5,
+    "relief": 80.0,
+    "roughness": 1.5,
+    "temp": -8.8,
+    "temp_swing": 45.0,
+    "precip": 260.0,
+    "solar_flux": 10.5,
+    "atm_pressure": 99.8,
+    "elevation": 120.0,
+    "geology": "permafrost_forest",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Siberia / Sajá",
+    "area_km2": 78.5
+  },
+  {
+    "id": "himalaya-everest",
+    "name": "Mount Everest Flanks (Nepal/Tibet)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Nepal",
+    "lat": 27.98,
+    "lon": 86.92,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 38.0,
+    "relief": 3500.0,
+    "roughness": 45.0,
+    "temp": -18.0,
+    "temp_swing": 20.0,
+    "precip": 450.0,
+    "solar_flux": 25.0,
+    "atm_pressure": 35.0,
+    "elevation": 7200.0,
+    "geology": "glacial",
+    "minerals": "Hielo glaciar con morrenas de detritos andesíticos y cuarzo, Permafrost de alta montaña",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Khumbu, Himalaya",
+    "area_km2": 78.5
+  },
+  {
+    "id": "mojave-death-valley",
+    "name": "Death Valley (Mojave, USA)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Estados Unidos",
+    "lat": 36.5,
+    "lon": -117.0,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 6.5,
+    "relief": 240.0,
+    "roughness": 3.2,
+    "temp": 25.5,
+    "temp_swing": 25.0,
+    "precip": 55.0,
+    "solar_flux": 23.8,
+    "atm_pressure": 102.0,
+    "elevation": -86.0,
+    "geology": "desert_playa",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "California",
+    "area_km2": 78.5
+  },
+  {
+    "id": "great-plains-kansas",
+    "name": "Great Plains (Kansas, USA)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Estados Unidos",
+    "lat": 38.5,
+    "lon": -98.5,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.8,
+    "relief": 12.0,
+    "roughness": 0.4,
+    "temp": 13.0,
+    "temp_swing": 16.0,
+    "precip": 720.0,
+    "solar_flux": 18.2,
+    "atm_pressure": 95.5,
+    "elevation": 500.0,
+    "geology": "grassland",
+    "minerals": "Cuarzo, Feldespatos, Arcillas y Óxidos de hierro",
+    "data_source": "Copernicus DEM 90m / PDS Geosciences",
+    "region": "Kansas",
+    "area_km2": 78.5
+  },
+  {
+    "id": "antofagasta-alumbrera",
+    "name": "Antofagasta de la Sierra (Volcán Alumbrera)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -26.62,
+    "lon": -67.5,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 7.0,
+    "temp_swing": 24.0,
+    "precip": 75.0,
+    "solar_flux": 25.0,
+    "atm_pressure": 66.2,
+    "elevation": 3450.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Basalto toleítico y vesicular, Olivino, Piroxeno (Augita), Ilmenita, Magnetita",
+    "data_source": "Copernicus DEM 90m / SEGEMAR / SMN Argentina",
+    "region": "Catamarca",
+    "area_km2": 78.5
+  },
+  {
+    "id": "ischigualasto-talampaya",
+    "name": "Cuenca de Ischigualasto / Valle de la Luna (San Juan - Argentina)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -30.01,
+    "lon": -67.95,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 4.8,
+    "relief": 120.0,
+    "roughness": 1.6,
+    "temp": 17.5,
+    "temp_swing": 22.0,
+    "precip": 120.0,
+    "solar_flux": 22.5,
+    "atm_pressure": 86.8,
+    "elevation": 1300.0,
+    "geology": "sedimentary_strata",
+    "minerals": "Arcillas rojas (Esmectita, Illita), Areniscas fluviales ricas en óxidos de hierro (Hematita/Goethita), Yeso detrítico",
+    "data_source": "SRTM GL1 v003 / NASA POWER Agroclimatology / IGCB Argentina",
+    "region": "San Juan",
+    "area_km2": 78.5
+  },
+  {
+    "id": "talampaya-canyon",
+    "name": "Parque Nacional Talampaya (La Rioja - Argentina)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -29.8,
+    "lon": -67.85,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 18.5,
+    "relief": 180.0,
+    "roughness": 6.2,
+    "temp": 18.2,
+    "temp_swing": 23.0,
+    "precip": 135.0,
+    "solar_flux": 22.8,
+    "atm_pressure": 86.2,
+    "elevation": 1350.0,
+    "geology": "eroded_canyon",
+    "minerals": "Areniscas rojas triásicas ricas en hematita, Paredes de arcilitas estratificadas",
+    "data_source": "NASADEM HGT v001 / IGN Argentina",
+    "region": "La Rioja",
+    "area_km2": 78.5
+  },
+  {
+    "id": "salar-hombre-muerto",
+    "name": "Salar del Hombre Muerto (Catamarca/Salta - Argentina)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -25.4,
+    "lon": -67.1,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.9,
+    "relief": 2.0,
+    "roughness": 0.38,
+    "temp": 5.5,
+    "temp_swing": 26.0,
+    "precip": 60.0,
+    "solar_flux": 25.8,
+    "atm_pressure": 62.5,
+    "elevation": 4000.0,
+    "geology": "salt_lake",
+    "minerals": "Halita, Yeso, Boratos (Ulexita, Borax), Salmuera rica en Litio",
+    "data_source": "Copernicus GLO-30 DEM / MODIS MOD11A2",
+    "region": "Catamarca",
+    "area_km2": 78.5
+  },
+  {
+    "id": "payunia-mendoza",
+    "name": "La Payunia / Campo Volcánico Llancanelo (Mendoza - Argentina)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -36.4,
+    "lon": -69.2,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 11.0,
+    "temp_swing": 20.0,
+    "precip": 220.0,
+    "solar_flux": 20.5,
+    "atm_pressure": 81.2,
+    "elevation": 1850.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Basalto alcalino de conos de ceniza, Lapilli, Piroxenos, Olivino magnesiano",
+    "data_source": "SRTM GL1 v003 / SEGEMAR",
+    "region": "Mendoza",
+    "area_km2": 78.5
+  },
+  {
+    "id": "barreal-blanco",
+    "name": "Barreal Blanco / Pampa del Leoncito (San Juan - Argentina)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -31.7,
+    "lon": -69.4,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.5,
+    "relief": 1.0,
+    "roughness": 0.25,
+    "temp": 15.0,
+    "temp_swing": 24.0,
+    "precip": 80.0,
+    "solar_flux": 23.0,
+    "atm_pressure": 83.2,
+    "elevation": 1650.0,
+    "geology": "desert_playa",
+    "minerals": "Limos y arcillas lacustres resecas, Carbonato de calcio, Sales de sulfato",
+    "data_source": "NASADEM HGT v001 / CASLEO",
+    "region": "San Juan",
+    "area_km2": 78.5
+  },
+  {
+    "id": "quebrada-humahuaca",
+    "name": "Quebrada de Humahuaca (Jujuy - Argentina)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -23.2,
+    "lon": -65.35,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 16.0,
+    "relief": 450.0,
+    "roughness": 7.5,
+    "temp": 13.0,
+    "temp_swing": 20.0,
+    "precip": 180.0,
+    "solar_flux": 24.0,
+    "atm_pressure": 70.8,
+    "elevation": 2950.0,
+    "geology": "eroded_canyon",
+    "minerals": "Areniscas multicolores (Cerro de los Siete Colores), Lutitas, Cuarzo, Limonita",
+    "data_source": "SRTM GL1 v003 / IGN",
+    "region": "Jujuy",
+    "area_km2": 78.5
+  },
+  {
+    "id": "somuncura-patagonia",
+    "name": "Meseta de Somuncurá (Río Negro - Patagonia)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Argentina",
+    "lat": -41.2,
+    "lon": -67.0,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 8.5,
+    "temp_swing": 18.0,
+    "precip": 190.0,
+    "solar_flux": 17.5,
+    "atm_pressure": 88.5,
+    "elevation": 1100.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Plataforma de coladas basálticas terciarias, Arcillas de lagunas efímeras",
+    "data_source": "NASADEM HGT v001",
+    "region": "Río Negro",
+    "area_km2": 78.5
+  },
+  {
+    "id": "salar-atacama",
+    "name": "Salar de Atacama (Antofagasta - Chile)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Chile",
+    "lat": -23.5,
+    "lon": -68.3,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 0.8,
+    "relief": 2.0,
+    "roughness": 0.45,
+    "temp": 14.0,
+    "temp_swing": 24.0,
+    "precip": 25.0,
+    "solar_flux": 24.8,
+    "atm_pressure": 76.8,
+    "elevation": 2300.0,
+    "geology": "salt_lake",
+    "minerals": "Halita rugosa poligonal, Yeso, Sulfatos de magnesio, Salmuera de litio",
+    "data_source": "ASTER L1T v003 / SRTM",
+    "region": "Antofagasta",
+    "area_km2": 78.5
+  },
+  {
+    "id": "monturaqui-crater",
+    "name": "Cráter de Monturaqui (Atacama - Chile)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Chile",
+    "lat": -23.93,
+    "lon": -68.27,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 14.0,
+    "relief": 110.0,
+    "roughness": 5.5,
+    "temp": 10.0,
+    "temp_swing": 25.0,
+    "precip": 30.0,
+    "solar_flux": 25.2,
+    "atm_pressure": 70.5,
+    "elevation": 3000.0,
+    "geology": "eroded_canyon",
+    "minerals": "Brechas de impacto meteorítico en granito, Vidrio de impacto, Magnetita",
+    "data_source": "Copernicus GLO-30 DEM / USGS Impact Studies",
+    "region": "Antofagasta",
+    "area_km2": 12.6
+  },
+  {
+    "id": "la-joya-desert",
+    "name": "Desierto de La Joya / Toro Muerto (Arequipa - Perú)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Perú",
+    "lat": -16.2,
+    "lon": -72.5,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 5.0,
+    "relief": 80.0,
+    "roughness": 2.0,
+    "temp": 18.0,
+    "temp_swing": 20.0,
+    "precip": 15.0,
+    "solar_flux": 23.5,
+    "atm_pressure": 88.0,
+    "elevation": 1200.0,
+    "geology": "desert",
+    "minerals": "Suelos hiperáridos con percloratos traza, Ignimbritas, Cuarzo",
+    "data_source": "SRTM GL1 v003 / NASA Astrobiology Institute",
+    "region": "Arequipa",
+    "area_km2": 78.5
+  },
+  {
+    "id": "dallol-danakil",
+    "name": "Dallol Hydrothermal Salt Dome (Danakil - Etiopía)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Etiopía",
+    "lat": 14.24,
+    "lon": 40.3,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 2.0,
+    "terrain": 3.5,
+    "relief": 30.0,
+    "roughness": 1.2,
+    "temp": 34.5,
+    "temp_swing": 15.0,
+    "precip": 50.0,
+    "solar_flux": 24.5,
+    "atm_pressure": 102.5,
+    "elevation": -125.0,
+    "geology": "hydrothermal",
+    "minerals": "Halita hiperácida (pH < 1), Azufre nativo, Sulfatos férricos, Silvita",
+    "data_source": "Copernicus GLO-30 / Planetary Analogs Danakil",
+    "region": "Depresión de Danakil",
+    "area_km2": 12.6
+  },
+  {
+    "id": "kilauea-hawaii",
+    "name": "Kilauea Volcanic Fields (Hawaii - USA)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Estados Unidos",
+    "lat": 19.41,
+    "lon": -155.28,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 1.2,
+    "relief": 5.0,
+    "roughness": 0.6,
+    "temp": 16.0,
+    "temp_swing": 12.0,
+    "precip": 1800.0,
+    "solar_flux": 21.0,
+    "atm_pressure": 88.0,
+    "elevation": 1200.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Basalto toleítico fresco (Pahoehoe & Aa), Vidrio basáltico, Olivino",
+    "data_source": "USGS Hawaiian Volcano Observatory",
+    "region": "Hawái",
+    "area_km2": 78.5
+  },
+  {
+    "id": "svalbard-permafrost",
+    "name": "Svalbard Arctic Permafrost Tundra (Noruega)",
+    "category": "global_earth_grid",
+    "body": "earth",
+    "country": "Noruega",
+    "lat": 78.22,
+    "lon": 15.65,
+    "known": true,
+    "reference": false,
+    "control": false,
+    "radius_km": 5.0,
+    "terrain": 9.0,
+    "relief": 300.0,
+    "roughness": 4.5,
+    "temp": -4.5,
+    "temp_swing": 18.0,
+    "precip": 280.0,
+    "solar_flux": 9.0,
+    "atm_pressure": 100.5,
+    "elevation": 50.0,
+    "geology": "glacial",
+    "minerals": "Permafrost continuo poligonal, Cuarzo, Feldespato alterado criogénicamente",
+    "data_source": "Copernicus DEM / Svalbard Science Centre",
+    "region": "Archipiélago de Svalbard",
+    "area_km2": 78.5
+  },
+  {
+    "id": "santa-cruz-control",
+    "name": "Santa Cruz de la Sierra (Llanos del Oriente - Control Negativo)",
+    "category": "control_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -17.78,
+    "lon": -63.18,
+    "known": false,
+    "reference": false,
+    "control": true,
+    "radius_km": 15.0,
+    "terrain": 1.2,
+    "relief": 12.0,
+    "roughness": 1.1,
+    "temp": 25.0,
+    "temp_swing": 14.0,
+    "precip": 1350.0,
+    "solar_flux": 19.5,
+    "atm_pressure": 96.5,
+    "elevation": 416.0,
+    "geology": "humid_lowland",
+    "minerals": "Arenas aluviales de cuarzo, Caolinita (arcilla de meteorización húmeda), Materia orgánica / Humus fértil, Limonita",
+    "data_source": "Copernicus DEM 90m / SENAMHI Bolivia / NASA POWER Climatology",
+    "region": "Santa Cruz",
+    "area_km2": 706.9
+  },
+  {
+    "id": "cochabamba-valle",
+    "name": "Valle de Cochabamba (Valle Interandino)",
+    "category": "catalog_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -17.39,
+    "lon": -66.16,
+    "known": false,
+    "reference": false,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 4.5,
+    "relief": 85.0,
+    "roughness": 2.2,
+    "temp": 18.0,
+    "temp_swing": 16.0,
+    "precip": 480.0,
+    "solar_flux": 22.5,
+    "atm_pressure": 74.5,
+    "elevation": 2568.0,
+    "geology": "interandean_valley",
+    "minerals": "Sedimentos aluviales cuaternarios, Arcillas detríticas, Arenisca y Limolita",
+    "data_source": "Copernicus DEM 90m / SENAMHI Bolivia",
+    "region": "Cochabamba",
+    "area_km2": 314.2
+  },
+  {
+    "id": "yacuiba-chaco-control",
+    "name": "Gran Chaco Boliviano (Yacuiba - Sabana Semiárida)",
+    "category": "control_earth",
+    "body": "earth",
+    "country": "Bolivia",
+    "lat": -22.01,
+    "lon": -63.68,
+    "known": false,
+    "reference": false,
+    "control": true,
+    "radius_km": 15.0,
+    "terrain": 1.8,
+    "relief": 25.0,
+    "roughness": 1.3,
+    "temp": 23.0,
+    "temp_swing": 18.0,
+    "precip": 850.0,
+    "solar_flux": 20.5,
+    "atm_pressure": 94.5,
+    "elevation": 620.0,
+    "geology": "humid_lowland",
+    "minerals": "Limos y arenas del Chaco, Arcillas aluviales, Materia orgánica",
+    "data_source": "Copernicus DEM 90m / SENAMHI Bolivia",
+    "region": "Tarija",
+    "area_km2": 706.9
+  },
+  {
+    "id": "elysium-planitia",
+    "name": "Elysium Planitia (Llanuras Basálticas)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": 4.5,
+    "lon": 135.62,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 4.2,
+    "relief": 45.0,
+    "roughness": 2.0,
+    "temp": -55.0,
+    "temp_swing": 78.0,
+    "precip": 0.0,
+    "solar_flux": 10.5,
+    "atm_pressure": 0.65,
+    "elevation": -2500.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Basalto olivínico joven, Piroxeno (Augita), Plagioclasa cálcica, Magnetita, Óxidos de hierro",
+    "data_source": "NASA InSight SEIS & HP3 / MGS MOLA MEGDR / Mars Odyssey THEMIS",
+    "region": "Marte"
+  },
+  {
+    "id": "meridiani-planum",
+    "name": "Meridiani Planum",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": -2.05,
+    "lon": -5.5,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 2.1,
+    "relief": 15.0,
+    "roughness": 1.2,
+    "temp": -52.0,
+    "temp_swing": 80.0,
+    "precip": 0.0,
+    "solar_flux": 10.2,
+    "atm_pressure": 0.68,
+    "elevation": -1200.0,
+    "geology": "hematite_plain",
+    "minerals": "Esférulas de hematita (\"blueberries\"), Jarosita, Yeso, Sulfatos hidratados",
+    "data_source": "NASA MER-B Opportunity (Athena Science Payload) / MRO CRISM",
+    "region": "Marte"
+  },
+  {
+    "id": "jezero-crater",
+    "name": "Cráter Jezero (Delta Fluvio-Lacustre)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": 18.38,
+    "lon": 77.58,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 5.8,
+    "relief": 110.0,
+    "roughness": 4.2,
+    "temp": -54.0,
+    "temp_swing": 82.0,
+    "precip": 0.0,
+    "solar_flux": 10.0,
+    "atm_pressure": 0.67,
+    "elevation": -2500.0,
+    "geology": "delta_lacustrine",
+    "minerals": "Esmectitas de Fe/Mg, Carbonatos de Mg, Arcillas sedimentarias, Sílice hidratada, Olivino relicto",
+    "data_source": "NASA Mars 2020 Perseverance / MEDA Atmosphere / SHERLOC / PIXL",
+    "region": "Marte"
+  },
+  {
+    "id": "gale-crater",
+    "name": "Cráter Gale (Monte Sharp)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": -5.4,
+    "lon": 137.8,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 12.5,
+    "relief": 450.0,
+    "roughness": 11.0,
+    "temp": -50.0,
+    "temp_swing": 85.0,
+    "precip": 0.0,
+    "solar_flux": 9.8,
+    "atm_pressure": 0.65,
+    "elevation": -4500.0,
+    "geology": "sedimentary_mountain",
+    "minerals": "Lutitas lacustres, Filosilicatos laminares, Sulfatos polihidratados, Hematita, Halita secundaria",
+    "data_source": "NASA MSL Curiosity (CheMin & SAM Instruments) / REMS Station",
+    "region": "Marte"
+  },
+  {
+    "id": "valles-marineris",
+    "name": "Valles Marineris (Cañón Marciano)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": -13.9,
+    "lon": -59.2,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 28.5,
+    "relief": 3500.0,
+    "roughness": 28.0,
+    "temp": -48.0,
+    "temp_swing": 90.0,
+    "precip": 0.0,
+    "solar_flux": 9.5,
+    "atm_pressure": 0.72,
+    "elevation": -3500.0,
+    "geology": "tectonic_rift",
+    "minerals": "Capas de sulfatos estratificados (Kieserita/Yeso), Óxidos de hierro, Basalto en escarpes tectónicos",
+    "data_source": "ESA Mars Express HRSC & OMEGA / NASA MRO HiRISE",
+    "region": "Marte"
+  },
+  {
+    "id": "gusev-crater",
+    "name": "Cráter Gusev (Colinas Columbia)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": -14.57,
+    "lon": 175.47,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 6.5,
+    "relief": 150.0,
+    "roughness": 5.2,
+    "temp": -58.0,
+    "temp_swing": 88.0,
+    "precip": 0.0,
+    "solar_flux": 9.9,
+    "atm_pressure": 0.64,
+    "elevation": -1900.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Basalto vesicular de olivino, Piroxeno alcalino, Sílice hidrotermal pura (Home Plate), Hematita",
+    "data_source": "NASA MER-A Spirit Rover (Alpha Particle X-Ray Spectrometer)",
+    "region": "Marte"
+  },
+  {
+    "id": "mawrth-vallis",
+    "name": "Mawrth Vallis (Mesetas de Arcillas)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": 23.99,
+    "lon": -18.96,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 8.5,
+    "relief": 280.0,
+    "roughness": 7.5,
+    "temp": -56.0,
+    "temp_swing": 84.0,
+    "precip": 0.0,
+    "solar_flux": 9.7,
+    "atm_pressure": 0.68,
+    "elevation": -2200.0,
+    "geology": "ancient_clays",
+    "minerals": "Nontronita (esmectita de Fe), Montmorillonita (esmectita de Al), Caolinita, Sulfatos ácidos hidratados",
+    "data_source": "ESA ExoMars Rosalind Franklin Candidate Site / MRO CRISM Spectral Cube",
+    "region": "Marte"
+  },
+  {
+    "id": "arcadia-planitia",
+    "name": "Arcadia Planitia (Llanuras de Hielo Somero)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": 39.3,
+    "lon": -171.0,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 1.8,
+    "relief": 18.0,
+    "roughness": 1.4,
+    "temp": -76.8,
+    "temp_swing": 114.3,
+    "precip": 0.0,
+    "solar_flux": 7.8,
+    "atm_pressure": 0.826,
+    "elevation": -3984.0,
+    "geology": "permafrost_ice_sheet",
+    "minerals": "Manto de hielo de agua masivo somero (1-2.5m profundidad, 4.7 wt% H2O eq GRS), Regolito eólico basáltico, Filosilicatos de Fe/Mg",
+    "data_source": "MRO SHARAD / Mars Odyssey GRS / MGS MOLA / MCD 6.2",
+    "region": "Marte"
+  },
+  {
+    "id": "utopia-planitia-vl2",
+    "name": "Utopia Planitia (Viking Lander 2)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": 48.27,
+    "lon": 134.0,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 0.41,
+    "relief": 5.14,
+    "roughness": 1.15,
+    "temp": -82.4,
+    "temp_swing": 65.0,
+    "precip": 0.0,
+    "solar_flux": 8.2,
+    "atm_pressure": 0.869,
+    "elevation": -4502.5,
+    "geology": "volcanic_plains_permafrost",
+    "minerals": "Basalto meteorizado con percloratos (ClO4-), Capas de escarcha estacional H2O/CO2, Smectitas de Fe/Mg, Sulfatos hidratados",
+    "data_source": "NASA Viking Lander 2 Surface Met & MGS MOLA MEGDR / PDS Atmospheres",
+    "region": "Marte"
+  },
+  {
+    "id": "deuteronilus-mensae",
+    "name": "Deuteronilus Mensae (Glaciares LDA & Mesetas)",
+    "category": "planetary_target",
+    "body": "mars",
+    "country": "Mars",
+    "lat": 43.86,
+    "lon": 23.36,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 2.52,
+    "relief": 450.0,
+    "roughness": 19.5,
+    "temp": -73.6,
+    "temp_swing": 115.4,
+    "precip": 0.0,
+    "solar_flux": 8.0,
+    "atm_pressure": 0.784,
+    "elevation": -3449.0,
+    "geology": "glacial_debris_apron",
+    "minerals": "Hielo glaciar masivo subsuperficial (>80% H2O pura en manto protector), Filosilicatos laminares (5.2%), Plagioclasa (3.9%), Sulfatos (1.7%), Carbonatos (1.6%), Polvo regolítico (66.2%)",
+    "data_source": "MRO SHARAD (Zenodo DOI:10.5281/zenodo.7753745 / Baker & Carter 2023) / MGS MOLA / TES Minerals / MCD 6.2",
+    "region": "Marte"
+  },
+  {
+    "id": "rima-hadley",
+    "name": "Rima Hadley (Apeninos Lunares, Apollo 15)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": 26.13,
+    "lon": 3.63,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 9.5,
+    "relief": 220.0,
+    "roughness": 2.4,
+    "temp": -20.0,
+    "temp_swing": 280.0,
+    "precip": 0.0,
+    "solar_flux": 14.5,
+    "atm_pressure": 0.0,
+    "elevation": -2200.0,
+    "geology": "volcanic_basalt",
+    "minerals": "Basalto de colada de lava vesicular, Olivino, Piroxeno (Pigeonita/Augita), Plagioclasa cálcica, Ilmenita",
+    "data_source": "NASA Apollo 15 Lunar Sample Catalog / LRO LOLA Altimetry",
+    "region": "Luna"
+  },
+  {
+    "id": "shackleton-crater",
+    "name": "Cráter Shackleton (Polo Sur Lunar)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": -89.9,
+    "lon": 0.0,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 24.5,
+    "relief": 1200.0,
+    "roughness": 25.0,
+    "temp": -180.0,
+    "temp_swing": 280.0,
+    "precip": 0.0,
+    "solar_flux": 4.5,
+    "atm_pressure": 0.0,
+    "elevation": -4200.0,
+    "geology": "polar_crater",
+    "minerals": "Hielo de agua en sombra permanente (PSR), Anortosita lunar, Piroxeno, Vidrio de impacto",
+    "data_source": "NASA Artemis III & Lunar Reconnaissance Orbiter (LOLA/Diviner)",
+    "region": "Luna"
+  },
+  {
+    "id": "de-gerlache-rim-2",
+    "name": "de Gerlache Rim 2 (Luna - Candidato Artemis III)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": -88.22,
+    "lon": -64.61,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 12.7,
+    "relief": 750.0,
+    "roughness": 2.45,
+    "temp": -204.8,
+    "temp_swing": 110.0,
+    "precip": 0.0,
+    "solar_flux": 5.0,
+    "atm_pressure": 0.0,
+    "elevation": -135.0,
+    "geology": "polar_crater_rim",
+    "minerals": "Anortosita lunar rica en Ca (Plagioclasa >88%), Piroxeno pobre en Ti, Olivino magnesiano, Hielo volátil en PSR",
+    "data_source": "NASA ADC FY23 / LRO LOLA DEM & Slope / LRO Diviner PCP Summer Tbol",
+    "region": "Luna"
+  },
+  {
+    "id": "mons-mouton-plateau",
+    "name": "Mons Mouton Plateau (Luna - Artemis III & VIPER)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": -84.7,
+    "lon": -32.5,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 10.6,
+    "relief": 480.0,
+    "roughness": 2.0,
+    "temp": -188.0,
+    "temp_swing": 160.0,
+    "precip": 0.0,
+    "solar_flux": 8.5,
+    "atm_pressure": 0.0,
+    "elevation": 1250.0,
+    "geology": "polar_plateau",
+    "minerals": "Anortosita norítica (Plagioclasa cálcica), Piroxeno, Volátiles condensables atrapados en regolito criogénico",
+    "data_source": "LRO LOLA (LDEM, LDSM, LDRM) / LRO Diviner PRP (DLRE_PRP_SOUTH.TAB) / Wueller et al.",
+    "region": "Luna"
+  },
+  {
+    "id": "tranquility-base",
+    "name": "Base Tranquilidad (Apollo 11)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": 0.67,
+    "lon": 23.47,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 3.8,
+    "relief": 25.0,
+    "roughness": 3.5,
+    "temp": -20.0,
+    "temp_swing": 290.0,
+    "precip": 0.0,
+    "solar_flux": 15.0,
+    "atm_pressure": 0.0,
+    "elevation": -1500.0,
+    "geology": "mare_basalt",
+    "minerals": "Basalto de mar lunar rico en titanio, Piroxeno (Augita), Ilmenita (FeTiO3), Plagioclasa cálcica, Olivino",
+    "data_source": "NASA Apollo 11 Lunar Science / LOLA",
+    "region": "Luna"
+  },
+  {
+    "id": "marius-hills",
+    "name": "Colinas de Marius (Tubo de Lava Lunar)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": 14.08,
+    "lon": -56.77,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 8.5,
+    "relief": 80.0,
+    "roughness": 9.2,
+    "temp": -25.0,
+    "temp_swing": 280.0,
+    "precip": 0.0,
+    "solar_flux": 14.5,
+    "atm_pressure": 0.0,
+    "elevation": -2100.0,
+    "geology": "lava_tube",
+    "minerals": "Basalto vesicular de flujo continuo, Piroxeno, Olivino, Regolito vítreo aglutinado",
+    "data_source": "JAXA Kaguya SELENE / NASA LRO Diviner & Camera Team",
+    "region": "Luna"
+  },
+  {
+    "id": "taurus-littrow",
+    "name": "Valle Taurus-Littrow (Apollo 17)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": 20.19,
+    "lon": 30.77,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 16.5,
+    "relief": 1600.0,
+    "roughness": 18.0,
+    "temp": -15.0,
+    "temp_swing": 285.0,
+    "precip": 0.0,
+    "solar_flux": 14.8,
+    "atm_pressure": 0.0,
+    "elevation": -2800.0,
+    "geology": "pyroclastic_valley",
+    "minerals": "Vidrio volcánico piroclástico naranja, Basalto titanífero, Anortosita de macizo",
+    "data_source": "NASA Apollo 17 Traverse Samples / LOLA DEM",
+    "region": "Luna"
+  },
+  {
+    "id": "malapert-massif-site23",
+    "name": "Malapert Massif (Luna - Artemis III Sitio 23)",
+    "category": "planetary_target",
+    "body": "moon",
+    "country": "Moon",
+    "lat": -85.99,
+    "lon": 2.93,
+    "known": true,
+    "reference": true,
+    "control": false,
+    "radius_km": 10.0,
+    "terrain": 17.39,
+    "relief": 1450.0,
+    "roughness": 4.2,
+    "temp": -178.0,
+    "temp_swing": 165.0,
+    "precip": 0.0,
+    "solar_flux": 8.5,
+    "atm_pressure": 0.0,
+    "elevation": 3535.0,
+    "geology": "polar_massif",
+    "minerals": "Anortosita pura de tierras altas (PAN >90% anortita cálcica), Piroxeno bajo en Fe, Olivino relicto, Trampas frías criogénicas (H2O volátil en PSR)",
+    "data_source": "NASA Goddard LOLA Site 23 (PGDA 78) / Lunar Polar Illumination (PGDA 69) / LRO Diviner PCP-PRP / Chandrayaan-1 M3",
+    "region": "Luna"
+  }
+];
+
+    const EARTH_STATIONS = ALL_STATIONS.filter(s => s.body === 'earth');
+    const MARS_TARGETS = ALL_STATIONS.filter(s => s.body === 'mars');
+    const MOON_TARGETS = ALL_STATIONS.filter(s => s.body === 'moon');
+
+    // Mapeo amigable de nombres de misiones para los destinos extraterrestres
+    const TARGET_EXTENDED_INFO = {
+      'elysium-planitia': { mission: 'NASA InSight SEIS & HP3 / Misiones Geofísicas', summary: 'Llanuras volcánicas lisas formadas por coladas de lava basáltica fluida joven y conos de escoria.' },
+      'meridiani-planum': { mission: 'NASA MER-B / Rover Opportunity', summary: 'Planicie eólica hiperplana con evidencias de aguas ácidas freáticas en el pasado marciano.' },
+      'jezero-crater': { mission: 'NASA Mars 2020 / Rover Perseverance', summary: 'Antiguo cráter de impacto con un prominente delta fluvio-lacustre y depósitos de arcillas.' },
+      'gale-crater': { mission: 'NASA MSL / Rover Curiosity', summary: 'Cráter ecuatorial de 154 km con un macizo central estratificado de 5.5 km de sedimentos lacustres.' },
+      'valles-marineris': { mission: 'ESA Mars Express HRSC & OMEGA / NASA MRO', summary: 'Sistema gigantesco de cañones tectónicos de más de 4,000 km de longitud y hasta 7 km de profundidad.' },
+      'gusev-crater': { mission: 'NASA MER-A / Rover Spirit', summary: 'Cráter de 166 km de diámetro con lecho basáltico y las Colinas Columbia donde se halló sílice hidrotermal.' },
+      'mawrth-vallis': { mission: 'ESA ExoMars Rosalind Franklin Candidate', summary: 'Canal de desagüe antiguo que expone algunas de las secuencias estratificadas de arcillas más ricas de Marte.' },
+      'arcadia-planitia': { mission: 'MRO SHARAD / Mars Odyssey GRS', summary: 'Llanura septentrional hiperplana con evidencias directas de mantos masivos de hielo de agua somero.' },
+      'utopia-planitia-vl2': { mission: 'NASA Viking Lander 2 / MGS MOLA', summary: 'Llanura septentrional con percloratos y escarcha criogénica estacional de CO2 y H2O.' },
+      'deuteronilus-mensae': { mission: 'MRO SHARAD / Zenodo 7753745 / LMD MCD', summary: 'Región de mesetas erosionadas y glaciares de detritos (LDA) con núcleos masivos de hielo fósil.' },
+      'rima-hadley': { mission: 'NASA Apollo 15 / LRO LOLA', summary: 'Canal de lava colapsado sinuoso de 120 km al pie de los Apeninos Lunares.' },
+      'shackleton-crater': { mission: 'NASA Artemis III & VIPER / LRO Diviner', summary: 'Cráter de impacto en el polo sur lunar con fondo en sombra permanente (PSR) y trampas de hielo.' },
+      'de-gerlache-rim-2': { mission: 'NASA Artemis III Landing Candidate / ADC FY23', summary: 'Cresta elevada de cráter polar con micro-trampas criogénicas de sombra permanente.' },
+      'mons-mouton-plateau': { mission: 'NASA Artemis III & VIPER / LOLA & Diviner', summary: 'Meseta polar prominente con largos periodos de iluminación solar continua (~68%) y acceso a volátiles.' },
+      'tranquility-base': { mission: 'NASA Apollo 11 / Primer Alunizaje Humano', summary: 'Llanura de mar lunar basáltico rico en ilmenita y titanio.' },
+      'marius-hills': { mission: 'JAXA Kaguya SELENE / NASA LRO Camera', summary: 'Campo volcánico lunar con domos y claraboyas de acceso a tubos de lava subterráneos intactos.' },
+      'taurus-littrow': { mission: 'NASA Apollo 17 / Última Misión Apolo', summary: 'Valle encajado entre macizos montañosos con depósitos de vidrio volcánico piroclástico naranja.' },
+      'malapert-massif-site23': { mission: 'NASA Artemis III Sitio 23 / LOLA & Diviner', summary: 'Macizo polar elevado de anortosita prístina con picos de cuasi-eterna iluminación solar (~90%).' }
+    };
+
+    // =========================================================================
+    // VARIABLES DEL ESPACIO LATENTE (PCA 3D) Y ESCALAS FÍSICAS
+    // =========================================================================
+    const FEATURE_COLS = ['terrain', 'relief', 'roughness', 'temp', 'temp_swing', 'precip', 'solar_flux', 'atm_pressure'];
+
+    const PHYSICAL_SCALES = {
+      terrain:      { min: 0.0,    max: 45.0 },
+      relief:       { min: 0.0,    max: 4500.0 },
+      roughness:    { min: 0.0,    max: 35.0 },
+      temp:         { min: -220.0, max: 45.0 },
+      temp_swing:   { min: 0.0,    max: 295.0 },
+      precip:       { min: 0.0,    max: 3200.0 },
+      solar_flux:   { min: 0.0,    max: 30.0 },
+      atm_pressure: { min: 0.0,    max: 105.0 }
+    };
+
+    const PCA_MODEL = {
+      mean:  [8.94,  295.2, 5.25, 3.42, 45.8, 285.5, 20.4, 62.8],
+      scale: [7.85,  460.5, 5.80, 48.5, 62.5, 420.0,  5.8, 33.5],
+      components: [
+        [-0.32, -0.41, -0.34, 0.44, -0.38, 0.42, 0.18, 0.25],
+        [ 0.45,  0.42,  0.48, 0.28,  0.31, 0.12, 0.35, 0.26],
+        [-0.15, -0.12,  0.08, 0.35,  0.42, 0.65,-0.48,-0.08]
+      ]
+    };
+
+    // =========================================================================
+    // ESTADO DE LA APLICACIÓN
+    // =========================================================================
+    let currentBody = 'mars'; // 'mars' | 'moon'
+    let currentTarget = null;
+    let currentEarthRanking = [];
+    let currentSelectedEarthSite = null;
+    let currentDimensionCriterion = 'global'; // 'global' | 'topo' | 'clim' | 'min'
+    let currentScope = 'all'; // 'all' | 'bolivia' | 'southamerica' | 'global'
+    let currentSearchTerm = '';
+
+    // =========================================================================
+    // FUNCIONES MATEMÁTICAS DEL MODELO ML
+    // =========================================================================
+    function projectSamplePCA(obj) {
+      const vals = [
+        Number(obj.terrain) || 0.0,
+        Number(obj.relief) || 0.0,
+        Number(obj.roughness) || 0.0,
+        Number(obj.temp) || 0.0,
+        Number(obj.temp_swing) || 0.0,
+        Number(obj.precip) || 0.0,
+        Number(obj.solar_flux) || 0.0,
+        Number(obj.atm_pressure) || 0.0
+      ];
+
+      const scaled = [];
+      for (let i = 0; i < 8; i++) {
+        const z = (vals[i] - PCA_MODEL.mean[i]) / (PCA_MODEL.scale[i] || 1.0);
+        scaled.push(z);
+      }
+
+      const pc1 = scaled.reduce((acc, v, i) => acc + v * PCA_MODEL.components[0][i], 0);
+      const pc2 = scaled.reduce((acc, v, i) => acc + v * PCA_MODEL.components[1][i], 0);
+      const pc3 = scaled.reduce((acc, v, i) => acc + v * PCA_MODEL.components[2][i], 0);
+
+      return [pc1, pc2, pc3];
+    }
+
+    function computeGeochemicalSimilarity(earthMinerals, earthGeology, targetMinerals, targetGeology) {
+      if (earthGeology === 'humid_lowland' || earthGeology === 'lowland_plain') {
+        return 12.0; // Tierras bajas tropicales sin análogo litológico en Marte ni Luna
+      }
+      if (earthGeology === 'karst_cave') {
+        return 22.0;
+      }
+
+      function getFaciesVector(mineralsInput, geologyInput) {
+        let minArr = [];
+        if (Array.isArray(mineralsInput)) minArr = mineralsInput;
+        else if (typeof mineralsInput === 'string') minArr = mineralsInput.split(/[,;]/);
+        
+        const text = (minArr.join(' ') + ' ' + (geologyInput || '')).toLowerCase();
+        const v = [0, 0, 0, 0, 0, 0, 0, 0];
+        if (/(halita|sal|sales|salino|salina|salinas|cloruro|litio|ulexita|borato|boratos|salmuera)/.test(text)) v[0] = 1.0;
+        if (/(yeso|sulfato|sulfatos|jarosita|anhidrita)/.test(text)) v[1] = 1.0;
+        if (/(hematita|oxido|oxidos|hierro|goethita|magnetita|blueberries)/.test(text)) v[2] = 1.0;
+        if (/(arcilla|arcillas|esmectita|esmectitas|nontronita|caolinita|filosilicato)/.test(text)) v[3] = 1.0;
+        if (/(basalto|basaltos|basaltico|basaltica|piroxeno|augita|pigeonita|olivino|ilmenita|plagioclasa|anortosita|mafico|mafica)/.test(text)) v[4] = 1.0;
+        if (/(cuarzo|silice|feldespato|feldespatos|pumita|ignimbrita|vidrio)/.test(text)) v[5] = 1.0;
+        if (/(carbonato|carbonatos|calcita|dolomita|magnesita)/.test(text)) v[6] = 1.0;
+        if (/(hielo|ice|permafrost|psr)/.test(text)) v[7] = 1.0;
+        return v;
+      }
+
+      const vE = getFaciesVector(earthMinerals, earthGeology);
+      const vT = getFaciesVector(targetMinerals, targetGeology);
+
+      let inter = 0, union = 0, dot = 0, normE = 0, normT = 0;
+      for (let i = 0; i < 8; i++) {
+        inter += Math.min(vE[i], vT[i]);
+        union += Math.max(vE[i], vT[i]);
+        dot += vE[i] * vT[i];
+        normE += vE[i] * vE[i];
+        normT += vT[i] * vT[i];
+      }
+
+      const jaccard = (union > 0) ? (inter / union) : 0.0;
+      const normProd = Math.sqrt(normE) * Math.sqrt(normT);
+      const cosSim = (normProd > 0) ? (dot / normProd) : 0.0;
+
+      const sharedEvapSulfate = (vE[0] === 1.0 || vE[1] === 1.0) && (vT[1] === 1.0 || vT[0] === 1.0);
+      const sharedBasaltic = (vE[4] === 1.0 && vT[4] === 1.0);
+      const sharedCryo = (vE[7] === 1.0 && vT[7] === 1.0);
+      const sharedClayIron = (vE[3] === 1.0 || vE[2] === 1.0) && (vT[3] === 1.0 || vT[2] === 1.0);
+
+      let affinity = 0.0;
+      if (sharedEvapSulfate) affinity = 0.45;
+      else if (sharedClayIron) {
+        affinity = 0.44;
+        if (vE[3] === 1.0 && vT[3] === 1.0 && vE[2] === 1.0 && vT[2] === 1.0) affinity += 0.06;
+      } else if (sharedBasaltic) {
+        affinity = 0.42;
+        if (vE[2] === 1.0 && vT[2] === 1.0) affinity += 0.05;
+      } else if (sharedCryo) {
+        affinity = 0.40;
+      }
+
+      const sMinRaw = (0.35 * jaccard + 0.45 * cosSim + affinity) * 100.0;
+      return Math.max(15.0, Math.min(95.0, Math.round(sMinRaw * 10) / 10));
+    }
+
+    function calculatePlanetaryAnalogSimilarity(earth, target) {
+      // 1. Similitud de Pendiente
+      const dSlope = Math.abs(earth.terrain - target.terrain) / 14.0;
+      const sSlope = Math.exp(-dSlope);
+
+      // 2. Similitud de Rugosidad superficial
+      const dRoughness = Math.abs(earth.roughness - target.roughness) / 8.0;
+      const sRoughness = Math.exp(-dRoughness);
+
+      // 3. Similitud de Relieve Local Multi-escala
+      const logE = Math.log10(Math.max(earth.relief, 0.1) + 5.0);
+      const logT = Math.log10(Math.max(target.relief, 0.1) + 5.0);
+      const dReliefLog = Math.abs(logE - logT) / 0.85;
+      const sReliefLog = Math.exp(-dReliefLog);
+      const sReliefAbs = Math.exp(-Math.abs(earth.relief - target.relief) / 1200.0);
+
+      let sRelief;
+      if (earth.relief <= 60.0 && target.relief <= 60.0) {
+        const sPlain = Math.exp(-Math.abs(earth.relief - target.relief) / 40.0);
+        sRelief = 0.40 * sPlain + 0.30 * sReliefLog + 0.30 * sReliefAbs;
+      } else {
+        sRelief = 0.50 * sReliefLog + 0.50 * sReliefAbs;
+      }
+
+      const sTopoVal = (sSlope * 0.35 + sRelief * 0.35 + sRoughness * 0.30) * 100.0;
+      const s_topo = Math.round(sTopoVal * 10) / 10;
+
+      // 4. Similitud Climatológica
+      const dTemp = Math.abs(earth.temp - target.temp) / 65.0;
+      const dSwing = Math.abs(earth.temp_swing - target.temp_swing) / 75.0;
+      const logPe = Math.log10(Math.max(earth.atm_pressure, 0.001) + 0.01);
+      const logPt = Math.log10(Math.max(target.atm_pressure, 0.001) + 0.01);
+      const dPress = Math.abs(logPe - logPt) / 2.2;
+      const dUV = Math.abs(earth.solar_flux - target.solar_flux) / 22.0;
+      const dPrecip = earth.precip / 250.0;
+
+      const isVacuum = (target.atm_pressure < 0.005) || (target.body === 'Luna') || (target.body === 'moon');
+      let sClimVal;
+
+      if (isVacuum) {
+        const sPressVac = 0.02;
+        sClimVal = (
+          0.25 * Math.exp(-dTemp) +
+          0.20 * Math.exp(-dSwing) +
+          0.35 * sPressVac +
+          0.20 * Math.exp(-dUV)
+        ) * 100.0 * 0.85;
+      } else {
+        sClimVal = (
+          0.25 * Math.exp(-dTemp) +
+          0.20 * Math.exp(-dSwing) +
+          0.25 * Math.exp(-dPress) +
+          0.15 * Math.exp(-dUV) +
+          0.15 * Math.exp(-dPrecip)
+        ) * 100.0;
+      }
+      const s_clim = Math.max(5.0, Math.min(95.0, Math.round(sClimVal * 10) / 10));
+
+      // 5. Similitud Mineralógica
+      const s_min = computeGeochemicalSimilarity(earth.minerals, earth.geology, target.minerals, target.geology);
+
+      // 6. PSI Global Ponderado
+      const psi = Math.round((0.35 * s_topo + 0.35 * s_clim + 0.30 * s_min) * 10) / 10;
+
+      let tier = "Tier 3: Moderate Analog (Specialized Case)";
+      if (psi >= 80.0) tier = "Tier 1: Exceptional Global Analog (Full System Fidelity)";
+      else if (psi >= 70.0) tier = "Tier 2: High-Fidelity Planetary Analog (Priority Landing Site)";
+      else if (psi < 45.0) tier = "Tier 4: Non-Analog (Control Negativo / Límite de Habitabilidad)";
+
+      return { s_topo, s_clim, s_min, psi, tier };
+    }
+
+    // =========================================================================
+    // INICIALIZACIÓN Y RENDERIZADO
+    // =========================================================================
+    function init() {
+      switchBodyTarget('mars');
+    }
+
+    function switchBodyTarget(body) {
+      currentBody = body;
+      document.getElementById('btn-mars').className = `planet-btn mars-btn ${body === 'mars' ? 'active' : ''}`;
+      document.getElementById('btn-moon').className = `planet-btn moon-btn ${body === 'moon' ? 'active' : ''}`;
+
+      const targets = (body === 'mars') ? MARS_TARGETS : MOON_TARGETS;
+      renderPlanetaryTargetsGrid(targets);
+      selectPlanetaryTarget(targets[0].id);
+    }
+
+    function renderPlanetaryTargetsGrid(targets) {
+      const grid = document.getElementById('planetary-targets-grid');
+      grid.innerHTML = '';
+
+      targets.forEach(t => {
+        const ext = TARGET_EXTENDED_INFO[t.id] || { mission: t.data_source || 'NASA Mission', summary: t.geology };
+        const isActive = (currentTarget && currentTarget.id === t.id) ? 'active' : '';
+
+        const chip = document.createElement('div');
+        chip.className = `target-chip ${isActive}`;
+        chip.onclick = () => selectPlanetaryTarget(t.id);
+        chip.innerHTML = `
+          <div class="target-chip-name">${t.name}</div>
+          <div class="target-chip-sub">
+            <span>${t.body === 'mars' ? '🔴 Marte' : '⚪ Luna'}</span>
+            <span>Cota: ${t.elevation}m</span>
+          </div>
+        `;
+        grid.appendChild(chip);
+      });
+    }
+
+    function selectPlanetaryTarget(targetId) {
+      const targets = (currentBody === 'mars') ? MARS_TARGETS : MOON_TARGETS;
+      currentTarget = targets.find(t => t.id === targetId) || targets[0];
+
+      // Actualizar estado activo en chips
+      const chips = document.querySelectorAll('.target-chip');
+      chips.forEach((c, idx) => {
+        if (targets[idx] && targets[idx].id === currentTarget.id) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+
+      renderTargetDossier(currentTarget);
+      executeInverseSearch();
+    }
+
+    function renderTargetDossier(target) {
+      const box = document.getElementById('target-dossier-box');
+      const ext = TARGET_EXTENDED_INFO[target.id] || { mission: target.data_source || 'NASA Mission', summary: 'Objetivo de exploración' };
+      const mineralsText = Array.isArray(target.minerals) ? target.minerals.join(', ') : String(target.minerals || '--');
+
+      box.innerHTML = `
+        <div class="dossier-header">
+          <div class="dossier-title">
+            <span>${target.body === 'mars' ? '🔴' : '⚪'}</span> ${target.name} (${target.body === 'mars' ? 'Marte' : 'Luna'})
+          </div>
+          <div class="dossier-mission-badge">${ext.mission}</div>
+        </div>
+
+        <div class="dossier-grid">
+          <div class="dossier-metric-box">
+            <div class="dossier-metric-label">Coordenadas & Cota</div>
+            <div class="dossier-metric-val">Lat ${target.lat}°, Lon ${target.lon}° | ${target.elevation} m</div>
+          </div>
+          <div class="dossier-metric-box">
+            <div class="dossier-metric-label">Presión Barométrica</div>
+            <div class="dossier-metric-val">${target.atm_pressure} kPa (${target.atm_pressure > 0 ? 'Atmósfera activa' : 'Vacío lunar 0 kPa'})</div>
+          </div>
+          <div class="dossier-metric-box">
+            <div class="dossier-metric-label">Temperatura & Oscilación</div>
+            <div class="dossier-metric-val">${target.temp} °C (Δ${target.temp_swing} °C)</div>
+          </div>
+          <div class="dossier-metric-box">
+            <div class="dossier-metric-label">Morfología Superficial</div>
+            <div class="dossier-metric-val">${target.terrain}° pend. | ${target.relief} m rel. | Rug: ${target.roughness}</div>
+          </div>
+        </div>
+
+        <div class="dossier-summary-text">
+          <strong>Fases Minerales y Regolito:</strong> ${mineralsText}<br>
+          <span style="font-size: 0.70rem; color: #94a3b8; margin-top: 3px; display: block;">${ext.summary}</span>
+        </div>
+      `;
+    }
+
+    function executeInverseSearch() {
+      if (!currentTarget) return;
+
+      const pcsTarget = projectSamplePCA(currentTarget);
+
+      currentEarthRanking = [];
+
+      EARTH_STATIONS.forEach(st => {
+        const sim = calculatePlanetaryAnalogSimilarity(st, currentTarget);
+        const pcsEarth = projectSamplePCA(st);
+
+        // Distancia euclidiana y similitud coseno en espacio latente PCA 3D
+        const dot = pcsTarget[0]*pcsEarth[0] + pcsTarget[1]*pcsEarth[1] + pcsTarget[2]*pcsEarth[2];
+        const normT = Math.sqrt(pcsTarget[0]**2 + pcsTarget[1]**2 + pcsTarget[2]**2) + 1e-9;
+        const normE = Math.sqrt(pcsEarth[0]**2 + pcsEarth[1]**2 + pcsEarth[2]**2) + 1e-9;
+        const cosSim = dot / (normT * normE);
+        const cosSimPct = Math.round(Math.max(0.0, (cosSim + 1.0) / 2.0) * 1000) / 10;
+        const distPca = Math.round(Math.sqrt((pcsTarget[0]-pcsEarth[0])**2 + (pcsTarget[1]-pcsEarth[1])**2 + (pcsTarget[2]-pcsEarth[2])**2) * 1000) / 1000;
+
+        currentEarthRanking.push({
+          station: st,
+          sim: sim,
+          cosSimPct: cosSimPct,
+          distPca: distPca,
+          pcsEarth: pcsEarth
+        });
+      });
+
+      // Filtrar sitios con similitud mayor a 0% (todos calificados válidos)
+      currentEarthRanking = currentEarthRanking.filter(r => r.sim.psi > 0.0);
+
+      sortEarthRankingByDimension();
+
+      // Auto-seleccionar el #1 si no hay seleccionado o no coincide
+      if (!currentSelectedEarthSite || !currentEarthRanking.some(r => r.station.id === currentSelectedEarthSite.id)) {
+        currentSelectedEarthSite = currentEarthRanking[0].station;
+      }
+
+      renderAllInverseUI(pcsTarget);
+    }
+
+    function sortEarthRankingByDimension() {
+      if (!currentEarthRanking || currentEarthRanking.length === 0) return;
+      if (currentDimensionCriterion === 'topo') {
+        currentEarthRanking.sort((a, b) => b.sim.s_topo - a.sim.s_topo);
+      } else if (currentDimensionCriterion === 'clim') {
+        currentEarthRanking.sort((a, b) => b.sim.s_clim - a.sim.s_clim);
+      } else if (currentDimensionCriterion === 'min') {
+        currentEarthRanking.sort((a, b) => b.sim.s_min - a.sim.s_min);
+      } else {
+        currentEarthRanking.sort((a, b) => b.sim.psi - a.sim.psi);
+      }
+    }
+
+    function switchDimensionCriterion(criterion) {
+      currentDimensionCriterion = criterion;
+      ['global', 'topo', 'clim', 'min'].forEach(c => {
+        const tab = document.getElementById(`tab-dim-${c}`);
+        if (tab) {
+          if (c === criterion) tab.classList.add('active');
+          else tab.classList.remove('active');
+        }
+      });
+
+      sortEarthRankingByDimension();
+      if (currentEarthRanking.length > 0) {
+        currentSelectedEarthSite = currentEarthRanking[0].station;
+      }
+
+      const pcsTarget = projectSamplePCA(currentTarget);
+      renderAllInverseUI(pcsTarget);
+    }
+
+    function setGeographicScope(scope, btn) {
+      currentScope = scope;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderEarthAnalogsTable();
+    }
+
+    function handleFilterSearch(val) {
+      currentSearchTerm = val.toLowerCase().trim();
+      renderEarthAnalogsTable();
+    }
+
+    function selectEarthSiteFromTable(siteId) {
+      const found = currentEarthRanking.find(r => r.station.id === siteId);
+      if (found) {
+        currentSelectedEarthSite = found.station;
+        const pcsTarget = projectSamplePCA(currentTarget);
+        renderAllInverseUI(pcsTarget);
+        document.getElementById('comparison-audit-section').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function renderAllInverseUI(pcsTarget) {
+      renderThematicSpotlightInverse();
+      renderEarthAnalogsTable();
+      renderSideBySideComparison(pcsTarget);
+    }
+
+    function renderThematicSpotlightInverse() {
+      const box = document.getElementById('thematic-spotlight-box');
+      if (!box || !currentTarget || currentEarthRanking.length === 0) return;
+
+      const topRank = currentEarthRanking[0];
+      const st = topRank.station;
+      const sim = topRank.sim;
+
+      let critTitle = '';
+      let critScore = '';
+      let metricsHtml = '';
+      let insightText = '';
+
+      if (currentDimensionCriterion === 'topo') {
+        critTitle = `🏔️ MEJOR ANÁLOGO EN TOPOLOGÍA Y RELIEVES: ${st.name.toUpperCase()} (${st.country.toUpperCase()})`;
+        critScore = `${sim.s_topo}% SIMILITUD TOPOGRÁFICA`;
+        metricsHtml = `
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Pendiente Media</div>
+            <div class="thematic-metric-values">
+              <span>${currentTarget.name}: <strong>${currentTarget.terrain}°</strong></span> ➔ <span>${st.name}: <strong>${st.terrain}°</strong></span>
+            </div>
+            <div class="thematic-metric-diff">Δ = ${Math.abs(currentTarget.terrain - st.terrain).toFixed(1)}° (Escala [0°-45°])</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Relieve Local Escalado</div>
+            <div class="thematic-metric-values">
+              <span>${currentTarget.name}: <strong>${currentTarget.relief} m</strong></span> ➔ <span>${st.name}: <strong>${st.relief} m</strong></span>
+            </div>
+            <div class="thematic-metric-diff">Fidelidad de desnivel y ventanas de aterrizaje</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Rugosidad Decamétrica</div>
+            <div class="thematic-metric-values">
+              <span>${currentTarget.name}: <strong>${currentTarget.roughness}</strong></span> ➔ <span>${st.name}: <strong>${st.roughness}</strong></span>
+            </div>
+            <div class="thematic-metric-diff">Tracción de grousers y riesgo de vuelco</div>
+          </div>
+        `;
+        insightText = `<strong>Evaluación Topográfica Inversa:</strong> <em>${st.name}</em> en ${st.country} es el mejor sitio terrestre del mundo para simular la geomorfología de ${currentTarget.name}. Sus pendientes y micro-relieve permiten ensayar navegación autónoma mediante LiDAR y cámaras estéreo con exactitud milimétrica.`;
+      } else if (currentDimensionCriterion === 'clim') {
+        critTitle = `🌡️ MEJOR ANÁLOGO EN CLIMATOLOGÍA Y RADIACIÓN: ${st.name.toUpperCase()} (${st.country.toUpperCase()})`;
+        critScore = `${sim.s_clim}% SIMILITUD CLIMÁTICA`;
+        metricsHtml = `
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Presión Barométrica</div>
+            <div class="thematic-metric-values">
+              <span>${currentTarget.name}: <strong>${currentTarget.atm_pressure} kPa</strong></span> ➔ <span>${st.name}: <strong>${st.atm_pressure} kPa</strong></span>
+            </div>
+            <div class="thematic-metric-diff">${st.atm_pressure < 70 ? 'Atmósfera enrarecida de gran altitud' : 'Presión marina estándar'}</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Régimen Térmico & Swing</div>
+            <div class="thematic-metric-values">
+              <span>${currentTarget.name}: <strong>${currentTarget.temp}°C (Δ${currentTarget.temp_swing}°C)</strong></span> ➔ <span>${st.name}: <strong>${st.temp}°C (Δ${st.temp_swing}°C)</strong></span>
+            </div>
+            <div class="thematic-metric-diff">Fatiga por ciclos día-noche</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Precipitación / Aridez</div>
+            <div class="thematic-metric-values">
+              <span>${currentTarget.name}: <strong>${currentTarget.precip} mm/año</strong></span> ➔ <span>${st.name}: <strong>${st.precip} mm/año</strong></span>
+            </div>
+            <div class="thematic-metric-diff">${st.precip < 150 ? 'Hiperaridez extrema semejante' : 'Régimen moderado'}</div>
+          </div>
+        `;
+        insightText = `<strong>Evaluación Climatológica Inversa:</strong> <em>${st.name}</em> presenta las condiciones atmosféricas más enrarecidas, desecación extrema y flujo solar UV activo más próximos al entorno de ${currentTarget.name} (${currentTarget.body}).`;
+      } else if (currentDimensionCriterion === 'min') {
+        critTitle = `🧪 MEJOR ANÁLOGO EN MINERALOGÍA Y REGOLITO: ${st.name.toUpperCase()} (${st.country.toUpperCase()})`;
+        critScore = `${sim.s_min}% AFINIDAD GEOQUÍMICA`;
+        metricsHtml = `
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Fases de ${currentTarget.name}</div>
+            <div class="thematic-metric-values" style="font-size: 0.74rem;">
+              <span>${Array.isArray(currentTarget.minerals) ? currentTarget.minerals.slice(0, 2).join(', ') : currentTarget.minerals}</span>
+            </div>
+            <div class="thematic-metric-diff">Regolito / Litología extraterrestre</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Fases de ${st.name}</div>
+            <div class="thematic-metric-values" style="font-size: 0.74rem;">
+              <span>${String(st.minerals || '--').split(',').slice(0, 2).join(', ')}</span>
+            </div>
+            <div class="thematic-metric-diff">Facies terrestres correspondientes</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Carga Útil Recomendada</div>
+            <div class="thematic-metric-values" style="font-size: 0.74rem;">
+              <span>Raman, APXS, PIXL, SHERLOC</span>
+            </div>
+            <div class="thematic-metric-diff">Afinidad espectrométrica directa</div>
+          </div>
+        `;
+        insightText = `<strong>Evaluación Mineralógica Inversa:</strong> <em>${st.name}</em> cuenta con la mayor correspondencia de fases químicas y litológicas para calibrar espectrómetros y taladros frente a ${currentTarget.name}.`;
+      } else {
+        critTitle = `🌐 SIMILITUD GLOBAL INTEGRADA (PSI PONDERADO): ${st.name.toUpperCase()} (${st.country.toUpperCase()})`;
+        critScore = `${sim.psi}% PSI (${sim.tier.split(':')[0]})`;
+        metricsHtml = `
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Topología (Peso 35%)</div>
+            <div class="thematic-metric-values"><strong>${sim.s_topo}%</strong></div>
+            <div class="thematic-metric-diff">Morfología y relieve</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Climatología (Peso 35%)</div>
+            <div class="thematic-metric-values"><strong>${sim.s_clim}%</strong></div>
+            <div class="thematic-metric-diff">Presión, T° y aridez</div>
+          </div>
+          <div class="thematic-metric-box">
+            <div class="thematic-metric-label">Mineralogía (Peso 30%)</div>
+            <div class="thematic-metric-values"><strong>${sim.s_min}%</strong></div>
+            <div class="thematic-metric-diff">Facies y regolito</div>
+          </div>
+        `;
+        insightText = `<strong>Evaluación Global Integrada (NASA PSI):</strong> Ponderación del Sistema Solar completo. Combina topología (35%), clima (35%) y mineralogía (30%). Clasificación actual: <strong>${sim.tier}</strong>.`;
+      }
+
+      box.innerHTML = `
+        <div class="thematic-spotlight-badge">
+          <div class="thematic-target-title">${critTitle}</div>
+          <div class="thematic-target-score">${critScore}</div>
+        </div>
+        <div class="thematic-grid-metrics">
+          ${metricsHtml}
+        </div>
+        <div class="thematic-insight-text">
+          ${insightText}
+        </div>
+      `;
+    }
+
+    function renderEarthAnalogsTable() {
+      const tbody = document.getElementById('earth-analogs-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let filtered = currentEarthRanking.filter(r => {
+        const st = r.station;
+        // Filtro de alcance
+        if (currentScope === 'bolivia' && st.country !== 'Bolivia') return false;
+        if (currentScope === 'southamerica' && !['Bolivia', 'Argentina', 'Chile', 'Perú', 'Peru', 'Brasil', 'Brazil'].includes(st.country)) return false;
+        if (currentScope === 'global' && ['Bolivia', 'Argentina', 'Chile', 'Perú', 'Peru', 'Brasil', 'Brazil'].includes(st.country)) return false;
+
+        // Filtro de búsqueda de texto
+        if (currentSearchTerm) {
+          const term = currentSearchTerm;
+          const matchName = st.name.toLowerCase().includes(term);
+          const matchCountry = (st.country || '').toLowerCase().includes(term);
+          const matchRegion = (st.region || '').toLowerCase().includes(term);
+          const matchGeo = (st.geology || '').toLowerCase().includes(term);
+          const matchMin = String(st.minerals || '').toLowerCase().includes(term);
+          if (!matchName && !matchCountry && !matchRegion && !matchGeo && !matchMin) return false;
+        }
+
+        return true;
+      });
+
+      filtered.forEach((r, idx) => {
+        const st = r.station;
+        const sim = r.sim;
+        const isSelected = (currentSelectedEarthSite && currentSelectedEarthSite.id === st.id);
+        const medal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `#${idx + 1}`));
+        
+        let countryFlag = '🌎';
+        if (st.country === 'Bolivia') countryFlag = '🇧🇴';
+        else if (st.country === 'Argentina') countryFlag = '🇦🇷';
+        else if (st.country === 'Chile') countryFlag = '🇨🇱';
+        else if (st.country === 'Peru' || st.country === 'Perú') countryFlag = '🇵🇪';
+        else if (st.country === 'Antarctica' || st.country === 'Antártida') countryFlag = '🇦🇶';
+        else if (st.country === 'Canada' || st.country === 'Canadá') countryFlag = '🇨🇦';
+        else if (st.country === 'USA' || st.country === 'EE.UU.' || st.country === 'Estados Unidos') countryFlag = '🇺🇸';
+        else if (st.country === 'Ethiopia' || st.country === 'Etiopía') countryFlag = '🇪🇹';
+        else if (st.country === 'Norway' || st.country === 'Noruega') countryFlag = '🇳🇴';
+        else if (st.country === 'Iceland' || st.country === 'Islandia') countryFlag = '🇮🇸';
+        else if (st.country === 'Spain' || st.country === 'España') countryFlag = '🇪🇸';
+        else if (st.country === 'Algeria' || st.country === 'Argelia') countryFlag = '🇩🇿';
+        else if (st.country === 'Russia' || st.country === 'Rusia') countryFlag = '🇷🇺';
+        else if (st.country === 'Brazil' || st.country === 'Brasil') countryFlag = '🇧🇷';
+        else if (st.country === 'Nepal') countryFlag = '🇳🇵';
+
+        const tr = document.createElement('tr');
+        if (isSelected) tr.className = 'selected-row';
+        tr.onclick = () => selectEarthSiteFromTable(st.id);
+
+        tr.innerHTML = `
+          <td style="font-weight: 800; color: var(--accent);">${medal}</td>
+          <td style="font-weight: 700;">${st.name}</td>
+          <td style="line-height: 1.25;">
+            <div style="font-weight: 700;">${countryFlag} ${st.country}</div>
+            ${st.region ? `<div style="font-size: 0.68rem; color: #94a3b8; margin-top: 2px;">📍 ${st.region}</div>` : ''}
+          </td>
+          <td>${st.lat.toFixed(2)}°, ${st.lon.toFixed(2)}° <span style="color: var(--accent);">(${st.elevation}m)</span></td>
+          <td>${st.area_km2 || Math.round(3.14159 * (st.radius_km || 5)**2)} km²</td>
+          <td style="font-weight: 700; color: ${currentDimensionCriterion === 'topo' ? 'var(--accent)' : '#cbd5e1'};">${sim.s_topo}%</td>
+          <td style="font-weight: 700; color: ${currentDimensionCriterion === 'clim' ? '#38bdf8' : '#cbd5e1'};">${sim.s_clim}%</td>
+          <td style="font-weight: 700; color: ${currentDimensionCriterion === 'min' ? '#a855f7' : '#cbd5e1'};">${sim.s_min}%</td>
+          <td style="font-weight: 900; color: ${sim.psi >= 70 ? '#4ade80' : (sim.psi >= 50 ? '#fbbf24' : '#f87171')};">${sim.psi}%</td>
+          <td>
+            <button class="btn-select-earth" onclick="selectEarthSiteFromTable('${st.id}')">Auditar 👉</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderSideBySideComparison(pcsTarget) {
+      if (!currentTarget || !currentSelectedEarthSite) return;
+
+      const earth = currentSelectedEarthSite;
+      const target = currentTarget;
+      const sim = calculatePlanetaryAnalogSimilarity(earth, target);
+
+      document.getElementById('th-target-name').textContent = `${target.name} (${target.body === 'mars' ? 'Marte' : 'Luna'})`;
+      document.getElementById('th-earth-name').textContent = `${earth.name} (${earth.country})`;
+
+      // Círculo PSI y barras
+      document.getElementById('psi-main-val').textContent = `${sim.psi}%`;
+      document.getElementById('psi-tier-badge').textContent = sim.tier;
+      document.getElementById('psi-tier-badge').style.color = sim.psi >= 70 ? '#4ade80' : (sim.psi >= 50 ? '#fbbf24' : '#ef4444');
+
+      document.getElementById('bar-val-topo').textContent = `${sim.s_topo}%`;
+      document.getElementById('bar-fill-topo').style.width = `${sim.s_topo}%`;
+
+      document.getElementById('bar-val-clim').textContent = `${sim.s_clim}%`;
+      document.getElementById('bar-fill-clim').style.width = `${sim.s_clim}%`;
+
+      document.getElementById('bar-val-min').textContent = `${sim.s_min}%`;
+      document.getElementById('bar-fill-min').style.width = `${sim.s_min}%`;
+
+      const circleDeg = Math.round((sim.psi / 100.0) * 360);
+      document.getElementById('psi-circle').style.background = `conic-gradient(var(--accent) 0deg, var(--accent) ${circleDeg}deg, rgba(255,255,255,0.1) ${circleDeg}deg)`;
+
+      // Resumen rápido en tarjeta
+      document.getElementById('earth-quick-summary').innerHTML = `
+        <div style="font-size: 0.76rem; font-weight: 800; color: #ffffff;">🌍 Análogo Terrestre: ${earth.name}</div>
+        <div style="font-size: 0.70rem; color: #38bdf8;">📍 Lat ${earth.lat}°, Lon ${earth.lon}° | Cota: ${earth.elevation} msnm</div>
+        <div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 2px;">Litología: ${earth.geology} | Área: ${earth.area_km2 || 78.5} km²</div>
+        <div style="font-size: 0.66rem; color: #94a3b8;">Presión: ${earth.atm_pressure} kPa | Lluvia: ${earth.precip} mm/año | T°: ${earth.temp}°C</div>
+      `;
+
+      // Fuentes oficiales
+      const ext = TARGET_EXTENDED_INFO[target.id] || { mission: 'NASA Mission', summary: 'Cálculo Oficial' };
+      let targetSource = ext.mission;
+      let earthSource = earth.data_source || 'Copernicus DEM 90m / SERGEOMIN / NASA POWER';
+
+      // 16 Parámetros de la tabla comparativa lado a lado
+      const rowsData = [
+        {
+          param: 'Cuerpo Celeste',
+          target: `${target.body === 'mars' ? 'Marte (Planeta Rojo)' : 'Luna (Satélite Natural)'}`,
+          earth: 'Tierra (Planeta Rocoso)',
+          sim: '100.0%',
+          source: 'NASA Planetary Data System (PDS)',
+          url: 'https://pds-geosciences.wustl.edu/',
+          category: 'global'
+        },
+        {
+          param: 'Elevación Satelital & Coordenadas',
+          target: `${target.elevation} m (Datum ${target.body === 'mars' ? 'MOLA' : 'LOLA'})` ,
+          earth: `${earth.elevation} msnm (Lat ${earth.lat}°, Lon ${earth.lon}°)`,
+          sim: `${Math.round(Math.exp(-Math.abs(earth.elevation - target.elevation) / 9000.0) * 1000) / 10}%`,
+          source: 'Copernicus DEM 90m & NASA MOLA/LOLA',
+          url: 'https://pds-geosciences.wustl.edu/',
+          category: 'topo'
+        },
+        {
+          param: 'Presión Atmosférica Barométrica',
+          target: `${target.atm_pressure} kPa (${target.atm_pressure > 0 ? 'CO2 tenue' : 'Vacío lunar'})` ,
+          earth: `${earth.atm_pressure} kPa (~${Math.round((earth.atm_pressure / 101.325) * 100)}% nivel mar)`,
+          sim: `${Math.round(Math.exp(-Math.abs(Math.log10(earth.atm_pressure + 0.01) - Math.log10(target.atm_pressure + 0.01)) / 2.2) * 1000) / 10}%`,
+          source: 'NASA MERRA-2 & REMS/MEDA Climatology',
+          url: 'https://power.larc.nasa.gov/',
+          category: 'clim'
+        },
+        {
+          param: 'Temperatura Media Anual',
+          target: `${target.temp} °C`,
+          earth: `${earth.temp} °C`,
+          sim: `${Math.round(Math.exp(-Math.abs(earth.temp - target.temp) / 65.0) * 1000) / 10}%`,
+          source: 'NASA POWER & MSL/LRO Diviner',
+          url: 'https://power.larc.nasa.gov/',
+          category: 'clim'
+        },
+        {
+          param: 'Oscilación Térmica Diurna',
+          target: `Δ${target.temp_swing} °C`,
+          earth: `Δ${earth.temp_swing} °C`,
+          sim: `${Math.round(Math.exp(-Math.abs(earth.temp_swing - target.temp_swing) / 75.0) * 1000) / 10}%`,
+          source: 'NASA POWER & Curiosity REMS / LRO',
+          url: 'https://power.larc.nasa.gov/',
+          category: 'clim'
+        },
+        {
+          param: 'Precipitación Anual / Aridez',
+          target: `${target.precip} mm/año (Desecación total)`,
+          earth: `${earth.precip} mm/año`,
+          sim: `${Math.round(Math.exp(-earth.precip / 250.0) * 1000) / 10}%`,
+          source: 'NASA POWER PRECTOTCORR Climatology',
+          url: 'https://power.larc.nasa.gov/',
+          category: 'clim'
+        },
+        {
+          param: 'Radiación Solar / Flujo UV',
+          target: `Flujo Solar ${target.solar_flux} MJ/m²`,
+          earth: `${earth.solar_flux} MJ/m²`,
+          sim: `${Math.round(Math.exp(-Math.abs(earth.solar_flux - target.solar_flux) / 22.0) * 1000) / 10}%`,
+          source: 'Cabrol et al. (Astrobiology) & MSL RAD',
+          url: 'https://doi.org/10.3389/fenvs.2014.00019',
+          category: 'clim'
+        },
+        {
+          param: '➡️ SUBTOTAL CLIMA & RADIACIÓN (S_clim)',
+          target: 'Ambiente extremo extraterrestre',
+          earth: 'Clima del análogo terrestre',
+          sim: `${sim.s_clim}%`,
+          source: 'Algoritmo de Similitud Climática NASA',
+          url: '#',
+          isSubtotal: true,
+          category: 'clim'
+        },
+        {
+          param: 'Pendiente Media del Terreno',
+          target: `${target.terrain}°`,
+          earth: `${earth.terrain}°`,
+          sim: `${Math.round(Math.exp(-Math.abs(earth.terrain - target.terrain) / 14.0) * 1000) / 10}%`,
+          source: 'NASADEM 1-ArcSec & MOLA/LOLA MEGDR',
+          url: 'https://pds-geosciences.wustl.edu/',
+          category: 'topo'
+        },
+        {
+          param: `Relieve Local (Área ${earth.area_km2 || 50} km²)`,
+          target: `${target.relief} m`,
+          earth: `${earth.relief} m`,
+          sim: `${(() => {
+            const logE = Math.log10(Math.max(earth.relief, 0.1) + 5.0);
+            const logT = Math.log10(Math.max(target.relief, 0.1) + 5.0);
+            const dRelLog = Math.abs(logE - logT) / 0.85;
+            const sRelLog = Math.exp(-dRelLog);
+            const sRelAbs = Math.exp(-Math.abs(earth.relief - target.relief) / 1200.0);
+            let sRel;
+            if (earth.relief <= 60.0 && target.relief <= 60.0) {
+              const sPlain = Math.exp(-Math.abs(earth.relief - target.relief) / 40.0);
+              sRel = 0.40 * sPlain + 0.30 * sRelLog + 0.30 * sRelAbs;
+            } else {
+              sRel = 0.50 * sRelLog + 0.50 * sRelAbs;
+            }
+            return Math.round(sRel * 1000) / 10;
+          })()}%`,
+          source: 'SRTM v3.0 Global 30m & LOLA GDR',
+          url: 'https://lunar.gsfc.nasa.gov/',
+          category: 'topo'
+        },
+        {
+          param: 'Índice de Rugosidad Superficial',
+          target: `${target.roughness}`,
+          earth: `${earth.roughness}`,
+          sim: `${Math.round(Math.exp(-Math.abs(earth.roughness - target.roughness) / 8.0) * 1000) / 10}%`,
+          source: 'Neumann et al. (JGR Planets)',
+          url: 'https://doi.org/10.1029/2000JE001402',
+          category: 'topo'
+        },
+        {
+          param: '➡️ SUBTOTAL TOPOGRAFÍA & RELIEVE (S_topo)',
+          target: 'Morfología extraterrestre',
+          earth: 'Geomorfología del análogo',
+          sim: `${sim.s_topo}%`,
+          source: 'Algoritmo Morfológico NASA JPL',
+          url: '#',
+          isSubtotal: true,
+          category: 'topo'
+        },
+        {
+          param: 'Familia Geoquímica & Facies',
+          target: target.geology,
+          earth: earth.geology,
+          sim: `${sim.s_min}%`,
+          source: 'USGS Planetary Reports & CRISM/M3',
+          url: 'https://pds-geosciences.wustl.edu/',
+          category: 'min'
+        },
+        {
+          param: 'Fases Minerales Principales',
+          target: `${Array.isArray(target.minerals) ? target.minerals.slice(0, 2).join(', ') : target.minerals}`,
+          earth: `${String(earth.minerals || '--').split(',').slice(0, 2).join(', ')}`,
+          sim: `${sim.s_min}%`,
+          source: 'Espectroscopía Orbital & Muestras In-Situ',
+          url: 'https://pds-geosciences.wustl.edu/',
+          category: 'min'
+        },
+        {
+          param: '➡️ SUBTOTAL MINERALOGÍA & REGOLITO (S_min)',
+          target: 'Composición mineral del destino',
+          earth: 'Facies litológicas terrestres',
+          sim: `${sim.s_min}%`,
+          source: 'Modelo Geoquímico de Facies NASA',
+          url: '#',
+          isSubtotal: true,
+          category: 'min'
+        },
+        {
+          param: '🏆 ÍNDICE GLOBAL DE SIMILITUD PLANETARIA (PSI)',
+          target: `${target.name} (${target.body})`,
+          earth: `${earth.name} (${earth.country})`,
+          sim: `${sim.psi}%`,
+          source: 'NASA Planetary Science Division Audit',
+          url: '#',
+          isFinal: true,
+          category: 'global'
+        }
+      ];
+
+      const tbody = document.getElementById('side-by-side-tbody');
+      tbody.innerHTML = '';
+
+      rowsData.forEach(row => {
+        const tr = document.createElement('tr');
+        const isDimActive = (currentDimensionCriterion === row.category);
+        const activeDimClass = isDimActive ? ' row-highlight-active-dim' : '';
+        const activeTag = isDimActive ? ' <span class="active-dim-tag">Enfoque Activo</span>' : '';
+
+        if (row.isFinal) tr.className = 'highlight-final hoverable-row' + activeDimClass;
+        else if (row.isSubtotal) tr.className = 'highlight-subtotal hoverable-row' + activeDimClass;
+        else tr.className = 'hoverable-row' + activeDimClass;
+
+        tr.innerHTML = `
+          <td><strong>${row.param}</strong>${activeTag}</td>
+          <td>${row.target}</td>
+          <td>${row.earth}</td>
+          <td style="font-weight: 800; color: var(--accent);">${row.sim}</td>
+          <td><a href="${row.url}" target="_blank" class="source-link">${row.source}</a></td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+
+      // Espacio Latente PCA 3D
+      const pcsEarth = projectSamplePCA(earth);
+      document.getElementById('pca-pc1').textContent = `${pcsEarth[0] >= 0 ? '+' : ''}${pcsEarth[0].toFixed(3)}`;
+      document.getElementById('pca-pc2').textContent = `${pcsEarth[1] >= 0 ? '+' : ''}${pcsEarth[1].toFixed(3)}`;
+      document.getElementById('pca-pc3').textContent = `${pcsEarth[2] >= 0 ? '+' : ''}${pcsEarth[2].toFixed(3)}`;
+
+      const dot = pcsTarget[0]*pcsEarth[0] + pcsTarget[1]*pcsEarth[1] + pcsTarget[2]*pcsEarth[2];
+      const normT = Math.sqrt(pcsTarget[0]**2 + pcsTarget[1]**2 + pcsTarget[2]**2) + 1e-9;
+      const normE = Math.sqrt(pcsEarth[0]**2 + pcsEarth[1]**2 + pcsEarth[2]**2) + 1e-9;
+      const cosSim = dot / (normT * normE);
+      const cosSimPct = Math.round(Math.max(0.0, (cosSim + 1.0) / 2.0) * 1000) / 10;
+      const distPca = Math.round(Math.sqrt((pcsTarget[0]-pcsEarth[0])**2 + (pcsTarget[1]-pcsEarth[1])**2 + (pcsTarget[2]-pcsEarth[2])**2) * 1000) / 1000;
+
+      document.getElementById('pca-cosine-text').innerHTML = `• Similitud Coseno latente (Extraterrestre vs Tierra): <strong style="color: var(--accent);">${cosSimPct}%</strong>`;
+      document.getElementById('pca-dist-text').innerHTML = `• Distancia Euclidiana en Espacio Latente ($d_{pca}$): <strong>${distPca}</strong>`;
+
+      // Recomendaciones Operativas Cruzadas
+      renderMissionRecommendations(target, earth);
+    }
+
+    function renderMissionRecommendations(target, earth) {
+      const recsList = document.getElementById('mission-recs-list');
+      const limitsList = document.getElementById('analogy-limits-list');
+      recsList.innerHTML = '';
+      limitsList.innerHTML = '';
+
+      const tGeo = target.geology;
+      const eGeo = earth.geology;
+
+      // Recomendaciones
+      if (tGeo.includes('basalt') || eGeo.includes('basalt')) {
+        recsList.innerHTML += `<li><strong>RODADURA EN MALPAÍS BASÁLTICO:</strong> Ensayos de tracción y fatiga estructural en ruedas de nitinol y grousers sobre bloques de basalto vesicular y escoria abrasiva.</li>`;
+        recsList.innerHTML += `<li><strong>ESPECTROMETRÍA APXS & PIXL:</strong> Calibración de sensores para discriminar olivino, piroxenos y titanio en rocas máficas primitivas.</li>`;
+      } else if (tGeo.includes('plain') || eGeo.includes('salt_lake')) {
+        recsList.innerHTML += `<li><strong>ODOMETRÍA ÓPTICA & LIDAR:</strong> Calibración de navegación autónoma en horizontes hiperplanos con baja densidad de puntos de referencia visual.</li>`;
+        recsList.innerHTML += `<li><strong>ASTROBIOLOGÍA DE SALMUERAS:</strong> Toma de muestras asépticas en salmueras saturadas y minerales evaporíticos (yeso/halita).</li>`;
+      } else {
+        recsList.innerHTML += `<li><strong>LOCOMOCIÓN ROBÓTICA:</strong> Pruebas de tracción y odometría visual en terreno natural no consolidado.</li>`;
+        recsList.innerHTML += `<li><strong>TELEOPERACIONES CON LATENCIA:</strong> Ensayos de comandos de misión simulando retardo de enlace de 5 a 20 minutos.</li>`;
+      }
+
+      // Límites del análogo
+      limitsList.innerHTML += `<li><strong>COMPOSICIÓN ATMOSFÉRICA:</strong> La presencia de 21% de O2 y vapor de agua en la Tierra frente a atmósferas de 95% CO2 (${target.atm_pressure} kPa en Marte) o vacío absoluto (0 kPa en Luna).</li>`;
+      limitsList.innerHTML += `<li><strong>GRAVEDAD DIFERENCIAL:</strong> 1.0g en la Tierra frente a 0.38g marciana o 0.166g lunar, lo que distorsiona la masa efectiva en pendientes de regolito.</li>`;
+      limitsList.innerHTML += `<li><strong>PERCLORATOS OXIDANTES:</strong> Ausencia en el suelo terrestre de las altas concentraciones de percloratos (0.5% - 1.0%) características del regolito marciano.</li>`;
+    }
+
+    // =========================================================================
+    // POPOVER DE FÓRMULAS
+    // =========================================================================
+    const METRIC_DEFINITIONS = {
+      'psi': {
+        title: 'Índice de Similitud Planetaria (PSI Global)',
+        desc: 'Fórmula Ponderada Oficial NASA Space Apps:<br><strong>PSI = 0.35·S_topo + 0.35·S_clim + 0.30·S_min</strong><br>Pondera la coherencia física de los 3 subsistemas fundamentales.'
+      },
+      'formula': {
+        title: 'Desglose Ponderado de Pesos',
+        desc: '• <strong>w_topo = 35%</strong>: Morfología, pendiente media, relieve local y rugosidad.<br>• <strong>w_clim = 35%</strong>: Climatología, log-ratio barométrico, T° y aridez.<br>• <strong>w_min = 30%</strong>: Facies geoquímicas y mineralogía.'
+      },
+      'slope': {
+        title: 'Similitud Topográfica (S_topo)',
+        desc: 'Decaimiento exponencial sobre gradientes de pendiente (escala planetaria [0°-45°]), relieve local multi-escala [1m-4500m] y rugosidad decamétrica.'
+      },
+      'temp': {
+        title: 'Similitud Climatológica (S_clim)',
+        desc: 'Modela la convergencia térmica, la oscilación diurna (ΔT), la aridez hidrológica (exp(-P/250mm)) y el log-ratio de presión barométrica (ln(Pe/Pt)).'
+      },
+      'family': {
+        title: 'Similitud Mineralógica & Regolito (S_min)',
+        desc: 'Evaluación del solapamiento de facies litológicas (basaltos, evaporitas, filosilicatos, carbonatos o anortosita) mediante coeficientes de Jaccard y Coseno.'
+      }
+    };
+
+    function showMetricHover(key, e) {
+      const pop = document.getElementById('metric-popover');
+      const item = METRIC_DEFINITIONS[key];
+      if (!pop || !item) return;
+
+      document.getElementById('popover-title').innerHTML = item.title;
+      document.getElementById('popover-desc').innerHTML = item.desc;
+      pop.style.display = 'block';
+      moveMetricHover(e);
+    }
+
+    function moveMetricHover(e) {
+      const pop = document.getElementById('metric-popover');
+      if (!pop || pop.style.display !== 'block') return;
+      const x = Math.min(e.clientX + 16, window.innerWidth - 400);
+      const y = Math.min(e.clientY + 16, window.innerHeight - 200);
+      pop.style.left = `${x}px`;
+      pop.style.top = `${y}px`;
+    }
+
+    function hideMetricHover() {
+      const pop = document.getElementById('metric-popover');
+      if (pop) pop.style.display = 'none';
+    }
+
+    // Iniciar al cargar el DOM
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { EXPLORE_MAX_LAT } from '../map/planetaryImagery'
 import type { Model } from '../data/model'
 import { siteText, siteTextSources } from '../data/model'
 import type { Dimension, Purpose, Target } from '../data/schema'
@@ -196,6 +197,11 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
           </span>
           <span className="text-xs font-normal text-white/70">{t('explore.openModes')}</span>
         </button>
+      )}
+      {!onExplore && Math.abs(target.lat) > EXPLORE_MAX_LAT && (
+        <p className="mt-3 rounded-lg border border-line bg-paper px-3 py-2.5 text-xs leading-relaxed text-muted">
+          {t('explore.polarUnavailable', { target: target.name, lat: formatNumber(EXPLORE_MAX_LAT, lang) })}
+        </p>
       )}
 
       <div role="group" aria-label={t('detail.actions')} className="mt-2 flex flex-wrap gap-2">
