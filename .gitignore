@@ -12,6 +12,7 @@ dist
 *.tab
 *.rar
 *.zip
+datos
 datos/
 **/datos/
 __pycache__/

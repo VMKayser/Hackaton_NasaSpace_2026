@@ -2,7 +2,7 @@
   "meta": {
     "mock": false,
     "version": "2.1.0",
-    "generated": "2026-11-15T08:56:32Z",
+    "generated": "2026-11-15T10:36:57Z",
     "scoring": {
       "en": "Values measured from open sources (see each dimension) inside a circle of radiusKm around each site and of 5 km around each target; terrain uses the same 200 m step on every body. Score per dimension: 1 − min(1, |Earth − target| / scale), where the scale is the range between the 5th and 95th percentiles of the 31 catalog sites, widened to include the targets; for geology, 1 if the site and the target share a setting and 0 if not. The total is the weighted mean of the dimensions with data and a positive weight; missing data never counts as zero. Weights follow the OECD/JRC Handbook on Constructing Composite Indicators (2008): equal weights, and measures of the same property that are highly correlated share one weight (slope, 90th percentile slope and roughness: Spearman 0.97 to 1.00). Each purpose uses only the dimensions that its source names. The rock unit of the geological map is shown but not scored. Precipitation on Mars and the Moon and pressure on the Moon are 0 by definition, not measured; there is no lunar temperature source yet. Earth climate comes from cells about 55 km wide, so on summits it describes a lower altitude. Rules and sources: docs/valores/pesos.md.",
       "es": "Valores medidos con fuentes abiertas (ver cada dimensión) en un círculo de radiusKm alrededor de cada sitio y de 5 km alrededor de cada objetivo; el relieve usa el mismo paso de 200 m en todos los cuerpos. Puntaje por dimensión: 1 − min(1, |Tierra − objetivo| / escala), donde la escala es el rango entre los percentiles 5 y 95 de los 31 sitios del catálogo, ampliado para incluir a los objetivos; en geología, 1 si el sitio y el objetivo comparten entorno y 0 si no. El total es la media ponderada de las dimensiones con dato y peso positivo; un dato faltante nunca cuenta como cero. Los pesos siguen el Manual de indicadores compuestos de la OCDE y el JRC (2008): pesos iguales, y las medidas de una misma propiedad muy correlacionadas comparten un peso (pendiente, percentil 90 y rugosidad: Spearman de 0,97 a 1,00). Cada propósito usa solo las dimensiones que nombra su fuente. La unidad de roca del mapa geológico se muestra pero no puntúa. La precipitación en Marte y la Luna y la presión en la Luna son 0 por definición, no medidas; todavía no hay fuente de temperatura lunar. El clima de la Tierra viene de celdas de unos 55 km, así que en las cumbres describe una altura menor. Reglas y fuentes: docs/valores/pesos.md."
@@ -224,6 +224,18 @@
             "agency": "Nature Communications",
             "url": "https://doi.org/10.1038/s41467-020-14679-1",
             "body": "mars"
+          },
+          {
+            "name": "Plaut et al. (2009), Radar evidence for ice in lobate debris aprons, Deuteronilus Mensae",
+            "agency": "Geophysical Research Letters",
+            "url": "https://doi.org/10.1029/2008GL036379",
+            "body": "mars"
+          },
+          {
+            "name": "Bramson et al. (2015), Widespread excess ice in Arcadia Planitia",
+            "agency": "Geophysical Research Letters",
+            "url": "https://doi.org/10.1002/2015GL064844",
+            "body": "mars"
           }
         ],
         "categories": {
@@ -251,6 +263,10 @@
             "en": "Glacial",
             "es": "Glaciar"
           },
+          "ground_ice": {
+            "en": "Buried ice",
+            "es": "Hielo enterrado"
+          },
           "karst": {
             "en": "Karst (cave)",
             "es": "Kárstico (caverna)"
@@ -267,17 +283,17 @@
             "en": "Sedimentary rock",
             "es": "Roca sedimentaria"
           },
-          "volcanic+lacustrine": {
-            "en": "Volcanic + Lake basin (salt flat or ancient lake)",
-            "es": "Volcánico + Cuenca de lago (salar o lago antiguo)"
+          "hydrothermal+lacustrine": {
+            "en": "Hydrothermal + Lake basin (salt flat or ancient lake)",
+            "es": "Hidrotermal + Cuenca de lago (salar o lago antiguo)"
           },
           "volcanic+glacial": {
             "en": "Volcanic + Glacial",
             "es": "Volcánico + Glaciar"
           },
-          "hydrothermal+lacustrine": {
-            "en": "Hydrothermal + Lake basin (salt flat or ancient lake)",
-            "es": "Hidrotermal + Cuenca de lago (salar o lago antiguo)"
+          "volcanic+lacustrine": {
+            "en": "Volcanic + Lake basin (salt flat or ancient lake)",
+            "es": "Volcánico + Cuenca de lago (salar o lago antiguo)"
           },
           "lacustrine+hydrothermal": {
             "en": "Lake basin (salt flat or ancient lake) + Hydrothermal",
@@ -800,6 +816,141 @@
           "unit": null
         }
       }
+    },
+    {
+      "id": "utopia",
+      "name": "Utopia Planitia (Viking 2)",
+      "body": "mars",
+      "lat": 47.64,
+      "lon": 134.29,
+      "values": {
+        "slope": {
+          "value": 1.8,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 3.4,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 5.01,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -74.7,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 62.1,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 8.71,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": null,
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "deuteronilus",
+      "name": "Deuteronilus Mensae",
+      "body": "mars",
+      "lat": 44.9474,
+      "lon": 25.8523,
+      "values": {
+        "slope": {
+          "value": 1.38,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 2.07,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 3.76,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -71.11,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 74.75,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 7.65,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": "glacial",
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "arcadia",
+      "name": "Arcadia Planitia (Badger)",
+      "body": "mars",
+      "lat": 46.581,
+      "lon": -165.15,
+      "values": {
+        "slope": {
+          "value": 0.15,
+          "unit": "°"
+        },
+        "steep": {
+          "value": 0.34,
+          "unit": "°"
+        },
+        "roughness": {
+          "value": 0.42,
+          "unit": "m"
+        },
+        "temperature": {
+          "value": -73.22,
+          "unit": "°C"
+        },
+        "thermal_range": {
+          "value": 71.44,
+          "unit": "°C"
+        },
+        "aridity": {
+          "value": 0.0,
+          "unit": "mm/yr"
+        },
+        "pressure": {
+          "value": 8.28,
+          "unit": "hPa"
+        },
+        "geology": {
+          "value": "ground_ice",
+          "unit": null
+        },
+        "lithology": {
+          "value": null,
+          "unit": null
+        }
+      }
     }
   ],
   "sites": [
@@ -857,12 +1008,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.56,
+          "similarity": 0.582,
           "dimensions": {
             "slope": 0.931,
             "steep": 0.902,
             "roughness": 0.937,
-            "temperature": 0.256,
+            "temperature": 0.388,
             "thermal_range": 0.319,
             "aridity": 0.615,
             "pressure": 0.247,
@@ -872,12 +1023,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.334,
+          "similarity": 0.359,
           "dimensions": {
             "slope": 0.925,
             "steep": 0.775,
             "roughness": 0.932,
-            "temperature": 0.138,
+            "temperature": 0.291,
             "thermal_range": 0.127,
             "aridity": 0.615,
             "pressure": 0.246,
@@ -887,12 +1038,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.545,
+          "similarity": 0.568,
           "dimensions": {
             "slope": 0.953,
             "steep": 0.889,
             "roughness": 0.955,
-            "temperature": 0.222,
+            "temperature": 0.36,
             "thermal_range": 0.25,
             "aridity": 0.615,
             "pressure": 0.248,
@@ -902,12 +1053,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.554,
+          "similarity": 0.575,
           "dimensions": {
             "slope": 0.984,
             "steep": 0.948,
             "roughness": 0.987,
-            "temperature": 0.284,
+            "temperature": 0.411,
             "thermal_range": 0.205,
             "aridity": 0.615,
             "pressure": 0.246,
@@ -917,12 +1068,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.394,
+          "similarity": 0.417,
           "dimensions": {
             "slope": 0.99,
             "steep": 0.991,
             "roughness": 0.992,
-            "temperature": 0.232,
+            "temperature": 0.368,
             "thermal_range": 0.281,
             "aridity": 0.615,
             "pressure": 0.247,
@@ -989,6 +1140,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.5,
+          "dimensions": {
+            "slope": 0.939,
+            "steep": 0.915,
+            "roughness": 0.944,
+            "temperature": 0.114,
+            "thermal_range": 0.588,
+            "aridity": 0.615,
+            "pressure": 0.249,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.401,
+          "dimensions": {
+            "slope": 0.954,
+            "steep": 0.951,
+            "roughness": 0.96,
+            "temperature": 0.152,
+            "thermal_range": 0.439,
+            "aridity": 0.615,
+            "pressure": 0.247,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.412,
+          "dimensions": {
+            "slope": 1.0,
+            "steep": 0.998,
+            "roughness": 0.999,
+            "temperature": 0.129,
+            "thermal_range": 0.478,
+            "aridity": 0.615,
+            "pressure": 0.248,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -1052,12 +1248,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.583,
+          "similarity": 0.606,
           "dimensions": {
             "slope": 0.926,
             "steep": 0.902,
             "roughness": 0.931,
-            "temperature": 0.221,
+            "temperature": 0.36,
             "thermal_range": 0.366,
             "aridity": 0.739,
             "pressure": 0.251,
@@ -1067,12 +1263,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.357,
+          "similarity": 0.383,
           "dimensions": {
             "slope": 0.92,
             "steep": 0.774,
             "roughness": 0.926,
-            "temperature": 0.104,
+            "temperature": 0.263,
             "thermal_range": 0.174,
             "aridity": 0.739,
             "pressure": 0.251,
@@ -1082,12 +1278,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.568,
+          "similarity": 0.592,
           "dimensions": {
             "slope": 0.948,
             "steep": 0.888,
             "roughness": 0.949,
-            "temperature": 0.188,
+            "temperature": 0.332,
             "thermal_range": 0.297,
             "aridity": 0.739,
             "pressure": 0.253,
@@ -1097,12 +1293,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.577,
+          "similarity": 0.599,
           "dimensions": {
             "slope": 0.979,
             "steep": 0.948,
             "roughness": 0.981,
-            "temperature": 0.249,
+            "temperature": 0.383,
             "thermal_range": 0.252,
             "aridity": 0.739,
             "pressure": 0.25,
@@ -1112,12 +1308,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.417,
+          "similarity": 0.441,
           "dimensions": {
             "slope": 0.984,
             "steep": 0.991,
             "roughness": 0.986,
-            "temperature": 0.198,
+            "temperature": 0.34,
             "thermal_range": 0.328,
             "aridity": 0.739,
             "pressure": 0.251,
@@ -1184,6 +1380,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.528,
+          "dimensions": {
+            "slope": 0.934,
+            "steep": 0.915,
+            "roughness": 0.939,
+            "temperature": 0.086,
+            "thermal_range": 0.635,
+            "aridity": 0.739,
+            "pressure": 0.253,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.425,
+          "dimensions": {
+            "slope": 0.949,
+            "steep": 0.951,
+            "roughness": 0.954,
+            "temperature": 0.124,
+            "thermal_range": 0.486,
+            "aridity": 0.739,
+            "pressure": 0.252,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.436,
+          "dimensions": {
+            "slope": 0.994,
+            "steep": 0.998,
+            "roughness": 0.995,
+            "temperature": 0.101,
+            "thermal_range": 0.525,
+            "aridity": 0.739,
+            "pressure": 0.252,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -1247,12 +1488,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.46,
+          "similarity": 0.48,
           "dimensions": {
             "slope": 0.953,
             "steep": 0.842,
             "roughness": 0.953,
-            "temperature": 0.325,
+            "temperature": 0.445,
             "thermal_range": 0.339,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -1262,12 +1503,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.583,
+          "similarity": 0.606,
           "dimensions": {
             "slope": 0.959,
             "steep": 0.969,
             "roughness": 0.958,
-            "temperature": 0.207,
+            "temperature": 0.348,
             "thermal_range": 0.147,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -1277,12 +1518,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.442,
+          "similarity": 0.463,
           "dimensions": {
             "slope": 0.932,
             "steep": 0.855,
             "roughness": 0.935,
-            "temperature": 0.291,
+            "temperature": 0.417,
             "thermal_range": 0.27,
             "aridity": 0.843,
             "pressure": 0.339,
@@ -1292,12 +1533,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.437,
+          "similarity": 0.456,
           "dimensions": {
             "slope": 0.9,
             "steep": 0.796,
             "roughness": 0.903,
-            "temperature": 0.353,
+            "temperature": 0.468,
             "thermal_range": 0.225,
             "aridity": 0.843,
             "pressure": 0.336,
@@ -1307,12 +1548,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.438,
+          "similarity": 0.459,
           "dimensions": {
             "slope": 0.895,
             "steep": 0.752,
             "roughness": 0.897,
-            "temperature": 0.301,
+            "temperature": 0.425,
             "thermal_range": 0.301,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -1379,6 +1620,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.573,
+          "dimensions": {
+            "slope": 0.946,
+            "steep": 0.829,
+            "roughness": 0.945,
+            "temperature": 0.171,
+            "thermal_range": 0.608,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.455,
+          "dimensions": {
+            "slope": 0.93,
+            "steep": 0.793,
+            "roughness": 0.93,
+            "temperature": 0.209,
+            "thermal_range": 0.459,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.451,
+          "dimensions": {
+            "slope": 0.885,
+            "steep": 0.746,
+            "roughness": 0.889,
+            "temperature": 0.186,
+            "thermal_range": 0.498,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -1442,12 +1728,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.621,
+          "similarity": 0.642,
           "dimensions": {
             "slope": 0.928,
             "steep": 0.928,
             "roughness": 0.933,
-            "temperature": 0.298,
+            "temperature": 0.423,
             "thermal_range": 0.349,
             "aridity": 0.828,
             "pressure": 0.321,
@@ -1457,12 +1743,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.395,
+          "similarity": 0.419,
           "dimensions": {
             "slope": 0.922,
             "steep": 0.801,
             "roughness": 0.928,
-            "temperature": 0.181,
+            "temperature": 0.326,
             "thermal_range": 0.157,
             "aridity": 0.828,
             "pressure": 0.321,
@@ -1472,12 +1758,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.606,
+          "similarity": 0.627,
           "dimensions": {
             "slope": 0.95,
             "steep": 0.915,
             "roughness": 0.952,
-            "temperature": 0.264,
+            "temperature": 0.395,
             "thermal_range": 0.28,
             "aridity": 0.828,
             "pressure": 0.323,
@@ -1487,12 +1773,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.615,
+          "similarity": 0.635,
           "dimensions": {
             "slope": 0.982,
             "steep": 0.974,
             "roughness": 0.984,
-            "temperature": 0.326,
+            "temperature": 0.446,
             "thermal_range": 0.235,
             "aridity": 0.828,
             "pressure": 0.32,
@@ -1502,12 +1788,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.454,
+          "similarity": 0.475,
           "dimensions": {
             "slope": 0.987,
             "steep": 0.982,
             "roughness": 0.989,
-            "temperature": 0.275,
+            "temperature": 0.404,
             "thermal_range": 0.312,
             "aridity": 0.828,
             "pressure": 0.321,
@@ -1574,6 +1860,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.572,
+          "dimensions": {
+            "slope": 0.936,
+            "steep": 0.941,
+            "roughness": 0.941,
+            "temperature": 0.149,
+            "thermal_range": 0.619,
+            "aridity": 0.828,
+            "pressure": 0.323,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.461,
+          "dimensions": {
+            "slope": 0.951,
+            "steep": 0.977,
+            "roughness": 0.956,
+            "temperature": 0.187,
+            "thermal_range": 0.469,
+            "aridity": 0.828,
+            "pressure": 0.322,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.469,
+          "dimensions": {
+            "slope": 0.997,
+            "steep": 0.976,
+            "roughness": 0.997,
+            "temperature": 0.165,
+            "thermal_range": 0.508,
+            "aridity": 0.828,
+            "pressure": 0.323,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -1637,12 +1968,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.485,
+          "similarity": 0.506,
           "dimensions": {
             "slope": 0.993,
             "steep": 0.995,
             "roughness": 0.998,
-            "temperature": 0.284,
+            "temperature": 0.412,
             "thermal_range": 0.379,
             "aridity": 0.951,
             "pressure": 0.301,
@@ -1652,12 +1983,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.426,
+          "similarity": 0.451,
           "dimensions": {
             "slope": 0.987,
             "steep": 0.877,
             "roughness": 0.993,
-            "temperature": 0.167,
+            "temperature": 0.315,
             "thermal_range": 0.187,
             "aridity": 0.951,
             "pressure": 0.301,
@@ -1667,12 +1998,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.467,
+          "similarity": 0.489,
           "dimensions": {
             "slope": 0.985,
             "steep": 0.991,
             "roughness": 0.984,
-            "temperature": 0.251,
+            "temperature": 0.384,
             "thermal_range": 0.31,
             "aridity": 0.951,
             "pressure": 0.303,
@@ -1682,12 +2013,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.463,
+          "similarity": 0.484,
           "dimensions": {
             "slope": 0.953,
             "steep": 0.949,
             "roughness": 0.952,
-            "temperature": 0.313,
+            "temperature": 0.435,
             "thermal_range": 0.265,
             "aridity": 0.951,
             "pressure": 0.3,
@@ -1697,12 +2028,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.465,
+          "similarity": 0.487,
           "dimensions": {
             "slope": 0.948,
             "steep": 0.906,
             "roughness": 0.947,
-            "temperature": 0.261,
+            "temperature": 0.392,
             "thermal_range": 0.341,
             "aridity": 0.951,
             "pressure": 0.301,
@@ -1769,6 +2100,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.606,
+          "dimensions": {
+            "slope": 0.999,
+            "steep": 0.982,
+            "roughness": 0.995,
+            "temperature": 0.137,
+            "thermal_range": 0.648,
+            "aridity": 0.951,
+            "pressure": 0.303,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.483,
+          "dimensions": {
+            "slope": 0.984,
+            "steep": 0.946,
+            "roughness": 0.979,
+            "temperature": 0.176,
+            "thermal_range": 0.499,
+            "aridity": 0.951,
+            "pressure": 0.302,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.478,
+          "dimensions": {
+            "slope": 0.938,
+            "steep": 0.899,
+            "roughness": 0.938,
+            "temperature": 0.153,
+            "thermal_range": 0.538,
+            "aridity": 0.951,
+            "pressure": 0.302,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -1832,12 +2208,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.467,
+          "similarity": 0.487,
           "dimensions": {
             "slope": 0.944,
             "steep": 0.97,
             "roughness": 0.954,
-            "temperature": 0.325,
+            "temperature": 0.445,
             "thermal_range": 0.339,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -1847,12 +2223,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.412,
+          "similarity": 0.435,
           "dimensions": {
             "slope": 0.949,
             "steep": 0.903,
             "roughness": 0.959,
-            "temperature": 0.207,
+            "temperature": 0.348,
             "thermal_range": 0.147,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -1862,12 +2238,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.448,
+          "similarity": 0.469,
           "dimensions": {
             "slope": 0.922,
             "steep": 0.984,
             "roughness": 0.935,
-            "temperature": 0.291,
+            "temperature": 0.417,
             "thermal_range": 0.27,
             "aridity": 0.843,
             "pressure": 0.339,
@@ -1877,12 +2253,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.444,
+          "similarity": 0.463,
           "dimensions": {
             "slope": 0.89,
             "steep": 0.924,
             "roughness": 0.903,
-            "temperature": 0.353,
+            "temperature": 0.468,
             "thermal_range": 0.225,
             "aridity": 0.843,
             "pressure": 0.336,
@@ -1892,12 +2268,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.445,
+          "similarity": 0.466,
           "dimensions": {
             "slope": 0.885,
             "steep": 0.881,
             "roughness": 0.898,
-            "temperature": 0.301,
+            "temperature": 0.425,
             "thermal_range": 0.301,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -1964,6 +2340,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.581,
+          "dimensions": {
+            "slope": 0.936,
+            "steep": 0.957,
+            "roughness": 0.946,
+            "temperature": 0.171,
+            "thermal_range": 0.608,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.462,
+          "dimensions": {
+            "slope": 0.921,
+            "steep": 0.921,
+            "roughness": 0.93,
+            "temperature": 0.209,
+            "thermal_range": 0.459,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.458,
+          "dimensions": {
+            "slope": 0.875,
+            "steep": 0.874,
+            "roughness": 0.89,
+            "temperature": 0.186,
+            "thermal_range": 0.498,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -2027,12 +2448,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.613,
+          "similarity": 0.638,
           "dimensions": {
             "slope": 0.989,
             "steep": 0.994,
             "roughness": 0.989,
-            "temperature": 0.172,
+            "temperature": 0.319,
             "thermal_range": 0.382,
             "aridity": 0.965,
             "pressure": 0.169,
@@ -2042,12 +2463,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.388,
+          "similarity": 0.416,
           "dimensions": {
             "slope": 0.983,
             "steep": 0.879,
             "roughness": 0.984,
-            "temperature": 0.055,
+            "temperature": 0.222,
             "thermal_range": 0.19,
             "aridity": 0.965,
             "pressure": 0.169,
@@ -2057,12 +2478,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.596,
+          "similarity": 0.622,
           "dimensions": {
             "slope": 0.99,
             "steep": 0.993,
             "roughness": 0.993,
-            "temperature": 0.138,
+            "temperature": 0.291,
             "thermal_range": 0.313,
             "aridity": 0.965,
             "pressure": 0.171,
@@ -2072,12 +2493,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.593,
+          "similarity": 0.616,
           "dimensions": {
             "slope": 0.958,
             "steep": 0.948,
             "roughness": 0.961,
-            "temperature": 0.2,
+            "temperature": 0.342,
             "thermal_range": 0.267,
             "aridity": 0.965,
             "pressure": 0.168,
@@ -2087,12 +2508,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.427,
+          "similarity": 0.453,
           "dimensions": {
             "slope": 0.953,
             "steep": 0.905,
             "roughness": 0.956,
-            "temperature": 0.149,
+            "temperature": 0.3,
             "thermal_range": 0.344,
             "aridity": 0.965,
             "pressure": 0.169,
@@ -2159,6 +2580,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.565,
+          "dimensions": {
+            "slope": 0.996,
+            "steep": 0.981,
+            "roughness": 0.997,
+            "temperature": 0.045,
+            "thermal_range": 0.651,
+            "aridity": 0.965,
+            "pressure": 0.171,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.449,
+          "dimensions": {
+            "slope": 0.988,
+            "steep": 0.945,
+            "roughness": 0.988,
+            "temperature": 0.083,
+            "thermal_range": 0.501,
+            "aridity": 0.965,
+            "pressure": 0.17,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.444,
+          "dimensions": {
+            "slope": 0.943,
+            "steep": 0.898,
+            "roughness": 0.947,
+            "temperature": 0.061,
+            "thermal_range": 0.54,
+            "aridity": 0.965,
+            "pressure": 0.17,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -2222,12 +2688,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.352,
+          "similarity": 0.373,
           "dimensions": {
             "slope": 0.42,
             "steep": 0.425,
             "roughness": 0.411,
-            "temperature": 0.303,
+            "temperature": 0.426,
             "thermal_range": 0.335,
             "aridity": 0.727,
             "pressure": 0.329,
@@ -2237,12 +2703,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.308,
+          "similarity": 0.332,
           "dimensions": {
             "slope": 0.426,
             "steep": 0.553,
             "roughness": 0.416,
-            "temperature": 0.185,
+            "temperature": 0.33,
             "thermal_range": 0.143,
             "aridity": 0.727,
             "pressure": 0.329,
@@ -2252,12 +2718,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.334,
+          "similarity": 0.355,
           "dimensions": {
             "slope": 0.399,
             "steep": 0.439,
             "roughness": 0.392,
-            "temperature": 0.269,
+            "temperature": 0.399,
             "thermal_range": 0.266,
             "aridity": 0.727,
             "pressure": 0.331,
@@ -2267,12 +2733,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.329,
+          "similarity": 0.349,
           "dimensions": {
             "slope": 0.367,
             "steep": 0.379,
             "roughness": 0.361,
-            "temperature": 0.331,
+            "temperature": 0.449,
             "thermal_range": 0.221,
             "aridity": 0.727,
             "pressure": 0.328,
@@ -2282,12 +2748,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.497,
+          "similarity": 0.519,
           "dimensions": {
             "slope": 0.362,
             "steep": 0.336,
             "roughness": 0.355,
-            "temperature": 0.279,
+            "temperature": 0.407,
             "thermal_range": 0.297,
             "aridity": 0.727,
             "pressure": 0.329,
@@ -2354,6 +2820,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.445,
+          "dimensions": {
+            "slope": 0.413,
+            "steep": 0.412,
+            "roughness": 0.403,
+            "temperature": 0.152,
+            "thermal_range": 0.604,
+            "aridity": 0.727,
+            "pressure": 0.331,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.348,
+          "dimensions": {
+            "slope": 0.397,
+            "steep": 0.376,
+            "roughness": 0.388,
+            "temperature": 0.191,
+            "thermal_range": 0.455,
+            "aridity": 0.727,
+            "pressure": 0.33,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.344,
+          "dimensions": {
+            "slope": 0.352,
+            "steep": 0.33,
+            "roughness": 0.347,
+            "temperature": 0.168,
+            "thermal_range": 0.494,
+            "aridity": 0.727,
+            "pressure": 0.33,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -2417,12 +2928,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.241,
+          "similarity": 0.264,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.0,
             "roughness": 0.0,
-            "temperature": 0.246,
+            "temperature": 0.38,
             "thermal_range": 0.343,
             "aridity": 0.564,
             "pressure": 0.296,
@@ -2432,12 +2943,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.196,
+          "similarity": 0.222,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.11,
             "roughness": 0.0,
-            "temperature": 0.128,
+            "temperature": 0.283,
             "thermal_range": 0.151,
             "aridity": 0.564,
             "pressure": 0.296,
@@ -2447,12 +2958,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.225,
+          "similarity": 0.248,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.0,
             "roughness": 0.0,
-            "temperature": 0.212,
+            "temperature": 0.352,
             "thermal_range": 0.274,
             "aridity": 0.564,
             "pressure": 0.298,
@@ -2462,12 +2973,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.227,
+          "similarity": 0.248,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.0,
             "roughness": 0.0,
-            "temperature": 0.274,
+            "temperature": 0.403,
             "thermal_range": 0.228,
             "aridity": 0.564,
             "pressure": 0.295,
@@ -2477,12 +2988,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.398,
+          "similarity": 0.421,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.0,
             "roughness": 0.0,
-            "temperature": 0.222,
+            "temperature": 0.36,
             "thermal_range": 0.305,
             "aridity": 0.564,
             "pressure": 0.296,
@@ -2549,6 +3060,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.316,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.0,
+            "roughness": 0.0,
+            "temperature": 0.106,
+            "thermal_range": 0.612,
+            "aridity": 0.564,
+            "pressure": 0.298,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.411,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.0,
+            "roughness": 0.0,
+            "temperature": 0.144,
+            "thermal_range": 0.462,
+            "aridity": 0.564,
+            "pressure": 0.297,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.247,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.0,
+            "roughness": 0.0,
+            "temperature": 0.121,
+            "thermal_range": 0.501,
+            "aridity": 0.564,
+            "pressure": 0.298,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -2612,12 +3168,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.331,
+          "similarity": 0.353,
           "dimensions": {
             "slope": 0.067,
             "steep": 0.204,
             "roughness": 0.055,
-            "temperature": 0.268,
+            "temperature": 0.398,
             "thermal_range": 0.386,
             "aridity": 0.931,
             "pressure": 0.295,
@@ -2627,12 +3183,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.288,
+          "similarity": 0.313,
           "dimensions": {
             "slope": 0.073,
             "steep": 0.332,
             "roughness": 0.06,
-            "temperature": 0.15,
+            "temperature": 0.301,
             "thermal_range": 0.194,
             "aridity": 0.931,
             "pressure": 0.295,
@@ -2642,12 +3198,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.313,
+          "similarity": 0.336,
           "dimensions": {
             "slope": 0.045,
             "steep": 0.218,
             "roughness": 0.037,
-            "temperature": 0.234,
+            "temperature": 0.37,
             "thermal_range": 0.317,
             "aridity": 0.931,
             "pressure": 0.297,
@@ -2657,12 +3213,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.309,
+          "similarity": 0.329,
           "dimensions": {
             "slope": 0.014,
             "steep": 0.158,
             "roughness": 0.005,
-            "temperature": 0.296,
+            "temperature": 0.421,
             "thermal_range": 0.271,
             "aridity": 0.931,
             "pressure": 0.294,
@@ -2672,12 +3228,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.477,
+          "similarity": 0.499,
           "dimensions": {
             "slope": 0.008,
             "steep": 0.115,
             "roughness": 0.0,
-            "temperature": 0.244,
+            "temperature": 0.378,
             "thermal_range": 0.348,
             "aridity": 0.931,
             "pressure": 0.295,
@@ -2744,6 +3300,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.421,
+          "dimensions": {
+            "slope": 0.059,
+            "steep": 0.191,
+            "roughness": 0.047,
+            "temperature": 0.124,
+            "thermal_range": 0.655,
+            "aridity": 0.931,
+            "pressure": 0.297,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.329,
+          "dimensions": {
+            "slope": 0.044,
+            "steep": 0.155,
+            "roughness": 0.032,
+            "temperature": 0.162,
+            "thermal_range": 0.505,
+            "aridity": 0.931,
+            "pressure": 0.296,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.325,
+          "dimensions": {
+            "slope": 0.0,
+            "steep": 0.109,
+            "roughness": 0.0,
+            "temperature": 0.139,
+            "thermal_range": 0.545,
+            "aridity": 0.931,
+            "pressure": 0.297,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -2807,12 +3408,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.307,
+          "similarity": 0.33,
           "dimensions": {
             "slope": 0.467,
             "steep": 0.29,
             "roughness": 0.469,
-            "temperature": 0.256,
+            "temperature": 0.388,
             "thermal_range": 0.319,
             "aridity": 0.615,
             "pressure": 0.247,
@@ -2822,12 +3423,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.264,
+          "similarity": 0.289,
           "dimensions": {
             "slope": 0.472,
             "steep": 0.417,
             "roughness": 0.474,
-            "temperature": 0.138,
+            "temperature": 0.291,
             "thermal_range": 0.127,
             "aridity": 0.615,
             "pressure": 0.246,
@@ -2837,12 +3438,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.289,
+          "similarity": 0.312,
           "dimensions": {
             "slope": 0.445,
             "steep": 0.303,
             "roughness": 0.45,
-            "temperature": 0.222,
+            "temperature": 0.36,
             "thermal_range": 0.25,
             "aridity": 0.615,
             "pressure": 0.248,
@@ -2852,12 +3453,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.285,
+          "similarity": 0.306,
           "dimensions": {
             "slope": 0.413,
             "steep": 0.244,
             "roughness": 0.418,
-            "temperature": 0.284,
+            "temperature": 0.411,
             "thermal_range": 0.205,
             "aridity": 0.615,
             "pressure": 0.246,
@@ -2867,12 +3468,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.453,
+          "similarity": 0.475,
           "dimensions": {
             "slope": 0.408,
             "steep": 0.201,
             "roughness": 0.413,
-            "temperature": 0.232,
+            "temperature": 0.368,
             "thermal_range": 0.281,
             "aridity": 0.615,
             "pressure": 0.247,
@@ -2939,6 +3540,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.393,
+          "dimensions": {
+            "slope": 0.459,
+            "steep": 0.277,
+            "roughness": 0.461,
+            "temperature": 0.114,
+            "thermal_range": 0.588,
+            "aridity": 0.615,
+            "pressure": 0.249,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.305,
+          "dimensions": {
+            "slope": 0.444,
+            "steep": 0.241,
+            "roughness": 0.445,
+            "temperature": 0.152,
+            "thermal_range": 0.439,
+            "aridity": 0.615,
+            "pressure": 0.247,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.3,
+          "dimensions": {
+            "slope": 0.398,
+            "steep": 0.194,
+            "roughness": 0.405,
+            "temperature": 0.129,
+            "thermal_range": 0.478,
+            "aridity": 0.615,
+            "pressure": 0.248,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -3002,12 +3648,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.529,
+          "similarity": 0.552,
           "dimensions": {
             "slope": 0.926,
             "steep": 0.895,
             "roughness": 0.931,
-            "temperature": 0.229,
+            "temperature": 0.366,
             "thermal_range": 0.296,
             "aridity": 0.467,
             "pressure": 0.267,
@@ -3017,12 +3663,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.303,
+          "similarity": 0.33,
           "dimensions": {
             "slope": 0.92,
             "steep": 0.768,
             "roughness": 0.926,
-            "temperature": 0.112,
+            "temperature": 0.269,
             "thermal_range": 0.104,
             "aridity": 0.467,
             "pressure": 0.267,
@@ -3032,12 +3678,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.514,
+          "similarity": 0.538,
           "dimensions": {
             "slope": 0.948,
             "steep": 0.882,
             "roughness": 0.949,
-            "temperature": 0.195,
+            "temperature": 0.338,
             "thermal_range": 0.227,
             "aridity": 0.467,
             "pressure": 0.269,
@@ -3047,12 +3693,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.523,
+          "similarity": 0.545,
           "dimensions": {
             "slope": 0.979,
             "steep": 0.941,
             "roughness": 0.981,
-            "temperature": 0.257,
+            "temperature": 0.389,
             "thermal_range": 0.182,
             "aridity": 0.467,
             "pressure": 0.267,
@@ -3062,12 +3708,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.364,
+          "similarity": 0.387,
           "dimensions": {
             "slope": 0.984,
             "steep": 0.984,
             "roughness": 0.986,
-            "temperature": 0.206,
+            "temperature": 0.347,
             "thermal_range": 0.258,
             "aridity": 0.467,
             "pressure": 0.267,
@@ -3134,6 +3780,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.464,
+          "dimensions": {
+            "slope": 0.934,
+            "steep": 0.908,
+            "roughness": 0.939,
+            "temperature": 0.092,
+            "thermal_range": 0.565,
+            "aridity": 0.467,
+            "pressure": 0.269,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.372,
+          "dimensions": {
+            "slope": 0.949,
+            "steep": 0.944,
+            "roughness": 0.954,
+            "temperature": 0.13,
+            "thermal_range": 0.416,
+            "aridity": 0.467,
+            "pressure": 0.268,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.382,
+          "dimensions": {
+            "slope": 0.994,
+            "steep": 0.991,
+            "roughness": 0.995,
+            "temperature": 0.108,
+            "thermal_range": 0.455,
+            "aridity": 0.467,
+            "pressure": 0.269,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -3197,12 +3888,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.617,
+          "similarity": 0.639,
           "dimensions": {
             "slope": 0.934,
             "steep": 0.923,
             "roughness": 0.94,
-            "temperature": 0.254,
+            "temperature": 0.387,
             "thermal_range": 0.36,
             "aridity": 0.898,
             "pressure": 0.255,
@@ -3212,12 +3903,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.391,
+          "similarity": 0.416,
           "dimensions": {
             "slope": 0.928,
             "steep": 0.795,
             "roughness": 0.935,
-            "temperature": 0.137,
+            "temperature": 0.29,
             "thermal_range": 0.168,
             "aridity": 0.898,
             "pressure": 0.255,
@@ -3227,12 +3918,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.601,
+          "similarity": 0.624,
           "dimensions": {
             "slope": 0.956,
             "steep": 0.909,
             "roughness": 0.958,
-            "temperature": 0.22,
+            "temperature": 0.359,
             "thermal_range": 0.291,
             "aridity": 0.898,
             "pressure": 0.257,
@@ -3242,12 +3933,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.61,
+          "similarity": 0.632,
           "dimensions": {
             "slope": 0.987,
             "steep": 0.969,
             "roughness": 0.99,
-            "temperature": 0.282,
+            "temperature": 0.41,
             "thermal_range": 0.246,
             "aridity": 0.898,
             "pressure": 0.254,
@@ -3257,12 +3948,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.45,
+          "similarity": 0.472,
           "dimensions": {
             "slope": 0.993,
             "steep": 0.988,
             "roughness": 0.995,
-            "temperature": 0.231,
+            "temperature": 0.367,
             "thermal_range": 0.322,
             "aridity": 0.898,
             "pressure": 0.255,
@@ -3329,6 +4020,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.568,
+          "dimensions": {
+            "slope": 0.942,
+            "steep": 0.936,
+            "roughness": 0.948,
+            "temperature": 0.112,
+            "thermal_range": 0.629,
+            "aridity": 0.898,
+            "pressure": 0.257,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.458,
+          "dimensions": {
+            "slope": 0.957,
+            "steep": 0.972,
+            "roughness": 0.963,
+            "temperature": 0.151,
+            "thermal_range": 0.48,
+            "aridity": 0.898,
+            "pressure": 0.256,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.466,
+          "dimensions": {
+            "slope": 0.997,
+            "steep": 0.982,
+            "roughness": 0.996,
+            "temperature": 0.128,
+            "thermal_range": 0.519,
+            "aridity": 0.898,
+            "pressure": 0.257,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -3392,12 +4128,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.63,
+          "similarity": 0.652,
           "dimensions": {
             "slope": 0.941,
             "steep": 0.999,
             "roughness": 0.947,
-            "temperature": 0.241,
+            "temperature": 0.376,
             "thermal_range": 0.393,
             "aridity": 0.913,
             "pressure": 0.27,
@@ -3407,12 +4143,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.404,
+          "similarity": 0.43,
           "dimensions": {
             "slope": 0.935,
             "steep": 0.872,
             "roughness": 0.942,
-            "temperature": 0.123,
+            "temperature": 0.279,
             "thermal_range": 0.201,
             "aridity": 0.913,
             "pressure": 0.27,
@@ -3422,12 +4158,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.614,
+          "similarity": 0.638,
           "dimensions": {
             "slope": 0.963,
             "steep": 0.986,
             "roughness": 0.965,
-            "temperature": 0.207,
+            "temperature": 0.348,
             "thermal_range": 0.324,
             "aridity": 0.913,
             "pressure": 0.272,
@@ -3437,12 +4173,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.619,
+          "similarity": 0.64,
           "dimensions": {
             "slope": 0.994,
             "steep": 0.955,
             "roughness": 0.997,
-            "temperature": 0.269,
+            "temperature": 0.399,
             "thermal_range": 0.278,
             "aridity": 0.913,
             "pressure": 0.269,
@@ -3452,12 +4188,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.454,
+          "similarity": 0.477,
           "dimensions": {
             "slope": 1.0,
             "steep": 0.912,
             "roughness": 0.997,
-            "temperature": 0.217,
+            "temperature": 0.356,
             "thermal_range": 0.355,
             "aridity": 0.913,
             "pressure": 0.27,
@@ -3524,6 +4260,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.582,
+          "dimensions": {
+            "slope": 0.949,
+            "steep": 0.988,
+            "roughness": 0.955,
+            "temperature": 0.102,
+            "thermal_range": 0.662,
+            "aridity": 0.913,
+            "pressure": 0.272,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.466,
+          "dimensions": {
+            "slope": 0.964,
+            "steep": 0.952,
+            "roughness": 0.97,
+            "temperature": 0.14,
+            "thermal_range": 0.512,
+            "aridity": 0.913,
+            "pressure": 0.271,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.469,
+          "dimensions": {
+            "slope": 0.99,
+            "steep": 0.905,
+            "roughness": 0.989,
+            "temperature": 0.117,
+            "thermal_range": 0.551,
+            "aridity": 0.913,
+            "pressure": 0.272,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -3587,12 +4368,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.629,
+          "similarity": 0.649,
           "dimensions": {
             "slope": 0.932,
             "steep": 0.914,
             "roughness": 0.938,
-            "temperature": 0.325,
+            "temperature": 0.445,
             "thermal_range": 0.339,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -3602,12 +4383,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.403,
+          "similarity": 0.426,
           "dimensions": {
             "slope": 0.927,
             "steep": 0.787,
             "roughness": 0.933,
-            "temperature": 0.207,
+            "temperature": 0.348,
             "thermal_range": 0.147,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -3617,12 +4398,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.613,
+          "similarity": 0.634,
           "dimensions": {
             "slope": 0.954,
             "steep": 0.901,
             "roughness": 0.956,
-            "temperature": 0.291,
+            "temperature": 0.417,
             "thermal_range": 0.27,
             "aridity": 0.843,
             "pressure": 0.339,
@@ -3632,12 +4413,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.622,
+          "similarity": 0.642,
           "dimensions": {
             "slope": 0.986,
             "steep": 0.96,
             "roughness": 0.988,
-            "temperature": 0.353,
+            "temperature": 0.468,
             "thermal_range": 0.225,
             "aridity": 0.843,
             "pressure": 0.336,
@@ -3647,12 +4428,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.463,
+          "similarity": 0.483,
           "dimensions": {
             "slope": 0.991,
             "steep": 0.996,
             "roughness": 0.994,
-            "temperature": 0.301,
+            "temperature": 0.425,
             "thermal_range": 0.301,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -3719,6 +4500,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.58,
+          "dimensions": {
+            "slope": 0.94,
+            "steep": 0.927,
+            "roughness": 0.946,
+            "temperature": 0.171,
+            "thermal_range": 0.608,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.468,
+          "dimensions": {
+            "slope": 0.955,
+            "steep": 0.963,
+            "roughness": 0.961,
+            "temperature": 0.209,
+            "thermal_range": 0.459,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.477,
+          "dimensions": {
+            "slope": 0.999,
+            "steep": 0.99,
+            "roughness": 0.998,
+            "temperature": 0.186,
+            "thermal_range": 0.498,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -3782,12 +4608,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.617,
+          "similarity": 0.638,
           "dimensions": {
             "slope": 0.984,
             "steep": 0.747,
             "roughness": 0.984,
-            "temperature": 0.298,
+            "temperature": 0.423,
             "thermal_range": 0.349,
             "aridity": 0.828,
             "pressure": 0.321,
@@ -3797,12 +4623,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.406,
+          "similarity": 0.431,
           "dimensions": {
             "slope": 0.99,
             "steep": 0.875,
             "roughness": 0.989,
-            "temperature": 0.181,
+            "temperature": 0.326,
             "thermal_range": 0.157,
             "aridity": 0.828,
             "pressure": 0.321,
@@ -3812,12 +4638,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.599,
+          "similarity": 0.62,
           "dimensions": {
             "slope": 0.963,
             "steep": 0.761,
             "roughness": 0.966,
-            "temperature": 0.264,
+            "temperature": 0.395,
             "thermal_range": 0.28,
             "aridity": 0.828,
             "pressure": 0.323,
@@ -3827,12 +4653,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.594,
+          "similarity": 0.614,
           "dimensions": {
             "slope": 0.931,
             "steep": 0.701,
             "roughness": 0.934,
-            "temperature": 0.326,
+            "temperature": 0.446,
             "thermal_range": 0.235,
             "aridity": 0.828,
             "pressure": 0.32,
@@ -3842,12 +4668,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.429,
+          "similarity": 0.45,
           "dimensions": {
             "slope": 0.926,
             "steep": 0.658,
             "roughness": 0.929,
-            "temperature": 0.275,
+            "temperature": 0.404,
             "thermal_range": 0.312,
             "aridity": 0.828,
             "pressure": 0.321,
@@ -3914,6 +4740,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.563,
+          "dimensions": {
+            "slope": 0.977,
+            "steep": 0.734,
+            "roughness": 0.977,
+            "temperature": 0.149,
+            "thermal_range": 0.619,
+            "aridity": 0.828,
+            "pressure": 0.323,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.447,
+          "dimensions": {
+            "slope": 0.962,
+            "steep": 0.698,
+            "roughness": 0.961,
+            "temperature": 0.187,
+            "thermal_range": 0.469,
+            "aridity": 0.828,
+            "pressure": 0.322,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.442,
+          "dimensions": {
+            "slope": 0.916,
+            "steep": 0.651,
+            "roughness": 0.92,
+            "temperature": 0.165,
+            "thermal_range": 0.508,
+            "aridity": 0.828,
+            "pressure": 0.323,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -3977,12 +4848,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.607,
+          "similarity": 0.629,
           "dimensions": {
             "slope": 0.942,
             "steep": 0.92,
             "roughness": 0.948,
-            "temperature": 0.262,
+            "temperature": 0.393,
             "thermal_range": 0.356,
             "aridity": 0.8,
             "pressure": 0.289,
@@ -3992,12 +4863,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.548,
+          "similarity": 0.573,
           "dimensions": {
             "slope": 0.936,
             "steep": 0.792,
             "roughness": 0.943,
-            "temperature": 0.144,
+            "temperature": 0.296,
             "thermal_range": 0.164,
             "aridity": 0.8,
             "pressure": 0.289,
@@ -4007,12 +4878,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.592,
+          "similarity": 0.615,
           "dimensions": {
             "slope": 0.963,
             "steep": 0.906,
             "roughness": 0.966,
-            "temperature": 0.228,
+            "temperature": 0.365,
             "thermal_range": 0.287,
             "aridity": 0.8,
             "pressure": 0.291,
@@ -4022,12 +4893,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.601,
+          "similarity": 0.622,
           "dimensions": {
             "slope": 0.995,
             "steep": 0.966,
             "roughness": 0.998,
-            "temperature": 0.29,
+            "temperature": 0.416,
             "thermal_range": 0.242,
             "aridity": 0.8,
             "pressure": 0.288,
@@ -4037,12 +4908,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.44,
+          "similarity": 0.463,
           "dimensions": {
             "slope": 1.0,
             "steep": 0.991,
             "roughness": 0.996,
-            "temperature": 0.238,
+            "temperature": 0.373,
             "thermal_range": 0.318,
             "aridity": 0.8,
             "pressure": 0.289,
@@ -4109,6 +4980,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.556,
+          "dimensions": {
+            "slope": 0.949,
+            "steep": 0.933,
+            "roughness": 0.956,
+            "temperature": 0.119,
+            "thermal_range": 0.625,
+            "aridity": 0.8,
+            "pressure": 0.291,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.448,
+          "dimensions": {
+            "slope": 0.965,
+            "steep": 0.969,
+            "roughness": 0.971,
+            "temperature": 0.157,
+            "thermal_range": 0.476,
+            "aridity": 0.8,
+            "pressure": 0.29,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.455,
+          "dimensions": {
+            "slope": 0.99,
+            "steep": 0.985,
+            "roughness": 0.988,
+            "temperature": 0.135,
+            "thermal_range": 0.515,
+            "aridity": 0.8,
+            "pressure": 0.29,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -4172,12 +5088,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.636,
+          "similarity": 0.658,
           "dimensions": {
             "slope": 0.981,
             "steep": 0.845,
             "roughness": 0.986,
-            "temperature": 0.268,
+            "temperature": 0.398,
             "thermal_range": 0.386,
             "aridity": 0.931,
             "pressure": 0.295,
@@ -4187,12 +5103,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.426,
+          "similarity": 0.451,
           "dimensions": {
             "slope": 0.987,
             "steep": 0.972,
             "roughness": 0.991,
-            "temperature": 0.15,
+            "temperature": 0.301,
             "thermal_range": 0.194,
             "aridity": 0.931,
             "pressure": 0.295,
@@ -4202,12 +5118,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.618,
+          "similarity": 0.641,
           "dimensions": {
             "slope": 0.96,
             "steep": 0.859,
             "roughness": 0.968,
-            "temperature": 0.234,
+            "temperature": 0.37,
             "thermal_range": 0.317,
             "aridity": 0.931,
             "pressure": 0.297,
@@ -4217,12 +5133,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.613,
+          "similarity": 0.634,
           "dimensions": {
             "slope": 0.928,
             "steep": 0.799,
             "roughness": 0.936,
-            "temperature": 0.296,
+            "temperature": 0.421,
             "thermal_range": 0.271,
             "aridity": 0.931,
             "pressure": 0.294,
@@ -4232,12 +5148,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.448,
+          "similarity": 0.47,
           "dimensions": {
             "slope": 0.923,
             "steep": 0.756,
             "roughness": 0.931,
-            "temperature": 0.244,
+            "temperature": 0.378,
             "thermal_range": 0.348,
             "aridity": 0.931,
             "pressure": 0.295,
@@ -4304,6 +5220,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.587,
+          "dimensions": {
+            "slope": 0.974,
+            "steep": 0.832,
+            "roughness": 0.978,
+            "temperature": 0.124,
+            "thermal_range": 0.655,
+            "aridity": 0.931,
+            "pressure": 0.297,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.467,
+          "dimensions": {
+            "slope": 0.958,
+            "steep": 0.796,
+            "roughness": 0.963,
+            "temperature": 0.162,
+            "thermal_range": 0.505,
+            "aridity": 0.931,
+            "pressure": 0.296,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.462,
+          "dimensions": {
+            "slope": 0.913,
+            "steep": 0.749,
+            "roughness": 0.922,
+            "temperature": 0.139,
+            "thermal_range": 0.545,
+            "aridity": 0.931,
+            "pressure": 0.297,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -4367,12 +5328,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.579,
+          "similarity": 0.599,
           "dimensions": {
             "slope": 0.75,
             "steep": 0.414,
             "roughness": 0.722,
-            "temperature": 0.325,
+            "temperature": 0.445,
             "thermal_range": 0.339,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -4382,12 +5343,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.535,
+          "similarity": 0.558,
           "dimensions": {
             "slope": 0.756,
             "steep": 0.541,
             "roughness": 0.727,
-            "temperature": 0.207,
+            "temperature": 0.348,
             "thermal_range": 0.147,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -4397,12 +5358,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.56,
+          "similarity": 0.581,
           "dimensions": {
             "slope": 0.729,
             "steep": 0.427,
             "roughness": 0.703,
-            "temperature": 0.291,
+            "temperature": 0.417,
             "thermal_range": 0.27,
             "aridity": 0.843,
             "pressure": 0.339,
@@ -4412,12 +5373,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.556,
+          "similarity": 0.575,
           "dimensions": {
             "slope": 0.697,
             "steep": 0.368,
             "roughness": 0.671,
-            "temperature": 0.353,
+            "temperature": 0.468,
             "thermal_range": 0.225,
             "aridity": 0.843,
             "pressure": 0.336,
@@ -4427,12 +5388,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.391,
+          "similarity": 0.411,
           "dimensions": {
             "slope": 0.692,
             "steep": 0.325,
             "roughness": 0.666,
-            "temperature": 0.301,
+            "temperature": 0.425,
             "thermal_range": 0.301,
             "aridity": 0.843,
             "pressure": 0.337,
@@ -4499,6 +5460,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.516,
+          "dimensions": {
+            "slope": 0.743,
+            "steep": 0.401,
+            "roughness": 0.714,
+            "temperature": 0.171,
+            "thermal_range": 0.608,
+            "aridity": 0.843,
+            "pressure": 0.339,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.408,
+          "dimensions": {
+            "slope": 0.728,
+            "steep": 0.365,
+            "roughness": 0.699,
+            "temperature": 0.209,
+            "thermal_range": 0.459,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.403,
+          "dimensions": {
+            "slope": 0.682,
+            "steep": 0.318,
+            "roughness": 0.658,
+            "temperature": 0.186,
+            "thermal_range": 0.498,
+            "aridity": 0.843,
+            "pressure": 0.338,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -4562,12 +5568,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.403,
+          "similarity": 0.425,
           "dimensions": {
             "slope": 0.986,
             "steep": 0.928,
             "roughness": 0.989,
-            "temperature": 0.246,
+            "temperature": 0.38,
             "thermal_range": 0.343,
             "aridity": 0.564,
             "pressure": 0.296,
@@ -4577,12 +5583,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.519,
+          "similarity": 0.545,
           "dimensions": {
             "slope": 0.992,
             "steep": 0.944,
             "roughness": 0.994,
-            "temperature": 0.128,
+            "temperature": 0.283,
             "thermal_range": 0.151,
             "aridity": 0.564,
             "pressure": 0.296,
@@ -4592,12 +5598,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.384,
+          "similarity": 0.408,
           "dimensions": {
             "slope": 0.964,
             "steep": 0.942,
             "roughness": 0.971,
-            "temperature": 0.212,
+            "temperature": 0.352,
             "thermal_range": 0.274,
             "aridity": 0.564,
             "pressure": 0.298,
@@ -4607,12 +5613,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.38,
+          "similarity": 0.401,
           "dimensions": {
             "slope": 0.932,
             "steep": 0.882,
             "roughness": 0.939,
-            "temperature": 0.274,
+            "temperature": 0.403,
             "thermal_range": 0.228,
             "aridity": 0.564,
             "pressure": 0.295,
@@ -4622,12 +5628,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.381,
+          "similarity": 0.404,
           "dimensions": {
             "slope": 0.927,
             "steep": 0.839,
             "roughness": 0.934,
-            "temperature": 0.222,
+            "temperature": 0.36,
             "thermal_range": 0.305,
             "aridity": 0.564,
             "pressure": 0.296,
@@ -4694,6 +5700,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.508,
+          "dimensions": {
+            "slope": 0.978,
+            "steep": 0.915,
+            "roughness": 0.981,
+            "temperature": 0.106,
+            "thermal_range": 0.612,
+            "aridity": 0.564,
+            "pressure": 0.298,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.4,
+          "dimensions": {
+            "slope": 0.963,
+            "steep": 0.879,
+            "roughness": 0.966,
+            "temperature": 0.144,
+            "thermal_range": 0.462,
+            "aridity": 0.564,
+            "pressure": 0.297,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.396,
+          "dimensions": {
+            "slope": 0.917,
+            "steep": 0.833,
+            "roughness": 0.925,
+            "temperature": 0.121,
+            "thermal_range": 0.501,
+            "aridity": 0.564,
+            "pressure": 0.298,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -4757,12 +5808,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.445,
+          "similarity": 0.467,
           "dimensions": {
             "slope": 0.961,
             "steep": 0.958,
             "roughness": 0.974,
-            "temperature": 0.252,
+            "temperature": 0.385,
             "thermal_range": 0.375,
             "aridity": 0.788,
             "pressure": 0.29,
@@ -4772,12 +5823,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.385,
+          "similarity": 0.411,
           "dimensions": {
             "slope": 0.955,
             "steep": 0.83,
             "roughness": 0.969,
-            "temperature": 0.134,
+            "temperature": 0.288,
             "thermal_range": 0.183,
             "aridity": 0.788,
             "pressure": 0.29,
@@ -4787,12 +5838,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.429,
+          "similarity": 0.453,
           "dimensions": {
             "slope": 0.982,
             "steep": 0.944,
             "roughness": 0.993,
-            "temperature": 0.218,
+            "temperature": 0.357,
             "thermal_range": 0.306,
             "aridity": 0.788,
             "pressure": 0.292,
@@ -4802,12 +5853,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.434,
+          "similarity": 0.455,
           "dimensions": {
             "slope": 0.986,
             "steep": 0.996,
             "roughness": 0.975,
-            "temperature": 0.28,
+            "temperature": 0.408,
             "thermal_range": 0.26,
             "aridity": 0.788,
             "pressure": 0.289,
@@ -4817,12 +5868,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.602,
+          "similarity": 0.625,
           "dimensions": {
             "slope": 0.981,
             "steep": 0.953,
             "roughness": 0.97,
-            "temperature": 0.228,
+            "temperature": 0.365,
             "thermal_range": 0.337,
             "aridity": 0.788,
             "pressure": 0.29,
@@ -4889,6 +5940,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.562,
+          "dimensions": {
+            "slope": 0.968,
+            "steep": 0.971,
+            "roughness": 0.982,
+            "temperature": 0.111,
+            "thermal_range": 0.644,
+            "aridity": 0.788,
+            "pressure": 0.292,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.452,
+          "dimensions": {
+            "slope": 0.983,
+            "steep": 0.993,
+            "roughness": 0.997,
+            "temperature": 0.149,
+            "thermal_range": 0.494,
+            "aridity": 0.788,
+            "pressure": 0.291,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.45,
+          "dimensions": {
+            "slope": 0.971,
+            "steep": 0.946,
+            "roughness": 0.962,
+            "temperature": 0.126,
+            "thermal_range": 0.533,
+            "aridity": 0.788,
+            "pressure": 0.291,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -4952,12 +6048,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.37,
+          "similarity": 0.392,
           "dimensions": {
             "slope": 0.892,
             "steep": 0.822,
             "roughness": 0.881,
-            "temperature": 0.266,
+            "temperature": 0.396,
             "thermal_range": 0.318,
             "aridity": 0.471,
             "pressure": 0.303,
@@ -4967,12 +6063,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.327,
+          "similarity": 0.352,
           "dimensions": {
             "slope": 0.898,
             "steep": 0.949,
             "roughness": 0.886,
-            "temperature": 0.148,
+            "temperature": 0.3,
             "thermal_range": 0.126,
             "aridity": 0.471,
             "pressure": 0.302,
@@ -4982,12 +6078,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.352,
+          "similarity": 0.375,
           "dimensions": {
             "slope": 0.871,
             "steep": 0.836,
             "roughness": 0.863,
-            "temperature": 0.232,
+            "temperature": 0.368,
             "thermal_range": 0.249,
             "aridity": 0.471,
             "pressure": 0.304,
@@ -4997,12 +6093,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.348,
+          "similarity": 0.369,
           "dimensions": {
             "slope": 0.839,
             "steep": 0.776,
             "roughness": 0.831,
-            "temperature": 0.294,
+            "temperature": 0.419,
             "thermal_range": 0.204,
             "aridity": 0.471,
             "pressure": 0.302,
@@ -5012,12 +6108,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.516,
+          "similarity": 0.538,
           "dimensions": {
             "slope": 0.834,
             "steep": 0.733,
             "roughness": 0.826,
-            "temperature": 0.242,
+            "temperature": 0.377,
             "thermal_range": 0.28,
             "aridity": 0.471,
             "pressure": 0.303,
@@ -5084,6 +6180,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.468,
+          "dimensions": {
+            "slope": 0.885,
+            "steep": 0.809,
+            "roughness": 0.874,
+            "temperature": 0.122,
+            "thermal_range": 0.587,
+            "aridity": 0.471,
+            "pressure": 0.305,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.368,
+          "dimensions": {
+            "slope": 0.869,
+            "steep": 0.773,
+            "roughness": 0.858,
+            "temperature": 0.16,
+            "thermal_range": 0.438,
+            "aridity": 0.471,
+            "pressure": 0.303,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.363,
+          "dimensions": {
+            "slope": 0.824,
+            "steep": 0.726,
+            "roughness": 0.817,
+            "temperature": 0.138,
+            "thermal_range": 0.477,
+            "aridity": 0.471,
+            "pressure": 0.304,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -5147,12 +6288,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.556,
+          "similarity": 0.579,
           "dimensions": {
             "slope": 0.956,
             "steep": 0.952,
             "roughness": 0.96,
-            "temperature": 0.227,
+            "temperature": 0.364,
             "thermal_range": 0.345,
             "aridity": 0.554,
             "pressure": 0.253,
@@ -5162,12 +6303,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.33,
+          "similarity": 0.356,
           "dimensions": {
             "slope": 0.951,
             "steep": 0.824,
             "roughness": 0.955,
-            "temperature": 0.109,
+            "temperature": 0.267,
             "thermal_range": 0.153,
             "aridity": 0.554,
             "pressure": 0.252,
@@ -5177,12 +6318,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.54,
+          "similarity": 0.564,
           "dimensions": {
             "slope": 0.978,
             "steep": 0.938,
             "roughness": 0.979,
-            "temperature": 0.193,
+            "temperature": 0.336,
             "thermal_range": 0.276,
             "aridity": 0.554,
             "pressure": 0.254,
@@ -5192,12 +6333,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.547,
+          "similarity": 0.569,
           "dimensions": {
             "slope": 0.99,
             "steep": 0.998,
             "roughness": 0.989,
-            "temperature": 0.255,
+            "temperature": 0.387,
             "thermal_range": 0.231,
             "aridity": 0.554,
             "pressure": 0.252,
@@ -5207,12 +6348,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.549,
+          "similarity": 0.573,
           "dimensions": {
             "slope": 0.985,
             "steep": 0.959,
             "roughness": 0.984,
-            "temperature": 0.203,
+            "temperature": 0.345,
             "thermal_range": 0.308,
             "aridity": 0.554,
             "pressure": 0.253,
@@ -5279,6 +6420,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.496,
+          "dimensions": {
+            "slope": 0.964,
+            "steep": 0.965,
+            "roughness": 0.968,
+            "temperature": 0.09,
+            "thermal_range": 0.615,
+            "aridity": 0.554,
+            "pressure": 0.254,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.398,
+          "dimensions": {
+            "slope": 0.979,
+            "steep": 0.999,
+            "roughness": 0.983,
+            "temperature": 0.128,
+            "thermal_range": 0.465,
+            "aridity": 0.554,
+            "pressure": 0.253,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.398,
+          "dimensions": {
+            "slope": 0.975,
+            "steep": 0.952,
+            "roughness": 0.976,
+            "temperature": 0.106,
+            "thermal_range": 0.504,
+            "aridity": 0.554,
+            "pressure": 0.254,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -5342,12 +6528,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.45,
+          "similarity": 0.472,
           "dimensions": {
             "slope": 0.989,
             "steep": 0.997,
             "roughness": 0.99,
-            "temperature": 0.262,
+            "temperature": 0.393,
             "thermal_range": 0.356,
             "aridity": 0.8,
             "pressure": 0.289,
@@ -5357,12 +6543,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.392,
+          "similarity": 0.417,
           "dimensions": {
             "slope": 0.994,
             "steep": 0.875,
             "roughness": 0.995,
-            "temperature": 0.144,
+            "temperature": 0.296,
             "thermal_range": 0.164,
             "aridity": 0.8,
             "pressure": 0.289,
@@ -5372,12 +6558,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.43,
+          "similarity": 0.453,
           "dimensions": {
             "slope": 0.967,
             "steep": 0.989,
             "roughness": 0.971,
-            "temperature": 0.228,
+            "temperature": 0.365,
             "thermal_range": 0.287,
             "aridity": 0.8,
             "pressure": 0.291,
@@ -5387,12 +6573,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.427,
+          "similarity": 0.448,
           "dimensions": {
             "slope": 0.935,
             "steep": 0.951,
             "roughness": 0.939,
-            "temperature": 0.29,
+            "temperature": 0.416,
             "thermal_range": 0.242,
             "aridity": 0.8,
             "pressure": 0.288,
@@ -5402,12 +6588,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.595,
+          "similarity": 0.617,
           "dimensions": {
             "slope": 0.93,
             "steep": 0.908,
             "roughness": 0.934,
-            "temperature": 0.238,
+            "temperature": 0.373,
             "thermal_range": 0.318,
             "aridity": 0.8,
             "pressure": 0.289,
@@ -5474,6 +6660,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.563,
+          "dimensions": {
+            "slope": 0.981,
+            "steep": 0.984,
+            "roughness": 0.982,
+            "temperature": 0.119,
+            "thermal_range": 0.625,
+            "aridity": 0.8,
+            "pressure": 0.291,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.447,
+          "dimensions": {
+            "slope": 0.966,
+            "steep": 0.948,
+            "roughness": 0.967,
+            "temperature": 0.157,
+            "thermal_range": 0.476,
+            "aridity": 0.8,
+            "pressure": 0.29,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.443,
+          "dimensions": {
+            "slope": 0.92,
+            "steep": 0.902,
+            "roughness": 0.926,
+            "temperature": 0.135,
+            "thermal_range": 0.515,
+            "aridity": 0.8,
+            "pressure": 0.29,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -5537,12 +6768,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.332,
+          "similarity": 0.356,
           "dimensions": {
             "slope": 0.868,
             "steep": 0.656,
             "roughness": 0.831,
-            "temperature": 0.197,
+            "temperature": 0.339,
             "thermal_range": 0.342,
             "aridity": 0.451,
             "pressure": 0.22,
@@ -5552,12 +6783,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.288,
+          "similarity": 0.316,
           "dimensions": {
             "slope": 0.874,
             "steep": 0.783,
             "roughness": 0.836,
-            "temperature": 0.079,
+            "temperature": 0.243,
             "thermal_range": 0.15,
             "aridity": 0.451,
             "pressure": 0.219,
@@ -5567,12 +6798,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.314,
+          "similarity": 0.339,
           "dimensions": {
             "slope": 0.846,
             "steep": 0.67,
             "roughness": 0.813,
-            "temperature": 0.163,
+            "temperature": 0.312,
             "thermal_range": 0.273,
             "aridity": 0.451,
             "pressure": 0.221,
@@ -5582,12 +6813,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.31,
+          "similarity": 0.333,
           "dimensions": {
             "slope": 0.815,
             "steep": 0.61,
             "roughness": 0.781,
-            "temperature": 0.225,
+            "temperature": 0.362,
             "thermal_range": 0.228,
             "aridity": 0.451,
             "pressure": 0.219,
@@ -5597,12 +6828,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.311,
+          "similarity": 0.335,
           "dimensions": {
             "slope": 0.81,
             "steep": 0.567,
             "roughness": 0.776,
-            "temperature": 0.173,
+            "temperature": 0.32,
             "thermal_range": 0.304,
             "aridity": 0.451,
             "pressure": 0.22,
@@ -5669,6 +6900,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.425,
+          "dimensions": {
+            "slope": 0.86,
+            "steep": 0.643,
+            "roughness": 0.823,
+            "temperature": 0.065,
+            "thermal_range": 0.611,
+            "aridity": 0.451,
+            "pressure": 0.221,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.332,
+          "dimensions": {
+            "slope": 0.845,
+            "steep": 0.607,
+            "roughness": 0.808,
+            "temperature": 0.104,
+            "thermal_range": 0.462,
+            "aridity": 0.451,
+            "pressure": 0.22,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.327,
+          "dimensions": {
+            "slope": 0.8,
+            "steep": 0.56,
+            "roughness": 0.767,
+            "temperature": 0.081,
+            "thermal_range": 0.501,
+            "aridity": 0.451,
+            "pressure": 0.221,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -5732,12 +7008,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.264,
+          "similarity": 0.287,
           "dimensions": {
             "slope": 0.626,
             "steep": 0.496,
             "roughness": 0.625,
-            "temperature": 0.239,
+            "temperature": 0.374,
             "thermal_range": 0.254,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5747,12 +7023,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.22,
+          "similarity": 0.246,
           "dimensions": {
             "slope": 0.632,
             "steep": 0.624,
             "roughness": 0.63,
-            "temperature": 0.122,
+            "temperature": 0.278,
             "thermal_range": 0.062,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5762,12 +7038,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.246,
+          "similarity": 0.27,
           "dimensions": {
             "slope": 0.605,
             "steep": 0.51,
             "roughness": 0.607,
-            "temperature": 0.205,
+            "temperature": 0.346,
             "thermal_range": 0.185,
             "aridity": 0.248,
             "pressure": 0.264,
@@ -5777,12 +7053,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.242,
+          "similarity": 0.263,
           "dimensions": {
             "slope": 0.573,
             "steep": 0.45,
             "roughness": 0.575,
-            "temperature": 0.267,
+            "temperature": 0.397,
             "thermal_range": 0.139,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5792,12 +7068,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.243,
+          "similarity": 0.266,
           "dimensions": {
             "slope": 0.568,
             "steep": 0.407,
             "roughness": 0.569,
-            "temperature": 0.216,
+            "temperature": 0.355,
             "thermal_range": 0.216,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5864,6 +7140,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.342,
+          "dimensions": {
+            "slope": 0.619,
+            "steep": 0.483,
+            "roughness": 0.617,
+            "temperature": 0.1,
+            "thermal_range": 0.523,
+            "aridity": 0.248,
+            "pressure": 0.264,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.262,
+          "dimensions": {
+            "slope": 0.604,
+            "steep": 0.447,
+            "roughness": 0.602,
+            "temperature": 0.138,
+            "thermal_range": 0.373,
+            "aridity": 0.248,
+            "pressure": 0.263,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.258,
+          "dimensions": {
+            "slope": 0.558,
+            "steep": 0.401,
+            "roughness": 0.561,
+            "temperature": 0.116,
+            "thermal_range": 0.412,
+            "aridity": 0.248,
+            "pressure": 0.264,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -5927,12 +7248,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.176,
+          "similarity": 0.199,
           "dimensions": {
             "slope": 0.079,
             "steep": 0.0,
             "roughness": 0.081,
-            "temperature": 0.239,
+            "temperature": 0.374,
             "thermal_range": 0.254,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5942,12 +7263,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.132,
+          "similarity": 0.158,
           "dimensions": {
             "slope": 0.085,
             "steep": 0.119,
             "roughness": 0.086,
-            "temperature": 0.122,
+            "temperature": 0.278,
             "thermal_range": 0.062,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5957,12 +7278,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.157,
+          "similarity": 0.181,
           "dimensions": {
             "slope": 0.057,
             "steep": 0.005,
             "roughness": 0.062,
-            "temperature": 0.205,
+            "temperature": 0.346,
             "thermal_range": 0.185,
             "aridity": 0.248,
             "pressure": 0.264,
@@ -5972,12 +7293,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.156,
+          "similarity": 0.178,
           "dimensions": {
             "slope": 0.025,
             "steep": 0.0,
             "roughness": 0.03,
-            "temperature": 0.267,
+            "temperature": 0.397,
             "thermal_range": 0.139,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -5987,12 +7308,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.16,
+          "similarity": 0.183,
           "dimensions": {
             "slope": 0.02,
             "steep": 0.0,
             "roughness": 0.025,
-            "temperature": 0.216,
+            "temperature": 0.355,
             "thermal_range": 0.216,
             "aridity": 0.248,
             "pressure": 0.262,
@@ -6059,6 +7380,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.237,
+          "dimensions": {
+            "slope": 0.071,
+            "steep": 0.0,
+            "roughness": 0.073,
+            "temperature": 0.1,
+            "thermal_range": 0.523,
+            "aridity": 0.248,
+            "pressure": 0.264,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.343,
+          "dimensions": {
+            "slope": 0.056,
+            "steep": 0.0,
+            "roughness": 0.058,
+            "temperature": 0.138,
+            "thermal_range": 0.373,
+            "aridity": 0.248,
+            "pressure": 0.263,
+            "geology": 1.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.175,
+          "dimensions": {
+            "slope": 0.01,
+            "steep": 0.0,
+            "roughness": 0.017,
+            "temperature": 0.116,
+            "thermal_range": 0.412,
+            "aridity": 0.248,
+            "pressure": 0.264,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -6122,12 +7488,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.272,
+          "similarity": 0.297,
           "dimensions": {
             "slope": 0.762,
             "steep": 0.423,
             "roughness": 0.789,
-            "temperature": 0.162,
+            "temperature": 0.311,
             "thermal_range": 0.271,
             "aridity": 0.378,
             "pressure": 0.164,
@@ -6137,12 +7503,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.228,
+          "similarity": 0.256,
           "dimensions": {
             "slope": 0.768,
             "steep": 0.551,
             "roughness": 0.794,
-            "temperature": 0.044,
+            "temperature": 0.214,
             "thermal_range": 0.079,
             "aridity": 0.378,
             "pressure": 0.164,
@@ -6152,12 +7518,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.254,
+          "similarity": 0.28,
           "dimensions": {
             "slope": 0.741,
             "steep": 0.437,
             "roughness": 0.771,
-            "temperature": 0.128,
+            "temperature": 0.283,
             "thermal_range": 0.202,
             "aridity": 0.378,
             "pressure": 0.166,
@@ -6167,12 +7533,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.249,
+          "similarity": 0.273,
           "dimensions": {
             "slope": 0.709,
             "steep": 0.377,
             "roughness": 0.739,
-            "temperature": 0.19,
+            "temperature": 0.334,
             "thermal_range": 0.157,
             "aridity": 0.378,
             "pressure": 0.163,
@@ -6182,12 +7548,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.251,
+          "similarity": 0.276,
           "dimensions": {
             "slope": 0.704,
             "steep": 0.334,
             "roughness": 0.733,
-            "temperature": 0.138,
+            "temperature": 0.291,
             "thermal_range": 0.234,
             "aridity": 0.378,
             "pressure": 0.164,
@@ -6254,6 +7620,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.354,
+          "dimensions": {
+            "slope": 0.755,
+            "steep": 0.41,
+            "roughness": 0.781,
+            "temperature": 0.036,
+            "thermal_range": 0.541,
+            "aridity": 0.378,
+            "pressure": 0.166,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.272,
+          "dimensions": {
+            "slope": 0.739,
+            "steep": 0.374,
+            "roughness": 0.766,
+            "temperature": 0.075,
+            "thermal_range": 0.391,
+            "aridity": 0.378,
+            "pressure": 0.165,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.268,
+          "dimensions": {
+            "slope": 0.694,
+            "steep": 0.328,
+            "roughness": 0.725,
+            "temperature": 0.052,
+            "thermal_range": 0.43,
+            "aridity": 0.378,
+            "pressure": 0.165,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -6317,12 +7728,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.394,
+          "similarity": 0.42,
           "dimensions": {
             "slope": 0.948,
             "steep": 0.858,
             "roughness": 0.954,
-            "temperature": 0.117,
+            "temperature": 0.274,
             "thermal_range": 0.335,
             "aridity": 0.991,
             "pressure": 0.0,
@@ -6332,12 +7743,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.349,
+          "similarity": 0.378,
           "dimensions": {
             "slope": 0.942,
             "steep": 0.985,
             "roughness": 0.949,
-            "temperature": 0.0,
+            "temperature": 0.177,
             "thermal_range": 0.143,
             "aridity": 0.991,
             "pressure": 0.0,
@@ -6347,12 +7758,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.38,
+          "similarity": 0.407,
           "dimensions": {
             "slope": 0.969,
             "steep": 0.872,
             "roughness": 0.972,
-            "temperature": 0.083,
+            "temperature": 0.246,
             "thermal_range": 0.266,
             "aridity": 0.991,
             "pressure": 0.0,
@@ -6362,12 +7773,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.382,
+          "similarity": 0.407,
           "dimensions": {
             "slope": 0.999,
             "steep": 0.812,
             "roughness": 0.996,
-            "temperature": 0.145,
+            "temperature": 0.297,
             "thermal_range": 0.221,
             "aridity": 0.991,
             "pressure": 0.0,
@@ -6377,12 +7788,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.383,
+          "similarity": 0.41,
           "dimensions": {
             "slope": 0.994,
             "steep": 0.769,
             "roughness": 0.991,
-            "temperature": 0.093,
+            "temperature": 0.254,
             "thermal_range": 0.297,
             "aridity": 0.991,
             "pressure": 0.0,
@@ -6449,6 +7860,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.503,
+          "dimensions": {
+            "slope": 0.955,
+            "steep": 0.845,
+            "roughness": 0.961,
+            "temperature": 0.0,
+            "thermal_range": 0.604,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.4,
+          "dimensions": {
+            "slope": 0.971,
+            "steep": 0.809,
+            "roughness": 0.977,
+            "temperature": 0.038,
+            "thermal_range": 0.455,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.402,
+          "dimensions": {
+            "slope": 0.984,
+            "steep": 0.762,
+            "roughness": 0.982,
+            "temperature": 0.015,
+            "thermal_range": 0.494,
+            "aridity": 0.991,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -6512,12 +7968,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.179,
+          "similarity": 0.208,
           "dimensions": {
             "slope": 0.933,
             "steep": 0.904,
             "roughness": 0.938,
-            "temperature": 0.02,
+            "temperature": 0.194,
             "thermal_range": 0.131,
             "aridity": 0.0,
             "pressure": 0.0,
@@ -6527,12 +7983,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.146,
+          "similarity": 0.163,
           "dimensions": {
             "slope": 0.927,
             "steep": 0.777,
             "roughness": 0.933,
-            "temperature": 0.0,
+            "temperature": 0.097,
             "thermal_range": 0.0,
             "aridity": 0.0,
             "pressure": 0.0,
@@ -6542,12 +7998,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.166,
+          "similarity": 0.194,
           "dimensions": {
             "slope": 0.954,
             "steep": 0.891,
             "roughness": 0.956,
-            "temperature": 0.0,
+            "temperature": 0.166,
             "thermal_range": 0.062,
             "aridity": 0.0,
             "pressure": 0.0,
@@ -6557,12 +8013,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.173,
+          "similarity": 0.201,
           "dimensions": {
             "slope": 0.986,
             "steep": 0.95,
             "roughness": 0.988,
-            "temperature": 0.048,
+            "temperature": 0.217,
             "thermal_range": 0.016,
             "aridity": 0.0,
             "pressure": 0.0,
@@ -6572,12 +8028,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.181,
+          "similarity": 0.21,
           "dimensions": {
             "slope": 0.991,
             "steep": 0.994,
             "roughness": 0.993,
-            "temperature": 0.0,
+            "temperature": 0.174,
             "thermal_range": 0.093,
             "aridity": 0.0,
             "pressure": 0.0,
@@ -6644,6 +8100,51 @@
             "geology": null,
             "lithology": null
           }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.267,
+          "dimensions": {
+            "slope": 0.94,
+            "steep": 0.917,
+            "roughness": 0.946,
+            "temperature": 0.0,
+            "thermal_range": 0.4,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.201,
+          "dimensions": {
+            "slope": 0.956,
+            "steep": 0.953,
+            "roughness": 0.961,
+            "temperature": 0.0,
+            "thermal_range": 0.25,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.215,
+          "dimensions": {
+            "slope": 0.999,
+            "steep": 1.0,
+            "roughness": 0.998,
+            "temperature": 0.0,
+            "thermal_range": 0.289,
+            "aridity": 0.0,
+            "pressure": 0.0,
+            "geology": 0.0,
+            "lithology": null
+          }
         }
       ],
       "purposeScores": {
@@ -6707,12 +8208,12 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.105,
+          "similarity": 0.131,
           "dimensions": {
             "slope": 0.326,
             "steep": 0.366,
             "roughness": 0.374,
-            "temperature": 0.118,
+            "temperature": 0.274,
             "thermal_range": 0.13,
             "aridity": 0.0,
             "pressure": 0.026,
@@ -6722,12 +8223,12 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.071,
+          "similarity": 0.101,
           "dimensions": {
             "slope": 0.331,
             "steep": 0.493,
             "roughness": 0.379,
-            "temperature": 0.0,
+            "temperature": 0.178,
             "thermal_range": 0.0,
             "aridity": 0.0,
             "pressure": 0.026,
@@ -6737,12 +8238,12 @@
         },
         {
           "targetId": "gale",
-          "similarity": 0.087,
+          "similarity": 0.114,
           "dimensions": {
             "slope": 0.304,
             "steep": 0.38,
             "roughness": 0.355,
-            "temperature": 0.084,
+            "temperature": 0.247,
             "thermal_range": 0.061,
             "aridity": 0.0,
             "pressure": 0.028,
@@ -6752,12 +8253,12 @@
         },
         {
           "targetId": "meridiani",
-          "similarity": 0.082,
+          "similarity": 0.107,
           "dimensions": {
             "slope": 0.272,
             "steep": 0.32,
             "roughness": 0.323,
-            "temperature": 0.146,
+            "temperature": 0.298,
             "thermal_range": 0.016,
             "aridity": 0.0,
             "pressure": 0.026,
@@ -6767,12 +8268,12 @@
         },
         {
           "targetId": "elysium-insight",
-          "similarity": 0.083,
+          "similarity": 0.11,
           "dimensions": {
             "slope": 0.267,
             "steep": 0.277,
             "roughness": 0.318,
-            "temperature": 0.094,
+            "temperature": 0.255,
             "thermal_range": 0.092,
             "aridity": 0.0,
             "pressure": 0.026,
@@ -6837,6 +8338,51 @@
             "aridity": 0.0,
             "pressure": 0.018,
             "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "utopia",
+          "similarity": 0.155,
+          "dimensions": {
+            "slope": 0.318,
+            "steep": 0.353,
+            "roughness": 0.366,
+            "temperature": 0.0,
+            "thermal_range": 0.399,
+            "aridity": 0.0,
+            "pressure": 0.028,
+            "geology": null,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "deuteronilus",
+          "similarity": 0.106,
+          "dimensions": {
+            "slope": 0.303,
+            "steep": 0.317,
+            "roughness": 0.351,
+            "temperature": 0.039,
+            "thermal_range": 0.25,
+            "aridity": 0.0,
+            "pressure": 0.027,
+            "geology": 0.0,
+            "lithology": null
+          }
+        },
+        {
+          "targetId": "arcadia",
+          "similarity": 0.102,
+          "dimensions": {
+            "slope": 0.257,
+            "steep": 0.27,
+            "roughness": 0.31,
+            "temperature": 0.016,
+            "thermal_range": 0.289,
+            "aridity": 0.0,
+            "pressure": 0.028,
+            "geology": 0.0,
             "lithology": null
           }
         }

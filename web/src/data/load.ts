@@ -1,9 +1,9 @@
 import type { z } from 'zod'
-import { AnalogsSchema, TextsSchema } from './schema'
-import type { AnalogsFile, TextsFile } from './schema'
+import { AnalogsSchema, DiscoveriesSchema, TextsSchema } from './schema'
+import type { AnalogsFile, DiscoveriesFile, TextsFile } from './schema'
 
 export type LoadResult =
-  | { ok: true; analogs: AnalogsFile; texts: TextsFile }
+  | { ok: true; analogs: AnalogsFile; texts: TextsFile; discoveries: DiscoveriesFile | null }
   | { ok: false; file: string; problems: string[] }
 
 const MAX_PROBLEMS = 6
@@ -23,21 +23,29 @@ export function parseTexts(json: unknown) {
   return TextsSchema.safeParse(json)
 }
 
+export function parseDiscoveries(json: unknown) {
+  return DiscoveriesSchema.safeParse(json)
+}
+
 async function fetchJson(url: string, optional: boolean): Promise<unknown> {
   const res = await fetch(url, { cache: 'no-cache' })
   if (!res.ok) {
     if (optional && res.status === 404) return {}
     throw new Error(`HTTP ${res.status}`)
   }
+  // Un servidor de páginas puede responder con el index.html (200) a un archivo que no existe.
+  if (optional && !(res.headers.get('content-type') ?? '').includes('json')) return {}
   return res.json()
 }
 
 export async function loadData(base: string): Promise<LoadResult> {
   const analogsUrl = `${base}data/analogs.json`
   const textsUrl = `${base}data/texts.json`
-  const [analogsResult, textsResult] = await Promise.allSettled([
+  const discoveriesUrl = `${base}data/discoveries.json`
+  const [analogsResult, textsResult, discoveriesResult] = await Promise.allSettled([
     fetchJson(analogsUrl, false),
     fetchJson(textsUrl, true),
+    fetchJson(discoveriesUrl, true),
   ])
   if (analogsResult.status === 'rejected') {
     return { ok: false, file: 'analogs.json', problems: [String(analogsResult.reason)] }
@@ -50,5 +58,17 @@ export async function loadData(base: string): Promise<LoadResult> {
   const texts = parseTexts(textsResult.value)
   if (!texts.success) return { ok: false, file: 'texts.json', problems: formatIssues(texts.error) }
 
-  return { ok: true, analogs: analogs.data, texts: texts.data }
+  // Archivo opcional: si falta, no hay lugares nuevos; si no es válido, se informa como los otros.
+  let discoveries: DiscoveriesFile | null = null
+  if (discoveriesResult.status === 'rejected') {
+    return { ok: false, file: 'discoveries.json', problems: [String(discoveriesResult.reason)] }
+  }
+  const raw = discoveriesResult.value
+  if (raw && typeof raw === 'object' && Object.keys(raw).length > 0) {
+    const parsed = parseDiscoveries(raw)
+    if (!parsed.success) return { ok: false, file: 'discoveries.json', problems: formatIssues(parsed.error) }
+    discoveries = parsed.data
+  }
+
+  return { ok: true, analogs: analogs.data, texts: texts.data, discoveries }
 }

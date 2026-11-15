@@ -47,7 +47,7 @@ export default function App() {
     }
   }, [])
 
-  const model = useMemo(() => (result?.ok ? buildModel(result.analogs, result.texts) : null), [result])
+  const model = useMemo(() => (result?.ok ? buildModel(result.analogs, result.texts, result.discoveries) : null), [result])
   const state = useMemo(() => resolveStory(requested, model), [requested, model])
   const dispatch = useCallback((action: Action) => {
     update((previous) => {
@@ -297,6 +297,7 @@ export default function App() {
           onSelect={selectSite}
           onBack={goHome}
           onCompare={() => openComparison([])}
+          onPin={(point) => dispatch({ type: 'setPin', pin: point })}
         />
       )
     }

@@ -99,5 +99,12 @@ dragging, tilting or zooming one map moves the other.
   simulation (`src/lib/route.ts`). A profile every 100 m compares elevation, total climb, steepest segment and
   share of steep ground, next to the rover's real tilt at its stops. `tools/mars_tracks.py` prepares the route
   (run it after `tools/mars_terrain.py`).
+- **How to adapt the rehearsal**: from a site sheet, cards with sourced recommendations for the target body
+  and for each purpose (`texts.json` → `adaptations`), a search box, and what is already alike or needs
+  compensating (the per-dimension scores of the pair). The ranking also has a site search box.
+- **New places**: `tools/discover.py` measures a grid over the Altiplano (one point every ~11 km) with the
+  same method and weights as the catalogue and writes `public/data/discoveries.json`. Below the ranking, the
+  app lists the most similar places outside the catalogue, named from OpenStreetMap, with a button to drop
+  the free pin there.
 - **3D tour**: eight captioned steps (overview, close-up, swipe, overlay, slope, relative relief, rover route,
   conditions) for presenting or recording the demo.

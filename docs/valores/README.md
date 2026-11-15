@@ -12,7 +12,7 @@ python tools/build_analogs.py    # calcula los puntajes y escribe web/public/dat
 | Archivo | Quién lo escribe | Contenido |
 |---|---|---|
 | `../catalogo-sitios.csv` | a mano (rol 1) | Los 31 sitios: coordenadas, radio, tipo y marcas |
-| `objetivos.csv` | a mano (roles 1 y 3) | Los 9 objetivos: coordenadas y entorno geológico, cada uno con su fuente |
+| `objetivos.csv` | a mano (roles 1 y 3) | Los 12 objetivos: coordenadas y entorno geológico, cada uno con su fuente |
 | `geologia.csv` | a mano (rol 1) | Entorno geológico de cada sitio con su fuente, y la unidad del mapa geológico en su punto |
 | `puntaje.json` | a mano (rol 4) | Dimensiones, pesos y propósitos |
 | `pesos.md` | a mano (rol 4) | Las reglas y las fuentes de cada peso, y la prueba de estabilidad |
@@ -31,6 +31,9 @@ Una celda vacía es «sin dato» (`null`), nunca cero.
 | Gale (Bradbury Landing) | Marte | Aterrizaje de Curiosity | Lago antiguo (Grotzinger et al., 2014) |
 | Meridiani Planum (Eagle) | Marte | Aterrizaje de Opportunity | Agua poco profunda, evaporación y secado (Squyres et al., 2004) |
 | Elysium Planitia (InSight) | Marte | Aterrizaje de InSight | Coladas de basalto (Golombek et al., 2020) |
+| Utopia Planitia (Viking 2) | Marte | Aterrizaje de Viking 2 (NASA) | Sin categoría asignada |
+| Deuteronilus Mensae | Marte | Reflector basal de radar SHARAD con más detecciones en 5 km (Baker y Carter, ds03) | Glaciar cubierto de detritos (Plaut et al., 2009) |
+| Arcadia Planitia (Badger) | Marte | Cráter Badger (Bramson et al., 2015) | Hielo enterrado (Bramson et al., 2015) |
 | Shackleton Rim | Luna | Punto A de Bussey et al. (2010) | Sin categoría comparable en la Tierra |
 | Connecting Ridge | Luna | Punto B de Bussey et al. (2010) | Igual |
 | de Gerlache Rim | Luna | Punto C de Bussey et al. (2010) | Igual |
@@ -40,7 +43,16 @@ Los cuatro puntos lunares están en zonas que la NASA eligió como regiones cand
 Las coordenadas y la fuente de cada una están en `objetivos.csv`.
 
 Comprobación: la elevación media medida alrededor de InSight es −2618 m, y Golombek et al. (2020) dan
-−2613 m en el punto de aterrizaje.
+−2613 m en el punto de aterrizaje. En Viking 2, la MCD con este método da una presión media de 871 Pa;
+Viking 2 midió 874 Pa de media en un año marciano (soles 0 a 668, PDS), un 0,3 % más.
+
+Ningún sitio del catálogo tiene hielo enterrado, así que en Arcadia la geología vale 0 para todos. En
+Deuteronilus comparten entorno Sajama y Huayna Potosí, pero quedan en los puestos 15 y 24: el punto de
+Marte es la superficie casi plana del depósito (pendiente mediana 1,4°) y los glaciares de Bolivia son
+de montaña. La analogía falla en el relieve, no en la geología.
+
+Los datos de Marte del rol 3 (Utopia/Viking 2, Deuteronilus y Arcadia) se comprobaron contra fuentes
+independientes: [verificacion-rol-3.md](verificacion-rol-3.md).
 
 ## Columnas medidas
 
@@ -97,6 +109,44 @@ Puesto entre 31 por similitud general (15 de noviembre):
 
 Los controles quedan abajo, como se esperaba. Atacama queda en la mitad: es análogo de la sequedad, pero es
 más cálida y está más baja que el Altiplano, y su geología no es de lago ni hidrotermal.
+
+## Descubrimiento de lugares nuevos
+
+```
+python tools/discover.py   # usa malla_puntos.csv si ya existe; --remeasure para medir de nuevo
+```
+
+`tools/discover.py` mide una malla del Altiplano y Lípez (de 17,5° S a 23° S y de 65,5° O a 69° O, un punto
+cada 0,1°, unos 11 km: 2016 puntos) con el mismo método que los sitios: relieve en un círculo de 2 km con
+paso de 200 m, clima de la celda de NASA POWER (consulta por región, con los mismos valores que la consulta
+por punto) y entorno geológico leído de la unidad del mapa 1:5 000 000 (evaporitas → cuenca de lago;
+andesitas, riolitas y basaltos → volcánico; rocas siliciclásticas y carbonatadas → sedimentario). Puntúa
+cada punto frente a cada objetivo con la escala y los pesos de `analogs.json`.
+
+Un punto es nuevo si está a más de 10 km de todo sitio del catálogo, no forma parte del mismo salar que un
+sitio (puntos evaporíticos conectados con él) y está en Bolivia según OpenStreetMap. Entre candidatos se
+exigen 15 km. La herramienta no propone lugares cuando no puede distinguirlos: si el entorno del objetivo no
+se lee en el mapa (hidrotermal, glaciar, hielo enterrado) o si más de 50 puntos empatan a menos de un punto
+porcentual del mejor (movilidad de rover, que solo mira el relieve plano).
+
+| Archivo | Contenido |
+|---|---|
+| `malla_puntos.csv` | Los 2016 puntos medidos |
+| `malla_lugares.json` | Nombres de OpenStreetMap ya consultados |
+| `descubrimiento.csv` | Los candidatos de cada objetivo y propósito |
+| `../../web/public/data/discoveries.json` | Lo mismo para la web, con la comprobación y las fuentes |
+
+Resultado (15 de noviembre):
+- **Lagos (Jezero, Gale, Meridiani y el propósito de lagos antiguos):** 15 o 16 de los 20 puntos más
+  parecidos de la malla están junto a un sitio del catálogo o en el mismo salar. El catálogo ya tiene los
+  mejores lugares de lago; los candidatos nuevos son de roca volcánica de Sur Lípez y puntúan menos (cerca
+  del 50 %, frente al 66 % de Laguna Hedionda, la primera del catálogo).
+- **InSight (llanuras volcánicas), la Luna y Utopia:** solo 1 a 3 de los 20 mejores puntos están junto al
+  catálogo, así que la malla aporta lugares nuevos, sobre todo cerros y llanuras volcánicas de Sur Lípez
+  (por ejemplo, el Salar Laguani para InSight y los cerros Cachi Laguna y Soniquera para Shackleton). En
+  InSight, los mejores puntos nuevos (65 %) superan al primero del catálogo, Tata Sabaya (62,5 %).
+- **Sin candidatos:** Columbia Hills e hidrotermal (el mapa no distingue campos geotérmicos), Deuteronilus
+  y Arcadia (glaciar y hielo enterrado), y movilidad de rover (61 puntos empatan).
 
 ## Límites
 

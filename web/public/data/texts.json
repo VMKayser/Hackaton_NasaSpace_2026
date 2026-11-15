@@ -151,6 +151,55 @@
           "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
         }
       ]
+    },
+    "utopia": {
+      "summary": {
+        "en": "Plain where Viking 2 landed in 1976. The lander recorded air temperature, pressure and wind for more than 1000 sols.",
+        "es": "Llanura donde aterrizó Viking 2 en 1976. La sonda registró la temperatura del aire, la presión y el viento durante más de 1000 soles."
+      },
+      "sources": [
+        {
+          "name": "Viking 1 & 2 mission",
+          "agency": "NASA",
+          "url": "https://science.nasa.gov/mission/viking/"
+        },
+        {
+          "name": "Viking Lander surface meteorology data",
+          "agency": "NASA PDS Atmospheres Node",
+          "url": "https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/surface_met.html"
+        }
+      ]
+    },
+    "deuteronilus": {
+      "summary": {
+        "en": "Lobate debris apron in Deuteronilus Mensae. SHARAD radar shows it is mostly water ice with little rock: a debris-covered glacier. The point is where the radar found the most basal reflectors within 5 km.",
+        "es": "Depósito lobulado de detritos en Deuteronilus Mensae. El radar SHARAD indica que es sobre todo hielo de agua con poca roca: un glaciar cubierto de detritos. El punto es donde el radar halló más reflectores basales en 5 km."
+      },
+      "sources": [
+        {
+          "name": "Plaut et al. (2009), Radar evidence for ice in lobate debris aprons in the mid-northern latitudes of Mars",
+          "agency": "Geophysical Research Letters",
+          "url": "https://doi.org/10.1029/2008GL036379"
+        },
+        {
+          "name": "Baker and Carter, SHARAD reflector datasets for Ice Content of Mantling Materials in Deuteronilus Mensae, Mars (2023)",
+          "agency": "NASA GSFC / University of Arizona (Zenodo)",
+          "url": "https://doi.org/10.5281/zenodo.7753745"
+        }
+      ]
+    },
+    "arcadia": {
+      "summary": {
+        "en": "Plain with terraced craters such as Badger. The craters and SHARAD radar point to a layer of excess water ice tens of metres thick below the surface.",
+        "es": "Llanura con cráteres en terrazas como Badger. Los cráteres y el radar SHARAD indican una capa de hielo de agua de decenas de metros de espesor bajo la superficie."
+      },
+      "sources": [
+        {
+          "name": "Bramson et al. (2015), Widespread excess ice in Arcadia Planitia, Mars",
+          "agency": "Geophysical Research Letters",
+          "url": "https://doi.org/10.1002/2015GL064844"
+        }
+      ]
     }
   },
   "purposes": {
@@ -1010,6 +1059,280 @@
         "en": "Compare the Salar de Uyuni with Jezero. Look at the values, sources and limits in the site sheet to judge what this analog could help you study.",
         "es": "Compara el salar de Uyuni con Jezero. Revisa los valores, las fuentes y los límites de la ficha para decidir qué podrías estudiar con este análogo."
       }
+    }
+  ],
+  "adaptations": [
+    {
+      "id": "mars-gravity",
+      "body": "mars",
+      "title": {
+        "en": "Compensate for gravity",
+        "es": "Compensar la gravedad"
+      },
+      "text": {
+        "en": "Mars has 38% of Earth's gravity. To rehearse Curiosity's driving on dunes in the Mojave Desert, JPL used Scarecrow: a test rover with no computer that weighs on Earth what Curiosity weighs on Mars.",
+        "es": "Marte tiene el 38 % de la gravedad de la Tierra. Para ensayar la conducción de Curiosity en dunas del desierto de Mojave, JPL usó Scarecrow: un rover de prueba sin computadora que en la Tierra pesa lo mismo que Curiosity en Marte."
+      },
+      "sources": [
+        {
+          "name": "Mars Fact Sheet",
+          "agency": "NASA NSSDC",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        },
+        {
+          "name": "Test Rover Aids Preparations in California for Curiosity Rover on Mars (PIA15682)",
+          "agency": "NASA/JPL-Caltech",
+          "url": "https://www.jpl.nasa.gov/images/pia15682-test-rover-aids-preparations-in-california-for-curiosity-rover-on-mars/"
+        }
+      ]
+    },
+    {
+      "id": "mars-delay",
+      "body": "mars",
+      "title": {
+        "en": "Rehearse with the signal delay",
+        "es": "Ensayar con el retraso de la señal"
+      },
+      "text": {
+        "en": "Earth and Mars are 54.6 to 401.4 million km apart: a signal takes 3 to 22 minutes to arrive. In the rehearsal, commands should arrive with that delay, and the equipment has to handle on its own whatever happens meanwhile.",
+        "es": "Entre la Tierra y Marte hay de 54,6 a 401,4 millones de km: una señal tarda de 3 a 22 minutos en llegar. En el ensayo, las órdenes deben llegar con ese retraso y el equipo tiene que resolver solo lo que ocurra mientras tanto."
+      },
+      "sources": [
+        {
+          "name": "Mars Fact Sheet",
+          "agency": "NASA NSSDC",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        }
+      ]
+    },
+    {
+      "id": "mars-pressure",
+      "body": "mars",
+      "title": {
+        "en": "Test in a low-pressure chamber",
+        "es": "Probar en una cámara de baja presión"
+      },
+      "text": {
+        "en": "Mean surface pressure on Mars is 6.36 hPa (4.0 to 8.7 depending on the season); on the Altiplano it is about 600 hPa. Anything that depends on the air, such as equipment cooling or airborne dust, must also be tested in a chamber at Martian pressure.",
+        "es": "La presión media en la superficie de Marte es de 6,36 hPa (de 4,0 a 8,7 según la estación); en el Altiplano es de unos 600 hPa. Lo que dependa del aire, como el enfriamiento de los equipos o el polvo en suspensión, también se debe probar en una cámara a la presión de Marte."
+      },
+      "sources": [
+        {
+          "name": "Mars Fact Sheet",
+          "agency": "NASA NSSDC",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    {
+      "id": "moon-gravity",
+      "body": "moon",
+      "title": {
+        "en": "Compensate for gravity",
+        "es": "Compensar la gravedad"
+      },
+      "text": {
+        "en": "The Moon has 16.5% of Earth's gravity. A test vehicle should weigh on Earth what it will weigh on the Moon, as JPL did with Scarecrow for Mars.",
+        "es": "La Luna tiene el 16,5 % de la gravedad de la Tierra. Un vehículo de prueba debe pesar en la Tierra lo que pesará en la Luna, como hizo JPL con Scarecrow para Marte."
+      },
+      "sources": [
+        {
+          "name": "Moon Fact Sheet",
+          "agency": "NASA NSSDC",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        },
+        {
+          "name": "Test Rover Aids Preparations in California for Curiosity Rover on Mars (PIA15682)",
+          "agency": "NASA/JPL-Caltech",
+          "url": "https://www.jpl.nasa.gov/images/pia15682-test-rover-aids-preparations-in-california-for-curiosity-rover-on-mars/"
+        }
+      ]
+    },
+    {
+      "id": "moon-delay",
+      "body": "moon",
+      "title": {
+        "en": "Rehearse with the signal delay",
+        "es": "Ensayar con el retraso de la señal"
+      },
+      "text": {
+        "en": "At the mean distance of 384,400 km, a signal takes about 1.3 seconds to reach the Moon. Operations can be nearly real-time, but it is worth rehearsing with that delay.",
+        "es": "A la distancia media de 384 400 km, una señal tarda unos 1,3 segundos en llegar a la Luna. Se puede operar casi en tiempo real, pero conviene ensayar con ese retraso."
+      },
+      "sources": [
+        {
+          "name": "Moon Fact Sheet",
+          "agency": "NASA NSSDC",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        }
+      ]
+    },
+    {
+      "id": "moon-vacuum",
+      "body": "moon",
+      "title": {
+        "en": "Test in vacuum",
+        "es": "Probar en vacío"
+      },
+      "text": {
+        "en": "The Moon has almost no atmosphere: at night, surface pressure is 3 × 10⁻¹⁵ bar. Anything that depends on the air is tested in a vacuum chamber, not in the field.",
+        "es": "La Luna casi no tiene atmósfera: de noche, la presión en la superficie es de 3 × 10⁻¹⁵ bar. Lo que dependa del aire se prueba en una cámara de vacío, no en el terreno."
+      },
+      "sources": [
+        {
+          "name": "Moon Fact Sheet",
+          "agency": "NASA NSSDC",
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        }
+      ]
+    },
+    {
+      "id": "moon-light",
+      "body": "moon",
+      "title": {
+        "en": "Rehearse with grazing light",
+        "es": "Ensayar con luz rasante"
+      },
+      "text": {
+        "en": "Near the lunar south pole the Sun always stays low on the horizon, and NASA also chose the Artemis III regions for their lighting. Cameras and navigation should be rehearsed with a low Sun, at dawn or dusk.",
+        "es": "Cerca del polo sur lunar el Sol queda siempre bajo en el horizonte, y la NASA eligió las regiones de Artemis III también por su luz. Las cámaras y la navegación se deben ensayar con el Sol bajo, al amanecer o al atardecer."
+      },
+      "sources": [
+        {
+          "name": "Bussey et al. (2010), Illumination conditions of the south pole of the Moon derived using Kaguya topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.03.028"
+        },
+        {
+          "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
+    },
+    {
+      "id": "rover-slopes",
+      "purposeId": "rover-mobility",
+      "title": {
+        "en": "Mark limiting slopes and obstacles",
+        "es": "Marcar pendientes y obstáculos límite"
+      },
+      "text": {
+        "en": "Perseverance can withstand a 45° tilt, but its drivers avoid slopes that would tilt it more than 30°, and it can drive over obstacles as large as a wheel (52.5 cm). Before rehearsing, mark the areas steeper than 30° and the blocks larger than 50 cm.",
+        "es": "Perseverance aguanta 45° de inclinación, pero sus conductores evitan las pendientes que lo inclinen más de 30°, y supera obstáculos del tamaño de una rueda (52,5 cm). Antes de ensayar, conviene marcar en el sitio las zonas de más de 30° y los bloques de más de 50 cm."
+      },
+      "sources": [
+        {
+          "name": "Perseverance rover components",
+          "agency": "NASA",
+          "url": "https://science.nasa.gov/mission/mars-2020-perseverance/rover-components/"
+        }
+      ]
+    },
+    {
+      "id": "rover-dunes",
+      "purposeId": "rover-mobility",
+      "title": {
+        "en": "Test climbs on sand",
+        "es": "Probar subidas en arena"
+      },
+      "text": {
+        "en": "Before driving Curiosity near Mount Sharp, JPL tested with Scarecrow how it climbed different slopes on the Dumont Dunes. Where there is loose sand, the same test can be repeated with the test vehicle.",
+        "es": "Antes de llevar a Curiosity cerca del monte Sharp, JPL probó con Scarecrow cómo subía distintas pendientes en las dunas de Dumont. En sitios con arena suelta se puede repetir esa prueba con el vehículo de ensayo."
+      },
+      "sources": [
+        {
+          "name": "Test Rover Aids Preparations in California for Curiosity Rover on Mars (PIA15682)",
+          "agency": "NASA/JPL-Caltech",
+          "url": "https://www.jpl.nasa.gov/images/pia15682-test-rover-aids-preparations-in-california-for-curiosity-rover-on-mars/"
+        }
+      ]
+    },
+    {
+      "id": "lakes-delta",
+      "purposeId": "ancient-lakes",
+      "title": {
+        "en": "Read the layers of a basin",
+        "es": "Leer las capas de una cuenca"
+      },
+      "text": {
+        "en": "At Jezero, Perseverance reconstructed the lake level and water discharge from the layers and boulder sizes of the delta. In an Earth basin, the same analysis can be rehearsed on the shores and sediments.",
+        "es": "En Jezero, Perseverance reconstruyó el nivel del lago y el caudal de agua a partir de las capas y del tamaño de los bloques del delta. En una cuenca de la Tierra se puede ensayar ese mismo análisis en las orillas y los sedimentos."
+      },
+      "sources": [
+        {
+          "name": "Mangold et al. (2021), Perseverance rover reveals an ancient delta-lake system and flood deposits at Jezero crater, Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.abl4051"
+        }
+      ]
+    },
+    {
+      "id": "lakes-uv",
+      "purposeId": "ancient-lakes",
+      "title": {
+        "en": "Measure ultraviolet radiation",
+        "es": "Medir la radiación ultravioleta"
+      },
+      "text": {
+        "en": "At the high Andean lakes, UV radiation reaches 165% of its sea-level value. Bring UV radiometers and protect samples and equipment.",
+        "es": "En los lagos de altura de los Andes, la radiación UV llega al 165 % de la del nivel del mar. Conviene llevar radiómetros UV y proteger las muestras y los equipos."
+      },
+      "sources": [
+        {
+          "name": "Cabrol et al. (2009), The High-Lakes Project",
+          "agency": "Journal of Geophysical Research: Biogeosciences",
+          "url": "https://doi.org/10.1029/2008JG000818"
+        }
+      ]
+    },
+    {
+      "id": "hydro-silica",
+      "purposeId": "hydrothermal",
+      "title": {
+        "en": "Sample silica as at the Columbia Hills",
+        "es": "Tomar muestras de sílice como en Columbia Hills"
+      },
+      "text": {
+        "en": "The silica structures Spirit found at the Columbia Hills resemble those of the geyser channels at El Tatio, formed by biological and non-biological processes. In a geothermal field, describing and sampling them without breaking them can be practised.",
+        "es": "Las estructuras de sílice que halló Spirit en Columbia Hills se parecen a las de los canales de géiseres de El Tatio, formadas por procesos biológicos y no biológicos. En un campo geotérmico se puede practicar cómo describirlas y tomarlas sin romperlas."
+      },
+      "sources": [
+        {
+          "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1155429"
+        },
+        {
+          "name": "Ruff & Farmer (2016), Silica deposits on Mars with features resembling hot spring biosignatures at El Tatio in Chile",
+          "agency": "Nature Communications",
+          "url": "https://doi.org/10.1038/ncomms13554"
+        }
+      ]
+    },
+    {
+      "id": "lunar-landing",
+      "purposeId": "lunar-base",
+      "title": {
+        "en": "Choose a landing zone",
+        "es": "Elegir una zona de alunizaje"
+      },
+      "text": {
+        "en": "NASA chose the Artemis III regions for their slope, lighting and communications with Earth. On site, choosing a landing zone with those same criteria can be rehearsed.",
+        "es": "La NASA eligió las regiones de Artemis III por su pendiente, su luz y sus comunicaciones con la Tierra. En el sitio se puede ensayar la elección de una zona de alunizaje con esos mismos criterios."
+      },
+      "sources": [
+        {
+          "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
     }
   ]
 }

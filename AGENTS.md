@@ -16,8 +16,9 @@ la Tierra y en el objetivo, las fuentes de esos datos y una explicación de dón
 
 **Decisiones de enfoque ya tomadas:**
 
-- Cuerpos objetivo: **Marte** (cinco sitios de aterrizaje) y **la Luna** (cuatro puntos del polo sur en
-  regiones candidatas de Artemis III). La app es neutral respecto al cuerpo: un objetivo es solo otra fila.
+- Cuerpos objetivo: **Marte** (cinco sitios de aterrizaje, el de Viking 2 en Utopia Planitia y dos zonas
+  de hielo: un glaciar cubierto en Deuteronilus Mensae y el hielo enterrado de Arcadia Planitia) y
+  **la Luna** (cuatro puntos del polo sur en regiones candidatas de Artemis III). La app es neutral respecto al cuerpo: un objetivo es solo otra fila.
 - Región piloto: **Bolivia** (Altiplano y Sur de Lípez), con un **catálogo fijo de sitios**
   (`docs/catalogo-sitios.csv`). El método es general; Bolivia es el caso de estudio.
 - **Atacama** se incluye como referencia para comprobar una analogía documentada, y hay **controles
@@ -203,12 +204,23 @@ interface TextsFile {
   targets?: Record<string, { summary?: Text; sources?: Source[] }>;
   sites?: Record<string, { description?: Text; limits?: Text; exploration?: Text; sources?: Source[] }>;
   purposes?: Record<string, { label?: Text; question?: Text }>;
+  adaptations?: {                          // recomendaciones para adaptar un ensayo, con fuente
+    id: string; body?: "mars" | "moon"; purposeId?: string;
+    title: Text; text: Text; sources: Source[];   // al menos una fuente
+  }[];
   story?: {                                // pasos del modo historia
     purposeId?: string; targetId?: string; siteId?: string; compare?: string[];
     view?: "globe" | "2d"; caption: Text;
   }[];
 }
 ```
+
+### `discoveries.json`, de `tools/discover.py` (opcional)
+
+Lugares nuevos: puntos de una malla del Altiplano, fuera del catálogo, medidos y puntuados con el mismo
+método y los mismos pesos que `analogs.json`. Cada candidato tiene `targetId`, `purposeId?`, `rank`,
+`lat`, `lon`, `similarity`, `values`, `dimensions`, `place` (nombres de OpenStreetMap) y `nearestSite`.
+`meta` describe la malla, la comprobación con el catálogo y las fuentes. La web solo los muestra.
 
 ### Reglas del contrato
 

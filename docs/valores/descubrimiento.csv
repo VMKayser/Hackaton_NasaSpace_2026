@@ -1,0 +1,56 @@
+target_id,purpose_id,rank,lat,lon,similarity,feature,municipality,province,map_unit,nearest_site,nearest_site_km
+jezero,,1,-21.8,-68.0,0.504,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,26.1
+jezero,,2,-22.0,-68.0,0.495,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,siloli,13.6
+jezero,,3,-22.7,-67.8,0.492,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Andesitic and related,licancabur-laguna-verde,10.2
+jezero,,4,-22.5,-67.4,0.491,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Neogene Rhyolitic,chalviri,17.8
+jezero,,5,-22.7,-67.2,0.491,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Neogene Rhyolitic,chalviri,42.4
+gale,,1,-21.8,-68.0,0.485,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,26.1
+gale,,2,-22.0,-68.0,0.478,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,siloli,13.6
+gale,,3,-22.6,-67.5,0.476,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Siliciclastic,chalviri,10.6
+gale,,4,-22.5,-67.4,0.476,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Neogene Rhyolitic,chalviri,17.8
+gale,,5,-22.7,-67.8,0.475,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Andesitic and related,licancabur-laguna-verde,10.2
+meridiani,,1,-21.8,-68.0,0.48,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,26.1
+meridiani,,2,-20.8,-67.9,0.475,,Municipio Colcha K,Provincia Nor Lípez,Quaternary Siliciclastic,chiguana,32.8
+meridiani,,3,-21.1,-68.2,0.474,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,20.9
+meridiani,,4,-22.6,-67.5,0.473,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Siliciclastic,chalviri,10.6
+meridiani,,5,-20.9,-68.3,0.472,Salar Laguani,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,37.0
+elysium-insight,,1,-21.8,-68.0,0.65,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,26.1
+elysium-insight,,2,-20.8,-68.0,0.648,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,31.1
+elysium-insight,,3,-20.9,-68.3,0.648,Salar Laguani,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,37.0
+elysium-insight,,4,-21.1,-68.2,0.645,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,20.9
+elysium-insight,,5,-22.0,-67.6,0.642,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,capina,11.1
+shackleton-rim,,1,-21.7,-67.9,0.705,Cerro Cachi Laguna,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,pastos-grandes,12.9
+shackleton-rim,,2,-22.6,-67.8,0.703,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Neogene Rhyolitic,dali,14.8
+shackleton-rim,,3,-22.0,-67.2,0.699,Cerro Soniquera,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,uturuncu,30.1
+shackleton-rim,,4,-21.4,-67.9,0.699,Cerro Inti Pasto,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,24.5
+shackleton-rim,,5,-21.9,-67.5,0.689,Cerro Konayoj,Municipio Colcha K,Provincia Nor Lípez,Neogene Andesitic and related,capina,10.3
+connecting-ridge,,1,-21.4,-68.1,0.729,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,ollague,13.9
+connecting-ridge,,2,-21.6,-67.9,0.725,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,pastos-grandes,10.9
+connecting-ridge,,3,-22.3,-67.9,0.724,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Andesitic and related,laguna-colorada,16.6
+connecting-ridge,,4,-21.0,-68.1,0.722,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,13.7
+connecting-ridge,,5,-22.4,-67.5,0.72,Cerro Colorado,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Andesitic and related,chalviri,16.1
+de-gerlache-rim,,1,-21.5,-67.9,0.73,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,17.4
+de-gerlache-rim,,2,-21.3,-68.0,0.717,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,ollague,18.6
+de-gerlache-rim,,3,-21.7,-68.1,0.713,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,15.4
+de-gerlache-rim,,4,-21.1,-67.9,0.708,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,10.6
+de-gerlache-rim,,5,-20.1,-68.5,0.707,Cerro Altamira,Llica,Daniel Campos,Neogene Rhyolitic,empexa,26.1
+malapert-massif,,1,-21.3,-68.0,0.728,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,ollague,18.6
+malapert-massif,,2,-21.5,-67.9,0.722,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,17.4
+malapert-massif,,3,-21.7,-68.1,0.71,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,15.4
+malapert-massif,,4,-20.1,-68.5,0.703,Cerro Altamira,Llica,Daniel Campos,Neogene Rhyolitic,empexa,26.1
+malapert-massif,,5,-22.4,-67.9,0.702,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Andesitic and related,sol-de-manana,14.8
+utopia,,1,-21.8,-68.0,0.602,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,26.1
+utopia,,2,-22.0,-68.0,0.591,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,siloli,13.6
+utopia,,3,-22.6,-67.5,0.591,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Siliciclastic,chalviri,10.6
+utopia,,4,-22.5,-67.4,0.589,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Neogene Rhyolitic,chalviri,17.8
+utopia,,5,-22.7,-67.8,0.589,,Municipio San Pablo de Lipez,Provincia Sur Lípez,Quaternary Andesitic and related,licancabur-laguna-verde,10.2
+jezero,ancient-lakes,1,-21.8,-68.0,0.408,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,laguna-hedionda,26.1
+jezero,ancient-lakes,2,-21.9,-67.9,0.408,Cerro Chascón,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,siloli,16.8
+jezero,ancient-lakes,3,-22.0,-68.0,0.408,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,siloli,13.6
+jezero,ancient-lakes,4,-22.2,-67.9,0.408,Cerro Pupucita,Municipio San Pablo de Lipez,Provincia Sur Lípez,Neogene Andesitic and related,laguna-colorada,12.4
+jezero,ancient-lakes,5,-21.3,-68.0,0.403,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,ollague,18.6
+connecting-ridge,lunar-base,1,-21.8,-67.6,0.994,,Municipio Colcha K,Provincia Nor Lípez,Neogene Rhyolitic,capina,11.1
+connecting-ridge,lunar-base,2,-21.0,-68.1,0.992,,Municipio San Pedro de Quemes,Provincia Nor Lípez,Neogene Rhyolitic,chiguana,13.7
+connecting-ridge,lunar-base,3,-19.6,-65.6,0.991,,Municipio Chaquí,Provincia Cornelio Saavedra,Quaternary Siliciclastic,los-frailes,74.2
+connecting-ridge,lunar-base,4,-20.3,-65.6,0.99,,Municipio Cotagaita,Provincia Nor Chichas,Ordovician Siliciclastic,los-frailes,115.2
+connecting-ridge,lunar-base,5,-20.1,-65.5,0.989,,Municipio Vitichi,Provincia Nor Chichas,Ordovician Siliciclastic,los-frailes,107.0

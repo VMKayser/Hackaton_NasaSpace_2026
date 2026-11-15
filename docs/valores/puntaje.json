@@ -97,6 +97,10 @@
           "en": "Glacial",
           "es": "Glaciar"
         },
+        "ground_ice": {
+          "en": "Buried ice",
+          "es": "Hielo enterrado"
+        },
         "karst": {
           "en": "Karst (cave)",
           "es": "Kárstico (caverna)"
@@ -149,6 +153,18 @@
           "name": "Golombek et al. (2020), Geology of the InSight landing site",
           "agency": "Nature Communications",
           "url": "https://doi.org/10.1038/s41467-020-14679-1",
+          "body": "mars"
+        },
+        {
+          "name": "Plaut et al. (2009), Radar evidence for ice in lobate debris aprons, Deuteronilus Mensae",
+          "agency": "Geophysical Research Letters",
+          "url": "https://doi.org/10.1029/2008GL036379",
+          "body": "mars"
+        },
+        {
+          "name": "Bramson et al. (2015), Widespread excess ice in Arcadia Planitia",
+          "agency": "Geophysical Research Letters",
+          "url": "https://doi.org/10.1002/2015GL064844",
           "body": "mars"
         }
       ],

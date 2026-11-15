@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { formatIssues, parseAnalogs, parseTexts } from './load'
+import { formatIssues, parseAnalogs, parseDiscoveries, parseTexts } from './load'
 import { buildModel, siteText } from './model'
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'))
@@ -76,5 +76,34 @@ describe('texts', () => {
 
   it('rejects a text source without a link', () => {
     expect(parseTexts({ sites: { uyuni: { sources: [{ name: 'X', agency: 'Y' }] } } }).success).toBe(false)
+  })
+
+  it('every adaptation points to an existing purpose or body and has linked sources', () => {
+    const texts = parseTexts(read('../../public/data/texts.json'))
+    const analogs = parseAnalogs(read('../../public/data/analogs.json'))
+    if (!texts.success || !analogs.success) throw new Error('invalid data')
+    const purposes = new Set((analogs.data.meta.purposes ?? []).map((p) => p.id))
+    for (const a of texts.data.adaptations ?? []) {
+      expect(a.purposeId === undefined ? a.body !== undefined : purposes.has(a.purposeId), a.id).toBe(true)
+      for (const s of a.sources) expect(s.url, a.id).toMatch(/^https:\/\//)
+    }
+  })
+})
+
+describe('discoveries.json', () => {
+  it('is valid, refers to existing targets, purposes and sites, and only lists places outside the catalogue', () => {
+    const d = parseDiscoveries(read('../../public/data/discoveries.json'))
+    const analogs = parseAnalogs(read('../../public/data/analogs.json'))
+    if (!d.success || !analogs.success) throw new Error('invalid data')
+    const targets = new Set(analogs.data.targets.map((t) => t.id))
+    const purposes = new Set((analogs.data.meta.purposes ?? []).map((p) => p.id))
+    const sites = new Set(analogs.data.sites.map((s) => s.id))
+    expect(d.data.candidates.length).toBeGreaterThan(0)
+    for (const c of d.data.candidates) {
+      expect(targets.has(c.targetId)).toBe(true)
+      if (c.purposeId) expect(purposes.has(c.purposeId)).toBe(true)
+      expect(sites.has(c.nearestSite.id)).toBe(true)
+      expect(c.nearestSite.km).toBeGreaterThanOrEqual(d.data.meta.grid.nearCatalogKm)
+    }
   })
 })

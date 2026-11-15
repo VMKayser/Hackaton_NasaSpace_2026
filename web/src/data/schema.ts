@@ -175,11 +175,58 @@ const SiteTexts = z.object({
   sources: z.array(Source).optional(),
 })
 
+/** Recomendación para adaptar un ensayo: general para un cuerpo o propia de un propósito. */
+const Adaptation = z.object({
+  id: Id,
+  body: z.enum(['mars', 'moon']).optional(),
+  purposeId: z.string().optional(),
+  title: Text,
+  text: Text,
+  sources: z.array(Source).min(1),
+})
+
 export const TextsSchema = z.object({
   targets: z.record(z.string(), z.object({ summary: Text.optional(), sources: z.array(Source).optional() })).optional(),
   sites: z.record(z.string(), SiteTexts).optional(),
   purposes: z.record(z.string(), z.object({ label: Text.optional(), question: Text.optional() })).optional(),
   story: z.array(StoryStep).optional(),
+  adaptations: z.array(Adaptation).optional(),
+})
+
+/** Lugares nuevos que encontró tools/discover.py en una malla, con el mismo método que el catálogo. */
+const Candidate = z.object({
+  targetId: Id,
+  purposeId: z.string().optional(),
+  rank: z.number().int().min(1),
+  lat: Lat,
+  lon: Lon,
+  similarity: Score,
+  values: z.record(z.string(), Value),
+  dimensions: z.record(z.string(), Score.nullable()),
+  mapUnit: z.string().nullable().optional(),
+  place: z.record(z.string(), z.string()).optional(),
+  nearestSite: z.object({ id: Id, km: z.number().min(0) }),
+})
+
+export const DiscoveriesSchema = z.object({
+  meta: z.object({
+    generated: z.string(),
+    grid: z.object({
+      bbox: z.tuple([z.number(), z.number(), z.number(), z.number()]),
+      stepDeg: z.number().positive(),
+      radiusKm: z.number().positive(),
+      points: z.number().int(),
+      measured: z.number().int(),
+      nearCatalogKm: z.number(),
+      minSeparationKm: z.number(),
+      country: z.string().optional(),
+    }),
+    validation: z.array(z.object({ targetId: Id, purposeId: z.string().optional(), top: z.number().int(), nearCatalog: z.number().int() })),
+    /** Objetivos o propósitos para los que la malla no propone lugares, con el motivo. */
+    skipped: z.array(z.object({ targetId: Id, purposeId: z.string().optional(), reason: Text })).optional(),
+    sources: z.array(Source),
+  }),
+  candidates: z.array(Candidate),
 })
 
 export type Text = z.infer<typeof Text>
@@ -191,4 +238,7 @@ export type Target = z.output<typeof Target>
 export type Site = z.output<typeof Site>
 export type AnalogsFile = z.output<typeof AnalogsSchema>
 export type TextsFile = z.output<typeof TextsSchema>
+export type Adaptation = z.infer<typeof Adaptation>
+export type DiscoveriesFile = z.output<typeof DiscoveriesSchema>
+export type Candidate = z.output<typeof Candidate>
 export type Body = Target['body'] | 'earth'

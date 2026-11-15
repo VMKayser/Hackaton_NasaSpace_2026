@@ -1,0 +1,926 @@
+{
+ "-21.7,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe"
+ },
+ "-21.6,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "feature": "Salar de Ascotán"
+ },
+ "-21.5,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "feature": "Salar de Ascotán"
+ },
+ "-21.4,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "feature": "Salar de Carcote"
+ },
+ "-20.6,-68.2": {
+  "country": "Bolivia",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.3,-68.0": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí",
+  "peak": "Sampita Loma"
+ },
+ "-20.3,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.3,-68.2": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.3,-67.9": {
+  "country": "Bolivia",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.4,-68.2": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.4,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.5,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.4,-68.5": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Colchane",
+  "province": "Provincia del Tamarugal",
+  "feature": "Salar Pisiga"
+ },
+ "-19.3,-68.6": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Colchane",
+  "province": "Provincia del Tamarugal"
+ },
+ "-20.1,-68.2": {
+  "protected": "Parque Nacional Llica",
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.9,-68.2": {
+  "protected": "Parque Nacional Llica",
+  "country": "Bolivia",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-18.9,-69.0": {
+  "country": "Chile",
+  "department": "Región de Arica y Parinacota",
+  "municipality": "Putre",
+  "province": "Provincia de Parinacota",
+  "protected": "Monumento Natural Salar de Surire",
+  "feature": "Salar de Surire"
+ },
+ "-20.2,-68.2": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.8,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.8,-68.0": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.2,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.1,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.0,-68.1": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.2,-68.0": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.0,-68.0": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.9,-67.9": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.1,-68.0": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.0,-67.9": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.1,-67.9": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.9,-68.0": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.8,-67.9": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Tahua",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-18.8,-69.0": {
+  "country": "Chile",
+  "department": "Región de Arica y Parinacota",
+  "municipality": "Putre",
+  "province": "Provincia de Parinacota",
+  "protected": "Monumento Natural Salar de Surire",
+  "feature": "Salar de Surire"
+ },
+ "-19.6,-68.1": {
+  "country": "Bolivia",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-20.5,-67.2": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-19.4,-68.3": {
+  "country": "Bolivia",
+  "department": "Oruro",
+  "feature": "Salar de Coipasa"
+ },
+ "-19.7,-68.4": {
+  "country": "Bolivia",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-22.0,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Morro Colorado"
+ },
+ "-22.2,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.8,-68.0": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-20.8,-68.0": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-20.9,-68.3": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí",
+  "feature": "Salar Laguani"
+ },
+ "-21.3,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Volcán Poruñita"
+ },
+ "-21.8,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.1,-68.2": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-22.0,-67.6": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-22.2,-68.1": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Toconce"
+ },
+ "-22.0,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Aycina"
+ },
+ "-21.8,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Cerro Chanca"
+ },
+ "-22.6,-68.1": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "San Pedro de Atacama",
+  "peak": "Cerro Alto Machuca"
+ },
+ "-22.7,-67.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "San Pedro de Atacama",
+  "peak": "Sairecábur"
+ },
+ "-22.6,-67.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "San Pedro de Atacama",
+  "peak": "Volcán Colorado"
+ },
+ "-21.2,-68.6": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Volcán Miño"
+ },
+ "-21.4,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Cerro Canchajapichiña"
+ },
+ "-21.7,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Cerro Carasilla"
+ },
+ "-21.7,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí",
+  "peak": "Cerro Cachi Laguna"
+ },
+ "-22.1,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.6,-67.8": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí"
+ },
+ "-22.0,-67.2": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí",
+  "peak": "Cerro Soniquera"
+ },
+ "-21.4,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí",
+  "peak": "Cerro Inti Pasto"
+ },
+ "-21.4,-69.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de Tocopilla",
+  "municipality": "María Elena"
+ },
+ "-21.2,-68.5": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Cumbre Negra"
+ },
+ "-21.9,-68.1": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe"
+ },
+ "-21.9,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Lay lay"
+ },
+ "-21.5,-69.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de Tocopilla",
+  "municipality": "María Elena",
+  "peak": "Cerro Estancia León"
+ },
+ "-21.9,-67.5": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí",
+  "peak": "Cerro Konayoj"
+ },
+ "-21.8,-68.1": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe"
+ },
+ "-22.0,-68.1": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.3,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Cerro La Campana"
+ },
+ "-21.4,-68.1": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-21.8,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe",
+  "peak": "Cerro Chac-Inca"
+ },
+ "-21.6,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-21.7,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.3,-67.9": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí"
+ },
+ "-22.1,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.9,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.0,-68.1": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-22.1,-68.1": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.4,-67.5": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí",
+  "peak": "Cerro Colorado"
+ },
+ "-21.5,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-21.3,-68.0": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-21.6,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Ollagüe"
+ },
+ "-22.7,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "San Pedro de Atacama"
+ },
+ "-21.7,-68.1": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-20.9,-68.9": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Pica",
+  "province": "Provincia del Tamarugal"
+ },
+ "-21.3,-68.5": {},
+ "-21.2,-68.9": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "province": "Provincia del Tamarugal",
+  "municipality": "Pozo Almonte"
+ },
+ "-20.3,-68.7": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Pica",
+  "province": "Provincia del Tamarugal",
+  "protected": "Parque Nacional Salar del Huasco"
+ },
+ "-21.1,-68.9": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Pica",
+  "province": "Provincia del Tamarugal"
+ },
+ "-21.1,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-20.1,-68.5": {
+  "country": "Bolivia",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí",
+  "peak": "Cerro Altamira"
+ },
+ "-22.4,-68.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-20.0,-69.0": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "province": "Provincia del Tamarugal",
+  "municipality": "Pozo Almonte"
+ },
+ "-22.4,-67.9": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí"
+ },
+ "-20.5,-68.2": {
+  "country": "Bolivia",
+  "feature": "Salar de Uyuni",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí"
+ },
+ "-19.3,-68.4": {
+  "country": "Bolivia",
+  "department": "Oruro",
+  "feature": "Salar de Coipasa"
+ },
+ "-19.3,-68.2": {
+  "country": "Bolivia",
+  "department": "Oruro",
+  "feature": "Salar de Coipasa"
+ },
+ "-19.3,-68.0": {
+  "country": "Bolivia",
+  "department": "Oruro",
+  "feature": "Salar de Coipasa"
+ },
+ "-19.4,-68.4": {
+  "country": "Bolivia",
+  "department": "Oruro",
+  "feature": "Salar de Coipasa",
+  "peak": "Cerrito del Salitral"
+ },
+ "-19.4,-68.0": {
+  "country": "Bolivia",
+  "department": "Oruro",
+  "feature": "Lago Coipasa"
+ },
+ "-19.5,-68.4": {
+  "country": "Bolivia",
+  "municipality": "Llica",
+  "province": "Daniel Campos",
+  "department": "Potosí",
+  "peak": "Cosapa Loma"
+ },
+ "-21.8,-67.6": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-22.7,-67.0": {
+  "department": "Jujuy",
+  "country": "Argentina",
+  "protected": "Reserva Provincial Alto Andina de La Chinchilla"
+ },
+ "-19.6,-65.6": {
+  "country": "Bolivia",
+  "municipality": "Municipio Chaquí",
+  "province": "Provincia Cornelio Saavedra",
+  "department": "Potosí"
+ },
+ "-20.3,-65.6": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Chichas",
+  "municipality": "Municipio Cotagaita",
+  "department": "Potosí"
+ },
+ "-20.1,-65.5": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Chichas",
+  "municipality": "Municipio Vitichi",
+  "department": "Potosí"
+ },
+ "-22.3,-66.0": {
+  "feature": "Laguna de los Pozuelos",
+  "department": "Jujuy",
+  "country": "Argentina",
+  "protected": "Monumento Natural Laguna de Los Pozuelos"
+ },
+ "-22.4,-66.0": {
+  "feature": "Laguna de los Pozuelos",
+  "department": "Jujuy",
+  "country": "Argentina",
+  "protected": "Monumento Natural Laguna de Los Pozuelos"
+ },
+ "-23.0,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de Antofagasta",
+  "municipality": "Sierra Gorda"
+ },
+ "-22.9,-68.8": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.5,-68.8": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.8,-68.7": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.6,-68.8": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.0,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.7,-68.7": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.9,-68.7": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.1,-68.8": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.0,-68.8": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Pica",
+  "province": "Provincia del Tamarugal"
+ },
+ "-22.7,-69.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.2,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-21.1,-68.8": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Pica",
+  "province": "Provincia del Tamarugal"
+ },
+ "-21.4,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro El Aromo"
+ },
+ "-21.5,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.6,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Moctezuma"
+ },
+ "-22.0,-68.8": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Pinorca"
+ },
+ "-22.3,-69.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Piedra Grande"
+ },
+ "-22.2,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.0,-68.0": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-22.0,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.7,-67.8": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí"
+ },
+ "-22.5,-67.4": {
+  "municipality": "Municipio San Pablo de Lipez",
+  "province": "Provincia Sur Lípez",
+  "department": "Potosí",
+  "country": "Bolivia"
+ },
+ "-22.7,-67.2": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí"
+ },
+ "-22.6,-67.5": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí"
+ },
+ "-20.8,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí"
+ },
+ "-21.0,-67.9": {
+  "feature": "Salar de Chiguana",
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio San Pedro de Quemes",
+  "department": "Potosí"
+ },
+ "-19.9,-69.0": {
+  "country": "Chile",
+  "department": "Región de Tarapacá",
+  "municipality": "Pica",
+  "province": "Provincia del Tamarugal",
+  "peak": "Cerro Alantaya"
+ },
+ "-22.3,-68.9": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.4,-69.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Cerro Genoveva"
+ },
+ "-21.9,-68.4": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama",
+  "peak": "Volcán San Pedro"
+ },
+ "-21.9,-67.9": {
+  "country": "Bolivia",
+  "province": "Provincia Nor Lípez",
+  "municipality": "Municipio Colcha K",
+  "department": "Potosí",
+  "peak": "Cerro Chascón"
+ },
+ "-22.1,-68.3": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.2,-68.2": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.2,-68.0": {
+  "country": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de El Loa",
+  "municipality": "Calama"
+ },
+ "-22.2,-67.9": {
+  "country": "Bolivia",
+  "protected": "Reserva Nacional de Fauna Andina Eduardo Avaroa",
+  "province": "Provincia Sur Lípez",
+  "municipality": "Municipio San Pablo de Lipez",
+  "department": "Potosí",
+  "peak": "Cerro Pupucita"
+ }
+}

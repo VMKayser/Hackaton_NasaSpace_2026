@@ -8,3 +8,6 @@ shackleton-rim,Shackleton Rim,moon,-89.68,-166.0,,"Bussey et al. (2010), Icarus,
 connecting-ridge,Connecting Ridge,moon,-89.44,-141.8,,"Bussey et al. (2010), Icarus, punto B",https://doi.org/10.1016/j.icarus.2010.03.028,,
 de-gerlache-rim,de Gerlache Rim,moon,-88.71,-68.7,,"Bussey et al. (2010), Icarus, punto C",https://doi.org/10.1016/j.icarus.2010.03.028,,
 malapert-massif,Malapert Massif,moon,-86.04,2.7,,"Bussey et al. (2010), Icarus, punto M1",https://doi.org/10.1016/j.icarus.2010.03.028,,
+utopia,Utopia Planitia (Viking 2),mars,47.64,134.29,,"Sitio de aterrizaje de Viking 2, coordenadas planetocéntricas (NASA, misión Viking)",https://science.nasa.gov/mission/viking/,,
+deuteronilus,Deuteronilus Mensae,mars,44.9474,25.8523,glacial,"Reflector basal de un depósito lobulado (LDA) del radar SHARAD con más detecciones a menos de 5 km (Baker y Carter, datos de su artículo de 2023, conjunto ds03)",https://doi.org/10.5281/zenodo.7753745,"Plaut et al. (2009), Geophysical Research Letters",https://doi.org/10.1029/2008GL036379
+arcadia,Arcadia Planitia (Badger),mars,46.581,-165.15,ground_ice,"Cráter Badger, 46,581° N y 194,85° E (Bramson et al., 2015)",https://doi.org/10.1002/2015GL064844,"Bramson et al. (2015), Geophysical Research Letters",https://doi.org/10.1002/2015GL064844

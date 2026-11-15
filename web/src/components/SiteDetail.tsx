@@ -10,6 +10,7 @@ import { activeWeights, scoredCount } from '../lib/ranking'
 import { BODIES } from '../map/bodies'
 import { BackButton, BodyChip, Pending, ScoreBar, ScoreSummary, SectionTitle, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
+import { AdaptationDialog } from './AdaptationDialog'
 import { SourceLinks } from './SourceLinks'
 import { ScoreMethod } from './ScoreMethod'
 
@@ -120,6 +121,7 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
   const { site } = row
   const measurementsRef = useRef<HTMLHeadingElement>(null)
   const [radarOpen, setRadarOpen] = useState(false)
+  const [adaptationOpen, setAdaptationOpen] = useState(false)
   const description = siteText(model, site, 'description', lang)
   const limits = siteText(model, site, 'limits', lang)
   const exploration = siteText(model, site, 'exploration', lang)
@@ -221,6 +223,9 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
         <button type="button" onClick={onCompare} className={ACTION}>
           {t('compare.add')}
         </button>
+        <button type="button" onClick={() => setAdaptationOpen(true)} className={ACTION} aria-haspopup="dialog">
+          {t('adaptation.open')}
+        </button>
         <ShareButton />
       </div>
 
@@ -293,6 +298,16 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
           </section>
         ))}
       </section>
+
+      {adaptationOpen && (
+        <AdaptationDialog
+          model={model}
+          site={site}
+          target={target}
+          purpose={mode === 'purpose' ? purpose : null}
+          onClose={() => setAdaptationOpen(false)}
+        />
+      )}
 
       <section className="mt-5">
         <SectionTitle>{t('detail.about')}</SectionTitle>

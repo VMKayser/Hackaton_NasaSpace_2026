@@ -1,10 +1,12 @@
 import type { Lang } from '../i18n'
-import type { AnalogsFile, Dimension, Purpose, Site, Target, Text, TextsFile } from './schema'
+import type { AnalogsFile, DiscoveriesFile, Dimension, Purpose, Site, Target, Text, TextsFile } from './schema'
 
 /** Datos ya validados, con índices por id. */
 export interface Model {
   file: AnalogsFile
   texts: TextsFile
+  /** Lugares nuevos de tools/discover.py; null si no hay archivo. */
+  discoveries: DiscoveriesFile | null
   dimensions: Dimension[]
   purposes: Purpose[]
   targetById: Map<string, Target>
@@ -13,10 +15,11 @@ export interface Model {
   dimensionById: Map<string, Dimension>
 }
 
-export function buildModel(file: AnalogsFile, texts: TextsFile): Model {
+export function buildModel(file: AnalogsFile, texts: TextsFile, discoveries: DiscoveriesFile | null = null): Model {
   return {
     file,
     texts,
+    discoveries,
     dimensions: file.meta.dimensions,
     purposes: file.meta.purposes ?? [],
     targetById: new Map(file.targets.map((t) => [t.id, t])),

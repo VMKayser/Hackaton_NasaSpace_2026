@@ -175,8 +175,18 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
 - [x] Nueve objetivos: cinco sitios de aterrizaje en Marte (Jezero, Columbia Hills, Gale, Meridiani,
       InSight) y cuatro puntos del polo sur lunar (Bussey et al. 2010) con el propósito «Alunizaje y
       operaciones en el polo sur lunar».
+- [x] Datos de Marte del rol 3 (Utopia/Viking 2, Deuteronilus Mensae, Arcadia Planitia) comprobados contra
+      fuentes independientes ([verificación](docs/valores/verificacion-rol-3.md)). Tres objetivos nuevos en
+      Marte medidos con el mismo método: Viking 2, un glaciar cubierto de Deuteronilus (radar SHARAD) y el
+      cráter Badger de Arcadia (hielo enterrado). Entorno «hielo enterrado» añadido a la geología.
 - [x] Cualquier punto de Marte: el pin libre lista los sitios de la Tierra con relieve más parecido
       (mismo método y pesos que los puntajes, solo relieve; excepción a la regla 10 de AGENTS.md).
+- [x] «Cómo adaptar el ensayo»: ventana con tarjetas por propósito y por cuerpo, cada una con fuente,
+      buscador y comparación del sitio (qué ya se parece y qué hay que compensar). Buscador de sitios en
+      el ranking.
+- [x] Descubrimiento de lugares nuevos: `tools/discover.py` mide una malla del Altiplano con el mismo
+      método y lista los más parecidos fuera del catálogo (`discoveries.json`), con el botón «Poner un
+      pin aquí».
 - [ ] Mostrar el resultado observado de Atacama y de los controles. Explicar qué se esperaba en
       cada comparación y qué pasó, incluso si el resultado difiere de lo esperado.
 - [ ] Enviar los textos científicos al rol 1 para revisión (respuesta antes de las 15:00).

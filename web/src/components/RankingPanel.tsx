@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Model } from '../data/model'
 import { purposeLabel, purposeQuestion, targetSummary, targetTextSources } from '../data/model'
 import type { Purpose, Target } from '../data/schema'
@@ -9,6 +10,8 @@ import { siteGlyphProps } from '../lib/glyph'
 import { TargetMeasurements } from './TargetMeasurements'
 import { ScoreMethod } from './ScoreMethod'
 import { SourceLinks } from './SourceLinks'
+import { DiscoveriesSection } from './DiscoveriesSection'
+import type { Point } from '../lib/state'
 
 interface Props {
   model: Model
@@ -20,6 +23,8 @@ interface Props {
   onSelect: (id: string) => void
   onBack: () => void
   onCompare: () => void
+  /** Pone el pin libre de la Tierra en un lugar nuevo de la malla. */
+  onPin: (point: Point) => void
 }
 
 function TargetCard({ model, target, question }: { model: Model; target: Target; question: string | null }) {
@@ -45,8 +50,11 @@ function TargetCard({ model, target, question }: { model: Model; target: Target;
   )
 }
 
-export function RankingPanel({ model, purpose, target, rows, mode, selectedId, onSelect, onBack, onCompare }: Props) {
+export function RankingPanel({ model, purpose, target, rows, mode, selectedId, onSelect, onBack, onCompare, onPin }: Props) {
   const { t, lang } = useI18n()
+  const [query, setQuery] = useState('')
+  const fold = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+  const shown = query.trim() ? rows.filter((r) => fold(r.site.name).includes(fold(query.trim()))) : rows
   const evaluated = rows.filter((r) => r.score !== null).length
   const dimLabel = (id: string) => model.dimensionById.get(id)?.label[lang] ?? id
   const question = purpose ? purposeQuestion(model, purpose, lang) : null
@@ -89,8 +97,19 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
 
       <ScoreMethod model={model} purpose={mode === 'purpose' ? purpose : null} />
 
+      <label className="mt-2 flex flex-col gap-1 text-[11px] font-medium text-muted">
+        {t('ranking.search')}
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="min-h-10 rounded-md border border-line px-2.5 text-sm text-ink focus:border-earth focus:outline-none"
+        />
+      </label>
+      {shown.length === 0 && <p className="mt-2 text-sm text-muted">{t('ranking.searchNone', { q: query.trim() })}</p>}
+
       <ol className="mt-2 divide-y divide-line border-y border-line">
-        {rows.map((r) => {
+        {shown.map((r) => {
           const selected = r.site.id === selectedId
           const highlights = [
             { id: r.top[0], label: 'ranking.highest' },
@@ -157,6 +176,8 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
           )
         })}
       </ol>
+
+      <DiscoveriesSection model={model} target={target} purpose={mode === 'purpose' ? purpose : null} onPin={onPin} />
     </div>
   )
 }
