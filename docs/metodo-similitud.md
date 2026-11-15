@@ -27,6 +27,9 @@ Complementa a la [guía de entrega](contrato-rol-4.md), que define el formato de
 | `sitios_valores.csv` | Rol 2 | Una fila por sitio: `id` y una columna por dimensión |
 | `objetivos_valores.csv` | Rol 3 | Una fila por objetivo: `id` y las mismas columnas |
 
+Hay una primera versión medida de los dos archivos en [`valores/`](valores/README.md): relieve con el
+mismo paso en los dos cuerpos y clima, con sus fuentes y sus límites.
+
 Cada valor es la media o la mediana de la variable dentro del radio del sitio. Un dato que falta se
 deja vacío, no en cero.
 

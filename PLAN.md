@@ -155,6 +155,11 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
 
 ### Fase 7. Datos reales, P0 (dom 12:00 a 14:00)
 - [ ] Recibir y probar la entrega parcial del rol 4. La app usa el catálogo de demostración.
+      Primera entrega (PR #1, rama `modelos`) revisada el 15 de noviembre: formato válido, pero los
+      valores son los de la demo o están escritos a mano; no se fusiona.
+- [x] Valores medidos para el rol 4 en [`docs/valores/`](docs/valores/README.md) con
+      `tools/measure_values.py`: pendiente y rugosidad con el mismo paso de 200 m en los dos cuerpos,
+      clima de NASA POWER (Tierra) y de la Mars Climate Database (Marte), con fuentes y límites.
 - [ ] Cargar el archivo real del rol 4 con `meta.mock: false` y comprobar que el ranking, la ficha y
       los enlaces de la historia funcionen para los sitios disponibles.
 - [ ] Mostrar el resultado observado de Atacama y de los controles. Explicar qué se esperaba en

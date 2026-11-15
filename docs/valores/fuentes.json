@@ -1,0 +1,133 @@
+{
+  "slope_median_deg": {
+    "unit": "°",
+    "sources": [
+      {
+        "name": "Terrain Tiles (SRTM and other sources)",
+        "agency": "Mapzen / AWS Open Data",
+        "url": "https://registry.opendata.aws/terrain-tiles/",
+        "body": "earth"
+      },
+      {
+        "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+        "agency": "USGS Astrogeology / ESA / NASA",
+        "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
+        "body": "mars"
+      },
+      {
+        "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
+        "agency": "USGS Astrogeology / NASA LRO / JAXA SELENE",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+        "body": "moon"
+      }
+    ]
+  },
+  "slope_p90_deg": {
+    "unit": "°",
+    "sources": [
+      {
+        "name": "Terrain Tiles (SRTM and other sources)",
+        "agency": "Mapzen / AWS Open Data",
+        "url": "https://registry.opendata.aws/terrain-tiles/",
+        "body": "earth"
+      },
+      {
+        "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+        "agency": "USGS Astrogeology / ESA / NASA",
+        "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
+        "body": "mars"
+      },
+      {
+        "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
+        "agency": "USGS Astrogeology / NASA LRO / JAXA SELENE",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+        "body": "moon"
+      }
+    ]
+  },
+  "roughness_tri_m": {
+    "unit": "m",
+    "sources": [
+      {
+        "name": "Terrain Tiles (SRTM and other sources)",
+        "agency": "Mapzen / AWS Open Data",
+        "url": "https://registry.opendata.aws/terrain-tiles/",
+        "body": "earth"
+      },
+      {
+        "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+        "agency": "USGS Astrogeology / ESA / NASA",
+        "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
+        "body": "mars"
+      },
+      {
+        "name": "Moon LRO LOLA - SELENE Kaguya TC DEM Merge 60N60S 59m v1",
+        "agency": "USGS Astrogeology / NASA LRO / JAXA SELENE",
+        "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+        "body": "moon"
+      }
+    ]
+  },
+  "surface_temp_c": {
+    "unit": "°C",
+    "sources": [
+      {
+        "name": "NASA POWER Climatology 2001-2025 (MERRA-2)",
+        "agency": "NASA Langley Research Center",
+        "url": "https://power.larc.nasa.gov/",
+        "body": "earth"
+      },
+      {
+        "name": "Mars Climate Database v6.2, climatology scenario",
+        "agency": "LMD / OU / IAA / ESA / CNES",
+        "url": "https://www-mars.lmd.jussieu.fr/",
+        "body": "mars"
+      }
+    ]
+  },
+  "diurnal_range_c": {
+    "unit": "°C",
+    "sources": [
+      {
+        "name": "NASA POWER Climatology 2001-2025 (MERRA-2)",
+        "agency": "NASA Langley Research Center",
+        "url": "https://power.larc.nasa.gov/",
+        "body": "earth"
+      },
+      {
+        "name": "Mars Climate Database v6.2, climatology scenario",
+        "agency": "LMD / OU / IAA / ESA / CNES",
+        "url": "https://www-mars.lmd.jussieu.fr/",
+        "body": "mars"
+      }
+    ]
+  },
+  "precip_mm_yr": {
+    "unit": "mm/yr",
+    "sources": [
+      {
+        "name": "NASA POWER Climatology 2001-2025 (MERRA-2)",
+        "agency": "NASA Langley Research Center",
+        "url": "https://power.larc.nasa.gov/",
+        "body": "earth"
+      }
+    ]
+  },
+  "pressure_hpa": {
+    "unit": "hPa",
+    "sources": [
+      {
+        "name": "NASA POWER Climatology 2001-2025 (MERRA-2)",
+        "agency": "NASA Langley Research Center",
+        "url": "https://power.larc.nasa.gov/",
+        "body": "earth"
+      },
+      {
+        "name": "Mars Climate Database v6.2, climatology scenario",
+        "agency": "LMD / OU / IAA / ESA / CNES",
+        "url": "https://www-mars.lmd.jussieu.fr/",
+        "body": "mars"
+      }
+    ]
+  }
+}
