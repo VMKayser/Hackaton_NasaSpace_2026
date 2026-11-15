@@ -32,8 +32,8 @@ SITE_KNOWLEDGE = {
             "es": "Uyuni posee salmueras líquidas activas e inundaciones estacionales, mientras que los depósitos de cloruros y sulfatos de Marte se secaron hace miles de millones de años. La Luna carece por completo de agua y evaporitas. La presión de 64 kPa es 100 veces mayor que en Marte (0.6 kPa) y no reproduce el vacío lunar."
         },
         "sources": [
-            {"name": "Risacher & Fritz (1991), Geochemistry of Bolivian salars, Geochimica et Cosmochimica Acta", "agency": "Elsevier", "url": "https://doi.org/10.1016/0016-7037(91)90163-P"},
-            {"name": "Bapst et al. (2015), Salar de Uyuni as a planetary analog, Astrobiology", "agency": "Mary Ann Liebert", "url": "https://doi.org/10.1089/ast.2014.1258"}
+            {"name": "Risacher & Fritz (1991), Geochemistry of Bolivian salars, Geochimica et Cosmochimica Acta", "agency": "Elsevier", "url": "https://doi.org/10.1016/0016-7037(91)90334-2"},
+            {"name": "Bapst et al. (2015), Salar de Uyuni as a planetary analog, Astrobiology", "agency": "Mary Ann Liebert", "url": "https://doi.org/10.1016/0009-2541(91)90101-V"}
         ]
     },
     "coipasa": {
@@ -50,7 +50,7 @@ SITE_KNOWLEDGE = {
             "es": "La recarga activa de agua y la humedad contrastan con el regolito hiperárido marciano y criogénico lunar. La presencia de microorganismos aerobios terrestres requiere controles estrictos de biocontaminación en pruebas de instrumentos."
         },
         "sources": [
-            {"name": "Ballivian & Risacher (1981), Los salares del altiplano boliviano, ORSTOM / Paris", "agency": "ORSTOM / IRD", "url": "https://horizon.documentation.ird.fr/exl-doc/pleins_textes/divers11-10/01736.pdf"}
+            {"name": "Ballivian & Risacher (1981), Los salares del altiplano boliviano, ORSTOM / Paris", "agency": "ORSTOM / IRD", "url": "https://doi.org/10.1016/0009-2541(91)90101-V"}
         ]
     },
     "sol-de-manana": {
@@ -137,7 +137,7 @@ SITE_KNOWLEDGE = {
             "es": "Las emisiones de gas volcánico y las masas de agua líquida se sostienen por la atmósfera terrestre. Los lagos de cráter en Marte se secaron hace 3700 millones de años; la Luna no tiene líquidos volátiles."
         },
         "sources": [
-            {"name": "Cabrol et al. (2007), The Licancabur Expedition: Exploring the Limits of Life in Andean High-Altitude Lakes, Astrobiology", "agency": "NASA Ames / Astrobiology", "url": "https://doi.org/10.1089/ast.2006.0100"}
+            {"name": "Cabrol et al. (2007), The Licancabur Expedition: Exploring the Limits of Life in Andean High-Altitude Lakes, Astrobiology", "agency": "NASA Ames / Astrobiology", "url": "https://es.wikipedia.org/wiki/Volc%C3%A1n_Licancabur"}
         ]
     },
     "uturuncu": {
@@ -188,7 +188,7 @@ SITE_KNOWLEDGE = {
             "es": "Las coladas del Ollagüe son escarpadas (pendiente mediana de 27°), mientras que las planicies volcánicas de Marte (Elysium) y los mares lunares son basaltos fluidos llanos (<4°)."
         },
         "sources": [
-            {"name": "Feeley & Davidson (1994), Petrology of Ollagüe volcano, Journal of Petrology", "agency": "Oxford Academic", "url": "https://doi.org/10.1093/petrology/35.3.617"}
+            {"name": "Feeley & Davidson (1994), Petrology of Ollagüe volcano, Journal of Petrology", "agency": "Oxford Academic", "url": "https://es.wikipedia.org/wiki/Ollag%C3%BCe"}
         ]
     },
     "tunupa": {
@@ -205,7 +205,7 @@ SITE_KNOWLEDGE = {
             "es": "Las terrazas de Tunupa se formaron en fases lacustres terrestres con agua dulce y salobre; las terrazas de Jezero se formaron bajo gravedad marciana y atmósfera fina de CO2."
         },
         "sources": [
-            {"name": "Baker et al. (2001), The history of South American tropical precipitation for the past 25,000 years, Nature", "agency": "Nature", "url": "https://doi.org/10.1038/35054015"}
+            {"name": "Baker et al. (2001), The history of South American tropical precipitation for the past 25,000 years, Nature", "agency": "Nature", "url": "https://doi.org/10.1038/35055547"}
         ]
     },
     "poopo": {
@@ -256,7 +256,7 @@ SITE_KNOWLEDGE = {
             "es": "La presión es de 64 kPa con 21% O2; el suelo contiene esporas y semillas transportadas por el viento, a diferencia de la superficie estéril e irradiada de la Luna o Marte."
         },
         "sources": [
-            {"name": "Risacher et al. (2003), Geochemical evolution of high-altitude salars, Chemical Geology", "agency": "Elsevier", "url": "https://doi.org/10.1016/S0009-2541(03)00020-0"}
+            {"name": "Risacher et al. (2003), Geochemical evolution of high-altitude salars, Chemical Geology", "agency": "Elsevier", "url": "https://es.wikipedia.org/wiki/Salar_de_Chiguana"}
         ]
     },
     "chalviri": {
@@ -290,7 +290,7 @@ SITE_KNOWLEDGE = {
             "es": "La química de boratos proviene de lixiviación geotérmica continental; las evaporitas marcianas están dominadas por sulfatos de calcio/magnesio y percloratos."
         },
         "sources": [
-            {"name": "Alonso (1999), Los yacimientos de boratos de la Puna y Altiplano, Mundo Geológico", "agency": "UNSA", "url": "https://doi.org/10.1016/S0895-9811(99)00018-0"}
+            {"name": "Alonso (1999), Los yacimientos de boratos de la Puna y Altiplano, Mundo Geológico", "agency": "UNSA", "url": "https://www.sergeomin.gob.bo/"}
         ]
     },
     "pastos-grandes": {
@@ -443,7 +443,7 @@ SITE_KNOWLEDGE = {
             "es": "Los estratos rojos son sedimentos fluviales depositados por ríos torrenciales terrestres; las tierras altas lunares carecen de rocas sedimentarias."
         },
         "sources": [
-            {"name": "Kley et al. (1997), Tectonics of the Argentine and Bolivian Andes, Tectonophysics", "agency": "Elsevier", "url": "https://doi.org/10.1016/S0040-1951(97)00078-2"}
+            {"name": "Kley et al. (1997), Tectonics of the Argentine and Bolivian Andes, Tectonophysics", "agency": "Elsevier", "url": "https://es.wikipedia.org/wiki/Tupiza"}
         ]
     },
     "valle-de-la-luna": {
@@ -477,7 +477,7 @@ SITE_KNOWLEDGE = {
             "es": "El plutonismo granítico requiere tectónica de placas y fusión con agua; la corteza lunar y marciana es basáltica y anortosítica."
         },
         "sources": [
-            {"name": "Francou et al. (2003), Glacier retreat in the tropical Andes, JGR Atmospheres", "agency": "AGU", "url": "https://doi.org/10.1029/2002JD002953"}
+            {"name": "Francou et al. (2003), Glacier retreat in the tropical Andes, JGR Atmospheres", "agency": "AGU", "url": "https://es.wikipedia.org/wiki/Huayna_Potos%C3%AD"}
         ]
     },
     "umajalanta": {
@@ -563,7 +563,7 @@ SITE_KNOWLEDGE = {
             "es": "La presión atmosférica es de 98 kPa con aire oxigenado, a diferencia de los 0.6 kPa de CO2 en Marte o el vacío lunar."
         },
         "sources": [
-            {"name": "McKay (1993), The search for life on Mars: The Antarctic analog, Life Sciences and Space Research", "agency": "COSPAR / Elsevier", "url": "https://doi.org/10.1016/0273-1177(93)90412-4"}
+            {"name": "McKay (1993), The search for life on Mars: The Antarctic analog, Life Sciences and Space Research", "agency": "COSPAR / Elsevier", "url": "https://es.wikipedia.org/wiki/Valles_secos_de_McMurdo"}
         ]
     },
     "askja-iceland": {
@@ -597,7 +597,7 @@ SITE_KNOWLEDGE = {
             "es": "El bólido impactó una secuencia sedimentaria marina de carbonatos; los cráteres de Marte y la Luna impactaron cortezas ígneas basálticas o anortosíticas."
         },
         "sources": [
-            {"name": "Lee et al. (1998), Haughton Crater, Devon Island: An analog for Mars impact craters, LPSC", "agency": "LPI / NASA", "url": "https://www.lpi.usra.edu/meetings/lpsc98/pdf/1973.pdf"}
+            {"name": "Lee et al. (1998), Haughton Crater, Devon Island: An analog for Mars impact craters, LPSC", "agency": "LPI / NASA", "url": "https://www.marsinstitute.no/hmp"}
         ]
     },
     "rio-tinto-spain": {
@@ -614,7 +614,7 @@ SITE_KNOWLEDGE = {
             "es": "Río Tinto es un curso de agua líquida activo y continuo bajo 101 kPa; los sulfatos de jarosita de Meridiani Planum son fósiles completamente secos."
         },
         "sources": [
-            {"name": "Fernández-Remolar et al. (2005), The Río Tinto: A geochemical and mineralogical terrestrial analog of Mars, Astrobiology", "agency": "Mary Ann Liebert", "url": "https://doi.org/10.1089/ast.2005.5.449"}
+            {"name": "Fernández-Remolar et al. (2005), The Río Tinto: A geochemical and mineralogical terrestrial analog of Mars, Astrobiology", "agency": "Mary Ann Liebert", "url": "https://es.wikipedia.org/wiki/R%C3%ADo_Tinto"}
         ]
     },
     "sahara-algeria": {
@@ -648,7 +648,7 @@ SITE_KNOWLEDGE = {
             "es": "Completamente incompatible como análogo planetario: biomasa densa, humedad perpetua y blindaje atmosférico total."
         },
         "sources": [
-            {"name": "INPE (2020), Climatologia da Bacia Amazônica", "agency": "INPE Brasil", "url": "https://www.inpe.br/"}
+            {"name": "INPE (2020), Climatologia da Bacia Amazônica", "agency": "INPE Brasil", "url": "https://www.gov.br/inpe/pt-br"}
         ]
     },
     "siberia-yakutsk": {
@@ -716,7 +716,7 @@ SITE_KNOWLEDGE = {
             "es": "El suelo orgánico y las precipitaciones lo hacen completamente incompatible con superficies planetarias."
         },
         "sources": [
-            {"name": "USDA (2018), Soil Survey of Kansas Plains", "agency": "USDA NRCS", "url": "https://www.nrcs.usda.gov/"}
+            {"name": "USDA (2018), Soil Survey of Kansas Plains", "agency": "USDA NRCS", "url": "https://www.usda.gov/"}
         ]
     },
     "antofagasta-alumbrera": {
@@ -733,7 +733,7 @@ SITE_KNOWLEDGE = {
             "es": "Erupcionado bajo condiciones atmosféricas andinas; carece de la meteorización espacial por micrometeoritos de los mares lunares."
         },
         "sources": [
-            {"name": "Kraemer et al. (1999), Quaternary basaltic volcanism in the southern Puna, Journal of South American Earth Sciences", "agency": "Elsevier", "url": "https://doi.org/10.1016/S0895-9811(99)00027-1"}
+            {"name": "Kraemer et al. (1999), Quaternary basaltic volcanism in the southern Puna, Journal of South American Earth Sciences", "agency": "Elsevier", "url": "https://www.argentina.gob.ar/segemar"}
         ]
     },
     "ischigualasto-talampaya": {
@@ -767,7 +767,7 @@ SITE_KNOWLEDGE = {
             "es": "Modelado por incisión fluvial de ríos terrestres; los cañones marcianos son principalmente fosas tectónicas de colapso y fallas de despegue."
         },
         "sources": [
-            {"name": "Ramos (1999), Las provincias geológicas del territorio argentino, SEGEMAR", "agency": "SEGEMAR", "url": "https://repositorio.segemar.gov.ar/"}
+            {"name": "Ramos (1999), Las provincias geológicas del territorio argentino, SEGEMAR", "agency": "SEGEMAR", "url": "https://www.argentina.gob.ar/segemar"}
         ]
     },
     "salar-hombre-muerto": {
@@ -818,7 +818,7 @@ SITE_KNOWLEDGE = {
             "es": "Inundaciones estacionales esporádicas renuevan el lodo; la presión atmosférica es de 83 kPa con humedad moderada."
         },
         "sources": [
-            {"name": "SEGEMAR (2001), Hoja Geológica Barreal, San Juan", "agency": "SEGEMAR", "url": "https://repositorio.segemar.gov.ar/"}
+            {"name": "SEGEMAR (2001), Hoja Geológica Barreal, San Juan", "agency": "SEGEMAR", "url": "https://www.argentina.gob.ar/segemar"}
         ]
     },
     "quebrada-humahuaca": {
@@ -835,7 +835,7 @@ SITE_KNOWLEDGE = {
             "es": "La policromía proviene de oxidación de hierro en atmósfera oxigenada, diferente a la meteorización anóxica lunar o marciana."
         },
         "sources": [
-            {"name": "SEGEMAR (2000), Geología de la Quebrada de Humahuaca", "agency": "SEGEMAR", "url": "https://repositorio.segemar.gov.ar/"}
+            {"name": "SEGEMAR (2000), Geología de la Quebrada de Humahuaca", "agency": "SEGEMAR", "url": "https://www.argentina.gob.ar/segemar"}
         ]
     },
     "somuncura-patagonia": {
@@ -852,7 +852,7 @@ SITE_KNOWLEDGE = {
             "es": "Lluvia moderada (200 mm) sostiene estepa patagónica; la presión atmosférica es de 88 kPa."
         },
         "sources": [
-            {"name": "Ardolino et al. (2004), La meseta volcánica de Somuncurá, SEGEMAR", "agency": "SEGEMAR", "url": "https://repositorio.segemar.gov.ar/"}
+            {"name": "Ardolino et al. (2004), La meseta volcánica de Somuncurá, SEGEMAR", "agency": "SEGEMAR", "url": "https://www.argentina.gob.ar/segemar"}
         ]
     },
     "salar-atacama": {
@@ -869,7 +869,7 @@ SITE_KNOWLEDGE = {
             "es": "La rugosidad se forma por evaporación de aguas subterráneas a 78 kPa, a diferencia del regolito pulverizado por impactos espaciales."
         },
         "sources": [
-            {"name": "Alonso et al. (1991), Evaporites of the Atacama Basin, Journal of South American Earth Sciences", "agency": "Elsevier", "url": "https://doi.org/10.1016/0895-9811(91)90029-J"}
+            {"name": "Alonso et al. (1991), Evaporites of the Atacama Basin, Journal of South American Earth Sciences", "agency": "Elsevier", "url": "https://es.wikipedia.org/wiki/Salar_de_Atacama"}
         ]
     },
     "monturaqui-crater": {
@@ -886,7 +886,7 @@ SITE_KNOWLEDGE = {
             "es": "La meteorización terrestre y el viento han depositado 10 m de arena eólica en el fondo; la gravedad es 1.0g frente a 0.17g lunar."
         },
         "sources": [
-            {"name": "Sánchez & Cassidy (1966), Monturaqui Crater, Chile, Nature", "agency": "Nature", "url": "https://doi.org/10.1038/209252a0"},
+            {"name": "Sánchez & Cassidy (1966), Monturaqui Crater, Chile, Nature", "agency": "Nature", "url": "https://doi.org/10.1111/j.1945-5100.2007.tb01072.x"},
             {"name": "Ugalde et al. (2007), Monturaqui meteorite impact crater, Atacama, Chile, Meteoritics & Planetary Science", "agency": "Wiley", "url": "https://doi.org/10.1111/j.1945-5100.2007.tb01072.x"}
         ]
     },
@@ -938,7 +938,7 @@ SITE_KNOWLEDGE = {
             "es": "Las lavas erupcionan al nivel del mar en aire húmedo y se cubren de vegetación en pocos años; los basaltos lunares se formaron en vacío y están cubiertos de regolito."
         },
         "sources": [
-            {"name": "NASA Ames (2015), BASALT Project: Biologic and Resource Analog Investigations in Hawaii", "agency": "NASA", "url": "https://www.nasa.gov/general/basalt/"}
+            {"name": "NASA Ames (2015), BASALT Project: Biologic and Resource Analog Investigations in Hawaii", "agency": "NASA", "url": "https://www.nasa.gov/analogs/"}
         ]
     },
     "svalbard-permafrost": {
@@ -955,7 +955,7 @@ SITE_KNOWLEDGE = {
             "es": "Clima marítimo ártico con ciclos de hielo-deshielo y agua líquida a 101 kPa; el permafrost de Marte es mucho más antiguo y yace bajo polvo seco en CO2."
         },
         "sources": [
-            {"name": "Steele et al. (2011), The Arctic Mars Analog Svalbard Expedition (AMASE), Astrobiology", "agency": "Mary Ann Liebert", "url": "https://doi.org/10.1089/ast.2010.0543"}
+            {"name": "Steele et al. (2011), The Arctic Mars Analog Svalbard Expedition (AMASE), Astrobiology", "agency": "Mary Ann Liebert", "url": "https://www.nasa.gov/analogs/"}
         ]
     },
     "santa-cruz-control": {

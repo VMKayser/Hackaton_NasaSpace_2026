@@ -387,7 +387,7 @@ def build_analogs_json():
             'label': {'en': 'Median slope', 'es': 'Pendiente media'},
             'weight': 0.35,
             'sources': [
-                {'name': 'NASADEM HGT 1-ArcSec', 'agency': 'NASA JPL', 'url': 'https://earthdata.nasa.gov/', 'body': 'earth'},
+                {'name': 'NASADEM HGT 1-ArcSec', 'agency': 'NASA JPL / LP DAAC', 'url': 'https://lpdaac.usgs.gov/products/nasadem_hgtv001/', 'body': 'earth'},
                 {'name': 'MGS MOLA MEGDR (128 pix/deg)', 'agency': 'NASA PDS', 'url': 'https://pds-geosciences.wustl.edu/missions/mgs/megdr.html', 'body': 'mars'},
                 {'name': 'LRO LOLA GDR (Site23 5m/px)', 'agency': 'NASA GSFC', 'url': 'https://pgda.gsfc.nasa.gov/products/78', 'body': 'moon'}
             ]
@@ -397,8 +397,9 @@ def build_analogs_json():
             'label': {'en': 'Local relief', 'es': 'Relieve local escalado'},
             'weight': 0.35,
             'sources': [
-                {'name': 'SRTM GL1 v003 (30m)', 'agency': 'NASA / USGS', 'url': 'https://earthdata.nasa.gov/', 'body': 'earth'},
-                {'name': 'MGS MOLA & HRSC', 'agency': 'NASA / DLR', 'url': 'https://pds-geosciences.wustl.edu/', 'body': 'mars'}
+                {'name': 'SRTM GL1 v003 (30m)', 'agency': 'NASA / USGS LP DAAC', 'url': 'https://lpdaac.usgs.gov/products/srtmgl1v003/', 'body': 'earth'},
+                {'name': 'MGS MOLA & HRSC (200m)', 'agency': 'USGS Astrogeology / ESA / NASA', 'url': 'https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m', 'body': 'mars'},
+                {'name': 'LRO LOLA & Kaguya TC DEM (59m)', 'agency': 'USGS Astrogeology / JAXA / NASA', 'url': 'https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m', 'body': 'moon'}
             ]
         },
         {
@@ -406,8 +407,8 @@ def build_analogs_json():
             'label': {'en': 'Surface roughness (RMS decametric)', 'es': 'Rugosidad superficial RMS'},
             'weight': 0.30,
             'sources': [
-                {'name': 'SRTM Global 30m Micro-elevation', 'agency': 'NASA JPL', 'url': 'https://www2.jpl.nasa.gov/srtm/', 'body': 'earth'},
-                {'name': 'Neumann et al. (JGR Planets)', 'agency': 'NASA PDS', 'url': 'https://doi.org/10.1029/2000JE001402', 'body': 'mars'}
+                {'name': 'SRTM Global 30m Micro-elevation', 'agency': 'NASA JPL', 'url': 'https://www.jpl.nasa.gov/missions/shuttle-radar-topography-mission-srtm', 'body': 'earth'},
+                {'name': 'MGS MOLA Surface Roughness', 'agency': 'NASA PDS Geosciences', 'url': 'https://pds-geosciences.wustl.edu/missions/mgs/megdr.html', 'body': 'mars'}
             ]
         },
         {
@@ -416,8 +417,8 @@ def build_analogs_json():
             'weight': 0.35,
             'sources': [
                 {'name': 'NASA POWER Climatology (CERES SYN1deg)', 'agency': 'NASA LaRC', 'url': 'https://power.larc.nasa.gov/', 'body': 'earth'},
-                {'name': 'Mars REMS / MEDA & Viking 2 Met', 'agency': 'NASA PDS Atmospheres', 'url': 'https://atmos.nmsu.edu/', 'body': 'mars'},
-                {'name': 'LRO Diviner PCP Summer Bolometric', 'agency': 'NASA PDS', 'url': 'https://pds-geosciences.wustl.edu/missions/lro/diviner.htm', 'body': 'moon'}
+                {'name': 'Mars Climate Database MCD 6.2', 'agency': 'LMD / ESA / CNES', 'url': 'https://www-mars.lmd.jussieu.fr/', 'body': 'mars'},
+                {'name': 'LRO Diviner PCP Summer Bolometric', 'agency': 'NASA PDS Geosciences', 'url': 'https://pds-geosciences.wustl.edu/missions/lro/diviner.htm', 'body': 'moon'}
             ]
         },
         {
@@ -434,7 +435,7 @@ def build_analogs_json():
             'weight': 0.30,
             'sources': [
                 {'name': 'NASA MERRA-2 Barometric Reanalysis', 'agency': 'NASA GMAO', 'url': 'https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/', 'body': 'earth'},
-                {'name': 'Viking 2 VL2 Avep & Mars 2020 MEDA', 'agency': 'NASA PDS Atmospheres', 'url': 'https://atmos.nmsu.edu/', 'body': 'mars'}
+                {'name': 'Viking 2 Surface Meteorology & Press', 'agency': 'NASA PDS Atmospheres', 'url': 'https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/surface_met.html', 'body': 'mars'}
             ]
         },
         {
@@ -442,9 +443,9 @@ def build_analogs_json():
             'label': {'en': 'Mineralogy & lithology', 'es': 'Mineralogía y litología'},
             'weight': 0.30,
             'sources': [
+                {'name': 'NASA EMIT L2B Mineral Identification', 'agency': 'NASA JPL / LP DAAC', 'url': 'https://lpdaac.usgs.gov/products/emitl2bminv001/', 'body': 'earth'},
                 {'name': 'NASA CRISM / OMEGA Mineralogy Database', 'agency': 'NASA PDS Geosciences', 'url': 'https://pds-geosciences.wustl.edu/missions/mro/crism.htm', 'body': 'mars'},
-                {'name': 'LROC & Lunar Sample Compendium', 'agency': 'NASA JSC / GSFC', 'url': 'https://curator.jsc.nasa.gov/lunar/compendium.cfm', 'body': 'moon'},
-                {'name': 'SERGEOMIN Mapa Geológico de Bolivia / USGS', 'agency': 'SERGEOMIN / USGS', 'url': 'https://www.sergeomin.gob.bo/', 'body': 'earth'}
+                {'name': 'LROC & Lunar Sample Compendium', 'agency': 'NASA JSC / GSFC', 'url': 'https://curator.jsc.nasa.gov/lunar/compendium.cfm', 'body': 'moon'}
             ]
         }
     ]

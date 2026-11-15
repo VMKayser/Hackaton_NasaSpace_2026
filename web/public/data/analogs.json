@@ -2,7 +2,7 @@
   "meta": {
     "mock": false,
     "version": "2.1.0",
-    "generated": "2026-11-15T07:45:15Z",
+    "generated": "2026-11-15T09:02:26Z",
     "scoring": {
       "en": "Multi-criteria Planetary Similarity Index (PSI): PSI = 0.35*S_topo + 0.35*S_clim + 0.30*S_min. Local DEM elevation benchmarks from 2.7M SRTM 30s observations and Copernicus DEM 90m.",
       "es": "Índice de Similitud Planetaria (PSI): PSI = 0.35*S_topo + 0.35*S_clim + 0.30*S_min. Modelos digitales de elevación SRTM 30s (2.7M mediciones) y Copernicus DEM 90m satelital."
@@ -18,8 +18,8 @@
         "sources": [
           {
             "name": "NASADEM HGT 1-ArcSec",
-            "agency": "NASA JPL",
-            "url": "https://earthdata.nasa.gov/",
+            "agency": "NASA JPL / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/nasadem_hgtv001/",
             "body": "earth"
           },
           {
@@ -46,15 +46,21 @@
         "sources": [
           {
             "name": "SRTM GL1 v003 (30m)",
-            "agency": "NASA / USGS",
-            "url": "https://earthdata.nasa.gov/",
+            "agency": "NASA / USGS LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/srtmgl1v003/",
             "body": "earth"
           },
           {
-            "name": "MGS MOLA & HRSC",
-            "agency": "NASA / DLR",
-            "url": "https://pds-geosciences.wustl.edu/",
+            "name": "MGS MOLA & HRSC (200m)",
+            "agency": "USGS Astrogeology / ESA / NASA",
+            "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m",
             "body": "mars"
+          },
+          {
+            "name": "LRO LOLA & Kaguya TC DEM (59m)",
+            "agency": "USGS Astrogeology / JAXA / NASA",
+            "url": "https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m",
+            "body": "moon"
           }
         ]
       },
@@ -69,13 +75,13 @@
           {
             "name": "SRTM Global 30m Micro-elevation",
             "agency": "NASA JPL",
-            "url": "https://www2.jpl.nasa.gov/srtm/",
+            "url": "https://www.jpl.nasa.gov/missions/shuttle-radar-topography-mission-srtm",
             "body": "earth"
           },
           {
-            "name": "Neumann et al. (JGR Planets)",
-            "agency": "NASA PDS",
-            "url": "https://doi.org/10.1029/2000JE001402",
+            "name": "MGS MOLA Surface Roughness",
+            "agency": "NASA PDS Geosciences",
+            "url": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html",
             "body": "mars"
           }
         ]
@@ -95,14 +101,14 @@
             "body": "earth"
           },
           {
-            "name": "Mars REMS / MEDA & Viking 2 Met",
-            "agency": "NASA PDS Atmospheres",
-            "url": "https://atmos.nmsu.edu/",
+            "name": "Mars Climate Database MCD 6.2",
+            "agency": "LMD / ESA / CNES",
+            "url": "https://www-mars.lmd.jussieu.fr/",
             "body": "mars"
           },
           {
             "name": "LRO Diviner PCP Summer Bolometric",
-            "agency": "NASA PDS",
+            "agency": "NASA PDS Geosciences",
             "url": "https://pds-geosciences.wustl.edu/missions/lro/diviner.htm",
             "body": "moon"
           }
@@ -139,9 +145,9 @@
             "body": "earth"
           },
           {
-            "name": "Viking 2 VL2 Avep & Mars 2020 MEDA",
+            "name": "Viking 2 Surface Meteorology & Press",
             "agency": "NASA PDS Atmospheres",
-            "url": "https://atmos.nmsu.edu/",
+            "url": "https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/surface_met.html",
             "body": "mars"
           }
         ]
@@ -155,6 +161,12 @@
         "weight": 0.3,
         "sources": [
           {
+            "name": "NASA EMIT L2B Mineral Identification",
+            "agency": "NASA JPL / LP DAAC",
+            "url": "https://lpdaac.usgs.gov/products/emitl2bminv001/",
+            "body": "earth"
+          },
+          {
             "name": "NASA CRISM / OMEGA Mineralogy Database",
             "agency": "NASA PDS Geosciences",
             "url": "https://pds-geosciences.wustl.edu/missions/mro/crism.htm",
@@ -165,12 +177,6 @@
             "agency": "NASA JSC / GSFC",
             "url": "https://curator.jsc.nasa.gov/lunar/compendium.cfm",
             "body": "moon"
-          },
-          {
-            "name": "SERGEOMIN Mapa Geológico de Bolivia / USGS",
-            "agency": "SERGEOMIN / USGS",
-            "url": "https://www.sergeomin.gob.bo/",
-            "body": "earth"
           }
         ]
       }

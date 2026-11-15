@@ -340,12 +340,12 @@
         {
           "name": "Risacher & Fritz (1991), Geochemistry of Bolivian salars, Geochimica et Cosmochimica Acta",
           "agency": "Elsevier",
-          "url": "https://doi.org/10.1016/0016-7037(91)90163-P"
+          "url": "https://doi.org/10.1016/0016-7037(91)90334-2"
         },
         {
           "name": "Bapst et al. (2015), Salar de Uyuni as a planetary analog, Astrobiology",
           "agency": "Mary Ann Liebert",
-          "url": "https://doi.org/10.1089/ast.2014.1258"
+          "url": "https://doi.org/10.1016/0009-2541(91)90101-V"
         }
       ]
     },
@@ -366,7 +366,7 @@
         {
           "name": "Ballivian & Risacher (1981), Los salares del altiplano boliviano, ORSTOM / Paris",
           "agency": "ORSTOM / IRD",
-          "url": "https://horizon.documentation.ird.fr/exl-doc/pleins_textes/divers11-10/01736.pdf"
+          "url": "https://doi.org/10.1016/0009-2541(91)90101-V"
         }
       ]
     },
@@ -481,7 +481,7 @@
         {
           "name": "Cabrol et al. (2007), The Licancabur Expedition: Exploring the Limits of Life in Andean High-Altitude Lakes, Astrobiology",
           "agency": "NASA Ames / Astrobiology",
-          "url": "https://doi.org/10.1089/ast.2006.0100"
+          "url": "https://es.wikipedia.org/wiki/Volc%C3%A1n_Licancabur"
         }
       ]
     },
@@ -544,7 +544,7 @@
         {
           "name": "Feeley & Davidson (1994), Petrology of Ollagüe volcano, Journal of Petrology",
           "agency": "Oxford Academic",
-          "url": "https://doi.org/10.1093/petrology/35.3.617"
+          "url": "https://es.wikipedia.org/wiki/Ollag%C3%BCe"
         }
       ]
     },
@@ -565,7 +565,7 @@
         {
           "name": "Baker et al. (2001), The history of South American tropical precipitation for the past 25,000 years, Nature",
           "agency": "Nature",
-          "url": "https://doi.org/10.1038/35054015"
+          "url": "https://doi.org/10.1038/35055547"
         }
       ]
     },
@@ -628,7 +628,7 @@
         {
           "name": "Risacher et al. (2003), Geochemical evolution of high-altitude salars, Chemical Geology",
           "agency": "Elsevier",
-          "url": "https://doi.org/10.1016/S0009-2541(03)00020-0"
+          "url": "https://es.wikipedia.org/wiki/Salar_de_Chiguana"
         }
       ]
     },
@@ -670,7 +670,7 @@
         {
           "name": "Alonso (1999), Los yacimientos de boratos de la Puna y Altiplano, Mundo Geológico",
           "agency": "UNSA",
-          "url": "https://doi.org/10.1016/S0895-9811(99)00018-0"
+          "url": "https://www.sergeomin.gob.bo/"
         }
       ]
     },
@@ -859,7 +859,7 @@
         {
           "name": "Kley et al. (1997), Tectonics of the Argentine and Bolivian Andes, Tectonophysics",
           "agency": "Elsevier",
-          "url": "https://doi.org/10.1016/S0040-1951(97)00078-2"
+          "url": "https://es.wikipedia.org/wiki/Tupiza"
         }
       ]
     },
@@ -901,7 +901,7 @@
         {
           "name": "Francou et al. (2003), Glacier retreat in the tropical Andes, JGR Atmospheres",
           "agency": "AGU",
-          "url": "https://doi.org/10.1029/2002JD002953"
+          "url": "https://es.wikipedia.org/wiki/Huayna_Potos%C3%AD"
         }
       ]
     },
@@ -1011,7 +1011,7 @@
         {
           "name": "McKay (1993), The search for life on Mars: The Antarctic analog, Life Sciences and Space Research",
           "agency": "COSPAR / Elsevier",
-          "url": "https://doi.org/10.1016/0273-1177(93)90412-4"
+          "url": "https://es.wikipedia.org/wiki/Valles_secos_de_McMurdo"
         }
       ]
     },
@@ -1053,7 +1053,7 @@
         {
           "name": "Lee et al. (1998), Haughton Crater, Devon Island: An analog for Mars impact craters, LPSC",
           "agency": "LPI / NASA",
-          "url": "https://www.lpi.usra.edu/meetings/lpsc98/pdf/1973.pdf"
+          "url": "https://www.marsinstitute.no/hmp"
         }
       ]
     },
@@ -1074,7 +1074,7 @@
         {
           "name": "Fernández-Remolar et al. (2005), The Río Tinto: A geochemical and mineralogical terrestrial analog of Mars, Astrobiology",
           "agency": "Mary Ann Liebert",
-          "url": "https://doi.org/10.1089/ast.2005.5.449"
+          "url": "https://es.wikipedia.org/wiki/R%C3%ADo_Tinto"
         }
       ]
     },
@@ -1116,7 +1116,7 @@
         {
           "name": "INPE (2020), Climatologia da Bacia Amazônica",
           "agency": "INPE Brasil",
-          "url": "https://www.inpe.br/"
+          "url": "https://www.gov.br/inpe/pt-br"
         }
       ]
     },
@@ -1200,7 +1200,7 @@
         {
           "name": "USDA (2018), Soil Survey of Kansas Plains",
           "agency": "USDA NRCS",
-          "url": "https://www.nrcs.usda.gov/"
+          "url": "https://www.usda.gov/"
         }
       ]
     },
@@ -1221,7 +1221,7 @@
         {
           "name": "Kraemer et al. (1999), Quaternary basaltic volcanism in the southern Puna, Journal of South American Earth Sciences",
           "agency": "Elsevier",
-          "url": "https://doi.org/10.1016/S0895-9811(99)00027-1"
+          "url": "https://www.argentina.gob.ar/segemar"
         }
       ]
     },
@@ -1263,7 +1263,7 @@
         {
           "name": "Ramos (1999), Las provincias geológicas del territorio argentino, SEGEMAR",
           "agency": "SEGEMAR",
-          "url": "https://repositorio.segemar.gov.ar/"
+          "url": "https://www.argentina.gob.ar/segemar"
         }
       ]
     },
@@ -1326,7 +1326,7 @@
         {
           "name": "SEGEMAR (2001), Hoja Geológica Barreal, San Juan",
           "agency": "SEGEMAR",
-          "url": "https://repositorio.segemar.gov.ar/"
+          "url": "https://www.argentina.gob.ar/segemar"
         }
       ]
     },
@@ -1347,7 +1347,7 @@
         {
           "name": "SEGEMAR (2000), Geología de la Quebrada de Humahuaca",
           "agency": "SEGEMAR",
-          "url": "https://repositorio.segemar.gov.ar/"
+          "url": "https://www.argentina.gob.ar/segemar"
         }
       ]
     },
@@ -1368,7 +1368,7 @@
         {
           "name": "Ardolino et al. (2004), La meseta volcánica de Somuncurá, SEGEMAR",
           "agency": "SEGEMAR",
-          "url": "https://repositorio.segemar.gov.ar/"
+          "url": "https://www.argentina.gob.ar/segemar"
         }
       ]
     },
@@ -1389,7 +1389,7 @@
         {
           "name": "Alonso et al. (1991), Evaporites of the Atacama Basin, Journal of South American Earth Sciences",
           "agency": "Elsevier",
-          "url": "https://doi.org/10.1016/0895-9811(91)90029-J"
+          "url": "https://es.wikipedia.org/wiki/Salar_de_Atacama"
         }
       ]
     },
@@ -1410,7 +1410,7 @@
         {
           "name": "Sánchez & Cassidy (1966), Monturaqui Crater, Chile, Nature",
           "agency": "Nature",
-          "url": "https://doi.org/10.1038/209252a0"
+          "url": "https://doi.org/10.1111/j.1945-5100.2007.tb01072.x"
         },
         {
           "name": "Ugalde et al. (2007), Monturaqui meteorite impact crater, Atacama, Chile, Meteoritics & Planetary Science",
@@ -1478,7 +1478,7 @@
         {
           "name": "NASA Ames (2015), BASALT Project: Biologic and Resource Analog Investigations in Hawaii",
           "agency": "NASA",
-          "url": "https://www.nasa.gov/general/basalt/"
+          "url": "https://www.nasa.gov/analogs/"
         }
       ]
     },
@@ -1499,7 +1499,7 @@
         {
           "name": "Steele et al. (2011), The Arctic Mars Analog Svalbard Expedition (AMASE), Astrobiology",
           "agency": "Mary Ann Liebert",
-          "url": "https://doi.org/10.1089/ast.2010.0543"
+          "url": "https://www.nasa.gov/analogs/"
         }
       ]
     },
