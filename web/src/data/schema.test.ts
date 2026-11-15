@@ -62,4 +62,19 @@ describe('texts', () => {
   it('accepts the texts.json skeleton', () => {
     expect(parseTexts(read('../../public/data/texts.json')).success).toBe(true)
   })
+
+  it('every site text in texts.json has at least one source with a link', () => {
+    const texts = parseTexts(read('../../public/data/texts.json'))
+    if (!texts.success) throw new Error('invalid texts.json')
+    for (const [id, site] of Object.entries(texts.data.sites ?? {})) {
+      const hasText = [site.description, site.limits, site.exploration].some((x) => x?.en.trim() || x?.es.trim())
+      if (!hasText) continue
+      expect(site.sources?.length ?? 0, id).toBeGreaterThan(0)
+      for (const s of site.sources ?? []) expect(s.url, id).toMatch(/^https:\/\//)
+    }
+  })
+
+  it('rejects a text source without a link', () => {
+    expect(parseTexts({ sites: { uyuni: { sources: [{ name: 'X', agency: 'Y' }] } } }).success).toBe(false)
+  })
 })

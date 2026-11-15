@@ -2,15 +2,34 @@
   "targets": {
     "jezero": {
       "summary": {
-        "en": "Crater that held a lake about 3.5 billion years ago. Perseverance has explored its delta since 2021.",
-        "es": "Cráter que albergó un lago hace unos 3500 millones de años. Perseverance explora su delta desde 2021."
-      }
+        "en": "Crater that held a lake billions of years ago. Perseverance has explored its delta since 2021.",
+        "es": "Cráter que albergó un lago hace miles de millones de años. Perseverance explora su delta desde 2021."
+      },
+      "sources": [
+        {
+          "name": "Mangold et al. (2021), Perseverance rover reveals an ancient delta-lake system and flood deposits at Jezero crater, Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.abl4051"
+        }
+      ]
     },
     "columbia-hills": {
       "summary": {
         "en": "Hills in Gusev crater where Spirit found silica deposits that likely formed around hot springs.",
         "es": "Colinas del cráter Gusev donde Spirit halló depósitos de sílice probablemente formados junto a fuentes termales."
-      }
+      },
+      "sources": [
+        {
+          "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1155429"
+        },
+        {
+          "name": "Ruff & Farmer (2016), Silica deposits on Mars with features resembling hot spring biosignatures at El Tatio in Chile",
+          "agency": "Nature Communications",
+          "url": "https://doi.org/10.1038/ncomms13554"
+        }
+      ]
     }
   },
   "purposes": {
@@ -48,50 +67,81 @@
   "sites": {
     "uyuni": {
       "description": {
-        "en": "World's largest salt flat, about 10,000 km² at 3,650 m: a flat halite crust over brine.",
-        "es": "El salar más grande del mundo, unos 10 000 km² a 3650 m: una costra plana de halita sobre salmuera."
+        "en": "The world's largest salt flat, about 10,600 km² at about 3,650 m: a flat halite crust over brine. Its height varies by less than a metre across the whole flat.",
+        "es": "El salar más grande del mundo, unos 10 600 km² a unos 3650 m: una costra plana de halita sobre salmuera. Su altura varía menos de un metro en toda su superficie."
       },
       "limits": {
         "en": "Its bright, wet salt crust is far more reflective and flatter than most Martian terrain. The analogy is about evaporites, not landscape.",
         "es": "Su costra de sal, brillante y húmeda, refleja mucha más luz y es más plana que casi todo el terreno marciano. La analogía es de evaporitas, no de paisaje."
       },
       "exploration": {
-        "en": "Calibrate orbital altimeters and spectrometers on a flat, uniform surface; test evaporite-detection instruments.",
-        "es": "Calibrar altímetros y espectrómetros orbitales sobre una superficie plana y uniforme; probar instrumentos que detectan evaporitas."
-      }
+        "en": "Calibrate satellite altimeters and optical sensors on a flat, uniform surface, as is already done; test instruments that detect evaporites.",
+        "es": "Calibrar altímetros y sensores ópticos de satélites sobre una superficie plana y uniforme, como ya se hace; probar instrumentos que detectan evaporitas."
+      },
+      "sources": [
+        {
+          "name": "Salar de Uyuni",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Salar_de_Uyuni"
+        },
+        {
+          "name": "Salar de Uyuni",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Salar_de_Uyuni"
+        }
+      ]
     },
     "coipasa": {
       "description": {
-        "en": "Bolivia's second-largest salt flat, next to the Chilean border, with a seasonal lake.",
-        "es": "El segundo salar más grande de Bolivia, junto a la frontera con Chile, con un lago estacional."
+        "en": "Bolivia's second-largest salt flat (2,218 km², at 3,657 m). It reaches the Chilean border and surrounds Lake Coipasa.",
+        "es": "El segundo salar más extenso de Bolivia (2218 km², a 3657 m). Llega hasta la frontera con Chile y rodea el lago Coipasa."
       },
       "limits": {
-        "en": "Seasonal flooding and active brines make it wetter than any present-day Martian surface.",
-        "es": "Las inundaciones estacionales y las salmueras activas lo hacen más húmedo que cualquier superficie actual de Marte."
+        "en": "Its lake and active brines make it wetter than any present-day surface on Mars.",
+        "es": "Su lago y sus salmueras activas lo hacen más húmedo que cualquier superficie actual de Marte."
       },
       "exploration": {
         "en": "Sample salt crusts and brines to rehearse the search for chloride deposits.",
         "es": "Muestrear costras de sal y salmueras para ensayar la búsqueda de depósitos de cloruros."
-      }
+      },
+      "sources": [
+        {
+          "name": "Salar de Coipasa",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Salar_de_Coipasa"
+        }
+      ]
     },
     "sol-de-manana": {
       "description": {
-        "en": "Geothermal field at about 4,900 m with fumaroles and boiling mud pools.",
-        "es": "Campo geotérmico a unos 4900 m con fumarolas y pozas de lodo hirviente."
+        "en": "A geothermal field at about 4,900 m, in the Eduardo Avaroa reserve, with fumaroles, geysers and boiling mud pots.",
+        "es": "Campo geotérmico a unos 4900 m, en la Reserva Eduardo Avaroa, con fumarolas, géiseres y ollas de lodo hirviente."
       },
       "limits": {
-        "en": "Hydrothermal activity on Mars is ancient; here it is active and hosts living microbes.",
-        "es": "La actividad hidrotermal en Marte es antigua; aquí sigue activa y alberga microbios vivos."
+        "en": "Hydrothermal activity on Mars, as in the Columbia Hills, is ancient; here it is still active.",
+        "es": "La actividad hidrotermal de Marte, como la de Columbia Hills, es antigua; aquí sigue activa."
       },
       "exploration": {
         "en": "Test drills and spectrometers on hydrothermal alteration minerals; practise biosignature sampling protocols.",
         "es": "Probar taladros y espectrómetros en minerales de alteración hidrotermal; practicar protocolos de muestreo de biofirmas."
-      }
+      },
+      "sources": [
+        {
+          "name": "Sol de Mañana",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Sol_de_Ma%C3%B1ana"
+        },
+        {
+          "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1155429"
+        }
+      ]
     },
     "laguna-colorada": {
       "description": {
-        "en": "Shallow red saline lake at about 4,280 m, coloured by algae and sediments, with borax deposits.",
-        "es": "Laguna salina poco profunda a unos 4280 m, teñida de rojo por algas y sedimentos, con depósitos de bórax."
+        "en": "A very shallow salt lake (about 35 cm deep) at about 4,280 m, coloured red by sediments and algae, with borax islands. It is the main nesting site of James's flamingo.",
+        "es": "Laguna salina muy poco profunda (unos 35 cm) a unos 4280 m, teñida de rojo por sedimentos y algas, con islas de bórax. Es el principal sitio de anidación del flamenco de James."
       },
       "limits": {
         "en": "Open water and abundant life, from algae to flamingos, have no Martian counterpart today.",
@@ -100,7 +150,14 @@
       "exploration": {
         "en": "Study how evaporite minerals and microbial mats record a drying lake.",
         "es": "Estudiar cómo los minerales evaporíticos y los tapetes microbianos registran el secado de un lago."
-      }
+      },
+      "sources": [
+        {
+          "name": "Laguna Colorada",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Laguna_Colorada"
+        }
+      ]
     },
     "siloli": {
       "description": {
@@ -114,26 +171,50 @@
       "exploration": {
         "en": "Rehearse rover navigation among isolated boulders and wind-carved features.",
         "es": "Ensayar la navegación de un rover entre bloques aislados y formas talladas por el viento."
-      }
+      },
+      "sources": [
+        {
+          "name": "Árbol de Piedra",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/%C3%81rbol_de_Piedra"
+        }
+      ]
     },
     "dali": {
       "description": {
-        "en": "Barren, colour-banded volcanic desert in the Eduardo Avaroa reserve, at about 4,750 m.",
-        "es": "Desierto volcánico árido y de colores en franjas, en la reserva Eduardo Avaroa, a unos 4750 m."
+        "en": "An arid plain at about 4,750 m in Sur Lípez, with isolated rocks shaped by wind and stained by minerals.",
+        "es": "Llanura árida a unos 4750 m en Sur Lípez, con rocas aisladas modeladas por el viento y manchadas por minerales."
       },
       "limits": {
-        "en": "Seasonal snow and sparse vegetation differ from Martian surfaces.",
-        "es": "La nieve estacional y la vegetación escasa lo diferencian de las superficies marcianas."
+        "en": "It receives about 135 mm of rain a year (NASA POWER) and its air is far denser than that of Mars.",
+        "es": "Recibe unos 135 mm de lluvia al año (NASA POWER) y su aire es mucho más denso que el de Marte."
       },
       "exploration": {
         "en": "Test long-range traverse planning on open, rock-strewn plains.",
         "es": "Probar la planificación de recorridos largos en llanuras abiertas y pedregosas."
-      }
+      },
+      "sources": [
+        {
+          "name": "Salvador Dalí Desert",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Salvador_Dal%C3%AD_Desert"
+        },
+        {
+          "name": "Desierto Salvador Dalí (OpenStreetMap)",
+          "agency": "OpenStreetMap",
+          "url": "https://www.openstreetmap.org/search?query=Desierto%20Salvador%20Dalí"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
     },
     "licancabur-laguna-verde": {
       "description": {
-        "en": "Saline lake at the foot of Licancabur volcano (5,916 m), whose summit lake has been studied as a Mars analog.",
-        "es": "Laguna salina al pie del volcán Licancabur (5916 m), cuyo lago de cumbre se ha estudiado como análogo de Marte."
+        "en": "A salt lake at the foot of Licancabur volcano (5,916 m). The High Lakes Project studied this lake, nearby Laguna Blanca and the volcano's summit lake as analogues of ancient Martian lakes.",
+        "es": "Laguna salina al pie del volcán Licancabur (5916 m). El High Lakes Project estudió esta laguna, la vecina Laguna Blanca y el lago de la cumbre del volcán como análogos de los lagos antiguos de Marte."
       },
       "limits": {
         "en": "Already a studied analog: included for comparison, not as a discovery.",
@@ -142,7 +223,24 @@
       "exploration": {
         "en": "Compare instrument results with published high-lake studies.",
         "es": "Comparar los resultados de los instrumentos con los estudios publicados sobre lagos de altura."
-      }
+      },
+      "sources": [
+        {
+          "name": "Licancabur",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Licancabur"
+        },
+        {
+          "name": "High Lakes Project",
+          "agency": "SETI Institute / NASA Astrobiology Institute",
+          "url": "https://highlakes.seti.org/about.html"
+        },
+        {
+          "name": "Laguna Verde, Potosí (OpenStreetMap)",
+          "agency": "OpenStreetMap",
+          "url": "https://www.openstreetmap.org/search?query=Laguna%20Verde,%20Potosí"
+        }
+      ]
     },
     "uturuncu": {
       "description": {
@@ -156,7 +254,14 @@
       "exploration": {
         "en": "Rehearse remote detection of volcanic heat and ground deformation.",
         "es": "Ensayar la detección remota de calor volcánico y de deformación del terreno."
-      }
+      },
+      "sources": [
+        {
+          "name": "Uturuncu",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Uturuncu"
+        }
+      ]
     },
     "sajama": {
       "description": {
@@ -170,49 +275,87 @@
       "exploration": {
         "en": "Test cold-weather operations and ice-related instruments at high altitude.",
         "es": "Probar operaciones en frío e instrumentos para hielo a gran altitud."
-      }
+      },
+      "sources": [
+        {
+          "name": "Nevado Sajama",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Nevado_Sajama"
+        }
+      ]
     },
     "ollague": {
       "description": {
-        "en": "Andesitic stratovolcano on the Bolivia–Chile border with an active fumarole.",
-        "es": "Estratovolcán andesítico en la frontera entre Bolivia y Chile, con una fumarola activa."
+        "en": "A 5,868 m andesitic stratovolcano on the Bolivia–Chile border, with an active fumarole at the summit.",
+        "es": "Estratovolcán andesítico de 5868 m en la frontera entre Bolivia y Chile, con una fumarola activa en la cumbre."
       },
       "limits": {
-        "en": "Volcanic slopes on Mars are gentler and far older.",
-        "es": "Las laderas volcánicas de Marte son más suaves y mucho más antiguas."
+        "en": "It is steep (median slope 27° measured every 200 m); Jezero and the Columbia Hills have gentle slopes (2–2.5°) measured the same way.",
+        "es": "Es empinado (pendiente mediana de 27° medida cada 200 m); Jezero y Columbia Hills tienen pendientes suaves (2 a 2,5°) en la misma medición."
       },
       "exploration": {
         "en": "Practise mapping lava flows and volcanic deposits with aerial drones.",
         "es": "Practicar el mapeo de coladas de lava y depósitos volcánicos con drones."
-      }
+      },
+      "sources": [
+        {
+          "name": "Ollagüe",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Ollag%C3%BCe"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
     },
     "tunupa": {
       "description": {
-        "en": "Volcano rising from the north shore of Salar de Uyuni, with colour-banded slopes.",
-        "es": "Volcán que se alza en la orilla norte del Salar de Uyuni, con laderas de colores en franjas."
+        "en": "A 5,321 m volcano on the northern shore of the Salar de Uyuni, with a summit heavily altered by hydrothermal activity.",
+        "es": "Volcán de 5321 m en la orilla norte del Salar de Uyuni, con la cumbre muy alterada por actividad hidrotermal."
       },
       "limits": {
-        "en": "Vegetation and grazing on its lower slopes differ from Mars.",
-        "es": "La vegetación y el pastoreo en sus laderas bajas lo diferencian de Marte."
+        "en": "It receives about 330 mm of rain a year (NASA POWER) and has villages on its slopes.",
+        "es": "Recibe unos 330 mm de lluvia al año (NASA POWER) y tiene pueblos en sus laderas."
       },
       "exploration": {
-        "en": "Study contacts between volcanic rock and salt deposits.",
-        "es": "Estudiar los contactos entre roca volcánica y depósitos de sal."
-      }
+        "en": "Study contacts between altered volcanic rock and salt deposits.",
+        "es": "Estudiar los contactos entre roca volcánica alterada y depósitos de sal."
+      },
+      "sources": [
+        {
+          "name": "Tunupa",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Tunupa"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
     },
     "poopo": {
       "description": {
-        "en": "Formerly Bolivia's second-largest lake; it largely dried up in 2015–2016.",
-        "es": "Fue el segundo lago más grande de Bolivia; se secó casi por completo en 2015 y 2016."
+        "en": "It was Bolivia's second-largest lake (2,337 km²). It dried up in December 2015, partly refilled in 2017 and dried up again in 2021.",
+        "es": "Fue el segundo lago más grande de Bolivia (2337 km²). Se secó en diciembre de 2015, recuperó parte del agua en 2017 y volvió a secarse en 2021."
       },
       "limits": {
-        "en": "Its drying is recent and partly human-driven; Martian lakes dried billions of years ago.",
-        "es": "Su secado es reciente y en parte causado por personas; los lagos de Marte se secaron hace miles de millones de años."
+        "en": "Its drying is recent and partly human-caused (water diverted for mining and irrigation); the lakes of Mars dried out billions of years ago.",
+        "es": "Su secado es reciente y en parte causado por personas (desvío de agua para minería y riego); los lagos de Marte se secaron hace miles de millones de años."
       },
       "exploration": {
         "en": "Observe how a drying lake leaves salt and mud: a modern view of an ancient process.",
         "es": "Observar cómo un lago que se seca deja sal y lodo: una mirada actual a un proceso antiguo."
-      }
+      },
+      "sources": [
+        {
+          "name": "Lago Poopó",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Lago_Poop%C3%B3"
+        }
+      ]
     },
     "yungay-atacama": {
       "description": {
@@ -226,12 +369,19 @@
       "exploration": {
         "en": "Validation reference for the scoring, not a new site.",
         "es": "Referencia de validación del puntaje, no un sitio nuevo."
-      }
+      },
+      "sources": [
+        {
+          "name": "Navarro-González et al. (2003), Mars-Like Soils in the Atacama Desert, Chile, and the Dry Limit of Microbial Life",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1089143"
+        }
+      ]
     },
     "trinidad-control": {
       "description": {
-        "en": "Humid tropical lowland in the Amazon basin, in Beni.",
-        "es": "Llanura tropical húmeda de la cuenca amazónica, en el Beni."
+        "en": "A humid tropical plain in the Llanos de Moxos, Beni, at about 160 m, with about 1,800 mm of rain a year and seasonal floods.",
+        "es": "Llanura tropical húmeda de los llanos de Moxos, en el Beni, a unos 160 m, con unos 1800 mm de lluvia al año e inundaciones estacionales."
       },
       "limits": {
         "en": "Negative control: dense vegetation, heavy rain and low altitude. Expected to score low.",
@@ -240,12 +390,19 @@
       "exploration": {
         "en": "Checks that the score drops where it should.",
         "es": "Comprueba que el puntaje baja donde debe."
-      }
+      },
+      "sources": [
+        {
+          "name": "Trinidad (Bolivia)",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Trinidad_(Bolivia)"
+        }
+      ]
     },
     "coroico-control": {
       "description": {
-        "en": "Steep, humid cloud-forest valley in the Yungas.",
-        "es": "Valle empinado y húmedo de bosque nublado en los Yungas."
+        "en": "A steep Yungas valley at about 1,740 m, with subtropical humid forest and about 1,230 mm of rain a year.",
+        "es": "Valle empinado de los Yungas, a unos 1740 m, con bosque húmedo subtropical y unos 1230 mm de lluvia al año."
       },
       "limits": {
         "en": "Negative control: forest, rain and humidity. Expected to score low despite steep terrain.",
@@ -254,7 +411,445 @@
       "exploration": {
         "en": "Checks that steep slopes alone do not produce a high score.",
         "es": "Comprueba que la pendiente por sí sola no da un puntaje alto."
-      }
+      },
+      "sources": [
+        {
+          "name": "Coroico",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Coroico"
+        }
+      ]
+    },
+    "empexa": {
+      "description": {
+        "en": "A 483 km² salt flat in Daniel Campos Province (Potosí), at about 3,720 m, with a core of pure salt of about 138 km². It formed as ancient Lake Minchin evaporated, the same lake that left the Salar de Uyuni and Lake Poopó.",
+        "es": "Salar de 483 km² en la provincia Daniel Campos (Potosí), a unos 3720 m, con un núcleo de sal pura de unos 138 km². Se formó al evaporarse el antiguo lago Minchin, que también dejó el Salar de Uyuni y el lago Poopó."
+      },
+      "limits": {
+        "en": "It receives groundwater from neighbouring basins; the salt-bearing basins of Mars no longer hold liquid water.",
+        "es": "Recibe agua subterránea de cuencas vecinas; las cuencas de Marte con sales ya no tienen agua líquida."
+      },
+      "exploration": {
+        "en": "Compare the pure salt crust of the centre with sediment-mixed margins, to rehearse how an instrument tells salts from other minerals.",
+        "es": "Comparar la costra de sal pura del centro con los bordes mezclados con sedimento, para ensayar cómo un instrumento distingue sales de otros minerales."
+      },
+      "sources": [
+        {
+          "name": "Salar de Empexa",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Salar_de_Empexa"
+        }
+      ]
+    },
+    "chiguana": {
+      "description": {
+        "en": "A salt flat of about 415 km² at about 3,650 m, in the municipality of San Pedro de Quemes (Potosí).",
+        "es": "Salar de unos 415 km² a unos 3650 m, en el municipio de San Pedro de Quemes (Potosí)."
+      },
+      "limits": {
+        "en": "Its crust is almost flat (median slope 0.4° measured every 200 m), smoother than the floor of Jezero (2.1°) measured the same way.",
+        "es": "Su costra es casi plana (pendiente mediana de 0,4° medida cada 200 m), más lisa que el fondo de Jezero (2,1°) en la misma medición."
+      },
+      "exploration": {
+        "en": "Rehearse long vehicle drives on firm salt and test sensors that detect salts.",
+        "es": "Ensayar recorridos largos de un vehículo sobre sal firme y probar sensores que detectan sales."
+      },
+      "sources": [
+        {
+          "name": "Salar de Chiguana",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Salar_de_Chiguana"
+        },
+        {
+          "name": "Salar de Chiguana (OpenStreetMap)",
+          "agency": "OpenStreetMap",
+          "url": "https://www.openstreetmap.org/search?query=Salar%20de%20Chiguana"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "chalviri": {
+      "description": {
+        "en": "A salt flat at about 4,400 m in the Eduardo Avaroa Andean Fauna National Reserve (Sur Lípez). The Polques hot springs lie on the edge of a lagoon inside the salt flat.",
+        "es": "Salar a unos 4400 m en la Reserva Nacional de Fauna Andina Eduardo Avaroa (Sur Lípez). En el borde de una laguna dentro del salar están las Termas de Polques."
+      },
+      "limits": {
+        "en": "It has lagoons and active hot springs; there is no stable liquid water on the present surface of Mars.",
+        "es": "Tiene lagunas con agua y aguas termales activas; en la superficie actual de Marte no hay agua líquida estable."
+      },
+      "exploration": {
+        "en": "Study salts and hot-spring deposits in one place, to rehearse how to tell the minerals of each setting apart.",
+        "es": "Estudiar en un mismo lugar sales y depósitos de aguas termales, para ensayar cómo se distinguen los minerales de cada ambiente."
+      },
+      "sources": [
+        {
+          "name": "Salar de Chalviri",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Salar_de_Chalviri"
+        },
+        {
+          "name": "Termas de Polques",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Termas_de_Polques"
+        }
+      ]
+    },
+    "capina": {
+      "description": {
+        "en": "A salt flat in south-western Potosí, between Nor and Sud Lípez, with large reserves of ulexite, a boron mineral. The analysed circle includes Laguna Capina, a salt lake of about 24 km².",
+        "es": "Salar del sudoeste de Potosí, entre Nor y Sud Lípez, con reservas importantes de ulexita, un mineral de boro. Dentro del círculo analizado está Laguna Capina, una laguna salada de unos 24 km²."
+      },
+      "limits": {
+        "en": "It receives about 150 mm of rain a year (NASA POWER) and has a salt lake; on the surface of Mars there is neither rain nor lakes.",
+        "es": "Recibe unos 150 mm de lluvia al año (NASA POWER) y tiene una laguna salada; en la superficie de Marte no llueve ni hay lagos."
+      },
+      "exploration": {
+        "en": "Test instruments that identify borates and other salts in a crust of mixed minerals.",
+        "es": "Probar instrumentos que identifican boratos y otras sales en una costra con mezcla de minerales."
+      },
+      "sources": [
+        {
+          "name": "Laguna Capina",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Laguna_Capina"
+        },
+        {
+          "name": "Chilenos pretenden apropiarse de recursos del salar de Capina (Agencia Parlamentaria de Noticias, 2008)",
+          "agency": "eju.tv",
+          "url": "https://eju.tv/?p=4052"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "pastos-grandes": {
+      "description": {
+        "en": "A lake inside a volcanic caldera, at about 4,450 m in Nor Lípez, with a carbonate crust of more than 40 km², hydrothermal springs and microbialites (rocks built with the help of microbes) growing today.",
+        "es": "Laguna dentro de una caldera volcánica, a unos 4450 m en Nor Lípez, con una costra de carbonato de más de 40 km², manantiales hidrotermales y microbialitos (rocas formadas con ayuda de microbios) que crecen hoy."
+      },
+      "limits": {
+        "en": "Its microbialites are alive; on Mars only fossil traces can be sought, and none has been confirmed as biological.",
+        "es": "Sus microbialitos están vivos; en Marte solo se pueden buscar rastros fósiles, y ninguno está confirmado como biológico."
+      },
+      "exploration": {
+        "en": "Practise telling carbonates formed with and without microbes apart, a central problem in the search for biosignatures.",
+        "es": "Practicar cómo distinguir carbonatos formados con y sin ayuda de microbios, un problema central en la búsqueda de biofirmas."
+      },
+      "sources": [
+        {
+          "name": "Bougeault et al. (2019), Biotic–Abiotic Influences on Modern Ca–Si-Rich Hydrothermal Spring Mounds of the Pastos Grandes Volcanic Caldera (Bolivia)",
+          "agency": "Minerals",
+          "url": "https://doi.org/10.3390/min9060380"
+        },
+        {
+          "name": "Laguna Pastos Grandes (OpenStreetMap)",
+          "agency": "OpenStreetMap",
+          "url": "https://www.openstreetmap.org/search?query=Laguna%20Pastos%20Grandes"
+        }
+      ]
+    },
+    "laguna-hedionda": {
+      "description": {
+        "en": "A salt lake of about 4.5 km² at about 4,100 m in Nor Lípez. Its name (\"smelly lagoon\") comes from the sulphur smell of its water, and three species of flamingo feed there.",
+        "es": "Laguna salada de unos 4,5 km² a unos 4100 m, en Nor Lípez. Su nombre viene del olor a azufre del agua, y la visitan tres especies de flamencos."
+      },
+      "limits": {
+        "en": "It is a lake full of water and life; the lakes of Mars dried out billions of years ago.",
+        "es": "Es una laguna con agua y vida abundante; los lagos de Marte se secaron hace miles de millones de años."
+      },
+      "exploration": {
+        "en": "Study how sulphur and salts are recorded in the sediments of a salt lake.",
+        "es": "Estudiar cómo quedan registrados el azufre y las sales en los sedimentos de una laguna salada."
+      },
+      "sources": [
+        {
+          "name": "Laguna Hedionda (Nor Lípez)",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Laguna_Hedionda_(Nor_L%C3%ADpez)"
+        },
+        {
+          "name": "Mangold et al. (2021), Perseverance rover reveals an ancient delta-lake system and flood deposits at Jezero crater, Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.abl4051"
+        }
+      ]
+    },
+    "polques": {
+      "description": {
+        "en": "Hot springs of about 29 °C at 4,394 m, on the edge of a lagoon inside the Salar de Chalviri, at the foot of Polques volcano.",
+        "es": "Aguas termales de unos 29 °C a 4394 m, en el borde de una laguna dentro del Salar de Chalviri, al pie del volcán Polques."
+      },
+      "limits": {
+        "en": "It is an active hydrothermal system; Martian hydrothermal deposits, such as those of the Columbia Hills, are ancient and dry.",
+        "es": "Es un sistema hidrotermal activo; los depósitos hidrotermales de Marte, como los de Columbia Hills, son antiguos y ya no tienen agua."
+      },
+      "exploration": {
+        "en": "Compare the minerals left by cooling hot-spring water with those of a cold brine a few metres away.",
+        "es": "Comparar los minerales que deja el agua termal al enfriarse con los de una salmuera fría a pocos metros."
+      },
+      "sources": [
+        {
+          "name": "Termas de Polques",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Termas_de_Polques"
+        },
+        {
+          "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1155429"
+        }
+      ]
+    },
+    "geiseres-sajama": {
+      "description": {
+        "en": "A field of geysers and hot springs in Sajama National Park, an hour's walk from Sajama village, at the foot of Bolivia's highest mountain.",
+        "es": "Campo de géiseres y aguas termales en el Parque Nacional Sajama, a una hora a pie del pueblo de Sajama, al pie de la montaña más alta de Bolivia."
+      },
+      "limits": {
+        "en": "The water boils and flows today; hydrothermal activity in the Columbia Hills is ancient.",
+        "es": "El agua hierve y fluye hoy; la actividad hidrotermal de Columbia Hills es antigua."
+      },
+      "exploration": {
+        "en": "Rehearse sampling geyser deposits, where silica can preserve structures like those proposed as possible biosignatures in the Columbia Hills.",
+        "es": "Ensayar la toma de muestras en depósitos de géiseres, donde la sílice puede conservar estructuras como las que se proponen como posibles biofirmas en Columbia Hills."
+      },
+      "sources": [
+        {
+          "name": "Sajama National Park",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Sajama_National_Park"
+        },
+        {
+          "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars",
+          "agency": "Science",
+          "url": "https://doi.org/10.1126/science.1155429"
+        },
+        {
+          "name": "Ruff & Farmer (2016), Silica deposits on Mars with features resembling hot spring biosignatures at El Tatio in Chile",
+          "agency": "Nature Communications",
+          "url": "https://doi.org/10.1038/ncomms13554"
+        }
+      ]
+    },
+    "tata-sabaya": {
+      "description": {
+        "en": "The deposit of a debris avalanche that broke away from Tata Sabaya volcano more than 12,000 years ago. It covers at least 230 km² south of the volcano and reaches into the Salar de Coipasa, with hummocks of six rock types.",
+        "es": "Depósito de una avalancha de escombros que se desprendió del volcán Tata Sabaya hace más de 12 000 años. Cubre al menos 230 km² al sur del volcán y entra en el Salar de Coipasa, con montículos de seis tipos de roca."
+      },
+      "limits": {
+        "en": "The hummocks are smaller than the 200 m measurement step, so the measured slope and roughness barely register them.",
+        "es": "Los montículos son más pequeños que el paso de 200 m de la medición, así que la pendiente y la rugosidad medidas casi no los registran."
+      },
+      "exploration": {
+        "en": "Rehearse recognising, from orbit and on the ground, a volcanic avalanche deposit made of blocks of different origins.",
+        "es": "Ensayar cómo reconocer, desde órbita y en el terreno, el depósito de una avalancha volcánica con bloques de distinto origen."
+      },
+      "sources": [
+        {
+          "name": "Tata Sabaya",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Tata_Sabaya"
+        },
+        {
+          "name": "Godoy et al. (2012), Volcanic facies of the debris avalanche deposit of Tata Sabaya Volcano, Central Andes",
+          "agency": "Andean Geology",
+          "url": "https://doi.org/10.5027/andgeoV39n3-a03"
+        },
+        {
+          "name": "Tata Sabaya Volcano",
+          "agency": "NASA Earth Observatory",
+          "url": "https://earthobservatory.nasa.gov/images/80945/tata-sabaya-volcano"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "los-frailes": {
+      "description": {
+        "en": "A plateau of ignimbrites (rocks from explosive eruptions) of about 7,500–8,500 km² in the Eastern Cordillera, between Lake Poopó and Potosí, at 4,000–4,500 m. Its eruptions took place between about 25 and 1.5 million years ago.",
+        "es": "Meseta de ignimbritas (rocas de erupciones explosivas) de unos 7500 a 8500 km² en la Cordillera Oriental, entre el lago Poopó y Potosí, a 4000–4500 m. Sus erupciones ocurrieron entre hace unos 25 y 1,5 millones de años."
+      },
+      "limits": {
+        "en": "It receives about 450 mm of rain a year (NASA POWER); it does not rain on Mars.",
+        "es": "Recibe unos 450 mm de lluvia al año (NASA POWER); en Marte no llueve."
+      },
+      "exploration": {
+        "en": "Practise mapping ignimbrite layers and their erosion with drones and satellite images.",
+        "es": "Practicar el mapeo de capas de ignimbrita y de su erosión con drones y con imágenes de satélite."
+      },
+      "sources": [
+        {
+          "name": "Los Frailes ignimbrite plateau",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Los_Frailes_ignimbrite_plateau"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "jayu-khota": {
+      "description": {
+        "en": "A maar (volcanic explosion crater) partly filled with water, at about 3,650 m, north of the Salar de Uyuni. It formed in steam explosions when magma met water, probably in the Holocene; it was first mistaken for a meteorite impact crater.",
+        "es": "Maar (cráter de explosión volcánica) parcialmente lleno de agua, a unos 3650 m, al norte del Salar de Uyuni. Se formó por explosiones de vapor cuando el magma tocó agua, probablemente en el Holoceno; al principio se lo tomó por un cráter de meteorito."
+      },
+      "limits": {
+        "en": "It is a volcanic crater, not an impact crater: it is useful to practise telling them apart, not as a copy of a Martian crater.",
+        "es": "Es un cráter volcánico, no de impacto: sirve para practicar cómo distinguirlos, no como copia de un cráter marciano."
+      },
+      "exploration": {
+        "en": "Rehearse telling a volcanic explosion crater from an impact crater, the very mistake once made here.",
+        "es": "Ensayar cómo distinguir un cráter de explosión volcánica de uno de impacto, el mismo error que se cometió aquí."
+      },
+      "sources": [
+        {
+          "name": "Jayu Quta (Ladislao Cabrera)",
+          "agency": "Wikipedia (en)",
+          "url": "https://en.wikipedia.org/wiki/Jayu_Quta_(Ladislao_Cabrera)"
+        }
+      ]
+    },
+    "valle-de-rocas": {
+      "description": {
+        "en": "A valley of isolated rock blocks and towers in the municipality of Colcha K (Nor Lípez), at about 4,100 m.",
+        "es": "Valle con bloques y torres de roca aislados en el municipio de Colcha K (Nor Lípez), a unos 4100 m."
+      },
+      "limits": {
+        "en": "The rock forms are a few metres across, smaller than the 200 m measurement step: the measured roughness does not register them.",
+        "es": "Las formas de roca miden unos metros, menos que el paso de 200 m de la medición: la rugosidad medida no las registra."
+      },
+      "exploration": {
+        "en": "Rehearse autonomous rover driving among isolated blocks, with cameras and obstacle detection.",
+        "es": "Ensayar la conducción autónoma de un rover entre bloques aislados, con cámaras y detección de obstáculos."
+      },
+      "sources": [
+        {
+          "name": "Valle de las Rocas (OpenStreetMap)",
+          "agency": "OpenStreetMap",
+          "url": "https://www.openstreetmap.org/search?query=Valle%20de%20las%20Rocas"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "tupiza": {
+      "description": {
+        "en": "The valley of the Tupiza river, at about 2,850 m, with reddish rock formations estimated at about 40 million years old. Semi-arid climate, with about 300 mm of rain a year.",
+        "es": "Valle del río Tupiza, a unos 2850 m, con formaciones de roca rojiza que se estiman en unos 40 millones de años. Clima semiárido, con unos 300 mm de lluvia al año."
+      },
+      "limits": {
+        "en": "It has a river, farms and a town on the valley floor: erosion by water is still active.",
+        "es": "Tiene río, cultivos y una ciudad en el fondo del valle: la erosión por agua sigue activa."
+      },
+      "exploration": {
+        "en": "Practise reading rock layers exposed in canyon walls, as a rover does in front of an outcrop.",
+        "es": "Practicar la lectura de capas de roca expuestas en las paredes de las quebradas, como hace un rover frente a un afloramiento."
+      },
+      "sources": [
+        {
+          "name": "Tupiza",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Tupiza"
+        }
+      ]
+    },
+    "valle-de-la-luna": {
+      "description": {
+        "en": "Clay formations carved by erosion about 10 km from the centre of La Paz, in Mallasa. It is a municipal protected area.",
+        "es": "Formaciones de arcilla talladas por la erosión a unos 10 km del centro de La Paz, en Mallasa. Es un área protegida municipal."
+      },
+      "limits": {
+        "en": "The erosion is driven by rain and streams (about 650 mm a year in the NASA POWER cell), next to a city.",
+        "es": "La erosión la causan la lluvia y los arroyos (unos 650 mm al año en la celda de NASA POWER), junto a una ciudad."
+      },
+      "exploration": {
+        "en": "Rehearse camera-based navigation among pinnacles and gullies, on easily reached ground.",
+        "es": "Ensayar la navegación con cámaras entre pináculos y cárcavas, en un terreno de fácil acceso."
+      },
+      "sources": [
+        {
+          "name": "Valle de la Luna (Bolivia)",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Valle_de_la_Luna_(Bolivia)"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "huayna-potosi": {
+      "description": {
+        "en": "A glaciated mountain of about 6,090 m in the Cordillera Real, about 25 km from La Paz. Its slopes hold the Zongo glacier, studied in detail; the glaciers of the tropical Andes are retreating.",
+        "es": "Montaña glaciada de unos 6090 m en la Cordillera Real, a unos 25 km de La Paz. En sus laderas está el glaciar Zongo, estudiado en detalle; los glaciares de los Andes tropicales retroceden."
+      },
+      "limits": {
+        "en": "Its ice is renewed by snowfall every year. Also, the NASA POWER cell describes the climate about 1,400 m below the height measured in the circle.",
+        "es": "Su hielo se renueva con nevadas cada año. Además, el clima de la celda de NASA POWER corresponde a unos 1400 m por debajo de la altura medida en el círculo."
+      },
+      "exploration": {
+        "en": "Test equipment and procedures on ice, in cold and at low pressure above 5,000 m.",
+        "es": "Probar equipos y procedimientos en hielo, frío y baja presión a más de 5000 m."
+      },
+      "sources": [
+        {
+          "name": "Huayna Potosí",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Huayna_Potos%C3%AD"
+        },
+        {
+          "name": "Rabatel et al. (2013), Current state of glaciers in the tropical Andes",
+          "agency": "The Cryosphere",
+          "url": "https://doi.org/10.5194/tc-7-81-2013"
+        },
+        {
+          "name": "Valores medidos / Measured values (docs/valores)",
+          "agency": "Galaxy Match",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/valores/README.md"
+        }
+      ]
+    },
+    "umajalanta": {
+      "description": {
+        "en": "Bolivia's longest cave (4,600 m long and 164 m deep), in Toro Toro National Park. It is a karst cave, with stalactites, stalagmites and blind fish.",
+        "es": "La caverna más larga de Bolivia (4600 m de recorrido y 164 m de desnivel), en el Parque Nacional Toro Toro. Es de origen kárstico, con estalactitas, estalagmitas y peces ciegos."
+      },
+      "limits": {
+        "en": "It formed as water dissolved carbonate rock; it is not a lava tube.",
+        "es": "Se formó porque el agua disolvió roca carbonatada; no es un tubo de lava."
+      },
+      "exploration": {
+        "en": "Rehearse navigation, communications and 3D mapping inside a cave, without GPS or sunlight.",
+        "es": "Ensayar navegación, comunicaciones y mapeo 3D sin GPS ni luz solar dentro de una cueva."
+      },
+      "sources": [
+        {
+          "name": "Caverna de Umajalanta",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Caverna_de_Umajalanta"
+        },
+        {
+          "name": "Parque nacional Toro Toro",
+          "agency": "Wikipedia (es)",
+          "url": "https://es.wikipedia.org/wiki/Parque_nacional_Toro_Toro"
+        }
+      ]
     }
   },
   "story": [

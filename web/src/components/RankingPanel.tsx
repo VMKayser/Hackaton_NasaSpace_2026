@@ -1,5 +1,5 @@
 import type { Model } from '../data/model'
-import { purposeLabel, purposeQuestion, targetSummary } from '../data/model'
+import { purposeLabel, purposeQuestion, targetSummary, targetTextSources } from '../data/model'
 import type { Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import { formatCoords, formatPercent } from '../lib/format'
@@ -8,6 +8,7 @@ import { BackButton, BodyChip, KindIcon, Pending, ScoreBar, SiteBadges, SiteGlyp
 import { siteGlyphProps } from '../lib/glyph'
 import { TargetMeasurements } from './TargetMeasurements'
 import { ScoreMethod } from './ScoreMethod'
+import { SourceLinks } from './SourceLinks'
 
 interface Props {
   model: Model
@@ -24,6 +25,7 @@ interface Props {
 function TargetCard({ model, target, question }: { model: Model; target: Target; question: string | null }) {
   const { t, lang } = useI18n()
   const summary = targetSummary(model, target, lang)
+  const summarySources = targetTextSources(model, target)
   return (
     <div className="rounded-lg bg-paper px-3 py-2.5">
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
@@ -35,6 +37,7 @@ function TargetCard({ model, target, question }: { model: Model; target: Target;
         <summary className="cursor-pointer rounded py-1 text-xs font-semibold text-earth">{t('target.measurements')}</summary>
         {question && <p className="mt-1 text-[13px] leading-snug text-ink">{question}</p>}
         <p className="mt-1 text-[13px] leading-snug text-muted">{summary ?? <Pending />}</p>
+        {summarySources.length > 0 && <div className="mt-1 wrap-anywhere"><SourceLinks sources={summarySources} /></div>}
         <p className="mt-1 font-mono text-[11px] text-muted">{formatCoords(target.lat, target.lon, lang)}</p>
         <TargetMeasurements model={model} target={target} />
       </details>

@@ -163,9 +163,11 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
 - [x] `analogs.json` con valores medidos y `meta.mock: false`, generado con `tools/build_analogs.py`
       (método de `docs/metodo-similitud.md`, pesos y propósitos provisionales en
       `docs/valores/puntaje.json`). Ranking, ficha y recorrido guiado probados en los dos idiomas.
-- [ ] Rol 1: confirmar pesos, propósitos y geología de los objetivos, y decidir los puntos de Licancabur
-      y Tata Sabaya ([revisión del catálogo](docs/revision-catalogo.md)).
-- [ ] Rol 6: textos de los 16 sitios de ampliación (hoy «texto pendiente»).
+- [x] Pesos y propósitos justificados con la correlación entre dimensiones, fuentes y una prueba de
+      estabilidad ([pesos](docs/valores/pesos.md)). Catálogo revisado: Dalí, Chiguana y Tata Sabaya
+      movidos; Laguna Verde como laguna salina ([revisión del catálogo](docs/revision-catalogo.md)).
+- [x] Textos de los 31 sitios y de los objetivos con fuentes en `texts.json`; la ficha muestra
+      «Fuentes de los textos».
 - [ ] Mostrar el resultado observado de Atacama y de los controles. Explicar qué se esperaba en
       cada comparación y qué pasó, incluso si el resultado difiere de lo esperado.
 - [ ] Enviar los textos científicos al rol 1 para revisión (respuesta antes de las 15:00).

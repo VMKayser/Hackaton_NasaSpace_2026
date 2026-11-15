@@ -193,9 +193,11 @@ interface AnalogsFile {
 ### `texts.json`, del rol 6
 
 ```ts
+type Source = { name: string; agency: string; url: string };
+
 interface TextsFile {
-  targets?: Record<string, { summary?: Text }>;
-  sites?: Record<string, { description?: Text; limits?: Text; exploration?: Text }>;
+  targets?: Record<string, { summary?: Text; sources?: Source[] }>;
+  sites?: Record<string, { description?: Text; limits?: Text; exploration?: Text; sources?: Source[] }>;
   purposes?: Record<string, { label?: Text; question?: Text }>;
   story?: {                                // pasos del modo historia
     purposeId?: string; targetId?: string; siteId?: string; compare?: string[];
@@ -211,6 +213,8 @@ interface TextsFile {
 - Cada `values` y `scores[].dimensions` incluye las claves de `meta.dimensions`. Si una pareja queda
   sin puntaje total, se omite su entrada de `scores`. La web la muestra como «no evaluado», al final
   del ranking y en gris en el mapa.
+- Cada texto de `texts.json` lleva sus fuentes en `sources`; la ficha las muestra como «Fuentes de los
+  textos». Una prueba falla si un sitio con texto no tiene fuente con enlace.
 - La web carga los dos archivos. Donde hay texto en ambos, gana `texts.json`. Un texto ausente o
   vacío se muestra como «texto pendiente»; no es un error.
 - Sin `purposes`: selector de objetivo y orden por `similarity`. Con `purposes` pero sin

@@ -169,10 +169,12 @@ const SiteTexts = z.object({
   description: Text.optional(),
   limits: Text.optional(),
   exploration: Text.optional(),
+  /** Fuentes de los textos del sitio. */
+  sources: z.array(Source).optional(),
 })
 
 export const TextsSchema = z.object({
-  targets: z.record(z.string(), z.object({ summary: Text.optional() })).optional(),
+  targets: z.record(z.string(), z.object({ summary: Text.optional(), sources: z.array(Source).optional() })).optional(),
   sites: z.record(z.string(), SiteTexts).optional(),
   purposes: z.record(z.string(), z.object({ label: Text.optional(), question: Text.optional() })).optional(),
   story: z.array(StoryStep).optional(),

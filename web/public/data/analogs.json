@@ -2,10 +2,10 @@
   "meta": {
     "mock": false,
     "version": "2.1.0",
-    "generated": "2026-11-15T06:29:50Z",
+    "generated": "2026-11-15T06:45:18Z",
     "scoring": {
-      "en": "Values measured from open sources (see each dimension) inside a circle of radiusKm around each site and of 5 km around each target; terrain uses the same 200 m step on both bodies. Score per dimension: 1 − min(1, |Earth − target| / scale), where the scale is the range between the 5th and 95th percentiles of the 31 catalog sites, widened to include the targets; for geology, 1 if the category matches and 0 if not. The total is the weighted mean of the dimensions with data and a positive weight; missing data never counts as zero. Pressure is shown but has weight 0: on Earth it is 80 to 150 times that of Mars. Precipitation on Mars is 0 by definition, not measured. Earth climate comes from cells about 55 km wide, so on summits it describes a lower altitude. Weights and purposes are provisional until role 1 confirms them. Method: docs/metodo-similitud.md; values and limits: docs/valores/.",
-      "es": "Valores medidos con fuentes abiertas (ver cada dimensión) en un círculo de radiusKm alrededor de cada sitio y de 5 km alrededor de cada objetivo; el relieve usa el mismo paso de 200 m en los dos cuerpos. Puntaje por dimensión: 1 − min(1, |Tierra − objetivo| / escala), donde la escala es el rango entre los percentiles 5 y 95 de los 31 sitios del catálogo, ampliado para incluir a los objetivos; en geología, 1 si la categoría coincide y 0 si no. El total es la media ponderada de las dimensiones con dato y peso positivo; un dato faltante nunca cuenta como cero. La presión se muestra pero pesa 0: en la Tierra es de 80 a 150 veces la de Marte. La precipitación de Marte es 0 por definición, no medida. El clima de la Tierra viene de celdas de unos 55 km, así que en las cumbres describe una altura menor. Pesos y propósitos provisionales hasta que los confirme el rol 1. Método: docs/metodo-similitud.md; valores y límites: docs/valores/."
+      "en": "Values measured from open sources (see each dimension) inside a circle of radiusKm around each site and of 5 km around each target; terrain uses the same 200 m step on both bodies. Score per dimension: 1 − min(1, |Earth − target| / scale), where the scale is the range between the 5th and 95th percentiles of the 31 catalog sites, widened to include the targets; for geology, 1 if the category matches and 0 if not. The total is the weighted mean of the dimensions with data and a positive weight; missing data never counts as zero. Pressure is shown but has weight 0: on Earth it is 80 to 150 times that of Mars. Precipitation on Mars is 0 by definition, not measured. Earth climate comes from cells about 55 km wide, so on summits it describes a lower altitude. Slope, 90th percentile slope and roughness rank the sites almost identically (Spearman correlation 0.97 to 1.00), so they share a single weight. Rationale for weights and purposes: docs/valores/pesos.md. Method: docs/metodo-similitud.md; values and limits: docs/valores/.",
+      "es": "Valores medidos con fuentes abiertas (ver cada dimensión) en un círculo de radiusKm alrededor de cada sitio y de 5 km alrededor de cada objetivo; el relieve usa el mismo paso de 200 m en los dos cuerpos. Puntaje por dimensión: 1 − min(1, |Tierra − objetivo| / escala), donde la escala es el rango entre los percentiles 5 y 95 de los 31 sitios del catálogo, ampliado para incluir a los objetivos; en geología, 1 si la categoría coincide y 0 si no. El total es la media ponderada de las dimensiones con dato y peso positivo; un dato faltante nunca cuenta como cero. La presión se muestra pero pesa 0: en la Tierra es de 80 a 150 veces la de Marte. La precipitación de Marte es 0 por definición, no medida. El clima de la Tierra viene de celdas de unos 55 km, así que en las cumbres describe una altura menor. Pendiente, percentil 90 y rugosidad ordenan los sitios casi igual (correlación de Spearman de 0,97 a 1,00), así que comparten un solo peso. Justificación de pesos y propósitos: docs/valores/pesos.md. Método: docs/metodo-similitud.md; valores y límites: docs/valores/."
     },
     "dimensions": [
       {
@@ -14,7 +14,7 @@
           "en": "Median slope",
           "es": "Pendiente mediana"
         },
-        "weight": 1,
+        "weight": 0.5,
         "sources": [
           {
             "name": "Terrain Tiles (SRTM and other sources)",
@@ -36,7 +36,7 @@
           "en": "Steepest ground (90th percentile slope)",
           "es": "Terreno más empinado (percentil 90 de la pendiente)"
         },
-        "weight": 0.5,
+        "weight": 0.25,
         "sources": [
           {
             "name": "Terrain Tiles (SRTM and other sources)",
@@ -58,7 +58,7 @@
           "en": "Terrain roughness (TRI)",
           "es": "Rugosidad del terreno (TRI)"
         },
-        "weight": 1,
+        "weight": 0.25,
         "sources": [
           {
             "name": "Terrain Tiles (SRTM and other sources)",
@@ -231,8 +231,8 @@
         "weights": {
           "geology": 3,
           "aridity": 2,
-          "slope": 1,
-          "temperature": 1
+          "temperature": 1,
+          "slope": 0.5
         }
       },
       {
@@ -242,8 +242,8 @@
         "weights": {
           "geology": 3,
           "aridity": 2,
-          "temperature": 1,
-          "thermal_range": 1
+          "thermal_range": 1,
+          "temperature": 1
         }
       },
       {
@@ -251,9 +251,9 @@
         "kind": "task",
         "targetId": "jezero",
         "weights": {
-          "slope": 3,
+          "slope": 2,
           "steep": 2,
-          "roughness": 2
+          "roughness": 1
         }
       }
     ]
@@ -393,7 +393,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.692,
+          "similarity": 0.622,
           "dimensions": {
             "slope": 0.929,
             "steep": 0.899,
@@ -407,7 +407,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.477,
+          "similarity": 0.352,
           "dimensions": {
             "slope": 0.915,
             "steep": 0.77,
@@ -421,9 +421,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.773,
+        "ancient-lakes": 0.761,
         "hydrothermal": 0.214,
-        "rover-mobility": 0.921
+        "rover-mobility": 0.918
       }
     },
     {
@@ -476,7 +476,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.712,
+          "similarity": 0.649,
           "dimensions": {
             "slope": 0.924,
             "steep": 0.899,
@@ -490,7 +490,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.497,
+          "similarity": 0.379,
           "dimensions": {
             "slope": 0.91,
             "steep": 0.77,
@@ -504,9 +504,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.803,
+        "ancient-lakes": 0.794,
         "hydrothermal": 0.251,
-        "rover-mobility": 0.917
+        "rover-mobility": 0.914
       }
     },
     {
@@ -559,7 +559,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.591,
+          "similarity": 0.487,
           "dimensions": {
             "slope": 0.956,
             "steep": 0.844,
@@ -573,7 +573,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.711,
+          "similarity": 0.634,
           "dimensions": {
             "slope": 0.97,
             "steep": 0.974,
@@ -587,9 +587,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.424,
+        "ancient-lakes": 0.383,
         "hydrothermal": 0.72,
-        "rover-mobility": 0.924
+        "rover-mobility": 0.911
       }
     },
     {
@@ -642,7 +642,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.737,
+          "similarity": 0.68,
           "dimensions": {
             "slope": 0.926,
             "steep": 0.926,
@@ -656,7 +656,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.522,
+          "similarity": 0.41,
           "dimensions": {
             "slope": 0.912,
             "steep": 0.796,
@@ -670,7 +670,7 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.84,
+        "ancient-lakes": 0.833,
         "hydrothermal": 0.285,
         "rover-mobility": 0.927
       }
@@ -725,7 +725,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.63,
+          "similarity": 0.521,
           "dimensions": {
             "slope": 0.991,
             "steep": 0.998,
@@ -739,7 +739,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.57,
+          "similarity": 0.452,
           "dimensions": {
             "slope": 0.977,
             "steep": 0.873,
@@ -753,7 +753,7 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.454,
+        "ancient-lakes": 0.413,
         "hydrothermal": 0.322,
         "rover-mobility": 0.994
       }
@@ -808,7 +808,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.599,
+          "similarity": 0.492,
           "dimensions": {
             "slope": 0.946,
             "steep": 0.973,
@@ -822,7 +822,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.55,
+          "similarity": 0.429,
           "dimensions": {
             "slope": 0.96,
             "steep": 0.898,
@@ -836,14 +836,14 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.422,
+        "ancient-lakes": 0.382,
         "hydrothermal": 0.292,
-        "rover-mobility": 0.957
+        "rover-mobility": 0.959
       }
     },
     {
       "id": "licancabur-laguna-verde",
-      "name": "Laguna Verde y Licancabur",
+      "name": "Laguna Verde, al pie del Licancabur",
       "lat": -22.79,
       "lon": -67.82,
       "known": true,
@@ -851,8 +851,8 @@
       "control": false,
       "radiusKm": 2.0,
       "type": {
-        "en": "Volcano",
-        "es": "Volcán"
+        "en": "Salt lake",
+        "es": "Salar o laguna salina"
       },
       "values": {
         "slope": {
@@ -884,14 +884,14 @@
           "unit": "hPa"
         },
         "geology": {
-          "value": "volcanic",
+          "value": "lacustrine",
           "unit": null
         }
       },
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.613,
+          "similarity": 0.701,
           "dimensions": {
             "slope": 0.986,
             "steep": 0.996,
@@ -900,12 +900,12 @@
             "thermal_range": 0.38,
             "aridity": 0.965,
             "pressure": 0.162,
-            "geology": 0.0
+            "geology": 1.0
           }
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.553,
+          "similarity": 0.432,
           "dimensions": {
             "slope": 0.972,
             "steep": 0.874,
@@ -919,9 +919,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.441,
+        "ancient-lakes": 0.861,
         "hydrothermal": 0.311,
-        "rover-mobility": 0.989
+        "rover-mobility": 0.99
       }
     },
     {
@@ -974,7 +974,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.371,
+          "similarity": 0.357,
           "dimensions": {
             "slope": 0.422,
             "steep": 0.428,
@@ -988,7 +988,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.338,
+          "similarity": 0.304,
           "dimensions": {
             "slope": 0.436,
             "steep": 0.558,
@@ -1002,9 +1002,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.311,
+        "ancient-lakes": 0.303,
         "hydrothermal": 0.255,
-        "rover-mobility": 0.422
+        "rover-mobility": 0.423
       }
     },
     {
@@ -1057,7 +1057,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.177,
+          "similarity": 0.23,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.0,
@@ -1071,7 +1071,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.139,
+          "similarity": 0.174,
           "dimensions": {
             "slope": 0.0,
             "steep": 0.115,
@@ -1085,7 +1085,7 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.196,
+        "ancient-lakes": 0.211,
         "hydrothermal": 0.201,
         "rover-mobility": 0.0
       }
@@ -1140,7 +1140,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.279,
+          "similarity": 0.337,
           "dimensions": {
             "slope": 0.069,
             "steep": 0.207,
@@ -1154,7 +1154,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.246,
+          "similarity": 0.284,
           "dimensions": {
             "slope": 0.083,
             "steep": 0.337,
@@ -1168,9 +1168,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.314,
+        "ancient-lakes": 0.333,
         "hydrothermal": 0.315,
-        "rover-mobility": 0.106
+        "rover-mobility": 0.122
       }
     },
     {
@@ -1223,7 +1223,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.35,
+          "similarity": 0.323,
           "dimensions": {
             "slope": 0.469,
             "steep": 0.292,
@@ -1237,7 +1237,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.317,
+          "similarity": 0.27,
           "dimensions": {
             "slope": 0.483,
             "steep": 0.422,
@@ -1251,9 +1251,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.279,
+        "ancient-lakes": 0.265,
         "hydrothermal": 0.214,
-        "rover-mobility": 0.42
+        "rover-mobility": 0.399
       }
     },
     {
@@ -1306,7 +1306,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.659,
+          "similarity": 0.581,
           "dimensions": {
             "slope": 0.924,
             "steep": 0.892,
@@ -1320,7 +1320,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.445,
+          "similarity": 0.312,
           "dimensions": {
             "slope": 0.91,
             "steep": 0.763,
@@ -1334,9 +1334,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.727,
+        "ancient-lakes": 0.711,
         "hydrothermal": 0.164,
-        "rover-mobility": 0.916
+        "rover-mobility": 0.912
       }
     },
     {
@@ -1389,7 +1389,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.744,
+          "similarity": 0.688,
           "dimensions": {
             "slope": 0.932,
             "steep": 0.92,
@@ -1403,7 +1403,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.53,
+          "similarity": 0.418,
           "dimensions": {
             "slope": 0.918,
             "steep": 0.79,
@@ -1417,9 +1417,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.854,
+        "ancient-lakes": 0.848,
         "hydrothermal": 0.3,
-        "rover-mobility": 0.929
+        "rover-mobility": 0.928
       }
     },
     {
@@ -1472,7 +1472,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.758,
+          "similarity": 0.7,
           "dimensions": {
             "slope": 0.939,
             "steep": 0.996,
@@ -1486,7 +1486,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.543,
+          "similarity": 0.43,
           "dimensions": {
             "slope": 0.925,
             "steep": 0.867,
@@ -1500,9 +1500,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.858,
+        "ancient-lakes": 0.852,
         "hydrothermal": 0.307,
-        "rover-mobility": 0.956
+        "rover-mobility": 0.963
       }
     },
     {
@@ -1555,7 +1555,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.742,
+          "similarity": 0.686,
           "dimensions": {
             "slope": 0.93,
             "steep": 0.912,
@@ -1569,7 +1569,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.528,
+          "similarity": 0.416,
           "dimensions": {
             "slope": 0.916,
             "steep": 0.782,
@@ -1583,9 +1583,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.849,
+        "ancient-lakes": 0.842,
         "hydrothermal": 0.292,
-        "rover-mobility": 0.926
+        "rover-mobility": 0.923
       }
     },
     {
@@ -1638,7 +1638,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.742,
+          "similarity": 0.68,
           "dimensions": {
             "slope": 0.987,
             "steep": 0.75,
@@ -1652,7 +1652,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.554,
+          "similarity": 0.427,
           "dimensions": {
             "slope": 0.999,
             "steep": 0.879,
@@ -1666,9 +1666,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.849,
+        "ancient-lakes": 0.838,
         "hydrothermal": 0.285,
-        "rover-mobility": 0.92
+        "rover-mobility": 0.892
       }
     },
     {
@@ -1721,7 +1721,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.732,
+          "similarity": 0.67,
           "dimensions": {
             "slope": 0.939,
             "steep": 0.917,
@@ -1735,7 +1735,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.517,
+          "similarity": 0.4,
           "dimensions": {
             "slope": 0.925,
             "steep": 0.787,
@@ -1749,9 +1749,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.829,
+        "ancient-lakes": 0.82,
         "hydrothermal": 0.273,
-        "rover-mobility": 0.934
+        "rover-mobility": 0.931
       }
     },
     {
@@ -1804,7 +1804,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.766,
+          "similarity": 0.707,
           "dimensions": {
             "slope": 0.984,
             "steep": 0.848,
@@ -1818,7 +1818,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.579,
+          "similarity": 0.454,
           "dimensions": {
             "slope": 0.998,
             "steep": 0.977,
@@ -1832,9 +1832,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.873,
+        "ancient-lakes": 0.865,
         "hydrothermal": 0.315,
-        "rover-mobility": 0.947
+        "rover-mobility": 0.931
       }
     },
     {
@@ -1887,7 +1887,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.491,
+          "similarity": 0.433,
           "dimensions": {
             "slope": 0.753,
             "steep": 0.417,
@@ -1901,7 +1901,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.611,
+          "similarity": 0.58,
           "dimensions": {
             "slope": 0.767,
             "steep": 0.546,
@@ -1915,9 +1915,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.395,
+        "ancient-lakes": 0.367,
         "hydrothermal": 0.72,
-        "rover-mobility": 0.649
+        "rover-mobility": 0.613
       }
     },
     {
@@ -1970,7 +1970,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.553,
+          "similarity": 0.425,
           "dimensions": {
             "slope": 0.988,
             "steep": 0.931,
@@ -1984,7 +1984,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.663,
+          "similarity": 0.565,
           "dimensions": {
             "slope": 0.998,
             "steep": 0.939,
@@ -1998,16 +1998,16 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.337,
+        "ancient-lakes": 0.287,
         "hydrothermal": 0.63,
-        "rover-mobility": 0.973
+        "rover-mobility": 0.966
       }
     },
     {
       "id": "tata-sabaya",
       "name": "Tata Sabaya (avalancha de escombros)",
-      "lat": -19.13,
-      "lon": -68.53,
+      "lat": -19.23,
+      "lon": -68.47,
       "known": false,
       "reference": false,
       "control": false,
@@ -2018,15 +2018,15 @@
       },
       "values": {
         "slope": {
-          "value": 22.84,
+          "value": 0.93,
           "unit": "°"
         },
         "steep": {
-          "value": 31.88,
+          "value": 2.32,
           "unit": "°"
         },
         "roughness": {
-          "value": 66.86,
+          "value": 3.55,
           "unit": "m"
         },
         "temperature": {
@@ -2053,11 +2053,11 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.311,
+          "similarity": 0.475,
           "dimensions": {
-            "slope": 0.233,
-            "steep": 0.245,
-            "roughness": 0.254,
+            "slope": 0.958,
+            "steep": 0.955,
+            "roughness": 0.97,
             "temperature": 0.252,
             "thermal_range": 0.373,
             "aridity": 0.788,
@@ -2067,11 +2067,11 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.277,
+          "similarity": 0.405,
           "dimensions": {
-            "slope": 0.247,
-            "steep": 0.375,
-            "roughness": 0.263,
+            "slope": 0.944,
+            "steep": 0.826,
+            "roughness": 0.961,
             "temperature": 0.135,
             "thermal_range": 0.183,
             "aridity": 0.788,
@@ -2081,9 +2081,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.294,
+        "ancient-lakes": 0.355,
         "hydrothermal": 0.271,
-        "rover-mobility": 0.242
+        "rover-mobility": 0.959
       }
     },
     {
@@ -2136,7 +2136,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.499,
+          "similarity": 0.386,
           "dimensions": {
             "slope": 0.895,
             "steep": 0.825,
@@ -2150,7 +2150,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.466,
+          "similarity": 0.332,
           "dimensions": {
             "slope": 0.909,
             "steep": 0.954,
@@ -2164,9 +2164,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.3,
+        "ancient-lakes": 0.254,
         "hydrothermal": 0.174,
-        "rover-mobility": 0.872
+        "rover-mobility": 0.865
       }
     },
     {
@@ -2219,7 +2219,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.54,
+          "similarity": 0.416,
           "dimensions": {
             "slope": 0.954,
             "steep": 0.949,
@@ -2233,7 +2233,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.479,
+          "similarity": 0.346,
           "dimensions": {
             "slope": 0.94,
             "steep": 0.82,
@@ -2247,9 +2247,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.327,
+        "ancient-lakes": 0.279,
         "hydrothermal": 0.196,
-        "rover-mobility": 0.953
+        "rover-mobility": 0.952
       }
     },
     {
@@ -2302,7 +2302,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.6,
+          "similarity": 0.482,
           "dimensions": {
             "slope": 0.991,
             "steep": 1.0,
@@ -2316,7 +2316,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.544,
+          "similarity": 0.415,
           "dimensions": {
             "slope": 0.995,
             "steep": 0.87,
@@ -2330,9 +2330,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.407,
+        "ancient-lakes": 0.363,
         "hydrothermal": 0.273,
-        "rover-mobility": 0.994
+        "rover-mobility": 0.995
       }
     },
     {
@@ -2385,7 +2385,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.465,
+          "similarity": 0.359,
           "dimensions": {
             "slope": 0.871,
             "steep": 0.659,
@@ -2399,7 +2399,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.432,
+          "similarity": 0.306,
           "dimensions": {
             "slope": 0.885,
             "steep": 0.788,
@@ -2413,9 +2413,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.281,
+        "ancient-lakes": 0.236,
         "hydrothermal": 0.162,
-        "rover-mobility": 0.8
+        "rover-mobility": 0.779
       }
     },
     {
@@ -2468,7 +2468,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.346,
+          "similarity": 0.267,
           "dimensions": {
             "slope": 0.629,
             "steep": 0.499,
@@ -2482,7 +2482,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.312,
+          "similarity": 0.214,
           "dimensions": {
             "slope": 0.643,
             "steep": 0.629,
@@ -2496,9 +2496,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.195,
+        "ancient-lakes": 0.162,
         "hydrothermal": 0.097,
-        "rover-mobility": 0.592
+        "rover-mobility": 0.577
       }
     },
     {
@@ -2551,7 +2551,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.139,
+          "similarity": 0.16,
           "dimensions": {
             "slope": 0.081,
             "steep": 0.0,
@@ -2565,7 +2565,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.105,
+          "similarity": 0.107,
           "dimensions": {
             "slope": 0.095,
             "steep": 0.124,
@@ -2579,9 +2579,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.117,
+        "ancient-lakes": 0.119,
         "hydrothermal": 0.097,
-        "rover-mobility": 0.059
+        "rover-mobility": 0.049
       }
     },
     {
@@ -2634,7 +2634,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.397,
+          "similarity": 0.299,
           "dimensions": {
             "slope": 0.765,
             "steep": 0.426,
@@ -2648,7 +2648,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.363,
+          "similarity": 0.246,
           "dimensions": {
             "slope": 0.779,
             "steep": 0.556,
@@ -2662,9 +2662,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.24,
+        "ancient-lakes": 0.2,
         "hydrothermal": 0.126,
-        "rover-mobility": 0.676
+        "rover-mobility": 0.635
       }
     },
     {
@@ -2717,7 +2717,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.579,
+          "similarity": 0.473,
           "dimensions": {
             "slope": 0.945,
             "steep": 0.861,
@@ -2731,7 +2731,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.538,
+          "similarity": 0.416,
           "dimensions": {
             "slope": 0.931,
             "steep": 0.99,
@@ -2745,9 +2745,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.435,
+        "ancient-lakes": 0.395,
         "hydrothermal": 0.303,
-        "rover-mobility": 0.922
+        "rover-mobility": 0.912
       }
     },
     {
@@ -2800,7 +2800,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.379,
+          "similarity": 0.214,
           "dimensions": {
             "slope": 0.93,
             "steep": 0.902,
@@ -2814,7 +2814,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.342,
+          "similarity": 0.176,
           "dimensions": {
             "slope": 0.916,
             "steep": 0.772,
@@ -2828,9 +2828,9 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.136,
+        "ancient-lakes": 0.075,
         "hydrothermal": 0.0,
-        "rover-mobility": 0.923
+        "rover-mobility": 0.919
       }
     },
     {
@@ -2883,7 +2883,7 @@
       "scores": [
         {
           "targetId": "jezero",
-          "similarity": 0.175,
+          "similarity": 0.119,
           "dimensions": {
             "slope": 0.328,
             "steep": 0.369,
@@ -2897,7 +2897,7 @@
         },
         {
           "targetId": "columbia-hills",
-          "similarity": 0.151,
+          "similarity": 0.079,
           "dimensions": {
             "slope": 0.342,
             "steep": 0.499,
@@ -2911,7 +2911,7 @@
         }
       ],
       "purposeScores": {
-        "ancient-lakes": 0.064,
+        "ancient-lakes": 0.043,
         "hydrothermal": 0.0,
         "rover-mobility": 0.354
       }

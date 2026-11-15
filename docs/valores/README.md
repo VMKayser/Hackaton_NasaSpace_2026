@@ -15,7 +15,8 @@ python tools/measure_values.py --targets objetivos.csv # otros objetivos: id,nam
 | `sitios_valores.csv` | Una fila por sitio del catálogo (31) |
 | `objetivos_valores.csv` | Una fila por objetivo |
 | `fuentes.json` | Unidad y fuentes de cada columna, en el formato de `meta.dimensions[].sources` |
-| `puntaje.json` | Dimensiones, pesos, propósitos y categorías de geología (provisionales, rol 1) |
+| `puntaje.json` | Dimensiones, pesos, propósitos y categorías de geología |
+| `pesos.md` | Por qué cada peso y cada propósito, con fuentes |
 
 Una celda vacía es «sin dato» (`null`), nunca cero.
 
@@ -35,13 +36,11 @@ Resultado de la referencia y los controles (15 de noviembre), puesto entre 31 po
 
 | Sitio | Jezero | Columbia Hills | Qué se esperaba |
 |---|---|---|---|
-| Yungay, Atacama (referencia) | 16.º (57,9 %) | 11.º (53,8 %) | Alto en aridez (lo es: 8 mm/año), pero más cálido que el Altiplano y sin geología de lago ni hidrotermal |
-| Trinidad, Beni (control) | 23.º (37,9 %) | 23.º (34,2 %) | Bajo |
-| Coroico, Yungas (control) | 30.º (17,5 %) | 29.º (15,1 %) | Bajo |
+| Yungay, Atacama (referencia) | 17.º (47,3 %) | 12.º (41,6 %) | Alto en aridez (lo es: 8 mm/año), pero más cálido que el Altiplano y sin geología de lago ni hidrotermal |
+| Trinidad, Beni (control) | 29.º (21,4 %) | 28.º (17,6 %) | Bajo |
+| Coroico, Yungas (control) | 31.º (11,9 %) | 31.º (7,9 %) | Bajo |
 
-En «Movilidad de rover», que solo mira el relieve, Trinidad sale 14.º: una llanura es un buen terreno
-para conducir aunque su clima no se parezca. Atacama no queda arriba en general porque es análogo de la
-sequedad, no de la temperatura ni de la geología de estos dos objetivos.
+Los pesos, su justificación y la prueba de estabilidad están en [pesos.md](pesos.md).
 
 ## Columnas
 
@@ -85,8 +84,8 @@ sequedad, no de la temperatura ni de la geología de estos dos objetivos.
    (Uyuni: 331 mm/año). El orden entre sitios se mantiene: Yungay 8 mm, Trinidad 1878 mm.
 3. **Coipasa y Poopó dan pendiente y TRI 0.** El modelo de la Tierra viene sobre todo de SRTM (febrero de
    2000), que registró esas superficies como agua plana.
-4. **Puntos del catálogo:** Dalí y Chiguana se corrigieron; Laguna Verde y Licancabur, y Tata Sabaya,
-   esperan decisión del rol 1. Detalle y mediciones de cada opción en [revision-catalogo.md](../revision-catalogo.md).
+4. **Puntos del catálogo:** se corrigieron Dalí, Chiguana y Tata Sabaya, y Laguna Verde pasó a ser una
+   laguna salina. Detalle y mediciones en [revision-catalogo.md](../revision-catalogo.md).
 5. **Sin medir:** albedo (la fuente abierta de NASA POWER tiene celdas de 1°, demasiado grandes para un
    sitio de 2 a 5 km) y cobertura vegetal (MODIS exige cuenta de Earthdata). No son dimensiones de
    `analogs.json`. La geología no se mide: es la categoría del catálogo en los sitios y la de la

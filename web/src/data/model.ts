@@ -44,6 +44,16 @@ export function siteText(model: Model, site: Site, field: SiteTextField, lang: L
   return pickText(lang, model.texts.sites?.[site.id]?.[field], site[field])
 }
 
+/** Fuentes de los textos de un sitio (texts.json). */
+export function siteTextSources(model: Model, site: Site) {
+  return model.texts.sites?.[site.id]?.sources ?? []
+}
+
+/** Fuentes del resumen de un objetivo (texts.json). */
+export function targetTextSources(model: Model, target: Target) {
+  return model.texts.targets?.[target.id]?.sources ?? []
+}
+
 export function targetSummary(model: Model, target: Target, lang: Lang): string | null {
   return pickText(lang, model.texts.targets?.[target.id]?.summary, target.summary)
 }

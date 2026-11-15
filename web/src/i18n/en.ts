@@ -54,6 +54,7 @@ export const en = {
   'detail.similarity': 'Overall similarity',
   'detail.dimsScored': '{n} of {total} dimensions with data',
   'detail.about': 'About this site',
+  'detail.textSources': 'Text sources',
   'detail.evidence': 'Measured side by side',
   'detail.evidenceLead': 'Each dimension compares the same indicator on Earth and at the target.',
   'detail.dimensionsTitle': 'Similarity by dimension',

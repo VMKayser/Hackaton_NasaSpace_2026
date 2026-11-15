@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { Model } from '../data/model'
-import { siteText } from '../data/model'
+import { siteText, siteTextSources } from '../data/model'
 import type { Dimension, Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import { formatCoords, formatNumber, formatPercent, formatValue } from '../lib/format'
@@ -122,6 +122,12 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
   const description = siteText(model, site, 'description', lang)
   const limits = siteText(model, site, 'limits', lang)
   const exploration = siteText(model, site, 'exploration', lang)
+  const textSources = siteTextSources(model, site)
+  const textSourcesLine = textSources.length > 0 && (
+    <p className="mt-1.5 text-[11px] leading-snug text-muted wrap-anywhere">
+      <span className="font-semibold">{t('detail.textSources')}:</span> <SourceLinks sources={textSources} />
+    </p>
+  )
   const { scored, total: dimTotal } = scoredCount(model.file, row.dimensions)
 
   // Dimensiones que cuentan en el puntaje mostrado (por peso, de mayor a menor) y las de contexto.
@@ -232,6 +238,7 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
         <p className="mt-1 text-sm leading-relaxed text-ink">{limits ?? <Pending />}</p>
         <p className="mt-1.5 text-xs leading-relaxed text-muted">{t(`limits.general.${target.body}`)}</p>
       </section>
+      {textSourcesLine}
 
       {pairs.length > 1 && (
         <section className="mt-5">
@@ -284,6 +291,7 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
       <section className="mt-5">
         <SectionTitle>{t('detail.about')}</SectionTitle>
         <p className="mt-1.5 text-sm leading-relaxed text-ink">{description ?? <Pending />}</p>
+        {textSourcesLine}
       </section>
 
     </article>

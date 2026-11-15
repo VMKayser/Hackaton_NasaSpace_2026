@@ -1,14 +1,16 @@
 # 🛰️ Dossier Científico & Arquitectura de IA: Aprendizaje Semisupervisado, PCA y Random Forest para Análogos Planetarios
 
+> **Nota (15 de noviembre de 2026).** Documento del análisis exploratorio del rol 4. Los valores de sitios y objetivos que usa están escritos a mano en los scripts de esta carpeta; no salen de mediciones, y las figuras y archivos de `output/` no están en el repositorio. La app no usa estos resultados: sus datos están medidos en [`docs/valores/`](../docs/valores/README.md) y `analogs.json` se genera con `tools/build_analogs.py`.
+
 **NASA Space Apps Challenge 2026: Beyond Known Analogues**  
 **Autores:** Equipo de Ciencia de Datos & Astrobiología  
 **Fecha:** Noviembre 2026 | **Versión:** 2.1.0 (Producción)  
-**Notebook Asociado (Activo en Modelos):** [`modelos/analogs_ml_pipeline.ipynb`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/modelos/analogs_ml_pipeline.ipynb)  
-**Notebook Espejo (Raíz):** [`analogs_ml_pipeline.ipynb`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/analogs_ml_pipeline.ipynb)  
-**Figuras Gráficas Generadas:** [`output/figures/`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/figures/)  
-**Tabla Comparativa CSV:** [`output/tabla_comparativa_tierra_vs_marte_luna.csv`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/tabla_comparativa_tierra_vs_marte_luna.csv)  
-**Dataset Centralizado:** [`data/centralized_planetary_dataset.csv`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/data/centralized_planetary_dataset.csv)  
-**Archivo Oficial Web v2.1:** [`output/analogs.json`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/analogs.json)
+**Notebook Asociado (Activo en Modelos):** [`modelos/analogs_ml_pipeline.ipynb`](analogs_ml_pipeline.ipynb)  
+**Notebook Espejo (Raíz):** [`analogs_ml_pipeline.ipynb`](analogs_ml_pipeline.ipynb)  
+**Figuras Gráficas Generadas:** `output/figures/` (no está en el repositorio)  
+**Tabla Comparativa CSV:** `output/tabla_comparativa_tierra_vs_marte_luna.csv` (no está en el repositorio)  
+**Dataset Centralizado:** [`data/centralized_planetary_dataset.csv`](data/centralized_planetary_dataset.csv)  
+**Archivo Oficial Web v2.1:** `output/analogs.json` (no está en el repositorio)
 
 ---
 
@@ -26,7 +28,7 @@ En la Tierra no existen millones de ejemplos etiquetados de "lugares marcianos".
 
 ## 2. Arquitectura de Datos Centralizados
 
-Se construyó un repositorio maestro en [`data/centralized_planetary_dataset.csv`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/data/centralized_planetary_dataset.csv) integrando 46 entidades multidimensionales provenientes de 4 fuentes oficiales:
+Se construyó un repositorio maestro en [`data/centralized_planetary_dataset.csv`](data/centralized_planetary_dataset.csv) integrando 46 entidades multidimensionales provenientes de 4 fuentes oficiales:
 
 1. **Catálogo de Sitios de Bolivia (31 estaciones):**
    * **Núcleo (Core):** Salar de Uyuni, Coipasa, Sol de Mañana, Laguna Colorada, Siloli, Dalí, Licancabur, Uturuncu, Sajama, Ollagüe, Tunupa, Poopó.
@@ -135,16 +137,16 @@ El modelo de ensamble de 150 árboles determinó empíricamente cuáles variable
 | **Control Trinidad (Beni)** | Puntaje bajo en todos los propósitos planetarios | Similitud cae a **0.426** (0% en aridez y presión) | **SUPERADA** |
 | **Control Coroico (Yungas)** | Aislado en cluster propio | Separado en el Cluster 2 del agrupamiento jerárquico | **SUPERADA** |
 | **Estabilidad Monte Carlo** | Rankings robustos ante $\pm 20\%$ de ruido en pesos | Top-3 idéntico en **100%** de las simulaciones para astrobiología y Luna; Spearman $\bar{\rho} \ge 0.997$ | **SUPERADA** |
-| **Contrato Web v2.1** | Schema JSON estricto con `meta`, `targets`, `sites` | Archivo [`output/analogs.json`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/analogs.json) generado y validado con 31 sitios | **SUPERADA** |
+| **Contrato Web v2.1** | Schema JSON estricto con `meta`, `targets`, `sites` | Archivo `output/analogs.json` (no está en el repositorio) generado y validado con 31 sitios | **SUPERADA** |
 
 ---
 
 ## 6. Visualizaciones Gráficas Generadas y Análisis de Resultados
 
-El pipeline genera automáticamente cuatro figuras científicas de alta definición en [`output/figures/`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/figures/):
+El pipeline genera automáticamente cuatro figuras científicas de alta definición en `output/figures/` (no está en el repositorio):
 
 ### 6.1. Gráfica 1: Mapa Cósmico de Análogos con Clusters, Centroides y Proyección Planetaria
-* **Archivo:** [`output/figures/cluster_pca_centroids.png`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/figures/cluster_pca_centroids.png)
+* **Archivo:** `output/figures/cluster_pca_centroids.png` (no está en el repositorio)
 * **¿Qué se ve en la gráfica?**:
   * **Eje X (PC1, 53.3% varianza):** Vector de Aridez, Presión Atmosférica y Temperatura. A la derecha, mayor sequedad, temperaturas más frías y menor presión barométrica.
   * **Eje Y (PC2, 27.7% varianza):** Vector de Topografía y Relieve. Hacia arriba terrenos montañosos y escarpados; hacia abajo llanuras y depresiones ultraplanas.
@@ -160,20 +162,20 @@ El pipeline genera automáticamente cuatro figuras científicas de alta definici
 * **Conclusión Científica:** Se observa cómo los salares y desiertos de Bolivia se agrupan en el **mismo cuadrante donde residen el Cráter Jezero y Meridiani Planum**, evidenciando su alta afinidad física directa. En contraste, los controles amazónicos caen en el cuadrante diametralmente opuesto.
 
 ### 6.2. Gráfica 2: Dendrograma de Agrupamiento Jerárquico de Ward
-* **Archivo:** [`output/figures/dendrogram_ward.png`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/figures/dendrogram_ward.png)
+* **Archivo:** `output/figures/dendrogram_ward.png` (no está en el repositorio)
 * **¿Qué se ve en la gráfica?**:
   * Árbol taxonómico de distancias euclidianas multidimensionales que agrupa progresivamente los 31 sitios del catálogo.
   * Una línea de corte roja horizontal discontinua (`t = 8.0`) indica el umbral de disimilitud donde emergen las 4 familias.
   * **Aislamiento de Controles:** Los controles negativos (`trinidad-control` y `coroico-control`) se unen entre sí a muy corta distancia y quedan aislados en una rama terminal que solo se conecta al Altiplano en la raíz más lejana del árbol, confirmando que el espacio geofísico separa nítidamente la selva tropical de los análogos marcianos.
 
 ### 6.3. Gráfica 3: Importancia de Variables Físicas (Random Forest)
-* **Archivo:** [`output/figures/random_forest_feature_importance.png`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/figures/random_forest_feature_importance.png)
+* **Archivo:** `output/figures/random_forest_feature_importance.png` (no está en el repositorio)
 * **¿Qué se ve en la gráfica?**:
   * Gráfico de barras horizontales mostrando el porcentaje de contribución de cada variable física mediante reducción de impureza de Gini / MSE.
   * **Variables Clave:** La precipitación/aridez lidera con **45.99%**, seguida de la temperatura media con **33.90%**, pendiente del terreno con **9.43%**, presión barométrica con **6.06%**, rugosidad con **3.08%** y relieve con **1.54%**.
 
 ### 6.4. Gráfica 4: Nuevos Análogos Descubiertos por Aprendizaje Semisupervisado
-* **Archivo:** [`output/figures/semi_supervised_discovery.png`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/figures/semi_supervised_discovery.png)
+* **Archivo:** `output/figures/semi_supervised_discovery.png` (no está en el repositorio)
 * **¿Qué se ve en la gráfica?**:
   * Barras horizontales comparando la probabilidad de idoneidad planetaria ($0$ a $100\%$) propagada por el modelo `LabelSpreading`.
   * Barras doradas: Las joyas de Bolivia descubiertas (**Capina, Chalviri, Chiguana, Empexa, Coipasa, Siloli, Dalí**) superan el **81% de afinidad**, rivalizando con la referencia oficial de la NASA (Atacama con 83%), mientras que los controles negativos amazónicos caen por debajo del **10%**.
@@ -182,7 +184,7 @@ El pipeline genera automáticamente cuatro figuras científicas de alta definici
 
 ## 7. Tabla Comparativa Científica: Lugares Analizados de la Tierra vs Marte y la Luna
 
-Tabla exportada en [`output/tabla_comparativa_tierra_vs_marte_luna.csv`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/tabla_comparativa_tierra_vs_marte_luna.csv):
+Tabla exportada en `output/tabla_comparativa_tierra_vs_marte_luna.csv` (no está en el repositorio):
 
 | Análogo Terrestre | Destino Extraterrestre | Similitud Global (PSI) | Pendiente (Tierra vs Destino) | Relieve Local (Tierra vs Destino) | Temp. Media (Tierra vs Destino) | Presión Atm. (Tierra vs Destino) | Justificación Científica y Ensayo Operacional |
 |---|---|:---:|:---:|:---:|:---:|:---:|---|
@@ -196,7 +198,7 @@ Tabla exportada en [`output/tabla_comparativa_tierra_vs_marte_luna.csv`](file://
 
 ---
 
-## 8. Estructura Celda por Celda del Notebook [`modelos/analogs_ml_pipeline.ipynb`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/modelos/analogs_ml_pipeline.ipynb)
+## 8. Estructura Celda por Celda del Notebook [`modelos/analogs_ml_pipeline.ipynb`](analogs_ml_pipeline.ipynb)
 
 El cuaderno contiene 26 celdas estructuradas de forma didáctica y reproducible:
 
@@ -221,7 +223,7 @@ El cuaderno contiene 26 celdas estructuradas de forma didáctica y reproducible:
   * *Cómo:* MDI en 150 árboles, `IsolationForest(contamination=0.15)` y `fcluster`.
   * *Por qué:* Identifica qué parámetros físicos mandan en la similitud y valida que los controles negativos queden aislados.
 * **Celdas 11–12 (Monte Carlo y Exportación JSON v2.1):**
-  * *Qué:* Test de estabilidad de 500 iteraciones con ruido $\pm 20\%$ y exportación a [`output/analogs.json`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/analogs.json).
+  * *Qué:* Test de estabilidad de 500 iteraciones con ruido $\pm 20\%$ y exportación a `output/analogs.json` (no está en el repositorio).
   * *Cómo:* Simulación estocástica y generación de payload compatible con la web.
   * *Por qué:* Asegura solidez científica ante jurados y entrega los datos listos para producción.
 
@@ -231,6 +233,6 @@ El cuaderno contiene 26 celdas estructuradas de forma didáctica y reproducible:
 
 El modelo está preparado para recibir cualquier coordenada $(Lat, Lon)$ de la Tierra o nuevos datos de satélite:
 
-1. **Agregar nuevos sitios**: Insertar filas en [`data/sitios_valores.csv`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/data/sitios_valores.csv) o en [`data/centralized_planetary_dataset.csv`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/data/centralized_planetary_dataset.csv).
-2. **Ejecutar el pipeline**: Abrir [`analogs_ml_pipeline.ipynb`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/analogs_ml_pipeline.ipynb) en Jupyter Notebook, VS Code o JupyterLab y presionar **"Run All"** (o ejecutar celda por celda para inspeccionar los gráficos y tablas intermedias).
-3. **Despliegue automático**: El notebook actualizará automáticamente [`output/analogs.json`](file:///c:/Users/antra/Desktop/Hacka_nsa_2026/Hacka_Nasa_2026/output/analogs.json), alimentando al instante las interfaces web, el dashboard y el visualizador 3D.
+1. **Agregar nuevos sitios**: Insertar filas en `data/sitios_valores.csv` (no está en el repositorio) o en [`data/centralized_planetary_dataset.csv`](data/centralized_planetary_dataset.csv).
+2. **Ejecutar el pipeline**: Abrir [`analogs_ml_pipeline.ipynb`](analogs_ml_pipeline.ipynb) en Jupyter Notebook, VS Code o JupyterLab y presionar **"Run All"** (o ejecutar celda por celda para inspeccionar los gráficos y tablas intermedias).
+3. **Despliegue automático**: El notebook actualizará automáticamente `output/analogs.json` (no está en el repositorio), alimentando al instante las interfaces web, el dashboard y el visualizador 3D.

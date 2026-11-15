@@ -56,6 +56,7 @@ export const es: Record<keyof typeof en, string> = {
   'detail.similarity': 'Similitud general',
   'detail.dimsScored': '{n} de {total} dimensiones con dato',
   'detail.about': 'Sobre este sitio',
+  'detail.textSources': 'Fuentes de los textos',
   'detail.evidence': 'Medido lado a lado',
   'detail.evidenceLead': 'Cada dimensión compara el mismo indicador en la Tierra y en el objetivo.',
   'detail.dimensionsTitle': 'Similitud por dimensión',
