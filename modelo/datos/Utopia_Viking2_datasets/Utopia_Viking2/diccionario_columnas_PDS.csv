@@ -1,0 +1,60 @@
+﻿dataset,column,description_PDS,source_label
+vl_tbin,SC_ID,Spacecraft id. VL1 : Viking Lander 1. VL2 : Viking Lander 2,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,VIKING_YEAR,Viking mission year,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,SOL_LON,Areocentric longitude of the sun corresponding to the local time.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,MARTIAN_DAY,"Martian solar day (sol), starting at Day 0 when each Lander touched down. VL1: 1 - 45. VL2: 0 - 1050. Each Martian day is 24 hr 39 minutes 35.25 seconds in earth time.",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,LOCAL_HR_BIN,Bin number,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,WND_TEM_TOT,Number of wind measurements in bin.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,WND_TMP_NLI,Number of wind measurements in bin not suffering from Lander interference.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,PRESS_TOT,Number of recalibrated pressure points in bin.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,ZON_WND_MEAN,Mean zonal wind speed in bin (m/sec).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,ZON_WND_DEV,Standard deviation of bin zonal wind speed,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,MER_WND_MEAN,Mean meridional wind speed in bin (m/sec).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,MER_WND_DEV,Standard deviation of bin meridional wind speed.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,WIND_FLG,Warning flags: M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,WND_SPD_MEAN,Mean combined wind speed in bin (m/sec).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,WND_SPD_DEV,Standard deviation of bin combined wind speed.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,PRESS_MEAN,Mean recalibrated pressure in bin (millibars).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,PRESS_FLAG,Warning flags: M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TAMB_NLI_MN,Mean ambient temperature in bin (Kelvin). (No Lander interference experienced.),https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TAMB_NLI_DEV,Standard deviation of bin ambient temperature. (No Lander interference experienced).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,T_NLI_FLAG,Warning flags. M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TREF_NLI_MN,Mean reference temperature (Kelvin) in bin. (No Lander interference experienced.),https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TREF_NLI_DEV,Standard deviation of bin reference temperature. (No Lander interference experienced).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TAMB_INT_MN,Mean Lander interference effect on bin ambient temperature (Kelvin).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TAMB_INT_DEV,Standard deviation of Lander interference effect on bin ambient temperature.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,T_INT_FLAG,Warning flags. M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TREF_INT_MN,Mean Lander interference effect on bin reference temperature (Kelvin).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_tbin,TREF_INT_DEV,Standard deviation of Lander interference effect on bin reference temperature.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+vl_avep,SC_ID,Spacecraft id. VL1 : Viking Lander 1. VL2 : Viking Lander 2,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,VIKING_YEAR,Viking mission year (1 -4),https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,SOL_LON,Areocentric longitude of the sun corresponding to the local time,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,MARTIAN_DAY,"Martian solar day (sol), starting at Day 0 when each Lander touched down. VL1: 0000 - 2245. VL2: 0000 - 1204. Each Martian day is 24 hr 39 minutes 35.25 seconds in earth time.",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,PRESS_MEAN,Daily average atmospheric pressure in millibars. No value flag = -9.999,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,PRESS_MIN,Minimum daily atmospheric pressure in millibars. No value flag = -9.999.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,PRESS_RANGE,Maximum variation in pressure during each in millibars. Maximumpressure is calculated by adding this to PRESS_MIN. No value flag =-9.999.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,PRESS_SIGMA,Standard deviation of atmospheric pressure in millibars. No value flag = -.9999,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,MAX_TIME_GAP,Length of maximum time gap between two measurements expressed in hours. If the time gap was less than four hours no gap was calculated. No value flag = -9.99,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,BEG_GAP_HOUR,Start hour of maximum time gap. No value flag = -9.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,BEG_GAP_MIN,Start minute of maximum time gap. No value flag = -9.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,BEG_GAP_SEC,Start second of maximum time gap. No value flag = -9.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,END_GAP_HOUR,Hour at which maximum time gap ended. No value flag = -9.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,END_GAP_MIN,Minute at which maximum time gap ended. No value flag = -9.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,END_GAP_SEC,Second at which maximum time gap ended. No value flag = -9.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,BIT_ERR_RATE,"Indicates spacecraft to ground communications quality. Values <= 0.001 are good, while values <= 0.0001 are almost error free. No value flag = -.999999",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_avep,WARNING_FLAG,"Warning flags. (.F indicates sol0 data, .I indicates one or more time gaps of 3 hours or more, .Cindicates a cross-midnight gap of 4 hours or more, IC indicates both .Iand .C conditions.)",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+vl_opac,SC_ID,Spacecraft id,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,CAMERA_ID,Viking Lander camera id,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,VIKING_YEAR,Viking mission year,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,MARTIAN_DAY,"The martian solar day (sol), starting at day 0 when each Lander touched down. A sol is 24 hours 39 minutes 35.25 seconds in Earth time.",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,LOCAL_HOUR,"Local hour (in Earth hours), beginning at midnight (hour 0).",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,LOCAL_MINUTE,Local minute (in earth minutes).,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,OPACITY,Atmospheric optical depth,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,OPACITY_FLAG,Opacity limitation flag,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,EARTH_DAY,"The fractional 1976 day number (Universal Time); for example, 1.5 represents noon, January 1, 1976 (UT).",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,SOL_LON,Areocentric longitude of the Sun.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,ERR_DIGITIZE,The uncertainty in optical depth due to digitization error in the brightness signal. -1 indicates no value.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,ERR_DEVIATE,The uncertainty in optical depth due to the deviation in the multiple measurements averaged to determine the observed solar intensity at the surface.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,ERR_VIGNET,The uncertainty in optical depth due to brightness loss in the Lander cameras resulting from vignetting. (-1 indicates no value.),https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,ERR_INTEN_0,The uncertainty in optical depth due to uncertainty in the determination of the observed solar intensity at the surface.,https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+vl_opac,ERR_TOTAL,"The total uncertainty in optical depth, taken as the root mean square of ERR_DEVIATE, ERR_VIGNET, and ERR_INTEN_O. ERR_DIGITIZE is excluded as it is implicit in ERR_DEVIATE. (-1 indicates no value.)",https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl

@@ -1,0 +1,45 @@
+<VRTDataset rasterXSize="304" rasterYSize="30839">
+  <Metadata/>
+  <VRTRasterBand dataType="Float32" band="1">
+	<Description>Reflectance1489</Description>
+	<Unit>summary parameter</Unit>
+	<NoDataValue></NoDataValue>
+
+    <Metadata/>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">M3G20090612T183813_V01_SUP.IMG</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="304" RasterYSize="30839" DataType="Float32" BlockXSize="304" BlockYSize="1"/>
+      <SrcRect xOff="0" yOff="0" xSize="304" ySize="30839"/>
+      <DstRect xOff="0" yOff="0" xSize="304" ySize="30839"/>
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Float32" band="2">
+	<Description>ThermalTempEst</Description>
+	<Unit>summary parameter</Unit>
+	<NoDataValue></NoDataValue>
+
+    <Metadata/>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">M3G20090612T183813_V01_SUP.IMG</SourceFilename>
+      <SourceBand>2</SourceBand>
+      <SourceProperties RasterXSize="304" RasterYSize="30839" DataType="Float32" BlockXSize="304" BlockYSize="1"/>
+      <SrcRect xOff="0" yOff="0" xSize="304" ySize="30839"/>
+      <DstRect xOff="0" yOff="0" xSize="304" ySize="30839"/>
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Float32" band="3">
+	<Description>RDN_BAND_84</Description>
+	<Unit>summary parameter</Unit>
+	<NoDataValue></NoDataValue>
+
+    <Metadata/>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">M3G20090612T183813_V01_SUP.IMG</SourceFilename>
+      <SourceBand>3</SourceBand>
+      <SourceProperties RasterXSize="304" RasterYSize="30839" DataType="Float32" BlockXSize="304" BlockYSize="1"/>
+      <SrcRect xOff="0" yOff="0" xSize="304" ySize="30839"/>
+      <DstRect xOff="0" yOff="0" xSize="304" ySize="30839"/>
+    </SimpleSource>
+  </VRTRasterBand>
+</VRTDataset>

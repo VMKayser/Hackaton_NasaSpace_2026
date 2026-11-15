@@ -1,0 +1,134 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      160.667,
+      -77.867,
+      1710.18
+    ]
+  },
+  "properties": {
+    "parameter": {
+      "ALLSKY_SFC_SW_DWN": {
+        "JAN": 8.1398,
+        "FEB": 4.8218,
+        "MAR": 1.7369,
+        "APR": 0.1488,
+        "MAY": 0.0,
+        "JUN": 0.0,
+        "JUL": 0.0,
+        "AUG": 0.0226,
+        "SEP": 0.8551,
+        "OCT": 3.5923,
+        "NOV": 7.4441,
+        "DEC": 9.2789,
+        "ANN": 2.9993
+      },
+      "PRECTOTCORR": {
+        "JAN": 0.44,
+        "FEB": 0.38,
+        "MAR": 0.27,
+        "APR": 0.4,
+        "MAY": 0.44,
+        "JUN": 0.43,
+        "JUL": 0.26,
+        "AUG": 0.43,
+        "SEP": 0.35,
+        "OCT": 0.48,
+        "NOV": 0.35,
+        "DEC": 0.47,
+        "ANN": 0.39
+      },
+      "T2M": {
+        "JAN": -19.29,
+        "FEB": -26.43,
+        "MAR": -35.08,
+        "APR": -38.85,
+        "MAY": -38.92,
+        "JUN": -40.33,
+        "JUL": -42.39,
+        "AUG": -41.51,
+        "SEP": -40.29,
+        "OCT": -34.58,
+        "NOV": -26.51,
+        "DEC": -19.54,
+        "ANN": -33.67
+      },
+      "T2M_MAX": {
+        "JAN": -10.08,
+        "FEB": -12.24,
+        "MAR": -19.02,
+        "APR": -20.3,
+        "MAY": -20.19,
+        "JUN": -21.95,
+        "JUL": -23.01,
+        "AUG": -21.77,
+        "SEP": -21.89,
+        "OCT": -19.16,
+        "NOV": -13.97,
+        "DEC": -8.59,
+        "ANN": -8.59
+      },
+      "T2M_MIN": {
+        "JAN": -29.91,
+        "FEB": -41.43,
+        "MAR": -51.57,
+        "APR": -54.58,
+        "MAY": -56.98,
+        "JUN": -59.47,
+        "JUL": -60.44,
+        "AUG": -59.25,
+        "SEP": -58.1,
+        "OCT": -52.22,
+        "NOV": -45.58,
+        "DEC": -31.9,
+        "ANN": -60.44
+      }
+    }
+  },
+  "header": {
+    "title": "NASA/POWER Source Native Resolution Climatology Climatologies",
+    "api": {
+      "version": "v2.10.1",
+      "name": "POWER Climatology API"
+    },
+    "sources": [
+      "SYN1DEG",
+      "MERRA2",
+      "POWER"
+    ],
+    "fill_value": -999.0,
+    "time_standard": "LST",
+    "range": "25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025)"
+  },
+  "messages": [
+    "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  ],
+  "parameters": {
+    "ALLSKY_SFC_SW_DWN": {
+      "units": "kW-hr/m^2/day",
+      "longname": "All Sky Surface Shortwave Downward Irradiance"
+    },
+    "PRECTOTCORR": {
+      "units": "mm/day",
+      "longname": "Precipitation Corrected"
+    },
+    "T2M": {
+      "units": "C",
+      "longname": "Temperature at 2 Meters"
+    },
+    "T2M_MAX": {
+      "units": "C",
+      "longname": "Temperature at 2 Meters Maximum"
+    },
+    "T2M_MIN": {
+      "units": "C",
+      "longname": "Temperature at 2 Meters Minimum"
+    }
+  },
+  "times": {
+    "data": 0.182,
+    "process": 0.04
+  }
+}

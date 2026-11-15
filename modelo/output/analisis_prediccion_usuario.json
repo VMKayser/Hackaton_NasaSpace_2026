@@ -1,0 +1,87 @@
+{
+  "input_earth_site": {
+    "name": "Ubicación Terrestre (-20.13°, -67.49°)",
+    "lat": -20.13,
+    "lon": -67.49,
+    "surface_description": "Salar Evaporítico & Cuenca Salina (inferido por proximidad a Salar de Uyuni) (50.0 km²)",
+    "elevation": 3670.0,
+    "terrain": 0.8,
+    "relief": 1.5,
+    "roughness": 0.35,
+    "temp": 8.5,
+    "temp_swing": 25.0,
+    "precip": 130.0,
+    "solar_flux": 24.2,
+    "uv_index": 22.0,
+    "atm_pressure": 64.34,
+    "geology": "salt_lake",
+    "minerals": [
+      "Halita (NaCl)",
+      "Yeso (CaSO4·2H2O)",
+      "Cloruro de Litio (LiCl)",
+      "Sulfato de Magnesio (MgSO4)",
+      "Ulexita (Borato de Na-Ca)"
+    ]
+  },
+  "assigned_cluster": {
+    "nombre": "Cluster 4: Planicies Salinas & Cuencas Evaporíticas Altiplánicas",
+    "centroide_representativo": "Salar de Uyuni / Salar de Coipasa",
+    "descripcion": "Planicies ultra-horizontales, costras masivas de halita, yeso y sales de litio/boro, hiperaridez y radiación UV extrema.",
+    "analogia_primaria": "Paleolagos salinos y planicies de sulfatos evaporíticos de Marte (Meridiani Planum, Cráter Jezero)."
+  },
+  "matched_target": {
+    "id": "meridiani_planum",
+    "name": "Meridiani Planum",
+    "body": "Marte",
+    "mission": "NASA MER-B / Rover Opportunity",
+    "lat": -2.05,
+    "lon": -5.5,
+    "elevation": -1200.0,
+    "terrain": 2.1,
+    "relief": 15.0,
+    "roughness": 1.2,
+    "temp": -52.0,
+    "temp_swing": 80.0,
+    "precip": 0.0,
+    "solar_flux": 10.2,
+    "atm_pressure": 0.68,
+    "geology": "hematite_plain",
+    "minerals": [
+      "Esférulas de hematita (\"blueberries\")",
+      "Jarosita",
+      "Yeso",
+      "Sulfatos hidratados"
+    ],
+    "summary": "Planicie eólica hiperplana con evidencias de aguas ácidas freáticas en el pasado marciano."
+  },
+  "similarity_breakdown": {
+    "psi_global_pct": 71.3,
+    "topography_pct": 89.3,
+    "climate_pct": 46.5,
+    "mineralogy_pct": 79.2,
+    "pca_cosine_pct": 44.0,
+    "pca_latent_distance": 0.777
+  },
+  "top_3_targets": [
+    {
+      "name": "Meridiani Planum",
+      "body": "Marte",
+      "psi": 71.3
+    },
+    {
+      "name": "Cráter Jezero",
+      "body": "Marte",
+      "psi": 52.7
+    },
+    {
+      "name": "Cráter Gusev (Colinas Columbia)",
+      "body": "Marte",
+      "psi": 51.5
+    }
+  ],
+  "mission_recommendations": [
+    "ROVER & NAVEGACIÓN AUTÓNOMA: Terreno plano ideal para ensayos de velocidad de crucero continuo y tracción sobre planicies de hematita.",
+    "ESPECTROSCOPÍA MÖSSBAUER & RAMAN: Calibrar instrumentos para distinguir entre hematita gris masiva, jarosita y yeso hidratado.",
+    "BATERÍAS & GENERACIÓN SOLAR: Probar degradación por polvo eólico sobre celdas solares en condiciones de alta irradiación."
+  ]
+}

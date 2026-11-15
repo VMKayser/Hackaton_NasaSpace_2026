@@ -6,13 +6,14 @@ dist
 .DS_Store
 .claude/settings.local.json
 
-# Large raw datasets and archives
+# Large raw datasets and archives (>100 MB)
 *.tif
 *.tiff
 *.tab
+*.TAB
+*.IMG
 *.rar
 *.zip
-datos/
-**/datos/
+*.crdownload
 __pycache__/
 .ipynb_checkpoints/

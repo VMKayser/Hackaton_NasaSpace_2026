@@ -1,0 +1,13 @@
+Elevación: 
+https://pgda.gsfc.nasa.gov/products/90
+Pendiente:
+https://pgda.gsfc.nasa.gov/products/90
+Rugosidad:
+https://pgda.gsfc.nasa.gov/products/90
+Iluminación
+https://pgda.gsfc.nasa.gov/products/69
+Temperatura:
+https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/
+
+
+Les paso datasets oficiales de NASA/PDS para estudiar Mons Mouton Plateau: elevación, pendiente, rugosidad, iluminación y sombra permanente, además de una tabla Diviner con temperaturas modeladas y estabilidad potencial de hielo. Las coordenadas están en la georreferenciación de los GeoTIFF y en columnas de Diviner. Los archivos cubren áreas polares mayores, así que hay que recortarlos a nuestra zona. Incluyo las etiquetas y definiciones de columnas. La estabilidad de hielo es una predicción del modelo, no una confirmación de hielo presente.

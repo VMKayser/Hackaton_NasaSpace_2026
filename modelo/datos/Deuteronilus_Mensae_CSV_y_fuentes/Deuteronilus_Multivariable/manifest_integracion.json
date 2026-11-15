@@ -1,0 +1,36 @@
+{
+  "radar": {
+    "ds02": {
+      "original_records": 3689,
+      "within_region": 2613
+    },
+    "ds03": {
+      "original_records": 29492,
+      "within_region": 23226
+    }
+  },
+  "radar_time_units_note": "Source README says ms; paper Table 1 and DIFF_PIX*0.0375 confirm microseconds. Original TIME_DEL retained; time_delay_us added.",
+  "mineral_rows": 480,
+  "mineral_coordinate_method": "0.5 degree cell centers, north-to-south, -180 to +180 east; reconstructed from source labeled global map, not embedded in ASCII/header.",
+  "mineral_orientation_validity_mask_agreement": {
+    "flip_0_roll_0": 0.9692476851851852,
+    "flip_0_roll_360": 0.9141936728395061,
+    "flip_1_roll_0": 0.7756905864197531,
+    "flip_1_roll_360": 0.7756828703703704
+  },
+  "mineral_nodata": -1,
+  "mineral_missing_rows": 28,
+  "master_rows": 469,
+  "master_columns": 64,
+  "master_local_LDA_2km_rows": 45,
+  "master_missing_terrain_rows": 2,
+  "master_missing_inertia_rows": 2,
+  "master_max_mineral_join_km": 27.434,
+  "master_max_dust_join_km": 125.647,
+  "validation": {
+    "radar_pixel_to_time_delay_all_consistent": true,
+    "master_ids_unique": true,
+    "master_climate_min_mean_max_ordered": true,
+    "mineral_orientation_checked_against_provider_map": true
+  }
+}

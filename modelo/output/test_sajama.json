@@ -1,0 +1,86 @@
+{
+  "input_earth_site": {
+    "name": "Ubicación Terrestre (-18.11°, -68.88°)",
+    "lat": -18.11,
+    "lon": -68.88,
+    "surface_description": "estratovolcan con azufre y pendientes abruptas de 25 grados",
+    "elevation": 6542.0,
+    "terrain": 26.0,
+    "relief": 1450.0,
+    "roughness": 18.5,
+    "temp": -8.8,
+    "temp_swing": 25.8,
+    "precip": 313.5,
+    "solar_flux": 25.1,
+    "uv_index": 22.0,
+    "atm_pressure": 43.78,
+    "geology": "volcanic_peak",
+    "minerals": [
+      "Andesita basáltica",
+      "Piroxeno (Augita)",
+      "Plagioclasa",
+      "Azufre elemental nativo",
+      "Magnetita"
+    ]
+  },
+  "assigned_cluster": {
+    "nombre": "Cluster 1: Complejos Volcánicos & Estratovolcanes Andinos",
+    "centroide_representativo": "Nevado Sajama / Licancabur",
+    "descripcion": "Altas cumbres andinas, pendientes pronunciadas, frío extremo nocturno, muy baja presión y litología andesítica/azufre.",
+    "analogia_primaria": "Cráteres polares lunares / Regiones de alta pendiente y volcanes de Marte (Olympus / Elysium)."
+  },
+  "matched_target": {
+    "id": "valles_marineris",
+    "name": "Valles Marineris (Cañón Marciano)",
+    "body": "Marte",
+    "mission": "Futuras Misiones Tripuladas de Exploración Profunda",
+    "lat": -13.9,
+    "lon": -59.2,
+    "elevation": -3800.0,
+    "terrain": 28.5,
+    "relief": 3500.0,
+    "roughness": 22.0,
+    "temp": -45.0,
+    "temp_swing": 75.0,
+    "precip": 0.0,
+    "solar_flux": 10.4,
+    "atm_pressure": 0.85,
+    "geology": "canyon_rift",
+    "minerals": [
+      "Capas de basalto estratificado",
+      "Sulfatos masivos",
+      "Óxidos de hierro",
+      "Silicatos"
+    ],
+    "summary": "El cañón más gigantesco del Sistema Solar (4,000 km longitud y 7 km profundidad). Máxima presión marciana."
+  },
+  "similarity_breakdown": {
+    "psi_global_pct": 65.4,
+    "topography_pct": 81.8,
+    "climate_pct": 73.6,
+    "mineralogy_pct": 36.7,
+    "pca_cosine_pct": 73.2,
+    "pca_latent_distance": 0.892
+  },
+  "top_3_targets": [
+    {
+      "name": "Valles Marineris (Cañón Marciano)",
+      "body": "Marte",
+      "psi": 65.4
+    },
+    {
+      "name": "Valle Taurus-Littrow (Apollo 17)",
+      "body": "Luna",
+      "psi": 62.8
+    },
+    {
+      "name": "Cráter Shackleton (Polo Sur Lunar)",
+      "body": "Luna",
+      "psi": 61.0
+    }
+  ],
+  "mission_recommendations": [
+    "Ensayos de supervivencia térmica con oscilación diurna extrema.",
+    "Simulaciones análogas de aislamiento de tripulaciones y teleoperaciones con retardo de señal de radio."
+  ]
+}

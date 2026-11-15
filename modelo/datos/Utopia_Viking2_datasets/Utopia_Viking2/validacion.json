@@ -1,0 +1,37 @@
+{
+  "rows_met": 24750,
+  "rows_opacity": 452,
+  "rows_pressure_daily": 1051,
+  "terrain_pixels": 549,
+  "unique_met_sol_bin": true,
+  "all_met_conversions_checked": true,
+  "temperature_valid_range_C": [
+    -123.88,
+    -25.73
+  ],
+  "pressure_valid_range_Pa": [
+    729.0,
+    1072.0
+  ],
+  "wind_valid_range_m_s": [
+    0.2,
+    23.2
+  ],
+  "temperature_flag_counts": {
+    "M": 1554,
+    "": 21152,
+    "S": 409,
+    "$": 1199,
+    "I": 436
+  },
+  "wind_flag_counts": {
+    "M": 1539,
+    "": 22787,
+    "S": 424
+  },
+  "opacity_flag_counts": {
+    "0": 400,
+    "1": 17,
+    "2": 35
+  }
+}

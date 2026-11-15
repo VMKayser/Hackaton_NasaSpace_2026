@@ -1,0 +1,2 @@
+﻿site_id,latitude_deg_approx,longitude_east_deg_approx,radius_m,n_mola_pixels,elevation_mean_m,elevation_min_m,elevation_max_m,regional_slope_mean_deg,regional_slope_max_deg,detrended_relief_rms_5km_m
+UTOPIA_VIKING2,47.64,134.29,5000,549,-4502.521,-4526.0,-4480.0,0.40824,1.69287,5.138

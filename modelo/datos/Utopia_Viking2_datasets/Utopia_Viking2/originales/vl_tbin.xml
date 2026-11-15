@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-model href="https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1      https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.xsd">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:vl_met:data:vl_tbin</logical_identifier>
+    <version_id>1.0</version_id>
+    <title>Binned Temperatures from Viking Landers</title>
+    <information_model_version>1.11.0.0</information_model_version>
+    <product_class>Product_Observational</product_class>
+    <Modification_History>
+      <Modification_Detail>
+        <modification_date>2018-07-03</modification_date>
+        <version_id>1.0</version_id>
+        <description>This label was modified to convert to PDS4.</description>
+      </Modification_Detail>
+    </Modification_History>
+  </Identification_Area>
+  <Observation_Area>
+    <Time_Coordinates>
+      <start_date_time>1976-07-20T00:00:00Z</start_date_time>
+      <stop_date_time>1982-11-13T00:00:00Z</stop_date_time>
+    </Time_Coordinates>
+    <Investigation_Area>
+      <name>Viking Lander</name>
+      <type>Mission</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:context:investigation:mission.viking</lid_reference>
+        <reference_type>data_to_investigation</reference_type>
+      </Internal_Reference>
+    </Investigation_Area>
+    <Observing_System>
+      <name>VL</name>
+      <Observing_System_Component>
+        <name>MET</name>
+        <type>Instrument</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument:met.vl1</lid_reference>
+          <reference_type>is_instrument</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>MET</name>
+        <type>Instrument</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument:met.vl2</lid_reference>
+          <reference_type>is_instrument</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>Viking Lander</name>
+        <type>Spacecraft</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.vl1</lid_reference>
+          <reference_type>is_instrument_host</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>Viking Lander</name>
+        <type>Spacecraft</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.vl2</lid_reference>
+          <reference_type>is_instrument_host</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+    </Observing_System>
+    <Target_Identification>
+      <name>Mars</name>
+      <type>Planet</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:context:target:planet.mars</lid_reference>
+        <reference_type>data_to_target</reference_type>
+      </Internal_Reference>
+    </Target_Identification>
+  </Observation_Area>
+  <File_Area_Observational>
+    <File>
+      <file_name>vl_tbin.dat</file_name>
+      <local_identifier>vl_tbin_file</local_identifier>
+      <records>25750</records>
+    </File>
+    <Table_Character>
+      <local_identifier>vl_tbin_table_character</local_identifier>
+      <offset unit="byte">0</offset>
+      <records>25750</records>
+      <description>This file was produced by the PDS Atmospheres node using PANDA from dataset VL1/VL2-M-MET-4-BINNED-P-T-V-V1.0 for user LEE on 13-Feb-1995 22:48:24.00 using the following SQL query against the Atmospheres database: SELECT DISTINCT * FROM MARS_VL_TBIN WHERE (SC_ID = 'VL1' OR   SC_ID = 'VL2') ORDER BY  SC_ID,  MARTIAN_DAY, LOCAL_HR_BIN</description>
+      <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+      <Record_Character>
+        <fields>27</fields>
+        <groups>0</groups>
+        <record_length unit="byte">149</record_length>
+        <Field_Character>
+          <name>SC_ID</name>
+          <field_location unit="byte">1</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">4</field_length>
+          <unit>ASCII_String</unit>
+          <description>Spacecraft id. VL1 : Viking Lander 1. VL2 : Viking Lander 2</description>
+        </Field_Character>
+        <Field_Character>
+          <name>VIKING_YEAR</name>
+          <field_location unit="byte">5</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">2</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Viking mission year</description>
+        </Field_Character>
+        <Field_Character>
+          <name>SOL_LON</name>
+          <field_location unit="byte">7</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">8</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Areocentric longitude of the sun corresponding to the local time.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>MARTIAN_DAY</name>
+          <field_location unit="byte">15</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">5</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Martian solar day (sol), starting at Day 0 when each Lander touched down. VL1: 1 - 45. VL2: 0 - 1050. Each Martian day is 24 hr 39 minutes 35.25 seconds in earth time.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>LOCAL_HR_BIN</name>
+          <field_location unit="byte">20</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Bin number</description>
+        </Field_Character>
+        <Field_Character>
+          <name>WND_TEM_TOT</name>
+          <field_location unit="byte">23</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">5</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Number of wind measurements in bin.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>WND_TMP_NLI</name>
+          <field_location unit="byte">28</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">5</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Number of wind measurements in bin not suffering from Lander interference.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_TOT</name>
+          <field_location unit="byte">33</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">5</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Number of recalibrated pressure points in bin.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>ZON_WND_MEAN</name>
+          <field_location unit="byte">38</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean zonal wind speed in bin (m/sec).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>ZON_WND_DEV</name>
+          <field_location unit="byte">44</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of bin zonal wind speed</description>
+        </Field_Character>
+        <Field_Character>
+          <name>MER_WND_MEAN</name>
+          <field_location unit="byte">50</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean meridional wind speed in bin (m/sec).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>MER_WND_DEV</name>
+          <field_location unit="byte">56</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of bin meridional wind speed.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>WIND_FLG</name>
+          <field_location unit="byte">62</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_String</unit>
+          <description>Warning flags: M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>WND_SPD_MEAN</name>
+          <field_location unit="byte">65</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean combined wind speed in bin (m/sec).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>WND_SPD_DEV</name>
+          <field_location unit="byte">71</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of bin combined wind speed.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_MEAN</name>
+          <field_location unit="byte">77</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean recalibrated pressure in bin (millibars).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_FLAG</name>
+          <field_location unit="byte">83</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_String</unit>
+          <description>Warning flags: M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TAMB_NLI_MN</name>
+          <field_location unit="byte">86</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean ambient temperature in bin (Kelvin). (No Lander interference experienced.)</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TAMB_NLI_DEV</name>
+          <field_location unit="byte">93</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of bin ambient temperature. (No Lander interference experienced).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>T_NLI_FLAG</name>
+          <field_location unit="byte">100</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_String</unit>
+          <description>Warning flags. M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TREF_NLI_MN</name>
+          <field_location unit="byte">103</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean reference temperature (Kelvin) in bin. (No Lander interference experienced.)</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TREF_NLI_DEV</name>
+          <field_location unit="byte">110</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of bin reference temperature. (No Lander interference experienced).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TAMB_INT_MN</name>
+          <field_location unit="byte">117</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean Lander interference effect on bin ambient temperature (Kelvin).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TAMB_INT_DEV</name>
+          <field_location unit="byte">124</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of Lander interference effect on bin ambient temperature.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>T_INT_FLAG</name>
+          <field_location unit="byte">131</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_String</unit>
+          <description>Warning flags. M indicates missing data; n indicates no data; I indicates Lander interference only; S indicates splined data; $ indicates splined due to Lander interference.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TREF_INT_MN</name>
+          <field_location unit="byte">134</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Mean Lander interference effect on bin reference temperature (Kelvin).</description>
+        </Field_Character>
+        <Field_Character>
+          <name>TREF_INT_DEV</name>
+          <field_location unit="byte">141</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of Lander interference effect on bin reference temperature.</description>
+        </Field_Character>
+      </Record_Character>
+    </Table_Character>
+  </File_Area_Observational>
+  <File_Area_Observational_Supplemental>
+    <File>
+      <file_name>vl_tbin.lbl</file_name>
+      <local_identifier>vl_tbin_pds3file</local_identifier>
+    </File>
+    <Stream_Text>
+      <local_identifier>vl_tbin_pds3file_stream</local_identifier>
+      <offset unit="byte">0</offset>
+      <parsing_standard_id>PDS3</parsing_standard_id>
+      <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+    </Stream_Text>
+  </File_Area_Observational_Supplemental>
+</Product_Observational>

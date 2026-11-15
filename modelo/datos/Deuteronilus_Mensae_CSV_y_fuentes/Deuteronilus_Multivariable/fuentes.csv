@@ -1,0 +1,22 @@
+﻿source_id,institucion,url,que_descargar_o_interpretar
+USGS_REGION,USGS / IAU,https://planetarynames.wr.usgs.gov/Feature/1509,"Contorno MDIM 2.1, red de control 25363. Coordenadas de Marte; no WGS84."
+MOLA,NASA PDS Geosciences,https://pds-geosciences.wustl.edu/missions/mgs/megdr.html,Topografía MOLA MEGDR 64 píxeles/grado.
+MOLA_ALT,NASA PDS Geosciences,https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megt90n000gb.img,megt90n000gb.img más .lbl/.xml del mismo nombre. Entero de 16 bits big endian; alturas en m.
+MOLA_COUNT,NASA PDS Geosciences,https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megc90n000gb.img,megc90n000gb.img más .lbl/.xml. Conteo por celda; cero indica interpolación.
+TES_TI,NASA PDS Geosciences,https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html,"Inercia térmica nocturna TES: producto de 2007, no temperatura de 2007."
+TES_TI_VALUES,NASA PDS Geosciences,https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_night_2007.img,global_ti_night_2007.img y .lbl. Entero big endian de 16 bits.
+TES_TI_MASK,NASA PDS Geosciences,https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_msk_night_2007.img,"global_ti_msk_night_2007.img y .lbl; máscara nativa 0=interpolado, 1=observado."
+MCD,LMD / OU / IAA / ESA / CNES,https://www-mars.lmd.jussieu.fr/mcd_python/,"MCD 6.2: temperatura superficial, presión, viento a 10 m y flujo solar; ASCII de 32 consultas archivados."
+MCD_METHOD_RIGHTS,LMD,https://www-mars.lmd.jussieu.fr/mars/access.html,"Descripción de interpolación, condiciones de uso y registro para versión completa."
+DUST,LMD / Mars dust climatology,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY36_v2-5.nc,Descargar dustscenario_MY36_v2-5.nc. Producto global NetCDF MY36 reconstruido a partir de MRO/MCS.
+TES_MINERALS,ASU / PDS TES node,https://tes.mars.asu.edu/products/,Apartado TES Mineral Maps: datos numéricos ASCII y no el TIFF coloreado.
+TES_MINERALS_VALUES,ASU / PDS TES node,https://tes.mars.asu.edu/mineral_map/TES_mineral_maps_2_ppd.ascii.gz,13 bandas en secuencia: 12 componentes y error RMS; rejilla global de 2 píxeles/grado.
+TES_MINERALS_HEADER,ASU / PDS TES node,https://tes.mars.asu.edu/mineral_map/TES_mineral_maps_2_ppd.envi.hdr,Dimensiones y orden BSQ. Cabecera genérica sin georreferencia útil.
+TES_MINERALS_ORIENTATION,ASU / PDS TES node,https://tes.mars.asu.edu/mineral_map/plagioclase_4_ppd_mola_label.tif,Mapa rotulado usado para reconstruir orientación del ASCII; no se extrajeron abundancias de colores.
+TES_MINERALS_REFERENCE,Bandfield 2002,https://doi.org/10.1029/2001JE001510,Referencia del método de composición mineral.
+SHARAD_DATA,Baker / NASA Goddard; Carter / University of Arizona,https://doi.org/10.5281/zenodo.7753745,"Dataset de autores con DOI; origen científico, no un CSV creado por NASA."
+SHARAD_DS01,Repositorio de autores / Zenodo,https://zenodo.org/records/7753745/files/ds01.txt?download=1,Inventario de radargramas; N no significa ausencia de hielo.
+SHARAD_DS02,Repositorio de autores / Zenodo,https://zenodo.org/records/7753745/files/ds02.zip?download=1,Reflectores de mantos en llanuras superiores. Original shapefile y tabla DBF.
+SHARAD_DS03,Repositorio de autores / Zenodo,https://zenodo.org/records/7753745/files/ds03.zip?download=1,Reflectores basales de depósitos lobulados LDA. Original shapefile y DBF.
+SHARAD_README,Repositorio de autores / Zenodo,https://zenodo.org/records/7753745/files/readme.txt?download=1,"Definición original de columnas, conservada en originales/SHARAD_readme.txt."
+SHARAD_REFERENCE,Baker y Carter 2023,https://doi.org/10.1029/2022JE007549,"Ice Content of Mantling Materials in Deuteronilus Mensae, Mars; referencia de interpretación y tiempo en microsegundos."

@@ -1,0 +1,28 @@
+{
+  "query_url": "https://www-mars.lmd.jussieu.fr/mcd_python/cgi-bin/mcdcgi.py?var1=tsurf&var2=ps&var3=wind&var4=fluxsurf_dn_sw&datekeyhtml=1&latitude=39+51&longitude=0+63&altitude=10&zkey=3&dust=1&hrkey=0&isfixedlt=on&averaging=off&animation=off&dpi=80&islog=off&colorm=jet&proj=cyl&iswind=off&betatest=on&ls=180&localtime=9",
+  "download_url": "https://www-mars.lmd.jussieu.fr/mcd_python/txt/328d888a9a328c3d115c7a700ce3e0be.txt",
+  "parameters": {
+    "var1": "tsurf",
+    "var2": "ps",
+    "var3": "wind",
+    "var4": "fluxsurf_dn_sw",
+    "datekeyhtml": "1",
+    "latitude": "39 51",
+    "longitude": "0 63",
+    "altitude": "10",
+    "zkey": "3",
+    "dust": "1",
+    "hrkey": "0",
+    "isfixedlt": "on",
+    "averaging": "off",
+    "animation": "off",
+    "dpi": "80",
+    "islog": "off",
+    "colorm": "jet",
+    "proj": "cyl",
+    "iswind": "off",
+    "betatest": "on",
+    "ls": "180",
+    "localtime": "9"
+  }
+}

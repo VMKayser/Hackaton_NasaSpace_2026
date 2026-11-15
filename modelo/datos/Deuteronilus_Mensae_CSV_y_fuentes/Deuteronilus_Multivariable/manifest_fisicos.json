@@ -1,0 +1,61 @@
+{
+  "boundary_source": "https://planetarynames.wr.usgs.gov/Feature/1509",
+  "bbox": [
+    13.67759895324707,
+    39.57393836975098,
+    35.37133979797363,
+    49.86221122741699
+  ],
+  "mola_rows": 492291,
+  "mola_observed_cells": 278034,
+  "mola_interpolated_cells": 214257,
+  "mola_elevation_min_m": -5075,
+  "mola_elevation_max_m": -1233,
+  "mola_sources": [
+    "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megt90n000gb.img",
+    "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megc90n000gb.img"
+  ],
+  "mola_native_rows_with_halo": [
+    2565,
+    3230
+  ],
+  "mola_native_columns_with_halo": [
+    872,
+    2266
+  ],
+  "mola_source_cache_rows": [
+    1651,
+    3591
+  ],
+  "mola_grid_samples_per_row": 11520,
+  "tes_rows": 48082,
+  "tes_sources": [
+    "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_night_2007.img",
+    "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_msk_night_2007.img"
+  ],
+  "tes_source_cache_rows": [
+    516,
+    1122
+  ],
+  "tes_native_rows": [
+    802,
+    1008
+  ],
+  "tes_native_columns": [
+    3873,
+    4307
+  ],
+  "dust_cells": 15,
+  "dust_rows": 10035,
+  "dust_source": "https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY36_v2-5.nc",
+  "validation": {
+    "all_mola_csv_rows_match_native_values": true,
+    "coordinates_checked": true,
+    "roughness_checked_against_30_least_squares_fits": true
+  },
+  "sha256": {
+    "terreno_MOLA_variables.csv": "2426e3a1458d13bfe6c8a17adcdcae3172a2607061ffc2b5481927d987b758ec",
+    "inercia_termica_TES.csv": "8927f8cdb9f04fe668cb61ea31baeb73c4d82e8f9b4de0ed954dfc707ca74b79",
+    "polvo_MY36_diario.csv": "e4ad116522d8d389c32f8e5a1f6573049d117c11362d0be2bc793ffab92ac12d"
+  }
+}

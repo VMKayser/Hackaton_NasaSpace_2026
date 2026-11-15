@@ -1,0 +1,91 @@
+{
+  "created_utc": "2026-11-15T00:21:01.415948+00:00",
+  "source_radar_MD5_matches_Zenodo": true,
+  "physical_checks": {
+    "all_mola_csv_rows_match_native_values": true,
+    "coordinates_checked": true,
+    "roughness_checked_against_30_least_squares_fits": true
+  },
+  "integration_checks": {
+    "radar_pixel_to_time_delay_all_consistent": true,
+    "master_ids_unique": true,
+    "master_climate_min_mean_max_ordered": true,
+    "mineral_orientation_checked_against_provider_map": true
+  },
+  "master_rows": 469,
+  "master_columns": 64,
+  "files": {
+    "clima_MCD_muestreo_estacional.csv": {
+      "rows": 15008,
+      "columns": 10,
+      "bytes": 1174299,
+      "sha256": "961472aea5cea247714f23e213a45ff2a5e7f6e2c4c8499a295c00a591142431"
+    },
+    "clima_MCD_resumen_muestreo.csv": {
+      "rows": 469,
+      "columns": 15,
+      "bytes": 66519,
+      "sha256": "ea7af5b1fd78828682a632c495197cbeefa8fcd5185f94ab64920a1b0c089d86"
+    },
+    "Deuteronilus_modelo.csv": {
+      "rows": 469,
+      "columns": 64,
+      "bytes": 318899,
+      "sha256": "0409efafa3068501cce7fb0ae5da9e9614da1242d4f5883f617a29c6c711cdc8"
+    },
+    "diccionario_variables.csv": {
+      "rows": 190,
+      "columns": 4,
+      "bytes": 24892,
+      "sha256": "0bd7a958c5f09306238e5ee3fecad8188d70f9780eabfd1640d3acba43f1d2d3"
+    },
+    "fuentes.csv": {
+      "rows": 21,
+      "columns": 4,
+      "bytes": 3890,
+      "sha256": "412fb0a81d6bf2c785b1a553506e94a5615630953b9d303fd92fd6e29731636d"
+    },
+    "inercia_termica_TES.csv": {
+      "rows": 48082,
+      "columns": 5,
+      "bytes": 2067569,
+      "sha256": "8927f8cdb9f04fe668cb61ea31baeb73c4d82e8f9b4de0ed954dfc707ca74b79"
+    },
+    "minerales_TES.csv": {
+      "rows": 480,
+      "columns": 18,
+      "bytes": 73984,
+      "sha256": "a313b7440dfe60db0971a265c60824d18e328ff6cf545b7802454932060aa319"
+    },
+    "polvo_MY36_diario.csv": {
+      "rows": 10035,
+      "columns": 9,
+      "bytes": 1089800,
+      "sha256": "e4ad116522d8d389c32f8e5a1f6573049d117c11362d0be2bc793ffab92ac12d"
+    },
+    "polvo_MY36_resumen.csv": {
+      "rows": 15,
+      "columns": 8,
+      "bytes": 1501,
+      "sha256": "8f2689c16ef59011c8080652cb004d47bd2be462f572b2cb2c903c7ed05562a5"
+    },
+    "radar_SHARAD_ds02.csv": {
+      "rows": 2613,
+      "columns": 24,
+      "bytes": 563428,
+      "sha256": "1d6fa30448600bbc4fdd645c1f268cf550a96a2b015dbbeee84e95608dbd6fc0"
+    },
+    "radar_SHARAD_ds03.csv": {
+      "rows": 23226,
+      "columns": 26,
+      "bytes": 5398706,
+      "sha256": "3498867f1ba8d797bbf853e0f465f8f8a5e5a3a9391b81b488094040a67d7eb6"
+    },
+    "terreno_MOLA_variables.csv": {
+      "rows": 492291,
+      "columns": 11,
+      "bytes": 44259225,
+      "sha256": "2426e3a1458d13bfe6c8a17adcdcae3172a2607061ffc2b5481927d987b758ec"
+    }
+  }
+}

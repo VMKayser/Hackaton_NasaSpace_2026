@@ -1,0 +1,191 @@
+﻿archivo,columna,unidad,descripcion
+clima_MCD_muestreo_estacional.csv,climate_point_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+clima_MCD_muestreo_estacional.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+clima_MCD_muestreo_estacional.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+clima_MCD_muestreo_estacional.csv,ls_deg,grados,Longitud solar areocéntrica; indica estación marciana.
+clima_MCD_muestreo_estacional.csv,local_solar_time_h,horas solares locales,"Hora de consulta, igual en todas las longitudes."
+clima_MCD_muestreo_estacional.csv,surface_temperature_C,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_muestreo_estacional.csv,surface_pressure_Pa,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_muestreo_estacional.csv,wind_speed_10m_m_s,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+clima_MCD_muestreo_estacional.csv,solar_flux_horizontal_W_m2,W/m²,Flujo solar descendente horizontal MCD.
+clima_MCD_muestreo_estacional.csv,data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+clima_MCD_resumen_muestreo.csv,climate_point_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+clima_MCD_resumen_muestreo.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+clima_MCD_resumen_muestreo.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+clima_MCD_resumen_muestreo.csv,n_samples,conteo,32 combinaciones estacionales/horarias MCD por ubicación.
+clima_MCD_resumen_muestreo.csv,surface_temperature_C_min_sampled,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_resumen_muestreo.csv,surface_temperature_C_mean_sampled,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_resumen_muestreo.csv,surface_temperature_C_max_sampled,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_resumen_muestreo.csv,surface_pressure_Pa_min_sampled,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_resumen_muestreo.csv,surface_pressure_Pa_mean_sampled,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_resumen_muestreo.csv,surface_pressure_Pa_max_sampled,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+clima_MCD_resumen_muestreo.csv,wind_speed_10m_m_s_min_sampled,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+clima_MCD_resumen_muestreo.csv,wind_speed_10m_m_s_mean_sampled,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+clima_MCD_resumen_muestreo.csv,wind_speed_10m_m_s_max_sampled,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+clima_MCD_resumen_muestreo.csv,solar_positive_sample_pct,% de 32 muestras,Fracción de consultas con flujo positivo; NO iluminación continua.
+clima_MCD_resumen_muestreo.csv,data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,climate_point_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+Deuteronilus_modelo.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+Deuteronilus_modelo.csv,n_samples,conteo,32 combinaciones estacionales/horarias MCD por ubicación.
+Deuteronilus_modelo.csv,surface_temperature_C_min_sampled,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+Deuteronilus_modelo.csv,surface_temperature_C_mean_sampled,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+Deuteronilus_modelo.csv,surface_temperature_C_max_sampled,°C,Temperatura superficial MCD; resumen de 32 muestras si incluye sampled.
+Deuteronilus_modelo.csv,surface_pressure_Pa_min_sampled,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+Deuteronilus_modelo.csv,surface_pressure_Pa_mean_sampled,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+Deuteronilus_modelo.csv,surface_pressure_Pa_max_sampled,Pa,Presión superficial MCD; resumen de 32 muestras si incluye sampled.
+Deuteronilus_modelo.csv,wind_speed_10m_m_s_min_sampled,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+Deuteronilus_modelo.csv,wind_speed_10m_m_s_mean_sampled,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+Deuteronilus_modelo.csv,wind_speed_10m_m_s_max_sampled,m/s,Velocidad horizontal del viento MCD a 10 m del suelo.
+Deuteronilus_modelo.csv,solar_positive_sample_pct,% de 32 muestras,Fracción de consultas con flujo positivo; NO iluminación continua.
+Deuteronilus_modelo.csv,climate_data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,solar_illumination_percent_continuous_period,%,No calculado; columna vacía intencionalmente.
+Deuteronilus_modelo.csv,solar_illumination_status,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,terrain_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,terrain_match_distance_km,km,"Distancia aproximada a la celda/medición asociada, no una propiedad del terreno."
+Deuteronilus_modelo.csv,elevation_m,m respecto al areoide,"Topografía/altura relativa al datum MOLA, no al mar terrestre."
+Deuteronilus_modelo.csv,mola_observation_count,conteo fuente,Cero indica interpolación nativa MOLA.
+Deuteronilus_modelo.csv,interpolated,bandera o conteo,1=interpolado; campo cells_in_5x5 cuenta celdas interpoladas de la ventana.
+Deuteronilus_modelo.csv,slope_deg,grados,Pendiente calculada de MOLA; mean/max corresponde a ventana 5x5.
+Deuteronilus_modelo.csv,slope_mean_5x5_deg,grados,Pendiente calculada de MOLA; mean/max corresponde a ventana 5x5.
+Deuteronilus_modelo.csv,slope_max_5x5_deg,grados,Pendiente calculada de MOLA; mean/max corresponde a ventana 5x5.
+Deuteronilus_modelo.csv,detrended_roughness_rms_5x5_m,m,RMS residual de elevaciones tras ajuste de plano 5x5.
+Deuteronilus_modelo.csv,interpolated_cells_in_5x5,bandera o conteo,1=interpolado; campo cells_in_5x5 cuenta celdas interpoladas de la ventana.
+Deuteronilus_modelo.csv,tes_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,thermal_inertia_J_m2_K_s05,J m^-2 K^-1 s^-1/2,Inercia térmica nocturna TES derivada.
+Deuteronilus_modelo.csv,thermal_inertia_interpolated,bandera o conteo,1=interpolado; campo cells_in_5x5 cuenta celdas interpoladas de la ventana.
+Deuteronilus_modelo.csv,thermal_inertia_match_distance_km,km,"Distancia aproximada a la celda/medición asociada, no una propiedad del terreno."
+Deuteronilus_modelo.csv,dust_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,dust_match_distance_km,km,"Distancia aproximada a la celda/medición asociada, no una propiedad del terreno."
+Deuteronilus_modelo.csv,dust_mars_year,año marciano,MY36; diferente del escenario climatológico MCD.
+Deuteronilus_modelo.csv,dust_n_valid_sols,soles o conteo,Día marciano del año o número de soles válidos según nombre.
+Deuteronilus_modelo.csv,dust_optical_depth_9p3um_min,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+Deuteronilus_modelo.csv,dust_optical_depth_9p3um_mean,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+Deuteronilus_modelo.csv,dust_optical_depth_9p3um_max,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+Deuteronilus_modelo.csv,mineral_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,mineral_match_distance_km,km,"Distancia aproximada a la celda/medición asociada, no una propiedad del terreno."
+Deuteronilus_modelo.csv,mineral_quartz_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_K_feldspar_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_plagioclase_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_amphibole_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_low_Ca_pyroxene_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_high_Ca_pyroxene_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_olivine_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_hematite_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_sulfates_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_carbonates_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_sheet_silicates_high_Si_glass_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_surface_dust_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+Deuteronilus_modelo.csv,mineral_spectral_RMS_error,unidad espectral fuente,Error RMS del ajuste espectral TES.
+Deuteronilus_modelo.csv,mineral_any_missing,bandera 0/1,Control de calidad de minerales; 1 indica la condición nombrada.
+Deuteronilus_modelo.csv,mineral_any_abundance_gt_1,bandera 0/1,Control de calidad de minerales; 1 indica la condición nombrada.
+Deuteronilus_modelo.csv,nearest_LDA_distance_km,km,"Distancia aproximada a la celda/medición asociada, no una propiedad del terreno."
+Deuteronilus_modelo.csv,local_ice_evidence_status,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,local_LDA_radar_point_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,local_LDA_conditional_depth_m_epsilon3p15,m,Profundidad inferida con permitividad indicada; no medición por perforación.
+Deuteronilus_modelo.csv,terrain_data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,thermal_inertia_data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,mineral_data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,dust_data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+Deuteronilus_modelo.csv,ice_data_type,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+inercia_termica_TES.csv,tes_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+inercia_termica_TES.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+inercia_termica_TES.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+inercia_termica_TES.csv,thermal_inertia_J_m2_K_s05,J m^-2 K^-1 s^-1/2,Inercia térmica nocturna TES derivada.
+inercia_termica_TES.csv,interpolated,bandera o conteo,1=interpolado; campo cells_in_5x5 cuenta celdas interpoladas de la ventana.
+minerales_TES.csv,mineral_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+minerales_TES.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+minerales_TES.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+minerales_TES.csv,quartz_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,K_feldspar_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,plagioclase_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,amphibole_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,low_Ca_pyroxene_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,high_Ca_pyroxene_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,olivine_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,hematite_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,sulfates_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,carbonates_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,sheet_silicates_high_Si_glass_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,surface_dust_source_fraction,fracción fuente,Componente de mezcla espectral TES; no porcentaje en masa; vacío sustituye -1.
+minerales_TES.csv,spectral_RMS_error,unidad espectral fuente,Error RMS del ajuste espectral TES.
+minerales_TES.csv,any_missing,bandera 0/1,Control de calidad de minerales; 1 indica la condición nombrada.
+minerales_TES.csv,any_abundance_gt_1,bandera 0/1,Control de calidad de minerales; 1 indica la condición nombrada.
+polvo_MY36_diario.csv,dust_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+polvo_MY36_diario.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+polvo_MY36_diario.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+polvo_MY36_diario.csv,mars_year,año marciano,MY36; diferente del escenario climatológico MCD.
+polvo_MY36_diario.csv,sol_of_year,soles o conteo,Día marciano del año o número de soles válidos según nombre.
+polvo_MY36_diario.csv,ls_deg,grados,Longitud solar areocéntrica; indica estación marciana.
+polvo_MY36_diario.csv,optical_depth_9p3um,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+polvo_MY36_diario.csv,optical_depth_9p3um_normalized_610Pa,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+polvo_MY36_diario.csv,reliability_source_value,índice fuente,"Valor original de confiabilidad de reconstrucción de polvo, sin reclasificar."
+polvo_MY36_resumen.csv,dust_cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+polvo_MY36_resumen.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+polvo_MY36_resumen.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+polvo_MY36_resumen.csv,mars_year,año marciano,MY36; diferente del escenario climatológico MCD.
+polvo_MY36_resumen.csv,n_valid_sols,soles o conteo,Día marciano del año o número de soles válidos según nombre.
+polvo_MY36_resumen.csv,optical_depth_9p3um_min,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+polvo_MY36_resumen.csv,optical_depth_9p3um_mean,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+polvo_MY36_resumen.csv,optical_depth_9p3um_max,adimensional,Opacidad de absorción a 9.3 µm; sufijo 610Pa identifica normalización.
+radar_SHARAD_ds02.csv,radar_point_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds02.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+radar_SHARAD_ds02.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+radar_SHARAD_ds02.csv,reflector_class,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds02.csv,source_dataset,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds02.csv,time_delay_us,microsegundos,Retardo radar de ida y vuelta; unidad corregida en time_delay_us; ver discrepancia en README.
+radar_SHARAD_ds02.csv,LATITUDE,grados planetocéntricos,Latitud marciana; positiva norte.
+radar_SHARAD_ds02.csv,LONGITUDE,grados E,Longitud marciana positiva este.
+radar_SHARAD_ds02.csv,SURF_X,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds02.csv,SURF_Y,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds02.csv,SURF_P,unidad fuente,Potencia original del reflector.
+radar_SHARAD_ds02.csv,SUBSURF_X,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds02.csv,SUBSURF_Y,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds02.csv,SUBSURF_P,unidad fuente,Potencia original del reflector.
+radar_SHARAD_ds02.csv,ELEV,m respecto al areoide,"Topografía/altura relativa al datum MOLA, no al mar terrestre."
+radar_SHARAD_ds02.csv,NUM,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds02.csv,ROOT,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds02.csv,DIFF_PIX,píxeles de radargrama,Separación entre reflectores; cada píxel corresponde a 0.0375 µs.
+radar_SHARAD_ds02.csv,dB_SURF_P,dB,Potencia radar o diferencia de potencia según SHARAD_readme.txt.
+radar_SHARAD_ds02.csv,dB_SUBSF_P,dB,Potencia radar o diferencia de potencia según SHARAD_readme.txt.
+radar_SHARAD_ds02.csv,dB_DIFF,dB,Potencia radar o diferencia de potencia según SHARAD_readme.txt.
+radar_SHARAD_ds02.csv,TIME_DEL,microsegundos,Retardo radar de ida y vuelta; unidad corregida en time_delay_us; ver discrepancia en README.
+radar_SHARAD_ds02.csv,DEPTH_5p75,m,Profundidad inferida con permitividad indicada; no medición por perforación.
+radar_SHARAD_ds02.csv,SITE_ID,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds03.csv,radar_point_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds03.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+radar_SHARAD_ds03.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+radar_SHARAD_ds03.csv,reflector_class,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds03.csv,source_dataset,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds03.csv,time_delay_us,microsegundos,Retardo radar de ida y vuelta; unidad corregida en time_delay_us; ver discrepancia en README.
+radar_SHARAD_ds03.csv,LATITUDE,grados planetocéntricos,Latitud marciana; positiva norte.
+radar_SHARAD_ds03.csv,LONGITUDE,grados E,Longitud marciana positiva este.
+radar_SHARAD_ds03.csv,SURF_X,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds03.csv,SURF_Y,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds03.csv,SURF_P,unidad fuente,Potencia original del reflector.
+radar_SHARAD_ds03.csv,SUBSURF_X,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds03.csv,SUBSURF_Y,píxeles de radargrama,"Coordenada en imagen radar, no longitud/latitud."
+radar_SHARAD_ds03.csv,SUBSURF_P,unidad fuente,Potencia original del reflector.
+radar_SHARAD_ds03.csv,ELEV,m respecto al areoide,"Topografía/altura relativa al datum MOLA, no al mar terrestre."
+radar_SHARAD_ds03.csv,NUM,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds03.csv,ROOT,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+radar_SHARAD_ds03.csv,DIFF_PIX,píxeles de radargrama,Separación entre reflectores; cada píxel corresponde a 0.0375 µs.
+radar_SHARAD_ds03.csv,dB_SURF_P,dB,Potencia radar o diferencia de potencia según SHARAD_readme.txt.
+radar_SHARAD_ds03.csv,dB_SUBSF_P,dB,Potencia radar o diferencia de potencia según SHARAD_readme.txt.
+radar_SHARAD_ds03.csv,dB_DIFF,dB,Potencia radar o diferencia de potencia según SHARAD_readme.txt.
+radar_SHARAD_ds03.csv,TIME_DEL,microsegundos,Retardo radar de ida y vuelta; unidad corregida en time_delay_us; ver discrepancia en README.
+radar_SHARAD_ds03.csv,LOSS_dB_us,dB/us o dB/m según nombre,Valor original del producto radar; no se modificó el signo.
+radar_SHARAD_ds03.csv,LOSS_dB_m,dB/us o dB/m según nombre,Valor original del producto radar; no se modificó el signo.
+radar_SHARAD_ds03.csv,THK_3p15,m,Profundidad inferida con permitividad indicada; no medición por perforación.
+radar_SHARAD_ds03.csv,ELEV_SUBSF,m respecto al areoide,"Topografía/altura relativa al datum MOLA, no al mar terrestre."
+terreno_MOLA_variables.csv,cell_id,texto/identificador o valor fuente,"Identificador, estado, clase o dato fuente; consultar README y SHARAD_readme.txt para campos radar."
+terreno_MOLA_variables.csv,latitude_deg,grados planetocéntricos,Latitud marciana; positiva norte.
+terreno_MOLA_variables.csv,longitude_east_deg,grados E,Longitud marciana positiva este.
+terreno_MOLA_variables.csv,elevation_m,m respecto al areoide,"Topografía/altura relativa al datum MOLA, no al mar terrestre."
+terreno_MOLA_variables.csv,mola_observation_count,conteo fuente,Cero indica interpolación nativa MOLA.
+terreno_MOLA_variables.csv,interpolated,bandera o conteo,1=interpolado; campo cells_in_5x5 cuenta celdas interpoladas de la ventana.
+terreno_MOLA_variables.csv,slope_deg,grados,Pendiente calculada de MOLA; mean/max corresponde a ventana 5x5.
+terreno_MOLA_variables.csv,slope_mean_5x5_deg,grados,Pendiente calculada de MOLA; mean/max corresponde a ventana 5x5.
+terreno_MOLA_variables.csv,slope_max_5x5_deg,grados,Pendiente calculada de MOLA; mean/max corresponde a ventana 5x5.
+terreno_MOLA_variables.csv,detrended_roughness_rms_5x5_m,m,RMS residual de elevaciones tras ajuste de plano 5x5.
+terreno_MOLA_variables.csv,interpolated_cells_in_5x5,bandera o conteo,1=interpolado; campo cells_in_5x5 cuenta celdas interpoladas de la ventana.

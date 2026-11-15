@@ -1,0 +1,27 @@
+[
+  {
+    "url": "https://zenodo.org/records/7753745/files/ds01.txt?download=1",
+    "file": "SHARAD_ds01.txt",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://zenodo.org/records/7753745/files/ds02.zip?download=1",
+    "file": "SHARAD_ds02.zip",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://zenodo.org/records/7753745/files/ds03.zip?download=1",
+    "file": "SHARAD_ds03.zip",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://tes.mars.asu.edu/mineral_map/TES_mineral_maps_2_ppd.ascii.gz",
+    "file": "TES_mineral_maps_2_ppd.ascii.gz",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://tes.mars.asu.edu/mineral_map/TES_mineral_maps_2_ppd.envi.hdr",
+    "file": "TES_mineral_maps_2_ppd.envi.hdr",
+    "status": "downloaded"
+  }
+]

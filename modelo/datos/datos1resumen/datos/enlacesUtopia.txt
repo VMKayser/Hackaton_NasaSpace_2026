@@ -1,0 +1,42 @@
+Estos son los enlaces completos para copiar y pegar.
+
+Meteorología: temperatura del aire, presión y viento
+https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/surface_met.html
+Datos originales:
+https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.dat
+Descripción de columnas y unidades:
+https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl
+Presión diaria
+https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/sol_avg_sur_press_data.html
+Datos originales:
+https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.dat
+Descripción de columnas:
+https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl
+Opacidad atmosférica
+https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/atm_opacity.html
+Datos originales:
+https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.dat
+Descripción de columnas:
+https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl
+Elevación MOLA, utilizada también para calcular pendiente y relieve residual
+
+Documentación:
+https://pds-geosciences.wustl.edu/missions/mgs/megdr.html
+Archivo numérico:
+https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg128/megt88n090hb.img
+Etiqueta del archivo:
+https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg128/megt88n090hb.lbl
+Inercia térmica TES
+
+Documentación:
+https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html
+Archivo numérico:
+https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_night_2007.img
+Etiqueta:
+https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_night_2007.lbl
+Máscara de interpolación:
+https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_msk_night_2007.img
+Etiqueta de la máscara:
+https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_msk_night_2007.lbl
+NASA: misión Viking y coordenadas de Viking 2
+https://science.nasa.gov/mission/viking/

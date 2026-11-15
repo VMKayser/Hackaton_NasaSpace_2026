@@ -1,0 +1,20 @@
+{
+  "name": "hackaton_nasaspace_2026",
+  "version": "1.0.0",
+  "description": "Este repositorio implementa el **pipeline de procesamiento de datos científicos planetarios y síntesis de terrenos 3D** para el NASA Space Apps Challenge.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VMKayser/Hackaton_NasaSpace_2026.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/issues"
+  },
+  "homepage": "https://github.com/VMKayser/Hackaton_NasaSpace_2026#readme"
+}

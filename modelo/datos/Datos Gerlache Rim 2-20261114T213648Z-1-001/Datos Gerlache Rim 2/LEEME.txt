@@ -1,0 +1,25 @@
+LINKS: 
+Latitud, longitud, elevación, inclinación:(buscar: de Gerlache Rim 2)
+https://www.nasa.gov/learning-resources/app-development-challenge/2023-handbook-and-coding-components/
+
+Temperatura: (buscar: los primeros tres archivos) 
+https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/diurnal/ltim/pols/
+
+Datos de de Gerlache Rim 2
+
+Este paquete contiene datos lunares de NASA para caracterizar el terreno y su ambiente térmico.
+- Latitude y Longitude: coordenadas en grados.
+- Height: elevación del terreno en metros respecto de una referencia lunar.
+- Slope: inclinación del terreno en grados.
+Cada ZIP contiene un CSV organizado como una matriz numérica, sin encabezados en las primeras filas revisadas. Conservar el orden de filas y columnas y comprobar que las cuatro matrices tengan iguales dimensiones antes de relacionarlas.
+
+Diviner:
+- .tab: tabla con columnas x, y, clon —longitud—, clat —latitud— y tbol —temperatura en kelvin—.
+- .lbl y .xml: documentación y metadatos.
+El producto térmico representa verano austral, hora local lunar 0–0,25 y grilla de 240 m, con observaciones acumuladas de 2009–2019. Cubre el polo sur: hay que seleccionar la zona de de Gerlache Rim 2. No representa su ciclo térmico completo.
+
+La imagen del mapa sirve como referencia visual.
+
+Antes de comparar: verificar resolución y valores inválidos. Unir terreno y temperatura por ubicación, no por número de fila.
+
+

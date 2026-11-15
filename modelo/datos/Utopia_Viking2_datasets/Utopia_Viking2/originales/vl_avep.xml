@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-model href="https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Observational xmlns="http://pds.nasa.gov/pds4/pds/v1" xmlns:pds="http://pds.nasa.gov/pds4/pds/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1      https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1B00.xsd">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:vl_met:data:vl_avep</logical_identifier>
+    <version_id>1.0</version_id>
+    <title>Average Pressure for Viking Landers</title>
+    <information_model_version>1.11.0.0</information_model_version>
+    <product_class>Product_Observational</product_class>
+    <Modification_History>
+      <Modification_Detail>
+        <modification_date>2018-07-03</modification_date>
+        <version_id>1.0</version_id>
+        <description>This label was modified to convert to PDS4.</description>
+      </Modification_Detail>
+    </Modification_History>
+  </Identification_Area>
+  <Observation_Area>
+    <Time_Coordinates>
+      <start_date_time>1976-07-20T00:00:00Z</start_date_time>
+      <stop_date_time>1982-11-13T00:00:00Z</stop_date_time>
+    </Time_Coordinates>
+    <Investigation_Area>
+      <name>Viking Lander</name>
+      <type>Mission</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:context:investigation:mission.viking</lid_reference>
+        <reference_type>data_to_investigation</reference_type>
+      </Internal_Reference>
+    </Investigation_Area>
+    <Observing_System>
+      <name>VL</name>
+      <Observing_System_Component>
+        <name>MET</name>
+        <type>Instrument</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument:met.vl1</lid_reference>
+          <reference_type>is_instrument</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>MET</name>
+        <type>Instrument</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument:met.vl2</lid_reference>
+          <reference_type>is_instrument</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>Viking Lander</name>
+        <type>Spacecraft</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.vl1</lid_reference>
+          <reference_type>is_instrument_host</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+      <Observing_System_Component>
+        <name>Viking Lander</name>
+        <type>Spacecraft</type>
+        <Internal_Reference>
+          <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.vl2</lid_reference>
+          <reference_type>is_instrument_host</reference_type>
+        </Internal_Reference>
+      </Observing_System_Component>
+    </Observing_System>
+    <Target_Identification>
+      <name>Mars</name>
+      <type>Planet</type>
+      <Internal_Reference>
+        <lid_reference>urn:nasa:pds:context:target:planet.mars</lid_reference>
+        <reference_type>data_to_target</reference_type>
+      </Internal_Reference>
+    </Target_Identification>
+  </Observation_Area>
+  <File_Area_Observational>
+    <File>
+      <file_name>vl_avep.dat</file_name>
+      <local_identifier>vl_avep_file</local_identifier>
+      <records>3297</records>
+    </File>
+    <Table_Character>
+      <local_identifier>vl_avep_table_character</local_identifier>
+      <offset unit="byte">0</offset>
+      <records>3297</records>
+      <description>This file was produced by the PDS Atmospheres node using PANDA from dataset VL1/VL2-M-MET-4-DAILY-AVG-PRESSURE-V1.0 for user LEE on 13-Feb-1995 21:37:35.00 using the following SQL query against the Atmospheres database: SELECT DISTINCT * FROM MARS_VL_AVEP WHERE (SC_ID = 'VL1' OR   SC_ID = 'VL2') ORDER BY  SC_ID,  MARTIAN_DAY</description>
+      <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+      <Record_Character>
+        <fields>17</fields>
+        <groups>0</groups>
+        <record_length unit="byte">89</record_length>
+        <Field_Character>
+          <name>SC_ID</name>
+          <field_location unit="byte">1</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">5</field_length>
+          <unit>ASCII_String</unit>
+          <description>Spacecraft id. VL1 : Viking Lander 1. VL2 : Viking Lander 2</description>
+        </Field_Character>
+        <Field_Character>
+          <name>VIKING_YEAR</name>
+          <field_location unit="byte">6</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">2</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Viking mission year (1 -4)</description>
+        </Field_Character>
+        <Field_Character>
+          <name>SOL_LON</name>
+          <field_location unit="byte">8</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">8</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Areocentric longitude of the sun corresponding to the local time</description>
+        </Field_Character>
+        <Field_Character>
+          <name>MARTIAN_DAY</name>
+          <field_location unit="byte">16</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">5</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Martian solar day (sol), starting at Day 0 when each Lander touched down. VL1: 0000 - 2245. VL2: 0000 - 1204. Each Martian day is 24 hr 39 minutes 35.25 seconds in earth time.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_MEAN</name>
+          <field_location unit="byte">21</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Daily average atmospheric pressure in millibars. No value flag = -9.999</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_MIN</name>
+          <field_location unit="byte">28</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Minimum daily atmospheric pressure in millibars. No value flag = -9.999.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_RANGE</name>
+          <field_location unit="byte">35</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">7</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Maximum variation in pressure during each in millibars. Maximumpressure is calculated by adding this to PRESS_MIN. No value flag =-9.999.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>PRESS_SIGMA</name>
+          <field_location unit="byte">42</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">8</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Standard deviation of atmospheric pressure in millibars. No value flag = -.9999</description>
+        </Field_Character>
+        <Field_Character>
+          <name>MAX_TIME_GAP</name>
+          <field_location unit="byte">50</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">6</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Length of maximum time gap between two measurements expressed in hours. If the time gap was less than four hours no gap was calculated. No value flag = -9.99</description>
+        </Field_Character>
+        <Field_Character>
+          <name>BEG_GAP_HOUR</name>
+          <field_location unit="byte">56</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Start hour of maximum time gap. No value flag = -9.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>BEG_GAP_MIN</name>
+          <field_location unit="byte">59</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Start minute of maximum time gap. No value flag = -9.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>BEG_GAP_SEC</name>
+          <field_location unit="byte">62</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Start second of maximum time gap. No value flag = -9.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>END_GAP_HOUR</name>
+          <field_location unit="byte">65</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Hour at which maximum time gap ended. No value flag = -9.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>END_GAP_MIN</name>
+          <field_location unit="byte">68</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Minute at which maximum time gap ended. No value flag = -9.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>END_GAP_SEC</name>
+          <field_location unit="byte">71</field_location>
+          <data_type>ASCII_Integer</data_type>
+          <field_length unit="byte">3</field_length>
+          <unit>ASCII_Integer</unit>
+          <description>Second at which maximum time gap ended. No value flag = -9.</description>
+        </Field_Character>
+        <Field_Character>
+          <name>BIT_ERR_RATE</name>
+          <field_location unit="byte">74</field_location>
+          <data_type>ASCII_Real</data_type>
+          <field_length unit="byte">10</field_length>
+          <unit>ASCII_Real</unit>
+          <description>Indicates spacecraft to ground communications quality. Values &lt;= 0.001 are good, while values &lt;= 0.0001 are almost error free. No value flag = -.999999</description>
+        </Field_Character>
+        <Field_Character>
+          <name>WARNING_FLAG</name>
+          <field_location unit="byte">84</field_location>
+          <data_type>ASCII_String</data_type>
+          <field_length unit="byte">4</field_length>
+          <unit>ASCII_String</unit>
+          <description>Warning flags. (.F indicates sol0 data, .I indicates one or more time gaps of 3 hours or more, .Cindicates a cross-midnight gap of 4 hours or more, IC indicates both .Iand .C conditions.)</description>
+        </Field_Character>
+      </Record_Character>
+    </Table_Character>
+  </File_Area_Observational>
+  <File_Area_Observational_Supplemental>
+    <File>
+      <file_name>vl_avep.lbl</file_name>
+      <local_identifier>vl_avep_pds3file</local_identifier>
+    </File>
+    <Stream_Text>
+      <local_identifier>vl_avep_pds3file_stream</local_identifier>
+      <offset unit="byte">0</offset>
+      <parsing_standard_id>PDS3</parsing_standard_id>
+      <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+    </Stream_Text>
+  </File_Area_Observational_Supplemental>
+</Product_Observational>

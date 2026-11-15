@@ -1,0 +1,146 @@
+{
+  "site": {
+    "name": "Viking 2, Utopia Planitia",
+    "latitude_planetocentric_deg_approx": 47.64,
+    "longitude_east_deg_approx": 134.29,
+    "coordinate_source": "https://science.nasa.gov/mission/viking/",
+    "coordinate_note": "Coordenadas publicadas aproximadas; no sustituir por latitud planetografica de otras fuentes."
+  },
+  "tables": {
+    "vl_tbin": {
+      "rows_VL2": 24750,
+      "sol_min": 1,
+      "sol_max": 1050
+    },
+    "vl_avep": {
+      "rows_VL2": 1051,
+      "sol_min": 0,
+      "sol_max": 1050
+    },
+    "vl_opac": {
+      "rows_VL2": 452,
+      "sol_min": 6,
+      "sol_max": 872
+    }
+  },
+  "sources": [
+    {
+      "file": "originales\\vl_tbin.dat",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.dat",
+      "sha256": "0b284e951d0a195e93999bdc81538399b2800593cfcb820f88f2ba37a126f9ff"
+    },
+    {
+      "file": "originales\\vl_tbin.lbl",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.lbl",
+      "sha256": "78e0915d296900a19b80c6f3f01aa3f2910b29462d84924ab93826b0f55cf208"
+    },
+    {
+      "file": "originales\\vl_tbin.xml",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_tbin.xml",
+      "sha256": "c7700caecbdd34a2971e7ceb8a85d0b8ac97940b941429f92f159bcc33a82f4b"
+    },
+    {
+      "file": "originales\\vl_avep.dat",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.dat",
+      "sha256": "6307b96c1a211b36b5d9001a5efeeb1b6ab4407e06f95aa18d667c38c52acd30"
+    },
+    {
+      "file": "originales\\vl_avep.lbl",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.lbl",
+      "sha256": "3ba63b391309f5807b9a2f14bbe3d44e5a2ec8b6b1564733e9182b3d8a815e63"
+    },
+    {
+      "file": "originales\\vl_avep.xml",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_avep.xml",
+      "sha256": "006bcd8065f2759c06b58d0681ee871a2f53997f6c55cc2bb92f8226168573c6"
+    },
+    {
+      "file": "originales\\vl_opac.dat",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.dat",
+      "sha256": "be37cda5098930239bf6d4515b833000c55dc0526c6ba01441eb53d36d7d27fe"
+    },
+    {
+      "file": "originales\\vl_opac.lbl",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.lbl",
+      "sha256": "0834cf4e1a19a3dab6ee7f478018ccca512f7e731ae81ae38b2585ebe8131152"
+    },
+    {
+      "file": "originales\\vl_opac.xml",
+      "url": "https://atmos.nmsu.edu/PDS/data/vl_1001/data/vl_opac.xml",
+      "sha256": "b7863677b8038e4556064e513f77f5e1096440bbb4a6e02dd0befa9ee79ea6a6"
+    },
+    {
+      "url": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg128/megt88n090hb.img",
+      "label_url": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg128/megt88n090hb.lbl",
+      "zero_based_row_range": [
+        5149,
+        5182
+      ],
+      "zero_based_column_range": [
+        5643,
+        5694
+      ],
+      "http_status": 206,
+      "byte_range": [
+        118632960,
+        119416319
+      ],
+      "sha256_rows": "4a75a198f40e7214e8c84add22c094782aaf3fc450a32f09401083cf162b3bac"
+    },
+    {
+      "url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_night_2007.img",
+      "label_url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_night_2007.lbl",
+      "zero_based_row_range": [
+        843,
+        850
+      ],
+      "zero_based_column_range": [
+        6280,
+        6290
+      ],
+      "http_status": 206,
+      "byte_range": [
+        12139200,
+        12254399
+      ],
+      "sha256_rows": "46711c712ae3391dfd44787919120cf40a2faf49f29d683711136633fbb8c5fb"
+    },
+    {
+      "url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_msk_night_2007.img",
+      "label_url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-5-timap-v1/mgst_9001/data/global_ti_msk_night_2007.lbl",
+      "zero_based_row_range": [
+        843,
+        850
+      ],
+      "zero_based_column_range": [
+        6280,
+        6290
+      ],
+      "http_status": 206,
+      "byte_range": [
+        6069600,
+        6127199
+      ],
+      "sha256_rows": "af1cccfae2b2b9da37e85d1b49592528cdf718b696bf1902f8f601d2a723d1f7"
+    }
+  ],
+  "accepted_bins": {
+    "temperature_accepted": 21152,
+    "pressure_accepted": 17748,
+    "wind_accepted": 21152
+  },
+  "terrain": {
+    "site_id": "UTOPIA_VIKING2",
+    "latitude_deg_approx": 47.64,
+    "longitude_east_deg_approx": 134.29,
+    "radius_m": 5000,
+    "n_mola_pixels": 549,
+    "elevation_mean_m": -4502.521,
+    "elevation_min_m": -4526.0,
+    "elevation_max_m": -4480.0,
+    "regional_slope_mean_deg": 0.40824,
+    "regional_slope_max_deg": 1.69287,
+    "detrended_relief_rms_5km_m": 5.138
+  },
+  "tes_rows": 12
+}
