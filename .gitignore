@@ -5,3 +5,14 @@ dist
 *.log
 .DS_Store
 .claude/settings.local.json
+
+# Large raw datasets and archives
+*.tif
+*.tiff
+*.tab
+*.rar
+*.zip
+datos/
+**/datos/
+__pycache__/
+.ipynb_checkpoints/
