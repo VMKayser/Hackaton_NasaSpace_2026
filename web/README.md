@@ -21,9 +21,10 @@ npm run build      production build in dist/
 | `public/data/analogs.json` | Role 4 | Targets, sites, values, scores, dimensions and sources (contract v2.1, see `../AGENTS.md`) |
 | `public/data/texts.json` | Role 6 | Site descriptions, limits and exploration texts, purpose labels, story steps |
 
-The current `analogs.json` is demo data (`meta.mock: true`): the app shows a "Demo data" banner.
-Replace it with the real file and set `meta.mock` to `false`. Both files are validated on load;
-format problems are listed on screen.
+`analogs.json` holds measured values (`meta.mock: false`), generated with `python tools/build_analogs.py`
+from `docs/valores/` (values measured with `tools/measure_values.py`; see `docs/valores/README.md` for
+sources and limits). With `meta.mock: true` the app shows a "Demo data" banner. Both files are validated
+on load; format problems are listed on screen.
 
 ## Structure
 

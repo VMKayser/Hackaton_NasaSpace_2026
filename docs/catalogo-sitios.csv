@@ -4,7 +4,7 @@ coipasa,Salar de Coipasa,-19.38,-68.13,5,salt_lake,core,false,false,false
 sol-de-manana,Sol de Mañana,-22.43,-67.76,2,hydrothermal,core,false,false,false
 laguna-colorada,Laguna Colorada,-22.20,-67.78,2,salt_lake,core,false,false,false
 siloli,Desierto de Siloli,-22.05,-67.88,2,desert,core,false,false,false
-dali,Desierto Salvador Dalí,-22.60,-67.63,2,desert,core,false,false,false
+dali,Desierto Salvador Dalí,-22.63,-67.66,2,desert,core,false,false,false
 licancabur-laguna-verde,Laguna Verde y Licancabur,-22.79,-67.82,2,volcanic,core,true,false,false
 uturuncu,Volcán Uturuncu,-22.27,-67.18,2,volcanic,core,false,false,false
 sajama,Nevado Sajama,-18.11,-68.88,2,volcanic,core,false,false,false
@@ -12,7 +12,7 @@ ollague,Volcán Ollagüe,-21.30,-68.18,2,volcanic,core,false,false,false
 tunupa,Volcán Tunupa,-19.83,-67.63,2,volcanic,core,false,false,false
 poopo,Lago Poopó (lecho seco),-18.80,-67.00,5,salt_lake,core,false,false,false
 empexa,Salar de Empexa,-20.33,-68.45,5,salt_lake,extension,false,false,false
-chiguana,Salar de Chiguana,-21.08,-67.92,5,salt_lake,extension,false,false,false
+chiguana,Salar de Chiguana,-21.08,-68.00,5,salt_lake,extension,false,false,false
 chalviri,Salar de Chalviri,-22.53,-67.57,5,salt_lake,extension,false,false,false
 capina,Salar de Capina,-21.90,-67.60,5,salt_lake,extension,false,false,false
 pastos-grandes,Laguna Pastos Grandes,-21.63,-67.80,2,salt_lake,extension,false,false,false

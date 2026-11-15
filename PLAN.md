@@ -154,14 +154,18 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
 - [ ] P1: revisión de contraste y navegación por teclado en el flujo final.
 
 ### Fase 7. Datos reales, P0 (dom 12:00 a 14:00)
-- [ ] Recibir y probar la entrega parcial del rol 4. La app usa el catálogo de demostración.
-      Primera entrega (PR #1, rama `modelos`) revisada el 15 de noviembre: formato válido, pero los
-      valores son los de la demo o están escritos a mano; no se fusiona.
+- [x] Recibir y probar la entrega parcial del rol 4. Primera entrega (PR #1, rama `modelos`) revisada
+      el 15 de noviembre: formato válido, pero los valores eran los de la demo o estaban escritos a
+      mano; no se fusiona.
 - [x] Valores medidos para el rol 4 en [`docs/valores/`](docs/valores/README.md) con
       `tools/measure_values.py`: pendiente y rugosidad con el mismo paso de 200 m en los dos cuerpos,
       clima de NASA POWER (Tierra) y de la Mars Climate Database (Marte), con fuentes y límites.
-- [ ] Cargar el archivo real del rol 4 con `meta.mock: false` y comprobar que el ranking, la ficha y
-      los enlaces de la historia funcionen para los sitios disponibles.
+- [x] `analogs.json` con valores medidos y `meta.mock: false`, generado con `tools/build_analogs.py`
+      (método de `docs/metodo-similitud.md`, pesos y propósitos provisionales en
+      `docs/valores/puntaje.json`). Ranking, ficha y recorrido guiado probados en los dos idiomas.
+- [ ] Rol 1: confirmar pesos, propósitos y geología de los objetivos, y decidir los puntos de Licancabur
+      y Tata Sabaya ([revisión del catálogo](docs/revision-catalogo.md)).
+- [ ] Rol 6: textos de los 16 sitios de ampliación (hoy «texto pendiente»).
 - [ ] Mostrar el resultado observado de Atacama y de los controles. Explicar qué se esperaba en
       cada comparación y qué pasó, incluso si el resultado difiere de lo esperado.
 - [ ] Enviar los textos científicos al rol 1 para revisión (respuesta antes de las 15:00).

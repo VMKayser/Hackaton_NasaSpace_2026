@@ -15,8 +15,33 @@ python tools/measure_values.py --targets objetivos.csv # otros objetivos: id,nam
 | `sitios_valores.csv` | Una fila por sitio del catálogo (31) |
 | `objetivos_valores.csv` | Una fila por objetivo |
 | `fuentes.json` | Unidad y fuentes de cada columna, en el formato de `meta.dimensions[].sources` |
+| `puntaje.json` | Dimensiones, pesos, propósitos y categorías de geología (provisionales, rol 1) |
 
 Una celda vacía es «sin dato» (`null`), nunca cero.
+
+## Generar `analogs.json`
+
+```
+python tools/build_analogs.py
+```
+
+Lee el catálogo, estos valores y `puntaje.json`, y escribe `web/public/data/analogs.json` con
+`meta.mock: false`. Aplica el método de `docs/metodo-similitud.md`: escala entre los percentiles 5 y 95 de
+los 31 sitios ampliada con los objetivos, similitud `1 − min(1, |Tierra − objetivo| / escala)` (en geología,
+1 si la categoría coincide y 0 si no) y media ponderada de las dimensiones con dato y peso positivo. Si
+cambia una coordenada del catálogo, el script pide volver a medir.
+
+Resultado de la referencia y los controles (15 de noviembre), puesto entre 31 por similitud general:
+
+| Sitio | Jezero | Columbia Hills | Qué se esperaba |
+|---|---|---|---|
+| Yungay, Atacama (referencia) | 16.º (57,9 %) | 11.º (53,8 %) | Alto en aridez (lo es: 8 mm/año), pero más cálido que el Altiplano y sin geología de lago ni hidrotermal |
+| Trinidad, Beni (control) | 23.º (37,9 %) | 23.º (34,2 %) | Bajo |
+| Coroico, Yungas (control) | 30.º (17,5 %) | 29.º (15,1 %) | Bajo |
+
+En «Movilidad de rover», que solo mira el relieve, Trinidad sale 14.º: una llanura es un buen terreno
+para conducir aunque su clima no se parezca. Atacama no queda arriba en general porque es análogo de la
+sequedad, no de la temperatura ni de la geología de estos dos objetivos.
 
 ## Columnas
 
@@ -60,10 +85,11 @@ Una celda vacía es «sin dato» (`null`), nunca cero.
    (Uyuni: 331 mm/año). El orden entre sitios se mantiene: Yungay 8 mm, Trinidad 1878 mm.
 3. **Coipasa y Poopó dan pendiente y TRI 0.** El modelo de la Tierra viene sobre todo de SRTM (febrero de
    2000), que registró esas superficies como agua plana.
-4. **El punto de Laguna Verde y Licancabur está sobre la laguna.** El volcán queda a unos 8 km, fuera del
-   círculo de 2 km: el relieve medido es el de la laguna y sus orillas. El rol 1 decide si se mueve el punto.
+4. **Puntos del catálogo:** Dalí y Chiguana se corrigieron; Laguna Verde y Licancabur, y Tata Sabaya,
+   esperan decisión del rol 1. Detalle y mediciones de cada opción en [revision-catalogo.md](../revision-catalogo.md).
 5. **Sin medir:** albedo (la fuente abierta de NASA POWER tiene celdas de 1°, demasiado grandes para un
-   sitio de 2 a 5 km), cobertura vegetal (MODIS exige cuenta de Earthdata) y geología (es una categoría que
-   define el rol 1). Esas columnas no están; en `analogs.json` quedan en `null`.
+   sitio de 2 a 5 km) y cobertura vegetal (MODIS exige cuenta de Earthdata). No son dimensiones de
+   `analogs.json`. La geología no se mide: es la categoría del catálogo en los sitios y la de la
+   literatura en los objetivos (`puntaje.json`).
 6. **Luna:** el script mide su relieve con LOLA-Kaguya entre 60° N y 60° S. Fuera de esa franja, o para el
    clima lunar, quedan vacíos.

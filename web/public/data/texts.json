@@ -1,215 +1,259 @@
 {
-  "targets": {},
-  "purposes": {},
+  "targets": {
+    "jezero": {
+      "summary": {
+        "en": "Crater that held a lake about 3.5 billion years ago. Perseverance has explored its delta since 2021.",
+        "es": "Cráter que albergó un lago hace unos 3500 millones de años. Perseverance explora su delta desde 2021."
+      }
+    },
+    "columbia-hills": {
+      "summary": {
+        "en": "Hills in Gusev crater where Spirit found silica deposits that likely formed around hot springs.",
+        "es": "Colinas del cráter Gusev donde Spirit halló depósitos de sílice probablemente formados junto a fuentes termales."
+      }
+    }
+  },
+  "purposes": {
+    "ancient-lakes": {
+      "label": {
+        "en": "Ancient lakes and evaporites",
+        "es": "Lagos antiguos y evaporitas"
+      },
+      "question": {
+        "en": "Where can we study how a lake dries out and what minerals it leaves behind?",
+        "es": "¿Dónde estudiar cómo se seca un lago y qué minerales deja?"
+      }
+    },
+    "hydrothermal": {
+      "label": {
+        "en": "Hydrothermal systems and biosignatures",
+        "es": "Sistemas hidrotermales y biofirmas"
+      },
+      "question": {
+        "en": "Where can we practise looking for traces of life around hot springs?",
+        "es": "¿Dónde practicar la búsqueda de rastros de vida en fuentes termales?"
+      }
+    },
+    "rover-mobility": {
+      "label": {
+        "en": "Rover mobility on rocky terrain",
+        "es": "Movilidad de rover en terreno rocoso"
+      },
+      "question": {
+        "en": "Where can a rover rehearse driving on similar slopes and roughness?",
+        "es": "¿Dónde puede un rover ensayar la conducción con pendientes y rugosidad parecidas?"
+      }
+    }
+  },
   "sites": {
     "uyuni": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "World's largest salt flat, about 10,000 km² at 3,650 m: a flat halite crust over brine.",
+        "es": "El salar más grande del mundo, unos 10 000 km² a 3650 m: una costra plana de halita sobre salmuera."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Its bright, wet salt crust is far more reflective and flatter than most Martian terrain. The analogy is about evaporites, not landscape.",
+        "es": "Su costra de sal, brillante y húmeda, refleja mucha más luz y es más plana que casi todo el terreno marciano. La analogía es de evaporitas, no de paisaje."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Calibrate orbital altimeters and spectrometers on a flat, uniform surface; test evaporite-detection instruments.",
+        "es": "Calibrar altímetros y espectrómetros orbitales sobre una superficie plana y uniforme; probar instrumentos que detectan evaporitas."
       }
     },
     "coipasa": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Bolivia's second-largest salt flat, next to the Chilean border, with a seasonal lake.",
+        "es": "El segundo salar más grande de Bolivia, junto a la frontera con Chile, con un lago estacional."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Seasonal flooding and active brines make it wetter than any present-day Martian surface.",
+        "es": "Las inundaciones estacionales y las salmueras activas lo hacen más húmedo que cualquier superficie actual de Marte."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Sample salt crusts and brines to rehearse the search for chloride deposits.",
+        "es": "Muestrear costras de sal y salmueras para ensayar la búsqueda de depósitos de cloruros."
       }
     },
     "sol-de-manana": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Geothermal field at about 4,900 m with fumaroles and boiling mud pools.",
+        "es": "Campo geotérmico a unos 4900 m con fumarolas y pozas de lodo hirviente."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Hydrothermal activity on Mars is ancient; here it is active and hosts living microbes.",
+        "es": "La actividad hidrotermal en Marte es antigua; aquí sigue activa y alberga microbios vivos."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Test drills and spectrometers on hydrothermal alteration minerals; practise biosignature sampling protocols.",
+        "es": "Probar taladros y espectrómetros en minerales de alteración hidrotermal; practicar protocolos de muestreo de biofirmas."
       }
     },
     "laguna-colorada": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Shallow red saline lake at about 4,280 m, coloured by algae and sediments, with borax deposits.",
+        "es": "Laguna salina poco profunda a unos 4280 m, teñida de rojo por algas y sedimentos, con depósitos de bórax."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Open water and abundant life, from algae to flamingos, have no Martian counterpart today.",
+        "es": "El agua abierta y la vida abundante, desde algas hasta flamencos, no tienen equivalente en el Marte actual."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Study how evaporite minerals and microbial mats record a drying lake.",
+        "es": "Estudiar cómo los minerales evaporíticos y los tapetes microbianos registran el secado de un lago."
       }
     },
     "siloli": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "High desert of wind-sculpted volcanic rock, home of the Árbol de Piedra.",
+        "es": "Desierto de altura con rocas volcánicas esculpidas por el viento, donde está el Árbol de Piedra."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Wind erodes rock here under a thick atmosphere; erosion rates and grain transport differ on Mars.",
+        "es": "Aquí el viento erosiona bajo una atmósfera densa; en Marte cambian la velocidad de erosión y el transporte de granos."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Rehearse rover navigation among isolated boulders and wind-carved features.",
+        "es": "Ensayar la navegación de un rover entre bloques aislados y formas talladas por el viento."
       }
     },
     "dali": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Barren, colour-banded volcanic desert in the Eduardo Avaroa reserve, at about 4,750 m.",
+        "es": "Desierto volcánico árido y de colores en franjas, en la reserva Eduardo Avaroa, a unos 4750 m."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Seasonal snow and sparse vegetation differ from Martian surfaces.",
+        "es": "La nieve estacional y la vegetación escasa lo diferencian de las superficies marcianas."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Test long-range traverse planning on open, rock-strewn plains.",
+        "es": "Probar la planificación de recorridos largos en llanuras abiertas y pedregosas."
       }
     },
     "licancabur-laguna-verde": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Saline lake at the foot of Licancabur volcano (5,916 m), whose summit lake has been studied as a Mars analog.",
+        "es": "Laguna salina al pie del volcán Licancabur (5916 m), cuyo lago de cumbre se ha estudiado como análogo de Marte."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Already a studied analog: included for comparison, not as a discovery.",
+        "es": "Ya es un análogo estudiado: se incluye para comparar, no como hallazgo."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Compare instrument results with published high-lake studies.",
+        "es": "Comparar los resultados de los instrumentos con los estudios publicados sobre lagos de altura."
       }
     },
     "uturuncu": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Dormant volcano (6,008 m) above a large magma body whose slow uplift is measured from orbit.",
+        "es": "Volcán dormido (6008 m) sobre un gran cuerpo de magma cuyo lento levantamiento se mide desde órbita."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Its steep relief and seasonal snow are unlike most Martian volcanic plains.",
+        "es": "Su relieve empinado y la nieve estacional no se parecen a la mayoría de las llanuras volcánicas de Marte."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Rehearse remote detection of volcanic heat and ground deformation.",
+        "es": "Ensayar la detección remota de calor volcánico y de deformación del terreno."
       }
     },
     "sajama": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Bolivia's highest peak (6,542 m), a stratovolcano with a summit ice cap.",
+        "es": "La cumbre más alta de Bolivia (6542 m), un estratovolcán con un casquete de hielo."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Glacial ice and precipitation make it a poor match for dry Martian terrain.",
+        "es": "El hielo glaciar y las precipitaciones lo alejan del terreno seco de Marte."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Test cold-weather operations and ice-related instruments at high altitude.",
+        "es": "Probar operaciones en frío e instrumentos para hielo a gran altitud."
       }
     },
     "ollague": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Andesitic stratovolcano on the Bolivia–Chile border with an active fumarole.",
+        "es": "Estratovolcán andesítico en la frontera entre Bolivia y Chile, con una fumarola activa."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Volcanic slopes on Mars are gentler and far older.",
+        "es": "Las laderas volcánicas de Marte son más suaves y mucho más antiguas."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Practise mapping lava flows and volcanic deposits with aerial drones.",
+        "es": "Practicar el mapeo de coladas de lava y depósitos volcánicos con drones."
       }
     },
     "tunupa": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Volcano rising from the north shore of Salar de Uyuni, with colour-banded slopes.",
+        "es": "Volcán que se alza en la orilla norte del Salar de Uyuni, con laderas de colores en franjas."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Vegetation and grazing on its lower slopes differ from Mars.",
+        "es": "La vegetación y el pastoreo en sus laderas bajas lo diferencian de Marte."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Study contacts between volcanic rock and salt deposits.",
+        "es": "Estudiar los contactos entre roca volcánica y depósitos de sal."
       }
     },
     "poopo": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Formerly Bolivia's second-largest lake; it largely dried up in 2015–2016.",
+        "es": "Fue el segundo lago más grande de Bolivia; se secó casi por completo en 2015 y 2016."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Its drying is recent and partly human-driven; Martian lakes dried billions of years ago.",
+        "es": "Su secado es reciente y en parte causado por personas; los lagos de Marte se secaron hace miles de millones de años."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Observe how a drying lake leaves salt and mud: a modern view of an ancient process.",
+        "es": "Observar cómo un lago que se seca deja sal y lodo: una mirada actual a un proceso antiguo."
       }
     },
     "yungay-atacama": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Hyperarid core of the Atacama Desert, a well-studied Mars analog.",
+        "es": "Núcleo hiperárido del desierto de Atacama, un análogo de Marte muy estudiado."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Already a known analog: used to check that the method ranks it as expected.",
+        "es": "Ya es un análogo conocido: sirve para comprobar que el método lo ubica como se espera."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Validation reference for the scoring, not a new site.",
+        "es": "Referencia de validación del puntaje, no un sitio nuevo."
       }
     },
     "trinidad-control": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Humid tropical lowland in the Amazon basin, in Beni.",
+        "es": "Llanura tropical húmeda de la cuenca amazónica, en el Beni."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Negative control: dense vegetation, heavy rain and low altitude. Expected to score low.",
+        "es": "Control negativo: vegetación densa, lluvias intensas y baja altitud. Se espera un puntaje bajo."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Checks that the score drops where it should.",
+        "es": "Comprueba que el puntaje baja donde debe."
       }
     },
     "coroico-control": {
       "description": {
-        "en": "",
-        "es": ""
+        "en": "Steep, humid cloud-forest valley in the Yungas.",
+        "es": "Valle empinado y húmedo de bosque nublado en los Yungas."
       },
       "limits": {
-        "en": "",
-        "es": ""
+        "en": "Negative control: forest, rain and humidity. Expected to score low despite steep terrain.",
+        "es": "Control negativo: bosque, lluvia y humedad. Se espera un puntaje bajo pese al terreno empinado."
       },
       "exploration": {
-        "en": "",
-        "es": ""
+        "en": "Checks that steep slopes alone do not produce a high score.",
+        "es": "Comprueba que la pendiente por sí sola no da un puntaje alto."
       }
     }
   },
@@ -227,8 +271,8 @@
       "targetId": "jezero",
       "view": "globe",
       "caption": {
-        "en": "Use the ranking to explore candidates in Bolivia. The Atacama reference and the negative controls give the team a way to check the ranking once measured data are available.",
-        "es": "Usa el ranking para explorar los candidatos de Bolivia. La referencia de Atacama y los controles negativos permiten comprobar el ranking cuando estén disponibles las mediciones."
+        "en": "Use the ranking to explore candidates in Bolivia. The Atacama reference and the negative controls give the team a way to check the ranking.",
+        "es": "Usa el ranking para explorar los candidatos de Bolivia. La referencia de Atacama y los controles negativos permiten comprobar el ranking."
       }
     },
     {

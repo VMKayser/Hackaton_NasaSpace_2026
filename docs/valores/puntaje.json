@@ -1,0 +1,121 @@
+{
+  "note": "Dimensiones, pesos y propósitos para tools/build_analogs.py. Provisionales hasta que los confirme el rol 1. Los textos de propósitos y objetivos están en web/public/data/texts.json (rol 6).",
+  "dimensions": [
+    {
+      "id": "slope",
+      "column": "slope_median_deg",
+      "weight": 1,
+      "label": { "en": "Median slope", "es": "Pendiente mediana" }
+    },
+    {
+      "id": "steep",
+      "column": "slope_p90_deg",
+      "weight": 0.5,
+      "label": { "en": "Steepest ground (90th percentile slope)", "es": "Terreno más empinado (percentil 90 de la pendiente)" }
+    },
+    {
+      "id": "roughness",
+      "column": "roughness_tri_m",
+      "weight": 1,
+      "label": { "en": "Terrain roughness (TRI)", "es": "Rugosidad del terreno (TRI)" }
+    },
+    {
+      "id": "temperature",
+      "column": "surface_temp_c",
+      "weight": 1,
+      "label": { "en": "Mean surface temperature", "es": "Temperatura media de la superficie" }
+    },
+    {
+      "id": "thermal_range",
+      "column": "diurnal_range_c",
+      "weight": 1,
+      "label": { "en": "Day–night surface temperature range", "es": "Amplitud térmica día–noche en la superficie" }
+    },
+    {
+      "id": "aridity",
+      "column": "precip_mm_yr",
+      "weight": 1,
+      "label": { "en": "Annual precipitation", "es": "Precipitación anual" }
+    },
+    {
+      "id": "pressure",
+      "column": "pressure_hpa",
+      "weight": 0,
+      "label": { "en": "Surface pressure", "es": "Presión en la superficie" }
+    },
+    {
+      "id": "geology",
+      "kind": "category",
+      "weight": 1,
+      "label": { "en": "Geological setting", "es": "Entorno geológico" },
+      "siteTypeMap": { "salt_lake": "lacustrine", "cave": "karst" },
+      "targetValues": { "jezero": "lacustrine", "columbia-hills": "hydrothermal" },
+      "categories": {
+        "lacustrine": { "en": "Lake basin (salt flat or ancient lake)", "es": "Cuenca de lago (salar o lago antiguo)" },
+        "hydrothermal": { "en": "Hydrothermal", "es": "Hidrotermal" },
+        "volcanic": { "en": "Volcanic", "es": "Volcánico" },
+        "desert": { "en": "Desert", "es": "Desierto" },
+        "erosion": { "en": "Erosion landforms", "es": "Relieve de erosión" },
+        "glacial": { "en": "Glacial", "es": "Glaciar" },
+        "karst": { "en": "Karst (cave)", "es": "Kárstico (caverna)" },
+        "humid_lowland": { "en": "Humid lowland", "es": "Llanura húmeda" },
+        "humid_mountain": { "en": "Humid mountain", "es": "Montaña húmeda" }
+      },
+      "sources": [
+        {
+          "name": "Galaxy Match site catalog (type of each site)",
+          "agency": "Galaxy Match team, role 1",
+          "url": "https://github.com/VMKayser/Hackaton_NasaSpace_2026/blob/main/docs/catalogo-sitios.csv",
+          "body": "earth"
+        },
+        {
+          "name": "Mangold et al. (2021), Perseverance rover reveals an ancient delta-lake system and flood deposits at Jezero crater, Mars",
+          "agency": "Science / NASA Mars 2020",
+          "url": "https://doi.org/10.1126/science.abl4051",
+          "body": "mars"
+        },
+        {
+          "name": "Squyres et al. (2008), Detection of Silica-Rich Deposits on Mars (Columbia Hills, Gusev)",
+          "agency": "Science / NASA Mars Exploration Rover",
+          "url": "https://doi.org/10.1126/science.1155429",
+          "body": "mars"
+        }
+      ]
+    }
+  ],
+  "purposes": [
+    {
+      "id": "ancient-lakes",
+      "kind": "phenomenon",
+      "targetId": "jezero",
+      "weights": { "geology": 3, "aridity": 2, "slope": 1, "temperature": 1 }
+    },
+    {
+      "id": "hydrothermal",
+      "kind": "phenomenon",
+      "targetId": "columbia-hills",
+      "weights": { "geology": 3, "aridity": 2, "temperature": 1, "thermal_range": 1 }
+    },
+    {
+      "id": "rover-mobility",
+      "kind": "task",
+      "targetId": "jezero",
+      "weights": { "slope": 3, "steep": 2, "roughness": 2 }
+    }
+  ],
+  "siteTypes": {
+    "salt_lake": { "en": "Salt lake", "es": "Salar o laguna salina" },
+    "hydrothermal": { "en": "Hydrothermal field", "es": "Campo hidrotermal" },
+    "desert": { "en": "Desert", "es": "Desierto" },
+    "volcanic": { "en": "Volcano", "es": "Volcán" },
+    "erosion": { "en": "Erosion landforms", "es": "Relieve de erosión" },
+    "glacial": { "en": "Glacier", "es": "Glaciar" },
+    "cave": { "en": "Cave", "es": "Caverna" },
+    "humid_lowland": { "en": "Humid lowland", "es": "Llanura húmeda" },
+    "humid_mountain": { "en": "Humid mountain", "es": "Montaña húmeda" }
+  },
+  "scoring": {
+    "en": "Values measured from open sources (see each dimension) inside a circle of radiusKm around each site and of 5 km around each target; terrain uses the same 200 m step on both bodies. Score per dimension: 1 − min(1, |Earth − target| / scale), where the scale is the range between the 5th and 95th percentiles of the 31 catalog sites, widened to include the targets; for geology, 1 if the category matches and 0 if not. The total is the weighted mean of the dimensions with data and a positive weight; missing data never counts as zero. Pressure is shown but has weight 0: on Earth it is 80 to 150 times that of Mars. Precipitation on Mars is 0 by definition, not measured. Earth climate comes from cells about 55 km wide, so on summits it describes a lower altitude. Weights and purposes are provisional until role 1 confirms them. Method: docs/metodo-similitud.md; values and limits: docs/valores/.",
+    "es": "Valores medidos con fuentes abiertas (ver cada dimensión) en un círculo de radiusKm alrededor de cada sitio y de 5 km alrededor de cada objetivo; el relieve usa el mismo paso de 200 m en los dos cuerpos. Puntaje por dimensión: 1 − min(1, |Tierra − objetivo| / escala), donde la escala es el rango entre los percentiles 5 y 95 de los 31 sitios del catálogo, ampliado para incluir a los objetivos; en geología, 1 si la categoría coincide y 0 si no. El total es la media ponderada de las dimensiones con dato y peso positivo; un dato faltante nunca cuenta como cero. La presión se muestra pero pesa 0: en la Tierra es de 80 a 150 veces la de Marte. La precipitación de Marte es 0 por definición, no medida. El clima de la Tierra viene de celdas de unos 55 km, así que en las cumbres describe una altura menor. Pesos y propósitos provisionales hasta que los confirme el rol 1. Método: docs/metodo-similitud.md; valores y límites: docs/valores/."
+  }
+}
