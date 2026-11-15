@@ -53,11 +53,12 @@ interface Props {
   onTargetPin: (point: PlanetPoint) => void
   /** Abre la vista 3D del sitio elegido o de los pines; null si no hay nada que mostrar. */
   onExplore: (() => void) | null
+  countryFilter?: string | null
 }
 
 export function MapWorkspace({
   rows, targets, target, selectedId, compareIds, view, world, purposeScore, frameKey, onWorld, onView, onSelect, onTarget, scoreLabel,
-  pin, tpin, pinRadiusKm, pinMode, onPinMode, onPin, onTargetPin, onExplore,
+  pin, tpin, pinRadiusKm, pinMode, onPinMode, onPin, onTargetPin, onExplore, countryFilter,
 }: Props) {
   const { t } = useI18n()
   const [adaptationOpen, setAdaptationOpen] = useState(false)
@@ -161,6 +162,7 @@ export function MapWorkspace({
                   pinRadiusKm={pinRadiusKm}
                   pinMode={pinMode}
                   onPin={onPin}
+                  countryFilter={countryFilter}
                 />
               </Suspense>
             </MapBoundary>

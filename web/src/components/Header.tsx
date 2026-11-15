@@ -2,7 +2,17 @@ import { LANGS, useI18n } from '../i18n'
 import type { Lang } from '../i18n'
 import { Logo } from './ui'
 
-export function Header({ onHome, onLang, onStory }: { onHome: () => void; onLang: (lang: Lang) => void; onStory?: () => void }) {
+export function Header({
+  onHome,
+  onLang,
+  onStory,
+  onVoice,
+}: {
+  onHome: () => void
+  onLang: (lang: Lang) => void
+  onStory?: () => void
+  onVoice?: () => void
+}) {
   const { t, lang } = useI18n()
   return (
     <header className="flex min-h-14 shrink-0 flex-wrap items-center justify-between gap-x-2 gap-y-1 border-b border-line bg-surface px-3 py-1 sm:gap-x-4 sm:px-6">
@@ -14,6 +24,23 @@ export function Header({ onHome, onLang, onStory }: { onHome: () => void; onLang
         </span>
       </button>
       <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+        {onVoice && (
+          <button
+            type="button"
+            onClick={onVoice}
+            className="flex min-h-10 items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-1 text-xs font-semibold leading-tight text-cyan-400 hover:bg-cyan-500/20 sm:px-3 shadow-sm transition"
+            title={t('voice.buttonHint')}
+            aria-label={t('voice.button')}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+            </svg>
+            <span className="hidden sm:inline">{t('voice.button')}</span>
+          </button>
+        )}
         {onStory && (
           <button type="button" onClick={onStory} className="min-h-10 max-w-[4.75rem] rounded-lg bg-earth-soft px-2 py-1 text-xs font-semibold leading-tight text-earth hover:bg-earth/15 sm:max-w-none sm:px-3">
             {t('story.start')}

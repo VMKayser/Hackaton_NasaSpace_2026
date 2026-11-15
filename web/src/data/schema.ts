@@ -70,6 +70,7 @@ const Site = z.object({
   name: z.string(),
   lat: Lat,
   lon: Lon,
+  country: z.string().optional(),
   known: z.boolean(),
   reference: z.boolean(),
   control: z.boolean().default(false),

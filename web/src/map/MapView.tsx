@@ -28,6 +28,7 @@ interface Props {
   /** Con el modo de pin activo, un clic pone el pin en lugar de elegir un sitio. */
   pinMode: boolean
   onPin: (point: Point) => void
+  countryFilter?: string | null
 }
 
 function toGeoJson(rows: RankedSite[], selectedId: string | null, compareIds: string[] | null, neutral: boolean): FeatureCollection {
@@ -81,7 +82,7 @@ function boundsOf(rows: RankedSite[]): LngLatBounds | null {
   return b
 }
 
-export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey, label, noWebglText, scoreLabel, onSelect, pin, pinRadiusKm, pinMode, onPin }: Props) {
+export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey, label, noWebglText, scoreLabel, onSelect, pin, pinRadiusKm, pinMode, onPin, countryFilter }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MlMap | null>(null)
   const [ready, setReady] = useState(false)
@@ -233,23 +234,47 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
     }
     // Con un pin libre no se vuelve a encuadrar: el usuario está mirando la zona donde lo puso.
     if (latest.current.pin) return
-    const compared = comparedKey.split(',')
-    const bounds = boundsOf(comparedKey
-      ? latest.current.rows.filter((row) => compared.includes(row.site.id))
-      : latest.current.rows)
+
+    let targetRows = latest.current.rows
+    if (comparedKey) {
+      const compared = comparedKey.split(',')
+      targetRows = targetRows.filter((row) => compared.includes(row.site.id))
+    } else if (countryFilter && countryFilter.trim()) {
+      const q = countryFilter.trim().toLowerCase()
+      const matching = targetRows.filter((r) =>
+        (r.site.country || '').toLowerCase().includes(q) ||
+        r.site.name.toLowerCase().includes(q)
+      )
+      if (matching.length > 0) {
+        targetRows = matching
+      }
+    }
+
+    if (targetRows.length === 1) {
+      map.flyTo({
+        center: [targetRows[0].site.lon, targetRows[0].site.lat],
+        zoom: view === '2d' ? 9.5 : 8,
+        pitch: view === '2d' ? 50 : 0,
+        duration: reduced ? 0 : 2200,
+        essential: true,
+      })
+      return
+    }
+
+    const bounds = boundsOf(targetRows)
     if (!bounds) return
     const { clientWidth, clientHeight } = map.getContainer()
     const isSmall = clientWidth < 420 || clientHeight < 300
     map.fitBounds(bounds, {
       padding: isSmall ? 28 : { top: 70, bottom: 50, left: 48, right: 48 },
-      maxZoom: 7,
+      maxZoom: countryFilter ? 8.5 : 7,
       pitch: view === '2d' ? 50 : 0,
       duration: reduced ? 0 : 2600,
       essential: true,
     })
     // view no entra en las dependencias: cambiar de vista no debe volver a encuadrar.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, selectedLngLat, frameKey, comparedKey])
+  }, [ready, selectedLngLat, frameKey, comparedKey, countryFilter])
 
   if (!webgl) {
     return (

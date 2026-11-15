@@ -345,7 +345,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 85.0,
+          "value": 85,
           "unit": "m"
         },
         "roughness": {
@@ -353,11 +353,11 @@
           "unit": ""
         },
         "temp": {
-          "value": -55.0,
+          "value": -55,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -386,19 +386,19 @@
           "unit": "°"
         },
         "relief": {
-          "value": 450.0,
+          "value": 450,
           "unit": "m"
         },
         "roughness": {
-          "value": 11.0,
+          "value": 11,
           "unit": ""
         },
         "temp": {
-          "value": -50.0,
+          "value": -50,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -427,7 +427,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 15.0,
+          "value": 15,
           "unit": "m"
         },
         "roughness": {
@@ -435,11 +435,11 @@
           "unit": ""
         },
         "temp": {
-          "value": -52.0,
+          "value": -52,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -468,19 +468,19 @@
           "unit": "°"
         },
         "relief": {
-          "value": 45.0,
+          "value": 45,
           "unit": "m"
         },
         "roughness": {
-          "value": 2.0,
+          "value": 2,
           "unit": ""
         },
         "temp": {
-          "value": -55.0,
+          "value": -55,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -509,7 +509,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 120.0,
+          "value": 120,
           "unit": "m"
         },
         "roughness": {
@@ -517,11 +517,11 @@
           "unit": ""
         },
         "temp": {
-          "value": -58.0,
+          "value": -58,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -550,7 +550,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 240.0,
+          "value": 240,
           "unit": "m"
         },
         "roughness": {
@@ -558,11 +558,11 @@
           "unit": ""
         },
         "temp": {
-          "value": -55.0,
+          "value": -55,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -591,19 +591,19 @@
           "unit": "°"
         },
         "relief": {
-          "value": 3500.0,
+          "value": 3500,
           "unit": "m"
         },
         "roughness": {
-          "value": 22.0,
+          "value": 22,
           "unit": ""
         },
         "temp": {
-          "value": -45.0,
+          "value": -45,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -621,7 +621,7 @@
       "name": "Arcadia Planitia (Llanuras de Hielo Somero)",
       "body": "mars",
       "lat": 39.3,
-      "lon": -171.0,
+      "lon": -171,
       "summary": {
         "en": "Vast northern plains with massive subsurface water ice sheets at 1-2.5m depth verified by SHARAD/GRS.",
         "es": "Vastas llanuras con mantos de hielo de agua masivos a 1-2.5m de profundidad verificados por SHARAD/GRS."
@@ -632,7 +632,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 18.0,
+          "value": 18,
           "unit": "m"
         },
         "roughness": {
@@ -644,7 +644,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -662,7 +662,7 @@
       "name": "Utopia Planitia (Viking Lander 2)",
       "body": "mars",
       "lat": 48.27,
-      "lon": 134.0,
+      "lon": 134,
       "summary": {
         "en": "Viking 2 touchdown plain audited by in-situ surface meteorology and winter frost deposition.",
         "es": "Llanura de descenso de Viking 2 auditada por meteorología in-situ y escarcha invernal."
@@ -685,7 +685,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -714,7 +714,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 450.0,
+          "value": 450,
           "unit": "m"
         },
         "roughness": {
@@ -726,7 +726,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -744,7 +744,7 @@
       "name": "Cráter Shackleton (Polo Sur Lunar)",
       "body": "moon",
       "lat": -89.9,
-      "lon": 0.0,
+      "lon": 0,
       "summary": {
         "en": "Permanently Shadowed Region (PSR) cryogenic traps at 40 Kelvin and rim Peaks of Eternal Light.",
         "es": "Región de sombra permanente (PSR) a 40 Kelvin y picos de luz eterna en el borde."
@@ -755,23 +755,23 @@
           "unit": "°"
         },
         "relief": {
-          "value": 1200.0,
+          "value": 1200,
           "unit": "m"
         },
         "roughness": {
-          "value": 25.0,
+          "value": 25,
           "unit": ""
         },
         "temp": {
-          "value": -180.0,
+          "value": -180,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -796,7 +796,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 180.0,
+          "value": 180,
           "unit": "m"
         },
         "roughness": {
@@ -804,15 +804,15 @@
           "unit": ""
         },
         "temp": {
-          "value": -20.0,
+          "value": -20,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -837,7 +837,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 25.0,
+          "value": 25,
           "unit": "m"
         },
         "roughness": {
@@ -845,15 +845,15 @@
           "unit": ""
         },
         "temp": {
-          "value": -20.0,
+          "value": -20,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -878,7 +878,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 80.0,
+          "value": 80,
           "unit": "m"
         },
         "roughness": {
@@ -886,15 +886,15 @@
           "unit": ""
         },
         "temp": {
-          "value": -25.0,
+          "value": -25,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -919,23 +919,23 @@
           "unit": "°"
         },
         "relief": {
-          "value": 1600.0,
+          "value": 1600,
           "unit": "m"
         },
         "roughness": {
-          "value": 18.0,
+          "value": 18,
           "unit": ""
         },
         "temp": {
-          "value": -15.0,
+          "value": -15,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -960,7 +960,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 750.0,
+          "value": 750,
           "unit": "m"
         },
         "roughness": {
@@ -972,11 +972,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -1001,23 +1001,23 @@
           "unit": "°"
         },
         "relief": {
-          "value": 480.0,
+          "value": 480,
           "unit": "m"
         },
         "roughness": {
-          "value": 2.0,
+          "value": 2,
           "unit": ""
         },
         "temp": {
-          "value": -188.0,
+          "value": -188,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -1042,7 +1042,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 1450.0,
+          "value": 1450,
           "unit": "m"
         },
         "roughness": {
@@ -1050,15 +1050,15 @@
           "unit": ""
         },
         "temp": {
-          "value": -178.0,
+          "value": -178,
           "unit": "°C"
         },
         "precip": {
-          "value": 0.0,
+          "value": 0,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 0.0,
+          "value": 0,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -1077,7 +1077,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -1112,7 +1112,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 160.0,
+          "value": 160,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -1459,7 +1459,8 @@
         "subsurface-ice-isru": 0.55,
         "hydrothermal-biosignatures": 0.412,
         "polar-highland-traverse": 0.308
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "coipasa",
@@ -1469,7 +1470,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -1500,15 +1501,15 @@
           "unit": ""
         },
         "temp": {
-          "value": 9.0,
+          "value": 9,
           "unit": "°C"
         },
         "precip": {
-          "value": 180.0,
+          "value": 180,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 65.0,
+          "value": 65,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -1851,7 +1852,8 @@
         "subsurface-ice-isru": 0.527,
         "hydrothermal-biosignatures": 0.414,
         "polar-highland-traverse": 0.313
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "sol-de-manana",
@@ -1861,7 +1863,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -1884,7 +1886,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 120.0,
+          "value": 120,
           "unit": "m"
         },
         "roughness": {
@@ -1896,7 +1898,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 90.0,
+          "value": 90,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -1986,7 +1988,7 @@
           "similarity": 0.74,
           "dimensions": {
             "terrain": 0.643,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.624,
             "temp": 0.426,
             "precip": 0.698,
@@ -2243,7 +2245,8 @@
         "subsurface-ice-isru": 0.469,
         "hydrothermal-biosignatures": 0.716,
         "polar-highland-traverse": 0.662
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "laguna-colorada",
@@ -2253,7 +2256,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -2276,7 +2279,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -2284,11 +2287,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 3.0,
+          "value": 3,
           "unit": "°C"
         },
         "precip": {
-          "value": 110.0,
+          "value": 110,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -2635,7 +2638,8 @@
         "subsurface-ice-isru": 0.597,
         "hydrothermal-biosignatures": 0.426,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "siloli",
@@ -2645,7 +2649,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -2668,7 +2672,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 65.0,
+          "value": 65,
           "unit": "m"
         },
         "roughness": {
@@ -2680,11 +2684,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 75.0,
+          "value": 75,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 59.0,
+          "value": 59,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -3027,7 +3031,8 @@
         "subsurface-ice-isru": 0.534,
         "hydrothermal-biosignatures": 0.575,
         "polar-highland-traverse": 0.483
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "dali",
@@ -3037,7 +3042,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -3060,7 +3065,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 58.0,
+          "value": 58,
           "unit": "m"
         },
         "roughness": {
@@ -3072,7 +3077,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 65.0,
+          "value": 65,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -3289,7 +3294,7 @@
           "dimensions": {
             "terrain": 0.839,
             "relief": 0.74,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.73,
             "precip": 0.771,
             "atm_pressure": 0.181,
@@ -3419,7 +3424,8 @@
         "subsurface-ice-isru": 0.556,
         "hydrothermal-biosignatures": 0.562,
         "polar-highland-traverse": 0.457
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "licancabur-laguna-verde",
@@ -3429,7 +3435,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -3448,27 +3454,27 @@
       },
       "values": {
         "terrain": {
-          "value": 22.0,
+          "value": 22,
           "unit": "°"
         },
         "relief": {
-          "value": 1400.0,
+          "value": 1400,
           "unit": "m"
         },
         "roughness": {
-          "value": 16.0,
+          "value": 16,
           "unit": ""
         },
         "temp": {
-          "value": -4.0,
+          "value": -4,
           "unit": "°C"
         },
         "precip": {
-          "value": 80.0,
+          "value": 80,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 51.0,
+          "value": 51,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -3811,7 +3817,8 @@
         "subsurface-ice-isru": 0.447,
         "hydrothermal-biosignatures": 0.509,
         "polar-highland-traverse": 0.658
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "uturuncu",
@@ -3821,7 +3828,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -3844,7 +3851,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 1600.0,
+          "value": 1600,
           "unit": "m"
         },
         "roughness": {
@@ -3856,7 +3863,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 85.0,
+          "value": 85,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -4053,7 +4060,7 @@
           "targetId": "shackleton",
           "similarity": 0.648,
           "dimensions": {
-            "terrain": 1.0,
+            "terrain": 1,
             "relief": 0.79,
             "roughness": 0.395,
             "temp": 0.068,
@@ -4126,7 +4133,7 @@
           "similarity": 0.685,
           "dimensions": {
             "terrain": 0.513,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.931,
             "temp": 0.864,
             "precip": 0.712,
@@ -4203,7 +4210,8 @@
         "subsurface-ice-isru": 0.436,
         "hydrothermal-biosignatures": 0.496,
         "polar-highland-traverse": 0.575
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "sajama",
@@ -4213,7 +4221,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -4236,19 +4244,19 @@
           "unit": "°"
         },
         "relief": {
-          "value": 2000.0,
+          "value": 2000,
           "unit": "m"
         },
         "roughness": {
-          "value": 24.0,
+          "value": 24,
           "unit": ""
         },
         "temp": {
-          "value": -8.0,
+          "value": -8,
           "unit": "°C"
         },
         "precip": {
-          "value": 320.0,
+          "value": 320,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -4373,7 +4381,7 @@
           "targetId": "valles-marineris",
           "similarity": 0.611,
           "dimensions": {
-            "terrain": 1.0,
+            "terrain": 1,
             "relief": 0.519,
             "roughness": 0.751,
             "temp": 0.566,
@@ -4595,7 +4603,8 @@
         "subsurface-ice-isru": 0.257,
         "hydrothermal-biosignatures": 0.481,
         "polar-highland-traverse": 0.432
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "ollague",
@@ -4605,7 +4614,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -4624,15 +4633,15 @@
       },
       "values": {
         "terrain": {
-          "value": 22.0,
+          "value": 22,
           "unit": "°"
         },
         "relief": {
-          "value": 1500.0,
+          "value": 1500,
           "unit": "m"
         },
         "roughness": {
-          "value": 16.0,
+          "value": 16,
           "unit": ""
         },
         "temp": {
@@ -4640,7 +4649,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 95.0,
+          "value": 95,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -4987,7 +4996,8 @@
         "subsurface-ice-isru": 0.429,
         "hydrothermal-biosignatures": 0.508,
         "polar-highland-traverse": 0.658
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "tunupa",
@@ -4997,7 +5007,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -5016,23 +5026,23 @@
       },
       "values": {
         "terrain": {
-          "value": 22.0,
+          "value": 22,
           "unit": "°"
         },
         "relief": {
-          "value": 1700.0,
+          "value": 1700,
           "unit": "m"
         },
         "roughness": {
-          "value": 16.0,
+          "value": 16,
           "unit": ""
         },
         "temp": {
-          "value": 2.0,
+          "value": 2,
           "unit": "°C"
         },
         "precip": {
-          "value": 180.0,
+          "value": 180,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -5379,17 +5389,18 @@
         "subsurface-ice-isru": 0.341,
         "hydrothermal-biosignatures": 0.498,
         "polar-highland-traverse": 0.622
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "poopo",
       "name": "Lago Poopó (lecho seco)",
       "lat": -18.8,
-      "lon": -67.0,
+      "lon": -67,
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -5424,7 +5435,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 380.0,
+          "value": 380,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -5771,7 +5782,8 @@
         "subsurface-ice-isru": 0.427,
         "hydrothermal-biosignatures": 0.405,
         "polar-highland-traverse": 0.305
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "empexa",
@@ -5781,7 +5793,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -5816,7 +5828,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 150.0,
+          "value": 150,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -6163,7 +6175,8 @@
         "subsurface-ice-isru": 0.555,
         "hydrothermal-biosignatures": 0.411,
         "polar-highland-traverse": 0.31
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "chiguana",
@@ -6173,7 +6186,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -6196,7 +6209,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 3.0,
+          "value": 3,
           "unit": "m"
         },
         "roughness": {
@@ -6204,11 +6217,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 8.0,
+          "value": 8,
           "unit": "°C"
         },
         "precip": {
-          "value": 130.0,
+          "value": 130,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -6555,7 +6568,8 @@
         "subsurface-ice-isru": 0.57,
         "hydrothermal-biosignatures": 0.417,
         "polar-highland-traverse": 0.318
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "chalviri",
@@ -6565,7 +6579,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -6588,7 +6602,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -6600,11 +6614,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 100.0,
+          "value": 100,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 60.0,
+          "value": 60,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -6947,7 +6961,8 @@
         "subsurface-ice-isru": 0.608,
         "hydrothermal-biosignatures": 0.426,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "capina",
@@ -6957,7 +6972,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -6980,7 +6995,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -6992,7 +7007,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 110.0,
+          "value": 110,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -7339,7 +7354,8 @@
         "subsurface-ice-isru": 0.596,
         "hydrothermal-biosignatures": 0.425,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "pastos-grandes",
@@ -7349,7 +7365,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -7372,7 +7388,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -7384,7 +7400,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 120.0,
+          "value": 120,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -7731,7 +7747,8 @@
         "subsurface-ice-isru": 0.589,
         "hydrothermal-biosignatures": 0.428,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "laguna-hedionda",
@@ -7741,7 +7758,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -7764,7 +7781,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -7772,15 +7789,15 @@
           "unit": ""
         },
         "temp": {
-          "value": 3.0,
+          "value": 3,
           "unit": "°C"
         },
         "precip": {
-          "value": 105.0,
+          "value": 105,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 61.0,
+          "value": 61,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -8123,7 +8140,8 @@
         "subsurface-ice-isru": 0.602,
         "hydrothermal-biosignatures": 0.426,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "polques",
@@ -8133,7 +8151,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -8152,11 +8170,11 @@
       },
       "values": {
         "terrain": {
-          "value": 12.0,
+          "value": 12,
           "unit": "°"
         },
         "relief": {
-          "value": 90.0,
+          "value": 90,
           "unit": "m"
         },
         "roughness": {
@@ -8164,11 +8182,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 1.0,
+          "value": 1,
           "unit": "°C"
         },
         "precip": {
-          "value": 95.0,
+          "value": 95,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -8515,7 +8533,8 @@
         "subsurface-ice-isru": 0.476,
         "hydrothermal-biosignatures": 0.746,
         "polar-highland-traverse": 0.591
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "geiseres-sajama",
@@ -8525,7 +8544,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -8548,7 +8567,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 85.0,
+          "value": 85,
           "unit": "m"
         },
         "roughness": {
@@ -8556,11 +8575,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 2.0,
+          "value": 2,
           "unit": "°C"
         },
         "precip": {
-          "value": 290.0,
+          "value": 290,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -8578,7 +8597,7 @@
           "similarity": 0.551,
           "dimensions": {
             "terrain": 0.676,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.49,
             "temp": 0.416,
             "precip": 0.313,
@@ -8795,7 +8814,7 @@
           "dimensions": {
             "terrain": 0.526,
             "relief": 0.761,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.713,
             "precip": 0.313,
             "atm_pressure": 0.18,
@@ -8907,7 +8926,8 @@
         "subsurface-ice-isru": 0.33,
         "hydrothermal-biosignatures": 0.753,
         "polar-highland-traverse": 0.569
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "tata-sabaya",
@@ -8917,7 +8937,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -8936,15 +8956,15 @@
       },
       "values": {
         "terrain": {
-          "value": 22.0,
+          "value": 22,
           "unit": "°"
         },
         "relief": {
-          "value": 1200.0,
+          "value": 1200,
           "unit": "m"
         },
         "roughness": {
-          "value": 16.0,
+          "value": 16,
           "unit": ""
         },
         "temp": {
@@ -8952,7 +8972,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 190.0,
+          "value": 190,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -9150,7 +9170,7 @@
           "similarity": 0.611,
           "dimensions": {
             "terrain": 0.812,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.276,
             "temp": 0.059,
             "precip": 0.468,
@@ -9299,7 +9319,8 @@
         "subsurface-ice-isru": 0.329,
         "hydrothermal-biosignatures": 0.493,
         "polar-highland-traverse": 0.62
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "los-frailes",
@@ -9309,7 +9330,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -9328,11 +9349,11 @@
       },
       "values": {
         "terrain": {
-          "value": 15.0,
+          "value": 15,
           "unit": "°"
         },
         "relief": {
-          "value": 450.0,
+          "value": 450,
           "unit": "m"
         },
         "roughness": {
@@ -9340,11 +9361,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 7.0,
+          "value": 7,
           "unit": "°C"
         },
         "precip": {
-          "value": 350.0,
+          "value": 350,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -9363,7 +9384,7 @@
           "dimensions": {
             "terrain": 0.505,
             "relief": 0.587,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.385,
             "precip": 0.247,
             "atm_pressure": 0.404,
@@ -9380,7 +9401,7 @@
           "similarity": 0.682,
           "dimensions": {
             "terrain": 0.812,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.7,
             "temp": 0.416,
             "precip": 0.247,
@@ -9453,7 +9474,7 @@
           "dimensions": {
             "terrain": 0.632,
             "relief": 0.784,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.385,
             "precip": 0.247,
             "atm_pressure": 0.414,
@@ -9524,7 +9545,7 @@
           "similarity": 0.509,
           "dimensions": {
             "terrain": 0.353,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.208,
             "temp": 0.289,
             "precip": 0.247,
@@ -9691,7 +9712,8 @@
         "subsurface-ice-isru": 0.27,
         "hydrothermal-biosignatures": 0.557,
         "polar-highland-traverse": 0.635
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "jayu-khota",
@@ -9701,7 +9723,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -9720,27 +9742,27 @@
       },
       "values": {
         "terrain": {
-          "value": 13.0,
+          "value": 13,
           "unit": "°"
         },
         "relief": {
-          "value": 120.0,
+          "value": 120,
           "unit": "m"
         },
         "roughness": {
-          "value": 5.0,
+          "value": 5,
           "unit": ""
         },
         "temp": {
-          "value": 9.0,
+          "value": 9,
           "unit": "°C"
         },
         "precip": {
-          "value": 210.0,
+          "value": 210,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 64.0,
+          "value": 64,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -9826,7 +9848,7 @@
           "similarity": 0.623,
           "dimensions": {
             "terrain": 0.729,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.67,
             "temp": 0.357,
             "precip": 0.432,
@@ -10083,7 +10105,8 @@
         "subsurface-ice-isru": 0.355,
         "hydrothermal-biosignatures": 0.582,
         "polar-highland-traverse": 0.608
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "valle-de-rocas",
@@ -10093,7 +10116,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -10116,7 +10139,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 85.0,
+          "value": 85,
           "unit": "m"
         },
         "roughness": {
@@ -10124,15 +10147,15 @@
           "unit": ""
         },
         "temp": {
-          "value": 5.0,
+          "value": 5,
           "unit": "°C"
         },
         "precip": {
-          "value": 120.0,
+          "value": 120,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 62.0,
+          "value": 62,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -10146,7 +10169,7 @@
           "similarity": 0.601,
           "dimensions": {
             "terrain": 0.735,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.589,
             "temp": 0.397,
             "precip": 0.619,
@@ -10475,7 +10498,8 @@
         "subsurface-ice-isru": 0.456,
         "hydrothermal-biosignatures": 0.563,
         "polar-highland-traverse": 0.553
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "tupiza",
@@ -10485,7 +10509,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -10504,11 +10528,11 @@
       },
       "values": {
         "terrain": {
-          "value": 18.0,
+          "value": 18,
           "unit": "°"
         },
         "relief": {
-          "value": 380.0,
+          "value": 380,
           "unit": "m"
         },
         "roughness": {
@@ -10516,11 +10540,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 14.0,
+          "value": 14,
           "unit": "°C"
         },
         "precip": {
-          "value": 310.0,
+          "value": 310,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -10773,7 +10797,7 @@
           "dimensions": {
             "terrain": 0.453,
             "relief": 0.62,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.549,
             "precip": 0.289,
             "atm_pressure": 0.174,
@@ -10867,7 +10891,8 @@
         "subsurface-ice-isru": 0.261,
         "hydrothermal-biosignatures": 0.444,
         "polar-highland-traverse": 0.663
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "valle-de-la-luna",
@@ -10877,7 +10902,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -10900,7 +10925,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 180.0,
+          "value": 180,
           "unit": "m"
         },
         "roughness": {
@@ -10912,7 +10937,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 450.0,
+          "value": 450,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -11128,7 +11153,7 @@
           "similarity": 0.517,
           "dimensions": {
             "terrain": 0.544,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.533,
             "temp": 0.607,
             "precip": 0.165,
@@ -11259,7 +11284,8 @@
         "subsurface-ice-isru": 0.219,
         "hydrothermal-biosignatures": 0.459,
         "polar-highland-traverse": 0.675
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "huayna-potosi",
@@ -11269,7 +11295,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -11288,11 +11314,11 @@
       },
       "values": {
         "terrain": {
-          "value": 31.0,
+          "value": 31,
           "unit": "°"
         },
         "relief": {
-          "value": 1850.0,
+          "value": 1850,
           "unit": "m"
         },
         "roughness": {
@@ -11300,11 +11326,11 @@
           "unit": ""
         },
         "temp": {
-          "value": -6.0,
+          "value": -6,
           "unit": "°C"
         },
         "precip": {
-          "value": 650.0,
+          "value": 650,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -11651,7 +11677,8 @@
         "subsurface-ice-isru": 0.167,
         "hydrothermal-biosignatures": 0.4,
         "polar-highland-traverse": 0.427
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "umajalanta",
@@ -11661,7 +11688,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -11680,27 +11707,27 @@
       },
       "values": {
         "terrain": {
-          "value": 14.0,
+          "value": 14,
           "unit": "°"
         },
         "relief": {
-          "value": 220.0,
+          "value": 220,
           "unit": "m"
         },
         "roughness": {
-          "value": 7.0,
+          "value": 7,
           "unit": ""
         },
         "temp": {
-          "value": 16.0,
+          "value": 16,
           "unit": "°C"
         },
         "precip": {
-          "value": 580.0,
+          "value": 580,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 73.0,
+          "value": 73,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -12043,7 +12070,8 @@
         "subsurface-ice-isru": 0.205,
         "hydrothermal-biosignatures": 0.489,
         "polar-highland-traverse": 0.599
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "yungay-atacama",
@@ -12053,7 +12081,7 @@
       "known": true,
       "reference": true,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -12076,7 +12104,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 92.0,
+          "value": 92,
           "unit": "m"
         },
         "roughness": {
@@ -12088,11 +12116,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 2.0,
+          "value": 2,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 91.0,
+          "value": 91,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -12435,7 +12463,8 @@
         "subsurface-ice-isru": 0.624,
         "hydrothermal-biosignatures": 0.529,
         "polar-highland-traverse": 0.487
-      }
+      },
+      "country": "Chile"
     },
     {
       "id": "trinidad-control",
@@ -12445,7 +12474,7 @@
       "known": false,
       "reference": false,
       "control": true,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Humid lowland",
         "es": "Tierras bajas húmedas"
@@ -12468,7 +12497,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 2.0,
+          "value": 2,
           "unit": "m"
         },
         "roughness": {
@@ -12480,7 +12509,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 1850.0,
+          "value": 1850,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -12827,7 +12856,8 @@
         "subsurface-ice-isru": 0.2,
         "hydrothermal-biosignatures": 0.2,
         "polar-highland-traverse": 0.2
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "coroico-control",
@@ -12837,7 +12867,7 @@
       "known": false,
       "reference": false,
       "control": true,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Humid lowland",
         "es": "Tierras bajas húmedas"
@@ -12856,23 +12886,23 @@
       },
       "values": {
         "terrain": {
-          "value": 28.0,
+          "value": 28,
           "unit": "°"
         },
         "relief": {
-          "value": 850.0,
+          "value": 850,
           "unit": "m"
         },
         "roughness": {
-          "value": 14.0,
+          "value": 14,
           "unit": ""
         },
         "temp": {
-          "value": 19.0,
+          "value": 19,
           "unit": "°C"
         },
         "precip": {
-          "value": 1450.0,
+          "value": 1450,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -13219,7 +13249,8 @@
         "subsurface-ice-isru": 0.107,
         "hydrothermal-biosignatures": 0.198,
         "polar-highland-traverse": 0.2
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "mcmurdo-antarctica",
@@ -13229,7 +13260,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -13252,11 +13283,11 @@
           "unit": "°"
         },
         "relief": {
-          "value": 950.0,
+          "value": 950,
           "unit": "m"
         },
         "roughness": {
-          "value": 12.0,
+          "value": 12,
           "unit": ""
         },
         "temp": {
@@ -13264,11 +13295,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 15.0,
+          "value": 15,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 98.0,
+          "value": 98,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -13611,7 +13642,8 @@
         "subsurface-ice-isru": 0.579,
         "hydrothermal-biosignatures": 0.509,
         "polar-highland-traverse": 0.713
-      }
+      },
+      "country": "Antártida"
     },
     {
       "id": "askja-iceland",
@@ -13621,7 +13653,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Volcanic field",
         "es": "Campo volcánico"
@@ -13644,7 +13676,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 420.0,
+          "value": 420,
           "unit": "m"
         },
         "roughness": {
@@ -13656,11 +13688,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 450.0,
+          "value": 450,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 88.0,
+          "value": 88,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -14003,7 +14035,8 @@
         "subsurface-ice-isru": 0.248,
         "hydrothermal-biosignatures": 0.566,
         "polar-highland-traverse": 0.665
-      }
+      },
+      "country": "Islandia"
     },
     {
       "id": "haughton-canada",
@@ -14013,7 +14046,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -14036,11 +14069,11 @@
           "unit": "°"
         },
         "relief": {
-          "value": 280.0,
+          "value": 280,
           "unit": "m"
         },
         "roughness": {
-          "value": 6.0,
+          "value": 6,
           "unit": ""
         },
         "temp": {
@@ -14048,7 +14081,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 120.0,
+          "value": 120,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -14395,7 +14428,8 @@
         "subsurface-ice-isru": 0.479,
         "hydrothermal-biosignatures": 0.571,
         "polar-highland-traverse": 0.608
-      }
+      },
+      "country": "Canadá"
     },
     {
       "id": "rio-tinto-spain",
@@ -14405,7 +14439,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -14428,7 +14462,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 120.0,
+          "value": 120,
           "unit": "m"
         },
         "roughness": {
@@ -14440,11 +14474,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 620.0,
+          "value": 620,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 97.0,
+          "value": 97,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -14529,8 +14563,8 @@
           "targetId": "gusev",
           "similarity": 0.527,
           "dimensions": {
-            "terrain": 1.0,
-            "relief": 1.0,
+            "terrain": 1,
+            "relief": 1,
             "roughness": 0.565,
             "temp": 0.312,
             "precip": 0.084,
@@ -14787,7 +14821,8 @@
         "subsurface-ice-isru": 0.237,
         "hydrothermal-biosignatures": 0.524,
         "polar-highland-traverse": 0.546
-      }
+      },
+      "country": "España"
     },
     {
       "id": "sahara-algeria",
@@ -14797,7 +14832,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -14816,15 +14851,15 @@
       },
       "values": {
         "terrain": {
-          "value": 8.0,
+          "value": 8,
           "unit": "°"
         },
         "relief": {
-          "value": 110.0,
+          "value": 110,
           "unit": "m"
         },
         "roughness": {
-          "value": 4.0,
+          "value": 4,
           "unit": ""
         },
         "temp": {
@@ -14832,11 +14867,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 30.0,
+          "value": 30,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 96.0,
+          "value": 96,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -15179,17 +15214,18 @@
         "subsurface-ice-isru": 0.563,
         "hydrothermal-biosignatures": 0.536,
         "polar-highland-traverse": 0.531
-      }
+      },
+      "country": "Argelia"
     },
     {
       "id": "amazon-manaus",
       "name": "Central Amazon Rainforest (Brazil)",
       "lat": -3.1,
-      "lon": -60.0,
+      "lon": -60,
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -15212,7 +15248,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 25.0,
+          "value": 25,
           "unit": "m"
         },
         "roughness": {
@@ -15224,7 +15260,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 2400.0,
+          "value": 2400,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -15245,7 +15281,7 @@
             "relief": 0.761,
             "roughness": 0.333,
             "temp": 0.282,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.366,
             "mineralogy": 0.12
           },
@@ -15263,7 +15299,7 @@
             "relief": 0.476,
             "roughness": 0.233,
             "temp": 0.305,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.371,
             "mineralogy": 0.12
           },
@@ -15281,7 +15317,7 @@
             "relief": 0.853,
             "roughness": 0.944,
             "temp": 0.296,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.374,
             "mineralogy": 0.12
           },
@@ -15299,7 +15335,7 @@
             "relief": 0.769,
             "roughness": 0.842,
             "temp": 0.282,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.371,
             "mineralogy": 0.12
           },
@@ -15317,7 +15353,7 @@
             "relief": 0.703,
             "roughness": 0.368,
             "temp": 0.27,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.37,
             "mineralogy": 0.12
           },
@@ -15335,7 +15371,7 @@
             "relief": 0.589,
             "roughness": 0.333,
             "temp": 0.282,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.376,
             "mineralogy": 0.12
           },
@@ -15353,7 +15389,7 @@
             "relief": 0.072,
             "roughness": 0.048,
             "temp": 0.329,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.391,
             "mineralogy": 0.12
           },
@@ -15371,7 +15407,7 @@
             "relief": 0.896,
             "roughness": 0.944,
             "temp": 0.202,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.389,
             "mineralogy": 0.12
           },
@@ -15389,7 +15425,7 @@
             "relief": 0.711,
             "roughness": 0.951,
             "temp": 0.185,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.393,
             "mineralogy": 0.12
           },
@@ -15407,7 +15443,7 @@
             "relief": 0.476,
             "roughness": 0.069,
             "temp": 0.212,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.385,
             "mineralogy": 0.12
           },
@@ -15425,7 +15461,7 @@
             "relief": 0.264,
             "roughness": 0.032,
             "temp": 0.041,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15443,7 +15479,7 @@
             "relief": 0.637,
             "roughness": 0.796,
             "temp": 0.484,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15458,10 +15494,10 @@
           "similarity": 0.413,
           "dimensions": {
             "terrain": 0.805,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.68,
             "temp": 0.484,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15479,7 +15515,7 @@
             "relief": 0.771,
             "roughness": 0.301,
             "temp": 0.448,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15497,7 +15533,7 @@
             "relief": 0.2,
             "roughness": 0.086,
             "temp": 0.522,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15515,7 +15551,7 @@
             "relief": 0.369,
             "roughness": 0.79,
             "temp": 0.028,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15533,7 +15569,7 @@
             "relief": 0.463,
             "roughness": 0.842,
             "temp": 0.036,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15551,7 +15587,7 @@
             "relief": 0.221,
             "roughness": 0.615,
             "temp": 0.043,
-            "precip": 0.0,
+            "precip": 0,
             "atm_pressure": 0.162,
             "mineralogy": 0.12
           },
@@ -15571,17 +15607,18 @@
         "subsurface-ice-isru": 0.308,
         "hydrothermal-biosignatures": 0.263,
         "polar-highland-traverse": 0.335
-      }
+      },
+      "country": "Brasil"
     },
     {
       "id": "siberia-yakutsk",
       "name": "Central Siberian Taiga (Russia)",
-      "lat": 62.0,
+      "lat": 62,
       "lon": 129.7,
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -15604,7 +15641,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 80.0,
+          "value": 80,
           "unit": "m"
         },
         "roughness": {
@@ -15616,7 +15653,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 260.0,
+          "value": 260,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -15868,7 +15905,7 @@
           "similarity": 0.561,
           "dimensions": {
             "terrain": 0.659,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.333,
             "temp": 0.779,
             "precip": 0.353,
@@ -15963,7 +16000,8 @@
         "subsurface-ice-isru": 0.46,
         "hydrothermal-biosignatures": 0.521,
         "polar-highland-traverse": 0.393
-      }
+      },
+      "country": "Rusia"
     },
     {
       "id": "himalaya-everest",
@@ -15973,7 +16011,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -15992,27 +16030,27 @@
       },
       "values": {
         "terrain": {
-          "value": 38.0,
+          "value": 38,
           "unit": "°"
         },
         "relief": {
-          "value": 3500.0,
+          "value": 3500,
           "unit": "m"
         },
         "roughness": {
-          "value": 45.0,
+          "value": 45,
           "unit": ""
         },
         "temp": {
-          "value": -18.0,
+          "value": -18,
           "unit": "°C"
         },
         "precip": {
-          "value": 450.0,
+          "value": 450,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 35.0,
+          "value": 35,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -16134,7 +16172,7 @@
           "similarity": 0.508,
           "dimensions": {
             "terrain": 0.453,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.037,
             "temp": 0.66,
             "precip": 0.165,
@@ -16355,17 +16393,18 @@
         "subsurface-ice-isru": 0.219,
         "hydrothermal-biosignatures": 0.41,
         "polar-highland-traverse": 0.216
-      }
+      },
+      "country": "Nepal / Tíbet"
     },
     {
       "id": "mojave-death-valley",
       "name": "Death Valley (Mojave, USA)",
       "lat": 36.5,
-      "lon": -117.0,
+      "lon": -117,
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -16388,7 +16427,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 240.0,
+          "value": 240,
           "unit": "m"
         },
         "roughness": {
@@ -16400,11 +16439,11 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 55.0,
+          "value": 55,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 102.0,
+          "value": 102,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -16508,7 +16547,7 @@
           "similarity": 0.605,
           "dimensions": {
             "terrain": 0.779,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.469,
             "temp": 0.29,
             "precip": 0.803,
@@ -16747,7 +16786,8 @@
         "subsurface-ice-isru": 0.546,
         "hydrothermal-biosignatures": 0.508,
         "polar-highland-traverse": 0.513
-      }
+      },
+      "country": "Estados Unidos"
     },
     {
       "id": "great-plains-kansas",
@@ -16757,7 +16797,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -16780,7 +16820,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 12.0,
+          "value": 12,
           "unit": "m"
         },
         "roughness": {
@@ -16788,11 +16828,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 13.0,
+          "value": 13,
           "unit": "°C"
         },
         "precip": {
-          "value": 720.0,
+          "value": 720,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -17139,7 +17179,8 @@
         "subsurface-ice-isru": 0.355,
         "hydrothermal-biosignatures": 0.45,
         "polar-highland-traverse": 0.316
-      }
+      },
+      "country": "Estados Unidos"
     },
     {
       "id": "antofagasta-alumbrera",
@@ -17149,7 +17190,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -17172,7 +17213,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -17180,11 +17221,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 7.0,
+          "value": 7,
           "unit": "°C"
         },
         "precip": {
-          "value": 75.0,
+          "value": 75,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -17531,7 +17572,8 @@
         "subsurface-ice-isru": 0.63,
         "hydrothermal-biosignatures": 0.419,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "ischigualasto-talampaya",
@@ -17541,7 +17583,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -17564,7 +17606,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 120.0,
+          "value": 120,
           "unit": "m"
         },
         "roughness": {
@@ -17576,7 +17618,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 120.0,
+          "value": 120,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -17666,7 +17708,7 @@
           "similarity": 0.585,
           "dimensions": {
             "terrain": 0.693,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.412,
             "temp": 0.313,
             "precip": 0.619,
@@ -17923,7 +17965,8 @@
         "subsurface-ice-isru": 0.505,
         "hydrothermal-biosignatures": 0.515,
         "polar-highland-traverse": 0.42
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "talampaya-canyon",
@@ -17933,7 +17976,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -17956,7 +17999,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 180.0,
+          "value": 180,
           "unit": "m"
         },
         "roughness": {
@@ -17968,7 +18011,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 135.0,
+          "value": 135,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -18184,7 +18227,7 @@
           "similarity": 0.554,
           "dimensions": {
             "terrain": 0.472,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.581,
             "temp": 0.556,
             "precip": 0.583,
@@ -18315,7 +18358,8 @@
         "subsurface-ice-isru": 0.37,
         "hydrothermal-biosignatures": 0.433,
         "polar-highland-traverse": 0.674
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "salar-hombre-muerto",
@@ -18325,7 +18369,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -18348,7 +18392,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 2.0,
+          "value": 2,
           "unit": "m"
         },
         "roughness": {
@@ -18360,7 +18404,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 60.0,
+          "value": 60,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -18707,7 +18751,8 @@
         "subsurface-ice-isru": 0.656,
         "hydrothermal-biosignatures": 0.418,
         "polar-highland-traverse": 0.31
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "payunia-mendoza",
@@ -18717,7 +18762,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -18740,7 +18785,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -18748,11 +18793,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 11.0,
+          "value": 11,
           "unit": "°C"
         },
         "precip": {
-          "value": 220.0,
+          "value": 220,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -19099,7 +19144,8 @@
         "subsurface-ice-isru": 0.494,
         "hydrothermal-biosignatures": 0.412,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "barreal-blanco",
@@ -19109,7 +19155,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -19132,7 +19178,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 1.0,
+          "value": 1,
           "unit": "m"
         },
         "roughness": {
@@ -19140,11 +19186,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 15.0,
+          "value": 15,
           "unit": "°C"
         },
         "precip": {
-          "value": 80.0,
+          "value": 80,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -19491,7 +19537,8 @@
         "subsurface-ice-isru": 0.625,
         "hydrothermal-biosignatures": 0.444,
         "polar-highland-traverse": 0.303
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "quebrada-humahuaca",
@@ -19501,7 +19548,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -19520,11 +19567,11 @@
       },
       "values": {
         "terrain": {
-          "value": 16.0,
+          "value": 16,
           "unit": "°"
         },
         "relief": {
-          "value": 450.0,
+          "value": 450,
           "unit": "m"
         },
         "roughness": {
@@ -19532,11 +19579,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 13.0,
+          "value": 13,
           "unit": "°C"
         },
         "precip": {
-          "value": 180.0,
+          "value": 180,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -19572,7 +19619,7 @@
           "similarity": 0.585,
           "dimensions": {
             "terrain": 0.747,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.607,
             "temp": 0.379,
             "precip": 0.487,
@@ -19716,7 +19763,7 @@
           "similarity": 0.483,
           "dimensions": {
             "terrain": 0.325,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.18,
             "temp": 0.264,
             "precip": 0.487,
@@ -19883,17 +19930,18 @@
         "subsurface-ice-isru": 0.352,
         "hydrothermal-biosignatures": 0.467,
         "polar-highland-traverse": 0.685
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "somuncura-patagonia",
       "name": "Meseta de Somuncurá (Río Negro - Patagonia)",
       "lat": -41.2,
-      "lon": -67.0,
+      "lon": -67,
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -19916,7 +19964,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -19928,7 +19976,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 190.0,
+          "value": 190,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -20275,7 +20323,8 @@
         "subsurface-ice-isru": 0.518,
         "hydrothermal-biosignatures": 0.416,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Argentina"
     },
     {
       "id": "salar-atacama",
@@ -20285,7 +20334,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -20308,7 +20357,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 2.0,
+          "value": 2,
           "unit": "m"
         },
         "roughness": {
@@ -20316,11 +20365,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 14.0,
+          "value": 14,
           "unit": "°C"
         },
         "precip": {
-          "value": 25.0,
+          "value": 25,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -20667,7 +20716,8 @@
         "subsurface-ice-isru": 0.693,
         "hydrothermal-biosignatures": 0.403,
         "polar-highland-traverse": 0.31
-      }
+      },
+      "country": "Chile"
     },
     {
       "id": "monturaqui-crater",
@@ -20677,7 +20727,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -20696,11 +20746,11 @@
       },
       "values": {
         "terrain": {
-          "value": 14.0,
+          "value": 14,
           "unit": "°"
         },
         "relief": {
-          "value": 110.0,
+          "value": 110,
           "unit": "m"
         },
         "roughness": {
@@ -20708,11 +20758,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 10.0,
+          "value": 10,
           "unit": "°C"
         },
         "precip": {
-          "value": 30.0,
+          "value": 30,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -21059,7 +21109,8 @@
         "subsurface-ice-isru": 0.528,
         "hydrothermal-biosignatures": 0.498,
         "polar-highland-traverse": 0.614
-      }
+      },
+      "country": "Chile"
     },
     {
       "id": "la-joya-desert",
@@ -21069,7 +21120,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -21088,27 +21139,27 @@
       },
       "values": {
         "terrain": {
-          "value": 5.0,
+          "value": 5,
           "unit": "°"
         },
         "relief": {
-          "value": 80.0,
+          "value": 80,
           "unit": "m"
         },
         "roughness": {
-          "value": 2.0,
+          "value": 2,
           "unit": ""
         },
         "temp": {
-          "value": 18.0,
+          "value": 18,
           "unit": "°C"
         },
         "precip": {
-          "value": 15.0,
+          "value": 15,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 88.0,
+          "value": 88,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -21177,7 +21228,7 @@
           "dimensions": {
             "terrain": 0.936,
             "relief": 0.867,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.325,
             "precip": 0.942,
             "atm_pressure": 0.381,
@@ -21356,7 +21407,7 @@
           "similarity": 0.616,
           "dimensions": {
             "terrain": 0.747,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.358,
             "temp": 0.516,
             "precip": 0.942,
@@ -21411,7 +21462,7 @@
           "dimensions": {
             "terrain": 0.627,
             "relief": 0.564,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.042,
             "precip": 0.942,
             "atm_pressure": 0.166,
@@ -21451,7 +21502,8 @@
         "subsurface-ice-isru": 0.631,
         "hydrothermal-biosignatures": 0.495,
         "polar-highland-traverse": 0.422
-      }
+      },
+      "country": "Perú"
     },
     {
       "id": "dallol-danakil",
@@ -21461,7 +21513,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 2.0,
+      "radiusKm": 2,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -21484,7 +21536,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 30.0,
+          "value": 30,
           "unit": "m"
         },
         "roughness": {
@@ -21496,7 +21548,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 50.0,
+          "value": 50,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -21551,7 +21603,7 @@
           "dimensions": {
             "terrain": 0.89,
             "relief": 0.797,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.264,
             "precip": 0.819,
             "atm_pressure": 0.373,
@@ -21641,7 +21693,7 @@
           "dimensions": {
             "terrain": 0.783,
             "relief": 0.835,
-            "roughness": 1.0,
+            "roughness": 1,
             "temp": 0.18,
             "precip": 0.819,
             "atm_pressure": 0.387,
@@ -21843,7 +21895,8 @@
         "subsurface-ice-isru": 0.586,
         "hydrothermal-biosignatures": 0.655,
         "polar-highland-traverse": 0.368
-      }
+      },
+      "country": "Etiopía"
     },
     {
       "id": "kilauea-hawaii",
@@ -21853,7 +21906,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Salt flat / Evaporite basin",
         "es": "Salar / Cuenca salina"
@@ -21876,7 +21929,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 5.0,
+          "value": 5,
           "unit": "m"
         },
         "roughness": {
@@ -21884,15 +21937,15 @@
           "unit": ""
         },
         "temp": {
-          "value": 16.0,
+          "value": 16,
           "unit": "°C"
         },
         "precip": {
-          "value": 1800.0,
+          "value": 1800,
           "unit": "mm"
         },
         "atm_pressure": {
-          "value": 88.0,
+          "value": 88,
           "unit": "kPa"
         },
         "mineralogy": {
@@ -22235,7 +22288,8 @@
         "subsurface-ice-isru": 0.321,
         "hydrothermal-biosignatures": 0.404,
         "polar-highland-traverse": 0.319
-      }
+      },
+      "country": "Estados Unidos"
     },
     {
       "id": "svalbard-permafrost",
@@ -22245,7 +22299,7 @@
       "known": true,
       "reference": false,
       "control": false,
-      "radiusKm": 5.0,
+      "radiusKm": 5,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -22264,11 +22318,11 @@
       },
       "values": {
         "terrain": {
-          "value": 9.0,
+          "value": 9,
           "unit": "°"
         },
         "relief": {
-          "value": 300.0,
+          "value": 300,
           "unit": "m"
         },
         "roughness": {
@@ -22280,7 +22334,7 @@
           "unit": "°C"
         },
         "precip": {
-          "value": 280.0,
+          "value": 280,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -22627,7 +22681,8 @@
         "subsurface-ice-isru": 0.369,
         "hydrothermal-biosignatures": 0.602,
         "polar-highland-traverse": 0.584
-      }
+      },
+      "country": "Noruega"
     },
     {
       "id": "santa-cruz-control",
@@ -22637,7 +22692,7 @@
       "known": false,
       "reference": false,
       "control": true,
-      "radiusKm": 15.0,
+      "radiusKm": 15,
       "type": {
         "en": "Humid lowland",
         "es": "Tierras bajas húmedas"
@@ -22660,7 +22715,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 12.0,
+          "value": 12,
           "unit": "m"
         },
         "roughness": {
@@ -22668,11 +22723,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 25.0,
+          "value": 25,
           "unit": "°C"
         },
         "precip": {
-          "value": 1350.0,
+          "value": 1350,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -23019,7 +23074,8 @@
         "subsurface-ice-isru": 0.2,
         "hydrothermal-biosignatures": 0.2,
         "polar-highland-traverse": 0.2
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "cochabamba-valle",
@@ -23029,7 +23085,7 @@
       "known": false,
       "reference": false,
       "control": false,
-      "radiusKm": 10.0,
+      "radiusKm": 10,
       "type": {
         "en": "Arid desert",
         "es": "Desierto árido"
@@ -23052,7 +23108,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 85.0,
+          "value": 85,
           "unit": "m"
         },
         "roughness": {
@@ -23060,11 +23116,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 18.0,
+          "value": 18,
           "unit": "°C"
         },
         "precip": {
-          "value": 480.0,
+          "value": 480,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -23082,7 +23138,7 @@
           "similarity": 0.533,
           "dimensions": {
             "terrain": 0.826,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.407,
             "temp": 0.325,
             "precip": 0.147,
@@ -23411,7 +23467,8 @@
         "subsurface-ice-isru": 0.32,
         "hydrothermal-biosignatures": 0.487,
         "polar-highland-traverse": 0.423
-      }
+      },
+      "country": "Bolivia"
     },
     {
       "id": "yacuiba-chaco-control",
@@ -23421,7 +23478,7 @@
       "known": false,
       "reference": false,
       "control": true,
-      "radiusKm": 15.0,
+      "radiusKm": 15,
       "type": {
         "en": "Humid lowland",
         "es": "Tierras bajas húmedas"
@@ -23444,7 +23501,7 @@
           "unit": "°"
         },
         "relief": {
-          "value": 25.0,
+          "value": 25,
           "unit": "m"
         },
         "roughness": {
@@ -23452,11 +23509,11 @@
           "unit": ""
         },
         "temp": {
-          "value": 23.0,
+          "value": 23,
           "unit": "°C"
         },
         "precip": {
-          "value": 850.0,
+          "value": 850,
           "unit": "mm"
         },
         "atm_pressure": {
@@ -23690,7 +23747,7 @@
           "similarity": 0.24,
           "dimensions": {
             "terrain": 0.846,
-            "relief": 1.0,
+            "relief": 1,
             "roughness": 0.73,
             "temp": 0.516,
             "precip": 0.033,
@@ -23803,7 +23860,8 @@
         "subsurface-ice-isru": 0.2,
         "hydrothermal-biosignatures": 0.2,
         "polar-highland-traverse": 0.2
-      }
+      },
+      "country": "Bolivia"
     }
   ]
 }

@@ -7,6 +7,7 @@ import { PurposePicker } from './components/PurposePicker'
 import { RankingPanel } from './components/RankingPanel'
 import { SiteDetail } from './components/SiteDetail'
 import { StoryControls } from './components/StoryControls'
+import { VoiceAssistantModal } from './components/VoiceAssistantModal'
 import { ErrorScreen, LoadingScreen } from './components/StatusScreens'
 import { loadData } from './data/load'
 import type { LoadResult } from './data/load'
@@ -14,6 +15,7 @@ import { buildModel } from './data/model'
 import { I18nContext, translate } from './i18n'
 import type { I18n, Lang } from './i18n'
 import { formatCoords, formatDate, formatPercent } from './lib/format'
+import type { ParsedVoiceCommand } from './lib/nlpParser'
 import { rankSites, scoreMode } from './lib/ranking'
 import type { RankedSite } from './lib/ranking'
 import { isNavigation, MAX_COMPARE, parseSearch, reducer, resolveStory, toSearch } from './lib/state'
@@ -33,6 +35,9 @@ export default function App() {
   const [exploring, setExploring] = useState(false)
   const [mobileMap, setMobileMap] = useState(false)
   const [mapFocus, setMapFocus] = useState(0)
+  const [voiceOpen, setVoiceOpen] = useState(false)
+  const [dimSort, setDimSort] = useState<string | null>(null)
+  const [countryFilter, setCountryFilter] = useState<string | null>(null)
   // Pin libre: modo de colocación en los mapas y radio del círculo medido.
   const [pinMode, setPinMode] = useState(false)
   const [pinRadius, setPinRadius] = useState(5)
@@ -92,13 +97,33 @@ export default function App() {
   const targetId = purpose?.targetId ?? state.target
   const target = (model && targetId && model.targetById.get(targetId)) || null
 
-  const rows = useMemo<RankedSite[]>(() => {
+  const dimensionsMeta = useMemo(() => {
+    if (!model) return []
+    return model.file.meta.dimensions.map((d) => ({ id: d.id, label: d.label }))
+  }, [model])
+
+  const rawRows = useMemo<RankedSite[]>(() => {
     if (!model) return []
     if (!target) {
       return model.file.sites.map((site) => ({ site, score: null, similarity: null, dimensions: {}, rank: null, top: [], low: null }))
     }
     return rankSites(model.file, target.id, purpose)
   }, [model, target, purpose])
+
+  const rows = useMemo<RankedSite[]>(() => {
+    if (!dimSort || !target) return rawRows
+    const withVal = rawRows.filter((r) => r.dimensions[dimSort] !== null && r.dimensions[dimSort] !== undefined)
+    const withoutVal = rawRows.filter((r) => r.dimensions[dimSort] === null || r.dimensions[dimSort] === undefined)
+    const sorted = withVal.map((r) => ({ ...r })).sort((a, b) => {
+      const valA = a.dimensions[dimSort] ?? -1
+      const valB = b.dimensions[dimSort] ?? -1
+      return valB - valA || a.site.name.localeCompare(b.site.name)
+    })
+    sorted.forEach((r, idx) => {
+      r.rank = idx + 1
+    })
+    return [...sorted, ...withoutVal]
+  }, [rawRows, dimSort, target])
   const mode = model ? scoreMode(model.file, purpose) : 'similarity'
   const compareIds = target && state.compare ? state.compare.filter((id) => model?.siteById.has(id)) : null
   const pinActive = !!target && compareIds === null && state.step === null && (state.pin !== null || state.tpin !== null)
@@ -146,10 +171,16 @@ export default function App() {
   const scoreLabel = useCallback(
     (row: RankedSite) => {
       if (!target) return row.site.type?.[lang] ?? ''
+      if (dimSort) {
+        const dimVal = row.dimensions[dimSort]
+        const score = dimVal === null || dimVal === undefined ? t('badge.notEvaluated') : formatPercent(dimVal, lang)
+        const dimTitle = model?.dimensionById.get(dimSort)?.label[lang] ?? dimSort
+        return `${dimTitle} · ${score}`
+      }
       const score = row.score === null ? t('badge.notEvaluated') : formatPercent(row.score, lang)
       return `${t(mode === 'purpose' ? 'detail.purposeScore' : 'detail.similarity')} · ${score}`
     },
-    [target, lang, mode, t],
+    [target, lang, mode, t, dimSort, model],
   )
 
   // Escape cierra la vista activa.
@@ -185,12 +216,14 @@ export default function App() {
     dispatch({ type: 'setStep', step })
     setMobileMap(false)
   }
-  const goHome = () => {
+  const goHome = useCallback(() => {
     rankingScroll.current = null
     dispatch({ type: 'home' })
     setMobileMap(false)
     setPinMode(false)
-  }
+    setDimSort(null)
+    setCountryFilter(null)
+  }, [dispatch])
   const placeEarthPin = (pin: Point) => {
     dispatch({ type: 'setPin', pin })
     setMobileMap(false)
@@ -212,10 +245,64 @@ export default function App() {
     setMobileMap(true)
     setMapFocus((previous) => previous + 1)
   }
-  const openComparison = (sites: string[]) => {
+  const openComparison = useCallback((sites: string[]) => {
     dispatch({ type: 'setCompare', sites })
     if (state.world !== 'earth') dispatch({ type: 'setWorld', world: 'auto' })
-  }
+  }, [dispatch, state.world])
+
+  const handleVoiceCommand = useCallback((cmd: ParsedVoiceCommand) => {
+    if (cmd.action === 'home') {
+      goHome()
+      setDimSort(null)
+      setCountryFilter(null)
+      return
+    }
+    if (cmd.action === 'explore3d') {
+      if (canExplore) setExploring(true)
+      return
+    }
+    if (cmd.action === 'compare') {
+      openComparison([])
+      return
+    }
+    if (cmd.action === 'view_change') {
+      if (cmd.view) dispatch({ type: 'setView', view: cmd.view })
+      if (cmd.world) dispatch({ type: 'setWorld', world: cmd.world })
+      return
+    }
+
+    // Target selection: keep BOTH maps visible (world = 'auto')
+    if (cmd.targetId) {
+      dispatch({ type: 'chooseTarget', target: cmd.targetId })
+      dispatch({ type: 'setWorld', world: 'auto' })
+    } else if (cmd.world && (cmd.world === 'mars' || cmd.world === 'moon')) {
+      const fallbackTarget = model?.file.targets.find((t) => t.body === cmd.world)
+      if (fallbackTarget) {
+        dispatch({ type: 'chooseTarget', target: fallbackTarget.id })
+        dispatch({ type: 'setWorld', world: 'auto' })
+      } else {
+        dispatch({ type: 'setWorld', world: cmd.world })
+      }
+    }
+
+    // Country filter
+    if (cmd.country) {
+      setCountryFilter(cmd.country)
+      setMapFocus((prev) => prev + 1)
+    }
+
+    // Dimension sorting
+    if (cmd.dimensionId) {
+      setDimSort(cmd.dimensionId)
+    } else if (cmd.isGeneral) {
+      setDimSort(null)
+    }
+
+    // Site selection
+    if (cmd.siteId) {
+      dispatch({ type: 'selectSite', site: cmd.siteId })
+    }
+  }, [dispatch, canExplore, model, goHome, openComparison])
 
   let panel: React.ReactNode = null
   if (model) {
@@ -289,6 +376,13 @@ export default function App() {
           onSelect={selectSite}
           onBack={goHome}
           onCompare={() => openComparison([])}
+          dimSort={dimSort}
+          onResetDimSort={() => setDimSort(null)}
+          countryFilter={countryFilter}
+          onCountryFilter={(c) => {
+            setCountryFilter(c)
+            setMapFocus((prev) => prev + 1)
+          }}
         />
       )
     }
@@ -296,8 +390,13 @@ export default function App() {
 
   return (
     <I18nContext.Provider value={i18n}>
-      <div className="flex h-dvh min-w-0 flex-col overflow-hidden" inert={showExplore}>
-        <Header onHome={goHome} onLang={setLang} onStory={story.length && !step ? () => setStep(0) : undefined} />
+      <div className="flex h-dvh min-w-0 flex-col overflow-hidden" inert={showExplore || voiceOpen}>
+        <Header
+          onHome={goHome}
+          onLang={setLang}
+          onStory={story.length && !step ? () => setStep(0) : undefined}
+          onVoice={() => setVoiceOpen(true)}
+        />
         {model?.file.meta.mock && <DemoBanner />}
 
         {!result ? (
@@ -366,12 +465,13 @@ export default function App() {
                   view={state.view}
                   world={state.world}
                   purposeScore={mode === 'purpose'}
-                  frameKey={`${rankingKey}|${state.step ?? ''}|${mapFocus}`}
+                  frameKey={`${rankingKey}|${state.step ?? ''}|${countryFilter ?? ''}|${mapFocus}`}
                   onWorld={(world) => dispatch({ type: 'setWorld', world })}
                   onView={(view) => dispatch({ type: 'setView', view })}
                   scoreLabel={scoreLabel}
                   onSelect={onMapSelect}
                   onTarget={selectPlanetTarget}
+                  countryFilter={countryFilter}
                   pin={pinActive ? state.pin : null}
                   tpin={pinActive ? state.tpin : null}
                   pinRadiusKm={pinRadius}
@@ -386,6 +486,15 @@ export default function App() {
           </>
         )}
       </div>
+      {voiceOpen && model && (
+        <VoiceAssistantModal
+          targets={model.file.targets}
+          dimensions={dimensionsMeta}
+          sites={model.file.sites}
+          onExecute={handleVoiceCommand}
+          onClose={() => setVoiceOpen(false)}
+        />
+      )}
       {showExplore && model && target && (
         <Suspense fallback={<div className="fixed inset-0 z-50 grid place-items-center bg-space text-sm text-white/85">{t('explore.loading')}</div>}>
           {pinExplore ? (
