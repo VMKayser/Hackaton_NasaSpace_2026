@@ -5,12 +5,12 @@ import { Logo } from './ui'
 export function Header({ onHome, onLang, onStory }: { onHome: () => void; onLang: (lang: Lang) => void; onStory?: () => void }) {
   const { t, lang } = useI18n()
   return (
-    <header className="flex min-h-14 shrink-0 flex-wrap items-center justify-between gap-x-2 gap-y-1 border-b border-line bg-surface px-3 py-1 sm:gap-x-4 sm:px-6">
-      <button type="button" onClick={onHome} className="flex min-h-11 items-center gap-1.5 rounded-md text-left sm:gap-3" aria-label={t('home.label')}>
+    <header className="flex min-h-14 shrink-0 short:min-h-11 flex-wrap items-center justify-between gap-x-2 gap-y-1 border-b border-line bg-surface px-3 py-1 sm:gap-x-4 sm:px-6">
+      <button type="button" onClick={onHome} className="flex min-h-11 items-center gap-1.5 rounded-md text-left short:min-h-10 sm:gap-3" aria-label={t('home.label')}>
         <Logo size={26} />
         <span>
           <span className="block whitespace-nowrap font-serif text-base font-semibold leading-tight tracking-tight sm:text-lg">Galaxy Match</span>
-          <span className="hidden text-xs text-muted sm:block">{t('app.tagline')}</span>
+          <span className="hidden text-xs text-muted sm:block short:hidden">{t('app.tagline')}</span>
         </span>
       </button>
       <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">

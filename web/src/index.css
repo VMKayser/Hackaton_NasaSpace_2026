@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Pantallas bajas (teléfono acostado): cabecera y pestañas más compactas. */
+@custom-variant short {
+  @media (max-height: 30rem) {
+    @slot;
+  }
+}
+
 @custom-variant explore-wide {
   @media (min-width: 64rem) and (min-height: 44rem) {
     @slot;
@@ -264,4 +271,20 @@ body {
 
 .gm-mix:focus-visible::-moz-range-thumb {
   box-shadow: 0 0 0 4px #fde68a;
+}
+
+/* En pantallas táctiles, los enlaces sueltos (fuentes, Macrostrat, pie) miden al menos 24 px de alto. */
+@media (pointer: coarse) {
+  .gm-tap {
+    display: inline-block;
+    padding-block: 0.375rem;
+  }
+}
+
+/* Filas que se deslizan de lado en teléfonos (barra de la vista 3D, filtros): sin barra visible. */
+.gm-scroll-row {
+  scrollbar-width: none;
+}
+.gm-scroll-row::-webkit-scrollbar {
+  display: none;
 }

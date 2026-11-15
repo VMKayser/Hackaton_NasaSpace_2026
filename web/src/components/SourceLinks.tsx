@@ -12,7 +12,7 @@ export function SourceLinks({ sources }: { sources: Source[] }) {
           href={s.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[11px] leading-snug text-muted underline decoration-line underline-offset-2 transition hover:text-earth hover:decoration-earth"
+          className="gm-tap text-[11px] leading-snug text-muted underline decoration-line underline-offset-2 transition hover:text-earth hover:decoration-earth"
         >
           {s.name}
           <span className="text-faint"> · {s.agency}</span>

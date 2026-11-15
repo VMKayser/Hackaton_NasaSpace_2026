@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-// Esquemas del contrato v2.1 (AGENTS.md y docs/contrato-rol-4.md).
+// Esquemas del contrato v2.2 (AGENTS.md y docs/contrato-rol-4.md): v2.1 más `meta.minCoverage` y
+// `targets[].context`, los dos opcionales.
 
 const Text = z.object({ en: z.string(), es: z.string() })
 const Id = z.string().min(1)
@@ -51,6 +52,17 @@ const Overlay = z.object({
   bounds: z.tuple([z.number(), z.number(), z.number(), z.number()]),
 })
 
+/** Medición del objetivo sin equivalente medido en la Tierra: se muestra, no puntúa. */
+const ContextValue = z.object({
+  id: Id,
+  label: Text,
+  value: z.union([z.number(), z.string(), z.null()]),
+  unit: z.string().nullable(),
+  /** Cómo se midió: área, profundidad, resolución. */
+  note: Text.optional(),
+  sources: z.array(Source).min(1),
+})
+
 const Target = z.object({
   id: Id,
   name: z.string(),
@@ -59,6 +71,7 @@ const Target = z.object({
   lon: Lon,
   summary: Text.optional(),
   values: z.record(z.string(), Value),
+  context: z.array(ContextValue).optional(),
 })
 
 const ScoreEntry = z.object({
@@ -76,6 +89,8 @@ const Site = z.object({
   reference: z.boolean(),
   control: z.boolean().default(false),
   radiusKm: z.number().positive().optional(),
+  /** País y división administrativa (OpenStreetMap), para etiquetas y filtros; no puntúa. */
+  place: z.record(z.string(), z.string()).optional(),
   type: Text.optional(),
   description: Text.optional(),
   limits: Text.optional(),
@@ -83,6 +98,7 @@ const Site = z.object({
   values: z.record(z.string(), Value),
   scores: z.array(ScoreEntry),
   purposeScores: z.record(z.string(), Score.nullable()).optional(),
+  found: z.boolean().optional(),
 })
 
 export const AnalogsSchema = z
@@ -92,6 +108,8 @@ export const AnalogsSchema = z
       version: z.string(),
       generated: z.string(),
       scoring: Text.optional(),
+      /** Parte mínima del peso con dato para dar un puntaje; por debajo, «datos insuficientes». */
+      minCoverage: z.number().min(0).max(1).optional(),
       dimensions: z.array(Dimension).min(1),
       purposes: z.array(Purpose).optional(),
       overlays: z.array(Overlay).optional(),
@@ -194,6 +212,30 @@ export const TextsSchema = z.object({
 })
 
 /** Lugares nuevos que encontró tools/discover.py en una malla, con el mismo método que el catálogo. */
+const DiscoveredGeology = z.object({
+  name: z.string(),
+  lith: z.string().nullish(),
+  age: z.string().nullish(),
+  descrip: z.string().nullish(),
+  url: z.string().url().optional(),
+})
+
+const DiscoveredPoint = z.object({
+  id: Id,
+  lat: Lat,
+  lon: Lon,
+  radiusKm: z.number().positive(),
+  elevationM: z.number().nullish(),
+  coverage: z.number().min(0).max(1),
+  values: z.record(z.string(), Value),
+  mapUnit: z.string().nullable(),
+  geology: DiscoveredGeology.optional(),
+  place: z.record(z.string(), z.string()),
+  nearestSite: z.object({ id: Id, km: z.number().nonnegative() }),
+  scores: z.array(ScoreEntry),
+  purposeScores: z.record(z.string(), Score.nullable()).optional(),
+})
+
 const Candidate = z.object({
   targetId: Id,
   purposeId: z.string().optional(),
@@ -201,6 +243,8 @@ const Candidate = z.object({
   lat: Lat,
   lon: Lon,
   similarity: Score,
+  pointId: Id.optional(),
+  elevationM: z.number().optional(),
   values: z.record(z.string(), Value),
   dimensions: z.record(z.string(), Score.nullable()),
   mapUnit: z.string().nullable().optional(),
@@ -226,11 +270,38 @@ export const DiscoveriesSchema = z.object({
     skipped: z.array(z.object({ targetId: Id, purposeId: z.string().optional(), reason: Text })).optional(),
     sources: z.array(Source),
   }),
+  points: z.record(z.string(), DiscoveredPoint).optional(),
   candidates: z.array(Candidate),
+})
+
+/** grid.json, de tools/grid_relief.py: relieve de cada punto de la malla, para buscar lugares nuevos desde un pin. */
+const GridPoint = z.object({
+  lat: z.number().min(-90).max(90),
+  lon: z.number().min(-180).max(180),
+  /** Mediciones por nombre (`meta.dimensions[].measure`), p. ej. slope_median_deg. */
+  values: z.record(z.string(), z.number()),
+  elevationM: z.number().nullable().optional(),
+  nearestSite: z.object({ id: Id, km: z.number().min(0) }),
+  place: z.record(z.string(), z.string()).optional(),
+})
+
+export const GridSchema = z.object({
+  meta: z.object({
+    generated: z.string(),
+    country: z.string().optional(),
+    bbox: z.tuple([z.number(), z.number(), z.number(), z.number()]),
+    stepDeg: z.number().positive(),
+    radiusKm: z.number().positive(),
+    stepM: z.number().positive(),
+    measures: z.array(z.string()),
+    sources: z.array(Source).min(1),
+  }),
+  points: z.array(GridPoint),
 })
 
 export type Text = z.infer<typeof Text>
 export type Value = z.infer<typeof Value>
+export type ContextValue = z.infer<typeof ContextValue>
 export type Source = z.infer<typeof Source>
 export type Dimension = z.infer<typeof Dimension>
 export type Purpose = z.infer<typeof Purpose>
@@ -241,4 +312,7 @@ export type TextsFile = z.output<typeof TextsSchema>
 export type Adaptation = z.infer<typeof Adaptation>
 export type DiscoveriesFile = z.output<typeof DiscoveriesSchema>
 export type Candidate = z.output<typeof Candidate>
+export type DiscoveredPoint = z.output<typeof DiscoveredPoint>
+export type GridFile = z.output<typeof GridSchema>
+export type GridPoint = z.output<typeof GridPoint>
 export type Body = Target['body'] | 'earth'

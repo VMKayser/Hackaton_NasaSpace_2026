@@ -10,6 +10,7 @@ import { activeWeights, scoredCount } from '../lib/ranking'
 import { BODIES } from '../map/bodies'
 import { BackButton, BodyChip, Pending, ScoreBar, ScoreSummary, SectionTitle, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
+import { discoveredSummary } from '../lib/discovered'
 import { AdaptationDialog } from './AdaptationDialog'
 import { SourceLinks } from './SourceLinks'
 import { ScoreMethod } from './ScoreMethod'
@@ -27,6 +28,8 @@ interface Props {
   mode: ScoreMode
   onBack: () => void
   onCompare: () => void
+  /** Abre la comparación directa entre este sitio y otro (p. ej. el sitio del catálogo más cercano). */
+  onCompareWith?: (otherId: string) => void
   onShowMap: () => void
   /** Abre la vista 3D; null si el objetivo no se puede mostrar en 3D. */
   onExplore: (() => void) | null
@@ -116,16 +119,25 @@ function ShareButton() {
   )
 }
 
-export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare, onShowMap, onExplore, targets, onTarget }: Props) {
+export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare, onCompareWith, onShowMap, onExplore, targets, onTarget }: Props) {
   const { t, lang } = useI18n()
   const { site } = row
   const measurementsRef = useRef<HTMLHeadingElement>(null)
   const [radarOpen, setRadarOpen] = useState(false)
   const [adaptationOpen, setAdaptationOpen] = useState(false)
+  const discoveredPoint = site.found ? model.foundById.get(site.id) : undefined
+  const nearestCatalog = discoveredPoint ? model.siteById.get(discoveredPoint.nearestSite.id) : undefined
+  const foundInfo = site.found ? discoveredSummary(model, row, t, lang) : null
+  const candidateEntry = site.found
+    ? model.discoveries?.candidates.find(
+        (c) => c.pointId === site.id && (purpose && mode === 'purpose' ? c.purposeId === purpose.id : !c.purposeId && c.targetId === target.id),
+      )
+    : undefined
   const description = siteText(model, site, 'description', lang)
-  const limits = siteText(model, site, 'limits', lang)
-  const exploration = siteText(model, site, 'exploration', lang)
-  const textSources = siteTextSources(model, site)
+  const limits = siteText(model, site, 'limits', lang) ?? foundInfo?.limits ?? null
+  const exploration = siteText(model, site, 'exploration', lang) ?? foundInfo?.exploration ?? null
+  const rawSources = siteTextSources(model, site)
+  const textSources = rawSources.length > 0 ? rawSources : site.found ? (model.discoveries?.meta.sources ?? []) : []
   const textSourcesLine = textSources.length > 0 && (
     <p className="mt-1.5 text-[11px] leading-snug text-muted wrap-anywhere">
       <span className="font-semibold">{t('detail.textSources')}:</span> <SourceLinks sources={textSources} />
@@ -173,7 +185,8 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
         <ScoreSummary similarity={row.similarity} purposeScore={mode === 'purpose' ? row.score : undefined} />
         <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
           {row.rank !== null && <span className="font-medium text-ink">{t('detail.rank', { rank: row.rank, total })}</span>}
-          {row.rank !== null && <span className="text-faint" aria-hidden="true">·</span>}
+          {candidateEntry && <span className="font-medium text-ink">{t('discover.gridRank', { rank: candidateEntry.rank })}</span>}
+          {(row.rank !== null || candidateEntry) && <span className="text-faint" aria-hidden="true">·</span>}
           <span>{t('detail.dimsScored', { n: scored, total: dimTotal })}</span>
         </p>
         <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-muted">
@@ -223,6 +236,11 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
         <button type="button" onClick={onCompare} className={ACTION}>
           {t('compare.add')}
         </button>
+        {nearestCatalog && onCompareWith && (
+          <button type="button" onClick={() => onCompareWith(nearestCatalog.id)} className={ACTION}>
+            {t('discover.compareNearest', { site: nearestCatalog.name })}
+          </button>
+        )}
         <button type="button" onClick={() => setAdaptationOpen(true)} className={ACTION} aria-haspopup="dialog">
           {t('adaptation.open')}
         </button>
@@ -253,7 +271,9 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
 
       {pairs.length > 1 && (
         <section className="mt-5">
-          <SectionTitle lead={t('detail.otherTargetsLead')}>{t('detail.otherTargets')}</SectionTitle>
+          <SectionTitle lead={site.found ? t('discover.allTargets', { n: targets.length }) : t('detail.otherTargetsLead')}>
+            {t('detail.otherTargets')}
+          </SectionTitle>
           <ul className="mt-1.5 divide-y divide-line">
             {pairs.map(({ target: tg, similarity }) => (
               <li key={tg.id} className="flex min-h-11 items-center gap-2 py-1.5">
@@ -311,7 +331,59 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
 
       <section className="mt-5">
         <SectionTitle>{t('detail.about')}</SectionTitle>
-        <p className="mt-1.5 text-sm leading-relaxed text-ink">{description ?? <Pending />}</p>
+        {discoveredPoint ? (
+          <div className="mt-2 space-y-2 text-sm leading-relaxed text-ink">
+            {discoveredPoint.place.protected && (
+              <p><span className="font-semibold">{t('discover.protectedArea')}:</span> {discoveredPoint.place.protected}</p>
+            )}
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-2 rounded-lg border border-line bg-paper px-3 py-2.5 text-xs">
+              <div>
+                <dt className="text-muted">{t('discover.elevation')}</dt>
+                <dd className="mt-0.5 font-mono font-semibold text-ink">
+                  {discoveredPoint.elevationM != null ? `${formatNumber(Math.round(discoveredPoint.elevationM), lang)} m` : t('value.noData')}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted">{t('discover.coverage')}</dt>
+                <dd className="mt-0.5 font-mono font-semibold text-ink">{formatPercent(discoveredPoint.coverage, lang)}</dd>
+              </div>
+              {(discoveredPoint.geology?.name ?? discoveredPoint.mapUnit) && (
+                <div className="col-span-2 text-ink">
+                  {t('discover.mapUnit', { unit: discoveredPoint.geology?.name ?? discoveredPoint.mapUnit ?? '' })}
+                </div>
+              )}
+              {discoveredPoint.geology?.lith && (
+                <div>
+                  <dt className="text-muted">{t('discover.lithology')}</dt>
+                  <dd className="mt-0.5 text-ink">{discoveredPoint.geology.lith}</dd>
+                </div>
+              )}
+              {discoveredPoint.geology?.age && (
+                <div>
+                  <dt className="text-muted">{t('discover.age')}</dt>
+                  <dd className="mt-0.5 text-ink">{discoveredPoint.geology.age}</dd>
+                </div>
+              )}
+            </dl>
+            {discoveredPoint.geology?.descrip && (
+              <p className="text-xs leading-relaxed text-muted">{discoveredPoint.geology.descrip}</p>
+            )}
+            {discoveredPoint.geology?.url && (
+              <p className="text-xs">
+                <a href={discoveredPoint.geology.url} target="_blank" rel="noopener noreferrer" className="gm-tap font-semibold text-earth underline underline-offset-2">
+                  {t('discover.macrostratLink')}
+                </a>
+              </p>
+            )}
+            {nearestCatalog && (
+              <p className="text-xs text-muted">
+                {t('discover.nearest', { km: formatNumber(discoveredPoint.nearestSite.km, lang), site: nearestCatalog.name })}
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className="mt-1.5 text-sm leading-relaxed text-ink">{description ?? <Pending />}</p>
+        )}
         {textSourcesLine}
       </section>
 

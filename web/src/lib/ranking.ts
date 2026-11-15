@@ -42,20 +42,22 @@ export function explain(
   return { top, low }
 }
 
-export function rankSites(file: AnalogsFile, targetId: string, purpose: Purpose | null): RankedSite[] {
+/** Calcula la fila de un sitio para un objetivo y propósito usando los puntajes precomputados. */
+export function rankSite(file: AnalogsFile, site: Site, targetId: string, purpose: Purpose | null): RankedSite {
   const mode = scoreMode(file, purpose)
   const weights = activeWeights(file, purpose)
+  const entry = site.scores.find((s) => s.targetId === targetId)
+  const similarity = entry?.similarity ?? null
+  const dimensions = entry?.dimensions ?? {}
+  let score: number | null = null
+  if (entry) {
+    score = mode === 'purpose' && purpose ? (site.purposeScores?.[purpose.id] ?? null) : similarity
+  }
+  return { site, score, similarity, dimensions, rank: null, ...explain(dimensions, weights) }
+}
 
-  const rows: RankedSite[] = file.sites.map((site) => {
-    const entry = site.scores.find((s) => s.targetId === targetId)
-    const similarity = entry?.similarity ?? null
-    const dimensions = entry?.dimensions ?? {}
-    let score: number | null = null
-    if (entry) {
-      score = mode === 'purpose' && purpose ? (site.purposeScores?.[purpose.id] ?? null) : similarity
-    }
-    return { site, score, similarity, dimensions, rank: null, ...explain(dimensions, weights) }
-  })
+export function rankSites(file: AnalogsFile, targetId: string, purpose: Purpose | null): RankedSite[] {
+  const rows: RankedSite[] = file.sites.map((site) => rankSite(file, site, targetId, purpose))
 
   const byName = (a: RankedSite, b: RankedSite) => a.site.name.localeCompare(b.site.name)
   const evaluated = rows

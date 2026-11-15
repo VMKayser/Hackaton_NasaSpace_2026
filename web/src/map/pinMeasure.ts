@@ -4,7 +4,7 @@ import { EARTH_RADIUS_KM, metresPerPixel, sampleGrid } from '../lib/terrain'
 import type { ElevationGrid } from '../lib/terrain'
 import { BODIES } from './bodies'
 import type { Planet } from './planetaryImagery'
-import { loadTerrainRegions, regionGrids } from './planetTerrain'
+import { loadTerrainRegions, regionContains, regionGrids, regionPoint } from './planetTerrain'
 import { EARTH_LENS_MAX_ZOOM, earthTileElevations } from './reliefLens'
 import { MATCH_RADIUS_KM, MATCH_STEP_M } from '../lib/terrainMatch'
 import { boxAround, demCovers, GLOBAL_DEMS, readDemWindow } from './usgsDem'
@@ -103,6 +103,16 @@ export async function measurePlanetPoint(point: PinPoint, body: Planet): Promise
 }
 
 /**
+ * Mide un punto de la Tierra como las herramientas miden los sitios: Terrain Tiles, paso de MATCH_STEP_M y
+ * círculo de MATCH_RADIUS_KM. Sirve para buscar a qué objetivo de Marte o la Luna se parece.
+ */
+export async function measureEarthPoint(point: PinPoint): Promise<PatchStats | null> {
+  const zoom = earthZoomFor(MATCH_STEP_M, point.lat)
+  const sampler = await earthSampler(point, MATCH_RADIUS_KM, MATCH_STEP_M, zoom)
+  return measurePatch(sampler, point.lon, point.lat, MATCH_RADIUS_KM, EARTH_RADIUS_KM, MATCH_STEP_M)
+}
+
+/**
  * Mide los dos lados. El paso común es la resolución más gruesa: la del píxel de la Tierra en z12 o la
  * del modelo más fino del otro cuerpo que cubre todo el círculo con datos. Primero se prueban los
  * modelos de detalle del manifiesto (CTX, HiRISE); si ninguno cubre el círculo, el modelo global de USGS.
@@ -116,10 +126,10 @@ export async function measurePins(earth: PinPoint, planet: PinPoint, body: Plane
   let planetStats: PatchStats | null = null
   let planetGridM: number | null = null
   let planetSources: PinMeasurement['planetSources'] = []
-  const consider = (g: ElevationGrid, sources: PinMeasurement['planetSources']) => {
+  const consider = (g: ElevationGrid, sources: PinMeasurement['planetSources'], at: PinPoint = planet) => {
     const step = commonStep(earthPixelZ12, g.resolutionM)
-    if (!covers(g, planet, radiusKm, planetRadius, step)) return false
-    const stats = measurePatch((lon, lat) => sampleGrid(g, lon, lat, false), planet.lon, planet.lat, radiusKm, planetRadius, step)
+    if (!covers(g, at, radiusKm, planetRadius, step)) return false
+    const stats = measurePatch((lon, lat) => sampleGrid(g, lon, lat, false), at.lon, at.lat, radiusKm, planetRadius, step)
     if (!stats) return false
     if (!planetStats || stats.coverage > planetStats.coverage) {
       planetStats = stats
@@ -133,16 +143,17 @@ export async function measurePins(earth: PinPoint, planet: PinPoint, body: Plane
   let done = false
   for (const region of await loadTerrainRegions(body)) {
     if (done) break
-    const [w, s, e, n] = region.bounds
-    if (planet.lon < w || planet.lon > e || planet.lat < s || planet.lat > n) continue
+    if (!regionContains(region, planet.lon, planet.lat)) continue
+    // En una región con marco local (polo sur), el círculo se mide en ese marco, que conserva las distancias.
+    const at = regionPoint(region, planet.lon, planet.lat)
     for (const g of await regionGrids(body, region)) {
-      if (consider(g, region.sources)) {
+      if (consider(g, region.sources, at)) {
         done = true
         break
       }
     }
   }
-  const outside = !demCovers(dem, planet.lat)
+  const outside = !done && !demCovers(dem, planet.lat)
   if (!done && !outside) {
     const margin = radiusKm + 1
     const g = await readDemWindow(dem, ...boxAround(planet.lon, planet.lat, margin, planetRadius))

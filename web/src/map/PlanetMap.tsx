@@ -268,8 +268,8 @@ export function PlanetMap({ body, targets, target, onTarget, pin = null, pinRadi
             <button type="button" className={tool} aria-label={t('map.zoomOut')} onClick={() => mapRef.current?.zoomOut({ duration: 180 })}>−</button>
           </div>
           <div className="absolute bottom-0 left-0 flex max-w-full flex-wrap gap-x-2 bg-space/90 px-2 py-1 text-[10px] text-white [&_a]:underline [&_a]:underline-offset-2">
-            <a href={info.mapUrl} target="_blank" rel="noopener noreferrer">{info.mapCredit}</a>
-            {showDetailCredit && <a href={MARS_DETAIL.source} target="_blank" rel="noopener noreferrer">{MARS_DETAIL.credit}</a>}
+            <a href={info.mapUrl} target="_blank" rel="noopener noreferrer" className="gm-tap">{info.mapCredit}</a>
+            {showDetailCredit && <a href={MARS_DETAIL.source} target="_blank" rel="noopener noreferrer" className="gm-tap">{MARS_DETAIL.credit}</a>}
           </div>
         </>
       )}

@@ -2,7 +2,9 @@ import type { Model } from '../data/model'
 import { siteText } from '../data/model'
 import type { Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
+import { discoveredSummary, discoveredToSite, resolveRankedSite } from '../lib/discovered'
 import { formatPercent, formatValue } from '../lib/format'
+import { rankSite } from '../lib/ranking'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
 import { MAX_COMPARE } from '../lib/state'
 import { SourceLinks } from './SourceLinks'
@@ -22,10 +24,14 @@ export function ComparisonPanel({ model, target, rows, ids, mode, purpose, onCha
   onBack: () => void
 }) {
   const { t, lang } = useI18n()
+  const nearPlace = (place: string) => t('discover.near', { place })
   const selected = ids.flatMap((id) => {
-    const row = rows.find(({ site }) => site.id === id)
+    const row = resolveRankedSite(model, rows, id, target.id, purpose, nearPlace)
     return row ? [row] : []
   })
+  const foundRows = [...model.foundById.values()]
+    .map((point) => rankSite(model.file, discoveredToSite(point, nearPlace), target.id, purpose))
+    .sort((a, b) => (b.score ?? -1) - (a.score ?? -1))
   const noData = <span className="text-xs italic text-muted">{t('value.noData')}</span>
   const totals = [
     { label: 'detail.similarity', key: 'similarity' },
@@ -59,6 +65,13 @@ export function ComparisonPanel({ model, target, rows, ids, mode, purpose, onCha
                 {rows.filter(({ site }) => site.id === current || !ids.includes(site.id)).map(({ site }) => (
                   <option key={site.id} value={site.id}>{site.name}</option>
                 ))}
+                {foundRows.some(({ site }) => site.id === current || !ids.includes(site.id)) && (
+                  <optgroup label={t('discover.title')}>
+                    {foundRows.filter(({ site }) => site.id === current || !ids.includes(site.id)).map(({ site }) => (
+                      <option key={site.id} value={site.id}>{site.name}</option>
+                    ))}
+                  </optgroup>
+                )}
               </select>
             </label>
           )
@@ -136,8 +149,10 @@ export function ComparisonPanel({ model, target, rows, ids, mode, purpose, onCha
                 <tr className="bg-caution-soft align-top">
                   <th scope="row" className={`${ROW_HEADER} bg-caution-soft text-caution`}>{t('detail.limits')}</th>
                   <td className="p-2 text-xs text-caution">{t(`limits.general.${target.body}`)}</td>
-                  {selected.map(({ site }) => (
-                    <td key={site.id} className="p-2 text-xs">{siteText(model, site, 'limits', lang) ?? <Pending />}</td>
+                  {selected.map((row) => (
+                    <td key={row.site.id} className="p-2 text-xs">
+                      {siteText(model, row.site, 'limits', lang) ?? (row.site.found ? discoveredSummary(model, row, t, lang).limits : <Pending />)}
+                    </td>
                   ))}
                 </tr>
               </tbody>

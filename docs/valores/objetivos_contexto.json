@@ -1,0 +1,818 @@
+{
+  "jezero": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 316,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 12 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 12 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "columbia-hills": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 256,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 12 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 12 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "gale": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 357,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 9 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 9 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "meridiani": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 194,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 8 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 8 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "elysium-insight": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 220,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 8 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 8 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "shackleton-rim": [
+    {
+      "id": "sun_visibility_max",
+      "label": {
+        "en": "Best sunlight within 5 km",
+        "es": "Mejor iluminación a menos de 5 km"
+      },
+      "value": 87.1,
+      "unit": "%",
+      "note": {
+        "en": "Share of time the Sun is visible from the best-lit 60 m pixel within 5 km (LOLA model). The point coordinates have about 300 m of precision, too coarse to pick a single 60 m pixel.",
+        "es": "Parte del tiempo en que se ve el Sol desde el píxel de 60 m mejor iluminado a menos de 5 km (modelo LOLA). Las coordenadas del punto tienen unos 300 m de precisión, demasiado para elegir un solo píxel de 60 m."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "sun_visibility_mean",
+      "label": {
+        "en": "Sunlight within 5 km",
+        "es": "Iluminación solar a menos de 5 km"
+      },
+      "value": 18.5,
+      "unit": "%",
+      "note": {
+        "en": "Mean of the 60 m pixels within 5 km of the point.",
+        "es": "Media de los píxeles de 60 m a menos de 5 km del punto."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "permanent_shadow",
+      "label": {
+        "en": "Area in permanent shadow",
+        "es": "Área en sombra permanente"
+      },
+      "value": 20.3,
+      "unit": "%",
+      "note": {
+        "en": "Share of the 60 m pixels within 5 km that never receive sunlight.",
+        "es": "Parte de los píxeles de 60 m a menos de 5 km que nunca reciben luz solar."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_avg",
+      "label": {
+        "en": "Mean annual temperature at 2 cm",
+        "es": "Temperatura media anual a 2 cm"
+      },
+      "value": -168.5,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of 607 mesh triangles within 5 km. It is 2 cm below the surface, so it is not the same quantity as the surface temperature of the scored dimension.",
+        "es": "Modelo térmico de Diviner, media de 607 triángulos de la malla a menos de 5 km. Es a 2 cm bajo la superficie, así que no es la misma magnitud que la temperatura de superficie de la dimensión que puntúa."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_max",
+      "label": {
+        "en": "Maximum annual surface temperature",
+        "es": "Temperatura máxima anual en superficie"
+      },
+      "value": -37.8,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of the triangles within 5 km.",
+        "es": "Modelo térmico de Diviner, media de los triángulos a menos de 5 km."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "ice_stable_area",
+      "label": {
+        "en": "Area where water ice would be stable",
+        "es": "Área donde el hielo de agua sería estable"
+      },
+      "value": 45.6,
+      "unit": "%",
+      "note": {
+        "en": "Share of the triangles within 5 km where water ice would last within 2.9 m of the surface. It is a model prediction, not a detection of ice.",
+        "es": "Parte de los triángulos a menos de 5 km donde el hielo de agua duraría a menos de 2,9 m de la superficie. Es una predicción del modelo, no una detección de hielo."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    }
+  ],
+  "connecting-ridge": [
+    {
+      "id": "sun_visibility_max",
+      "label": {
+        "en": "Best sunlight within 5 km",
+        "es": "Mejor iluminación a menos de 5 km"
+      },
+      "value": 88.4,
+      "unit": "%",
+      "note": {
+        "en": "Share of time the Sun is visible from the best-lit 60 m pixel within 5 km (LOLA model). The point coordinates have about 300 m of precision, too coarse to pick a single 60 m pixel.",
+        "es": "Parte del tiempo en que se ve el Sol desde el píxel de 60 m mejor iluminado a menos de 5 km (modelo LOLA). Las coordenadas del punto tienen unos 300 m de precisión, demasiado para elegir un solo píxel de 60 m."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "sun_visibility_mean",
+      "label": {
+        "en": "Sunlight within 5 km",
+        "es": "Iluminación solar a menos de 5 km"
+      },
+      "value": 32.0,
+      "unit": "%",
+      "note": {
+        "en": "Mean of the 60 m pixels within 5 km of the point.",
+        "es": "Media de los píxeles de 60 m a menos de 5 km del punto."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "permanent_shadow",
+      "label": {
+        "en": "Area in permanent shadow",
+        "es": "Área en sombra permanente"
+      },
+      "value": 4.0,
+      "unit": "%",
+      "note": {
+        "en": "Share of the 60 m pixels within 5 km that never receive sunlight.",
+        "es": "Parte de los píxeles de 60 m a menos de 5 km que nunca reciben luz solar."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_avg",
+      "label": {
+        "en": "Mean annual temperature at 2 cm",
+        "es": "Temperatura media anual a 2 cm"
+      },
+      "value": -142.4,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of 615 mesh triangles within 5 km. It is 2 cm below the surface, so it is not the same quantity as the surface temperature of the scored dimension.",
+        "es": "Modelo térmico de Diviner, media de 615 triángulos de la malla a menos de 5 km. Es a 2 cm bajo la superficie, así que no es la misma magnitud que la temperatura de superficie de la dimensión que puntúa."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_max",
+      "label": {
+        "en": "Maximum annual surface temperature",
+        "es": "Temperatura máxima anual en superficie"
+      },
+      "value": -28.3,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of the triangles within 5 km.",
+        "es": "Modelo térmico de Diviner, media de los triángulos a menos de 5 km."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "ice_stable_area",
+      "label": {
+        "en": "Area where water ice would be stable",
+        "es": "Área donde el hielo de agua sería estable"
+      },
+      "value": 21.6,
+      "unit": "%",
+      "note": {
+        "en": "Share of the triangles within 5 km where water ice would last within 2.9 m of the surface. It is a model prediction, not a detection of ice.",
+        "es": "Parte de los triángulos a menos de 5 km donde el hielo de agua duraría a menos de 2,9 m de la superficie. Es una predicción del modelo, no una detección de hielo."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    }
+  ],
+  "de-gerlache-rim": [
+    {
+      "id": "sun_visibility_max",
+      "label": {
+        "en": "Best sunlight within 5 km",
+        "es": "Mejor iluminación a menos de 5 km"
+      },
+      "value": 82.7,
+      "unit": "%",
+      "note": {
+        "en": "Share of time the Sun is visible from the best-lit 60 m pixel within 5 km (LOLA model). The point coordinates have about 300 m of precision, too coarse to pick a single 60 m pixel.",
+        "es": "Parte del tiempo en que se ve el Sol desde el píxel de 60 m mejor iluminado a menos de 5 km (modelo LOLA). Las coordenadas del punto tienen unos 300 m de precisión, demasiado para elegir un solo píxel de 60 m."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "sun_visibility_mean",
+      "label": {
+        "en": "Sunlight within 5 km",
+        "es": "Iluminación solar a menos de 5 km"
+      },
+      "value": 33.8,
+      "unit": "%",
+      "note": {
+        "en": "Mean of the 60 m pixels within 5 km of the point.",
+        "es": "Media de los píxeles de 60 m a menos de 5 km del punto."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "permanent_shadow",
+      "label": {
+        "en": "Area in permanent shadow",
+        "es": "Área en sombra permanente"
+      },
+      "value": 0.5,
+      "unit": "%",
+      "note": {
+        "en": "Share of the 60 m pixels within 5 km that never receive sunlight.",
+        "es": "Parte de los píxeles de 60 m a menos de 5 km que nunca reciben luz solar."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_avg",
+      "label": {
+        "en": "Mean annual temperature at 2 cm",
+        "es": "Temperatura media anual a 2 cm"
+      },
+      "value": -135.4,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of 613 mesh triangles within 5 km. It is 2 cm below the surface, so it is not the same quantity as the surface temperature of the scored dimension.",
+        "es": "Modelo térmico de Diviner, media de 613 triángulos de la malla a menos de 5 km. Es a 2 cm bajo la superficie, así que no es la misma magnitud que la temperatura de superficie de la dimensión que puntúa."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_max",
+      "label": {
+        "en": "Maximum annual surface temperature",
+        "es": "Temperatura máxima anual en superficie"
+      },
+      "value": -5.1,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of the triangles within 5 km.",
+        "es": "Modelo térmico de Diviner, media de los triángulos a menos de 5 km."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "ice_stable_area",
+      "label": {
+        "en": "Area where water ice would be stable",
+        "es": "Área donde el hielo de agua sería estable"
+      },
+      "value": 16.0,
+      "unit": "%",
+      "note": {
+        "en": "Share of the triangles within 5 km where water ice would last within 2.9 m of the surface. It is a model prediction, not a detection of ice.",
+        "es": "Parte de los triángulos a menos de 5 km donde el hielo de agua duraría a menos de 2,9 m de la superficie. Es una predicción del modelo, no una detección de hielo."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    }
+  ],
+  "malapert-massif": [
+    {
+      "id": "sun_visibility_max",
+      "label": {
+        "en": "Best sunlight within 5 km",
+        "es": "Mejor iluminación a menos de 5 km"
+      },
+      "value": 81.9,
+      "unit": "%",
+      "note": {
+        "en": "Share of time the Sun is visible from the best-lit 60 m pixel within 5 km (LOLA model). The point coordinates have about 300 m of precision, too coarse to pick a single 60 m pixel.",
+        "es": "Parte del tiempo en que se ve el Sol desde el píxel de 60 m mejor iluminado a menos de 5 km (modelo LOLA). Las coordenadas del punto tienen unos 300 m de precisión, demasiado para elegir un solo píxel de 60 m."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "sun_visibility_mean",
+      "label": {
+        "en": "Sunlight within 5 km",
+        "es": "Iluminación solar a menos de 5 km"
+      },
+      "value": 37.6,
+      "unit": "%",
+      "note": {
+        "en": "Mean of the 60 m pixels within 5 km of the point.",
+        "es": "Media de los píxeles de 60 m a menos de 5 km del punto."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "permanent_shadow",
+      "label": {
+        "en": "Area in permanent shadow",
+        "es": "Área en sombra permanente"
+      },
+      "value": 0.7,
+      "unit": "%",
+      "note": {
+        "en": "Share of the 60 m pixels within 5 km that never receive sunlight.",
+        "es": "Parte de los píxeles de 60 m a menos de 5 km que nunca reciben luz solar."
+      },
+      "sources": [
+        {
+          "name": "LOLA polar illumination maps, 85°S, 60 m (Mazarico et al., 2011)",
+          "agency": "NASA GSFC PGDA",
+          "url": "https://pgda.gsfc.nasa.gov/products/69"
+        },
+        {
+          "name": "Mazarico et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2010.10.030"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_avg",
+      "label": {
+        "en": "Mean annual temperature at 2 cm",
+        "es": "Temperatura media anual a 2 cm"
+      },
+      "value": -135.1,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of 616 mesh triangles within 5 km. It is 2 cm below the surface, so it is not the same quantity as the surface temperature of the scored dimension.",
+        "es": "Modelo térmico de Diviner, media de 616 triángulos de la malla a menos de 5 km. Es a 2 cm bajo la superficie, así que no es la misma magnitud que la temperatura de superficie de la dimensión que puntúa."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "diviner_temp_max",
+      "label": {
+        "en": "Maximum annual surface temperature",
+        "es": "Temperatura máxima anual en superficie"
+      },
+      "value": -15.6,
+      "unit": "°C",
+      "note": {
+        "en": "Diviner thermal model, mean of the triangles within 5 km.",
+        "es": "Modelo térmico de Diviner, media de los triángulos a menos de 5 km."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    },
+    {
+      "id": "ice_stable_area",
+      "label": {
+        "en": "Area where water ice would be stable",
+        "es": "Área donde el hielo de agua sería estable"
+      },
+      "value": 9.3,
+      "unit": "%",
+      "note": {
+        "en": "Share of the triangles within 5 km where water ice would last within 2.9 m of the surface. It is a model prediction, not a detection of ice.",
+        "es": "Parte de los triángulos a menos de 5 km donde el hielo de agua duraría a menos de 2,9 m de la superficie. Es una predicción del modelo, no una detección de hielo."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
+        }
+      ]
+    }
+  ],
+  "utopia": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 251,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 12 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 12 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "deuteronilus": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 155,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 12 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 12 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    },
+    {
+      "id": "radar_ice_reflectors",
+      "label": {
+        "en": "SHARAD basal reflectors of debris aprons",
+        "es": "Reflectores basales SHARAD en depósitos de detritos"
+      },
+      "value": 179,
+      "unit": null,
+      "note": {
+        "en": "Radar detections within 5 km of the base of a lobate debris apron. They indicate a body of ice under a thin debris cover (Plaut et al., 2009). The dataset covers only Deuteronilus Mensae.",
+        "es": "Detecciones de radar a menos de 5 km de la base de un depósito lobulado de detritos. Indican un cuerpo de hielo bajo una capa delgada de detritos (Plaut et al., 2009). El conjunto solo cubre Deuteronilus Mensae."
+      },
+      "sources": [
+        {
+          "name": "Baker and Carter, SHARAD reflector datasets for Deuteronilus Mensae (ds03, lobate debris aprons)",
+          "agency": "NASA GSFC / University of Arizona (Zenodo)",
+          "url": "https://doi.org/10.5281/zenodo.7753745"
+        },
+        {
+          "name": "Plaut et al. (2009), Radar evidence for ice in lobate debris aprons",
+          "agency": "Geophysical Research Letters",
+          "url": "https://doi.org/10.1029/2008GL036379"
+        }
+      ]
+    }
+  ],
+  "arcadia": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 182,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 12 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 12 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ],
+  "mawrth-vallis": [
+    {
+      "id": "thermal_inertia",
+      "label": {
+        "en": "Thermal inertia (TES, night)",
+        "es": "Inercia térmica (TES, de noche)"
+      },
+      "value": 226,
+      "unit": "J m⁻² K⁻¹ s⁻½",
+      "note": {
+        "en": "Mean of 10 pixels of about 3 km within 5 km; some are interpolated. High: rock or compact ground; low: fine dust.",
+        "es": "Media de 10 píxeles de unos 3 km a menos de 5 km; algunos están interpolados. Alta: roca o suelo compacto; baja: polvo fino."
+      },
+      "sources": [
+        {
+          "name": "MGS TES nighttime thermal inertia map (Putzig and Mellon, 2007)",
+          "agency": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html"
+        },
+        {
+          "name": "Putzig and Mellon (2007), Apparent thermal inertia and the surface heterogeneity of Mars",
+          "agency": "Icarus",
+          "url": "https://doi.org/10.1016/j.icarus.2007.05.013"
+        }
+      ]
+    }
+  ]
+}

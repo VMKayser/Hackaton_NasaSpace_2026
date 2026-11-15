@@ -4,6 +4,7 @@ import { purposeLabel } from '../data/model'
 import type { Purpose, Site, Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import { formatPercent, formatValue } from '../lib/format'
+import { matchesQuery } from '../lib/voice'
 import { SourceLinks } from './SourceLinks'
 import { BodyChip } from './ui'
 
@@ -12,9 +13,6 @@ import { BodyChip } from './ui'
 
 const ALIKE = 0.66
 const PARTLY = 0.33
-
-/** Texto sin mayúsculas ni tildes, para buscar. */
-const fold = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
 
 interface Props {
   model: Model
@@ -72,7 +70,7 @@ export function AdaptationDialog({ model, site, target, purpose, onClose }: Prop
       if (a.purposeId) return purposeId ? a.purposeId === purposeId : purposes.some((p) => p.id === a.purposeId)
       return a.body === target.body
     })
-    .filter((a) => !query.trim() || fold(`${a.title[lang]} ${a.text[lang]}`).includes(fold(query.trim())))
+    .filter((a) => matchesQuery(query, a.title[lang], a.text[lang]))
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-space/60 p-0 sm:items-center sm:p-4" onClick={onClose}>

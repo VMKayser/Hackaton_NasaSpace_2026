@@ -30,3 +30,9 @@ umajalanta,"Caverna de Umajalanta, Torotoro",-18.13,-65.76,2,cave,extension,fals
 yungay-atacama,"Yungay, Atacama (Chile)",-24.08,-69.92,2,desert,validation,true,true,false
 trinidad-control,"Trinidad, Beni",-14.83,-64.90,2,humid_lowland,validation,false,false,true
 coroico-control,"Coroico, Yungas",-16.19,-67.73,2,humid_mountain,validation,false,false,true
+haughton,"Haughton, isla Devon (Canadá)",75.383,-89.667,5,desert,world,true,false,false
+badwater,"Badwater, Death Valley (EE. UU.)",36.25028,-116.82583,5,salt_lake,world,true,false,false
+mdrs-utah,"Mars Desert Research Station, Utah (EE. UU.)",38.4064583,-110.7919028,5,desert,world,true,false,false
+askja,Askja (Islandia),65.033,-16.783,5,volcanic,world,true,false,false
+kilauea,"Kīlauea, Hawái (EE. UU.)",19.4211,-155.2868,5,volcanic,world,true,false,false
+dallol,Dallol (Etiopía),14.24167,40.3,5,hydrothermal,world,true,false,false

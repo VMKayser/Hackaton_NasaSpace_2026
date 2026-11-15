@@ -16,6 +16,7 @@ import { siteText } from '../data/model'
 import type { Dimension, Purpose, Target } from '../data/schema'
 import { LANGS, useI18n } from '../i18n'
 import type { Lang } from '../i18n'
+import { discoveredSummary } from '../lib/discovered'
 import { formatCoords, formatNumber, formatPercent, formatValue } from '../lib/format'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
 import { activeWeights, scoredCount } from '../lib/ranking'
@@ -34,7 +35,7 @@ import { BODIES } from '../map/bodies'
 import { scoreColor } from '../map/colors'
 import { IMAGERY, MARS_DETAIL } from '../map/planetaryImagery'
 import type { Planet } from '../map/planetaryImagery'
-import { loadTrack, planetElevationAt, terrainAt } from '../map/planetTerrain'
+import { loadTrack, planetElevationAt, regionPoint, terrainAt } from '../map/planetTerrain'
 import { measurePins } from '../map/pinMeasure'
 import type { PinMeasurement } from '../map/pinMeasure'
 import { STEEP_DEG } from '../lib/patch'
@@ -211,19 +212,39 @@ function planetStyle(body: Planet, region: TerrainRegion | null, target: Target,
     `<a href="${info.mapUrl}" target="_blank" rel="noopener">${info.mapCredit}</a>`,
     ...(region?.sources ?? []).map((s) => `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a> (${s.agency})`),
   ].join(' · ')
+  // Marco local del polo sur: las teselas orbitales no corresponden a esas coordenadas; la «imagen» es el
+  // sombreado del mismo relieve de LOLA.
+  const local = !!region?.frame
   const style: StyleSpecification = {
     version: 8,
     projection: { type: 'mercator' },
     sky: SKIES[body],
     sources: {
-      imagery: { type: 'raster', tiles: [`planet-trek://${body}/{z}/{x}/{y}`], tileSize: 256, maxzoom: info.maxLevel + 1, attribution: credit },
+      ...(local ? {} : { imagery: { type: 'raster' as const, tiles: [`planet-trek://${body}/{z}/{x}/{y}`], tileSize: 256, maxzoom: info.maxLevel + 1, attribution: credit } }),
       area: { type: 'geojson', data: ring(target.lon, target.lat, radiusKm, BODIES[body].radiusKm) },
       site: { type: 'geojson', data: dot(target.lon, target.lat) },
     },
     layers: [
-      { id: 'bg', type: 'background', paint: { 'background-color': SKIES[body]['fog-color'] as string } },
-      { id: 'imagery', type: 'raster', source: 'imagery', paint: { 'raster-contrast': 0.12, 'raster-fade-duration': 0 } },
+      { id: 'bg', type: 'background', paint: { 'background-color': local ? '#8d8d8d' : SKIES[body]['fog-color'] as string } },
+      ...(local ? [] : [{ id: 'imagery', type: 'raster' as const, source: 'imagery', paint: { 'raster-contrast': 0.12, 'raster-fade-duration': 0 } }]),
     ],
+  }
+  if (local && region) {
+    const maxzoom = terrainMaxZoom(region.grids.map((g) => g.resolutionM), BODIES[body].radiusKm)
+    style.sources.shade = {
+      type: 'raster-dem',
+      tiles: [`planet-dem://${body}/${region.targetId}/{z}/{x}/{y}`],
+      encoding: 'terrarium',
+      tileSize: 256,
+      maxzoom,
+      attribution: (region.sources ?? []).map((s) => `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a> (${s.agency})`).join(' · '),
+    }
+    style.layers.push({
+      id: 'shade',
+      type: 'hillshade',
+      source: 'shade',
+      paint: { 'hillshade-exaggeration': 1, 'hillshade-shadow-color': '#0b0b0c', 'hillshade-highlight-color': '#ffffff', 'hillshade-accent-color': '#3f3f42' },
+    })
   }
   if (body === 'mars') {
     style.sources.detail = {
@@ -392,7 +413,7 @@ function ConditionsPanel({ model, row, target, purpose, mode }: { model: Model; 
   const weights = activeWeights(model.file, mode === 'purpose' ? purpose : null)
   const dims = [...model.dimensions].sort((a, b) => (weights[b.id] ?? 0) - (weights[a.id] ?? 0))
   const { scored, total } = scoredCount(model.file, row.dimensions)
-  const limits = siteText(model, row.site, 'limits', lang)
+  const limits = siteText(model, row.site, 'limits', lang) ?? (row.site.found ? discoveredSummary(model, row, t, lang).limits : null)
   const groupClass: Record<Likeness, string> = {
     similar: 'text-[#8fd6a8]',
     partial: 'text-[#f3d27a]',
@@ -548,18 +569,22 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   const detailKm = Math.max(12, Math.ceil(radiusKm) + 4)
   const regionKey = `${body}|${target.id}|${target.lon}|${target.lat}|${detailKm}`
   const region = regionState?.key === regionKey ? regionState.region : undefined
+  /** Posición del objetivo en el mapa: la real, o la del marco local del polo sur (tools/moon_polar.py). */
+  const at = useMemo(() => (region?.frame ? regionPoint(region, target.lon, target.lat) : { lon: target.lon, lat: target.lat }), [region, target.lon, target.lat])
   // Elección del usuario; durante el recorrido guiado manda el paso actual.
   const [lensChoice, setLensChoice] = useState<Lens>('imagery')
   const [panelChoice, setPanelChoice] = useState(() => window.innerWidth >= 1024)
   const [routeChoice, setRouteChoice] = useState(false)
   const [tour, setTour] = useState<number | null>(null)
   const framedFor = useRef('')
-  const [trackData, setTrackData] = useState<TrackData | null>(null)
+  const track = region?.tracks?.[0] ?? null
+  const trackKey = track ? `${body}|${track.file}` : ''
+  const [trackState, setTrackState] = useState<{ key: string; data: TrackData } | null>(null)
+  const trackData = trackState?.key === trackKey ? trackState.data : null
   // El perfil se guarda con la clave del sitio para el que se calculó; si no coincide, se está calculando.
   const [profileState, setProfileState] = useState<{ key: string; data: RouteProfileData } | null>(null)
   const profileKey = `${site.id}|${target.id}`
   const profile = profileState?.key === profileKey ? profileState.data : null
-  const track = region?.tracks?.[0] ?? null
   const tourSteps = useMemo(
     () => TOUR_ORDER.filter((step) => (step !== 'route' || track) && (step !== 'conditions' || !free)),
     [track, free],
@@ -655,7 +680,11 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   const measured = free && pinStats?.key === statsKey ? pinStats.data : null
   const color = scoreColor(row.score)
   const evaluated = useMemo(() => rows.filter((r) => r.score !== null), [rows])
-  const index = evaluated.findIndex((r) => r.site.id === site.id)
+  const navRows = useMemo(
+    () => (!free && row.site.found && !evaluated.some((r) => r.site.id === site.id) ? [row, ...evaluated] : evaluated),
+    [free, evaluated, row, site.id],
+  )
+  const index = navRows.findIndex((r) => r.site.id === site.id)
 
   // Tres dimensiones con más peso que tengan valor en los dos lados, para la franja inferior.
   const keyDims = useMemo(() => {
@@ -709,7 +738,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   useEffect(() => {
     if (!webgl || region === undefined || !earthRef.current || !planetRef.current) return
     const first = latest.current.site
-    const target = latestTarget.current
+    const target = { ...latestTarget.current, ...(region ? regionPoint(region, latestTarget.current.lon, latestTarget.current.lat) : {}) }
     const firstRadius = first.radiusKm ?? 3
     const reduced = prefersReducedMotion()
     const zEarth = framingZoom(first.lat, firstRadius, earthRef.current)
@@ -825,19 +854,19 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     ;(earth.getSource('site') as GeoJSONSource).setData(dot(site.lon, site.lat))
     ;(earth.getSource(LENS_LAYERS.relative) as RasterTileSource).setTiles([lensUrl('earth', '-', 'relative', site.lon, site.lat)])
     earth.setPaintProperty('site-dot', 'circle-color', color)
-    ;(planet.getSource('area') as GeoJSONSource).setData(ring(target.lon, target.lat, radiusKm, BODIES[body].radiusKm))
-  }, [ready, site, radiusKm, color, target, body])
+    ;(planet.getSource('area') as GeoJSONSource).setData(ring(at.lon, at.lat, radiusKm, BODIES[body].radiusKm))
+  }, [ready, site, radiusKm, color, at, body])
 
   // Cámaras sobre el sitio y el objetivo, a la misma escala.
   const frameSite = useCallback((duration: number) => {
     const { earth, planet } = maps.current
     if (!earth || !planet) return
     const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer())
-    const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
+    const zPlanet = sameScaleZoom(zEarth, site.lat, at.lat, BODIES[body].radiusKm)
     offsetRef.current = zPlanet - zEarth
     earth.flyTo({ center: [site.lon, site.lat], zoom: zEarth, pitch: PITCH, duration, essential: true })
-    planet.flyTo({ center: [target.lon, target.lat], zoom: zPlanet, pitch: PITCH, duration, essential: true })
-  }, [site, radiusKm, target, body])
+    planet.flyTo({ center: [at.lon, at.lat], zoom: zPlanet, pitch: PITCH, duration, essential: true })
+  }, [site, radiusKm, at, body])
 
   // Al cambiar la disposición: tamaño nuevo de los lienzos y atribución en su esquina.
   useEffect(() => {
@@ -875,15 +904,15 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     orbitRef.current = TOUR[tourStep].orbit && !prefersReducedMotion()
     if (tourStep === 'overview' && earth && planet) {
       const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer()) - 2.6
-      const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
+      const zPlanet = sameScaleZoom(zEarth, site.lat, at.lat, BODIES[body].radiusKm)
       offsetRef.current = zPlanet - zEarth
       const duration = prefersReducedMotion() ? 0 : 3500
       earth.flyTo({ center: [site.lon, site.lat], zoom: zEarth, pitch: 45, duration, essential: true })
-      planet.flyTo({ center: [target.lon, target.lat], zoom: zPlanet, pitch: 45, duration, essential: true })
+      planet.flyTo({ center: [at.lon, at.lat], zoom: zPlanet, pitch: 45, duration, essential: true })
     }
     const id = window.setTimeout(() => setTour((n) => (n === null || n + 1 >= tourSteps.length ? null : n + 1)), TOUR[tourStep].ms)
     return () => window.clearTimeout(id)
-  }, [tour, tourStep, ready, tourSteps.length, site, radiusKm, target, body])
+  }, [tour, tourStep, ready, tourSteps.length, site, radiusKm, at, body])
 
   // Pasos apilados del recorrido: la cortina va y viene entre los dos lugares (empieza casi toda en la
   // Tierra) y la superposición pasa de solo la Tierra a solo el otro cuerpo y vuelve. Antes de pintar,
@@ -913,11 +942,11 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   useEffect(() => {
     if (!track) return
     let alive = true
-    loadTrack(body, track.file).then((d) => alive && setTrackData(d)).catch(() => undefined)
+    loadTrack(body, track.file).then((d) => alive && setTrackState({ key: trackKey, data: d })).catch(() => undefined)
     return () => {
       alive = false
     }
-  }, [body, track])
+  }, [body, track, trackKey])
 
   const earthTrack = useMemo<LonLat[] | null>(
     () => (trackData ? transplant(trackData.line, trackData.line[0], BODIES[body].radiusKm, [site.lon, site.lat], EARTH_RADIUS_KM) : null),
@@ -941,6 +970,9 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
         layout: { visibility: 'none' },
         paint: { 'circle-radius': 2.6, 'circle-color': '#ffffff', 'circle-stroke-color': '#0b1726', 'circle-stroke-width': 1 },
       }, 'site-dot')
+    } else {
+      ;(planet.getSource('track') as GeoJSONSource).setData(lineFc(trackData.line))
+      ;(planet.getSource('track-stops') as GeoJSONSource | undefined)?.setData(trackData.stops)
     }
     const source = earth.getSource('track') as GeoJSONSource | undefined
     if (source) source.setData(lineFc(earthTrack))
@@ -1020,24 +1052,24 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     let alive = true
     Promise.all([
       elevationAtPoint('earth', '-', site.lon, site.lat).catch(() => null),
-      region ? elevationAtPoint(body, region.targetId, target.lon, target.lat) : Promise.resolve(null),
+      region ? elevationAtPoint(body, region.targetId, at.lon, at.lat) : Promise.resolve(null),
     ]).then(([earth, planet]) => alive && setCentres({ earth, planet }))
     return () => {
       alive = false
     }
-  }, [lens, site.lon, site.lat, region, body, target])
+  }, [lens, site.lon, site.lat, region, body, at])
 
   const toggleOrbit = () => {
     orbitRef.current = !orbitRef.current
     setOrbiting(orbitRef.current)
   }
   const go = (delta: number) => {
-    const next = evaluated[(index + delta + evaluated.length) % evaluated.length]
+    const next = navRows[(index + delta + navRows.length) % navRows.length]
     if (next) onSite(next.site.id)
   }
 
   const label = (text: string) => <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{text}</span>
-  const chip = 'min-h-9 rounded-lg px-2.5 py-1 text-xs font-semibold sm:px-3'
+  const chip = 'min-h-9 shrink-0 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs font-semibold sm:px-3'
   const round = (v: number | null | undefined) => (v === null || v === undefined ? '–' : formatNumber(Math.round(v), lang))
   const bodyName = t(`body.${body}`)
 
@@ -1051,7 +1083,10 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
       note: region === null
         ? t('explore.noTerrain')
         : region
-          ? t('explore.elevation', { min: formatNumber(region.elevationRangeM[0], lang), max: formatNumber(region.elevationRangeM[1], lang) })
+          ? [
+              t('explore.elevation', { min: formatNumber(region.elevationRangeM[0], lang), max: formatNumber(region.elevationRangeM[1], lang) }),
+              region.frame ? t('explore.polarFrame') : null,
+            ].filter(Boolean).join(' · ')
           : null,
       centre: centres?.planet,
     },
@@ -1064,7 +1099,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
         <strong className="min-w-0 truncate text-sm">{pane.name}</strong>
       </div>
       <p className="mt-0.5 font-mono text-[10px] text-white/60">{formatCoords(pane.lat, pane.lon, lang)}</p>
-      {pane.note && <p className="mt-1 text-[11px] text-white/80">{pane.note}</p>}
+      {pane.note && <p className="mt-1 hidden text-[11px] text-white/80 sm:block">{pane.note}</p>}
       {lens === 'relative' && pane.centre !== undefined && (
         <p className="mt-1 font-mono text-[11px] text-white/85">{t('explore.lens.centre', { m: round(pane.centre) })}</p>
       )}
@@ -1093,7 +1128,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
                   onChange={(e) => onSite(e.target.value)}
                   className="min-w-0 max-w-full truncate rounded-md bg-transparent font-serif text-base font-semibold leading-tight outline-offset-2 hover:bg-white/10 sm:max-w-[14rem] sm:text-lg"
                 >
-                  {evaluated.map((r) => (
+                  {navRows.map((r) => (
                     <option key={r.site.id} value={r.site.id} className="bg-space font-sans text-sm">
                       {t('explore.rankOption', { rank: r.rank ?? '–', name: r.site.name, score: r.score === null ? t('badge.notEvaluated') : formatPercent(r.score, lang) })}
                     </option>
@@ -1109,15 +1144,15 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
         <button ref={closeRef} type="button" onClick={onClose} className={`shrink-0 ${chip} bg-white text-ink hover:bg-white/90`}>
           {t('explore.close')}
         </button>
-        <div className="flex w-full flex-wrap items-center gap-x-3 gap-y-1.5 2xl:w-auto">
+        <div className="gm-scroll-row -mx-2 flex w-[calc(100%+1rem)] flex-nowrap items-center gap-x-3 gap-y-1.5 overflow-x-auto px-2 pb-0.5 sm:-mx-4 sm:w-[calc(100%+2rem)] sm:px-4 md:mx-0 md:w-full md:flex-wrap md:overflow-visible md:px-0 2xl:w-auto">
           {/* Primero cómo se ven los dos lugares (vista) y luego qué se pinta encima (capa). */}
-          <div className="flex items-center gap-1.5">
-            <span aria-hidden="true" className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#fde68a]">{t('explore.layout')}</span>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <span aria-hidden="true" className="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-[#fde68a] sm:inline">{t('explore.layout')}</span>
             <select
               aria-label={t('explore.layout')}
               value={layout}
               onChange={(event) => chooseLayout(event.target.value as Layout)}
-              className="min-h-9 rounded-lg bg-white/10 px-1 text-base font-semibold md:hidden [&_option]:bg-space"
+              className="min-h-9 rounded-lg bg-[#fde68a]/15 px-1 text-sm font-semibold md:hidden [&_option]:bg-space"
             >
               {LAYOUTS.map((l) => <option key={l} value={l}>{t(`explore.layout.${l}`)}</option>)}
             </select>
@@ -1135,13 +1170,13 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span aria-hidden="true" className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{t('explore.lens')}</span>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <span aria-hidden="true" className="hidden text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60 sm:inline">{t('explore.lens')}</span>
             <select
               aria-label={t('explore.lens')}
               value={lens}
               onChange={(event) => setLens(event.target.value as Lens)}
-              className="min-h-9 rounded-lg bg-white/10 px-1 text-base font-semibold md:hidden [&_option]:bg-space"
+              className="min-h-9 rounded-lg bg-white/10 px-1 text-sm font-semibold md:hidden [&_option]:bg-space"
             >
               {LENSES.map((l) => <option key={l} value={l}>{t(`explore.lens.${l}`)}</option>)}
             </select>
@@ -1159,7 +1194,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
               ))}
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex shrink-0 flex-nowrap items-center gap-1.5 md:flex-wrap">
           <button
             type="button"
             onClick={() => {
@@ -1190,7 +1225,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
           <button type="button" onClick={toggleOrbit} aria-pressed={orbiting} className={`${chip} bg-white/10 hover:bg-white/20`}>
             {orbiting ? t('explore.pause') : t('explore.orbit')}
           </button>
-          <div role="group" aria-label={t('lang.label')} className="flex rounded-lg bg-white/10 p-0.5">
+          <div role="group" aria-label={t('lang.label')} className="flex shrink-0 rounded-lg bg-white/10 p-0.5">
             {LANGS.map((l) => (
               <button
                 key={l}
@@ -1231,7 +1266,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
         <div className="flex min-w-0 flex-1 flex-col explore-wide:min-h-0">
           <div
             ref={areaRef}
-            className={`gm-compare relative grid min-h-40 flex-1 overflow-hidden ${stacked ? 'grid-cols-1 grid-rows-1' : 'gm-map-panes'}`}
+            className={`gm-compare relative grid min-h-[max(16rem,58dvh)] flex-1 overflow-hidden explore-wide:min-h-40 ${stacked ? 'grid-cols-1 grid-rows-1' : 'gm-map-panes'}`}
             // Posición de la cortina y mezcla; las animaciones las cambian directamente (ver `show`).
             style={{ '--split': `${split}%`, '--mix': String(mix / 100) } as CSSProperties}
           >
@@ -1374,7 +1409,9 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
             )}
           </div>
 
-          <div className="max-h-[30dvh] shrink-0 space-y-2 overflow-y-auto border-t border-white/15 px-2 py-2 sm:px-3 explore-wide:max-h-[36dvh]" tabIndex={0} role="region" aria-label={t('detail.evidence')}>
+          <div className="shrink-0 space-y-2 border-t border-white/15 px-2 py-2 sm:px-3 explore-wide:max-h-[36dvh] explore-wide:overflow-y-auto" tabIndex={0} role="region" aria-label={t('detail.evidence')}>
+            {/* En pantallas angostas la nota del objetivo (elevación, marco del polo) va aquí y no sobre el mapa. */}
+            {panes[1].note && <p className="mx-auto max-w-3xl text-center text-[11px] leading-snug text-white/80 sm:hidden">{panes[1].note}</p>}
             {route && track && (
               <div className="flex justify-center">
                 <RouteProfile track={track} target={target} data={profile} />
@@ -1458,7 +1495,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
             ref={conditionsRef}
             aria-label={t('explore.conditions')}
             tabIndex={0}
-            className="max-h-[32dvh] shrink-0 overflow-y-auto border-t border-white/15 explore-wide:max-h-none explore-wide:w-[22rem] explore-wide:border-l explore-wide:border-t-0"
+            className="shrink-0 border-t border-white/15 explore-wide:w-[22rem] explore-wide:overflow-y-auto explore-wide:border-l explore-wide:border-t-0"
           >
             <ConditionsPanel model={model} row={row} target={target} purpose={purpose} mode={mode} />
           </aside>

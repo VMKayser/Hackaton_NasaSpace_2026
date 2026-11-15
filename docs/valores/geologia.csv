@@ -30,3 +30,9 @@ umajalanta,karst,Caverna de origen kárstico,Caverna de Umajalanta (Wikipedia),h
 yungay-atacama,desert,Núcleo hiperárido del desierto de Atacama,"Navarro-González et al. (2003), Science",https://doi.org/10.1126/science.1089143,Cretaceous Granitic,Granite,https://macrostrat.org/api/v2/geologic_units/map?lat=-24.08&lng=-69.92
 trinidad-control,humid_lowland,Llanura tropical húmeda con inundaciones,Trinidad (Bolivia) (Wikipedia),https://es.wikipedia.org/wiki/Trinidad_(Bolivia),Quaternary Siliciclastic,Siliciclastic,https://macrostrat.org/api/v2/geologic_units/map?lat=-14.83&lng=-64.90
 coroico-control,humid_mountain,Valle empinado con bosque húmedo,Coroico (Wikipedia),https://es.wikipedia.org/wiki/Coroico,Ordovician Siliciclastic,Siliciclastic,https://macrostrat.org/api/v2/geologic_units/map?lat=-16.19&lng=-67.73
+haughton,desert,Desierto polar sobre un cráter de impacto,"Lacelle et al. (2008), Canadian Journal of Earth Sciences",https://doi.org/10.1139/e08-063,,,
+badwater,lacustrine,Costra de sal que se redeposita cuando el agua se evapora,Badwater Basin (Wikipedia),https://en.wikipedia.org/wiki/Badwater_Basin,,,
+mdrs-utah,desert,Desierto elegido por su terreno y aspecto parecidos a Marte,Mars Desert Research Station (Wikipedia),https://en.wikipedia.org/wiki/Mars_Desert_Research_Station,,,
+askja,volcanic,Caldera volcánica,Askja (Wikipedia),https://en.wikipedia.org/wiki/Askja,,,
+kilauea,volcanic,Volcán en escudo activo,Kīlauea (Wikipedia),https://en.wikipedia.org/wiki/K%C4%ABlauea,,,
+dallol,hydrothermal,Manantiales hidrotermales ácidos e hipersalinos,"Cavalazzi et al. (2019), Astrobiology",https://doi.org/10.1089/ast.2018.1926,,,

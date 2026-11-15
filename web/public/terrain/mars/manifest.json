@@ -6,19 +6,19 @@
       "targetId": "jezero",
       "body": "mars",
       "bounds": [
-        75.94731,
-        16.940162,
-        78.946903,
-        19.939755
+        75.950684,
+        16.94691,
+        78.950277,
+        19.946503
       ],
       "grids": [
         {
           "file": "jezero-hrsc-mola-200m.png",
           "bounds": [
-            75.94731,
-            16.940162,
-            78.946903,
-            19.939755
+            75.950684,
+            16.94691,
+            78.950277,
+            19.946503
           ],
           "resolutionM": 200
         },
@@ -35,10 +35,10 @@
         {
           "file": "jezero-hirise-3m.png",
           "bounds": [
-            77.407818,
-            18.397867,
-            77.492137,
-            18.482186
+            77.408611,
+            18.403569,
+            77.49293,
+            18.487889
           ],
           "resolutionM": 3
         }
@@ -88,19 +88,134 @@
       "targetId": "columbia-hills",
       "body": "mars",
       "bounds": [
-        174.029628,
-        -16.139719,
-        177.029222,
-        -13.140126
+        173.999261,
+        -16.09923,
+        176.998854,
+        -13.099636
       ],
       "grids": [
         {
           "file": "columbia-hills-hrsc-mola-200m.png",
           "bounds": [
-            174.029628,
-            -16.139719,
-            177.029222,
-            -13.140126
+            173.999261,
+            -16.09923,
+            176.998854,
+            -13.099636
+          ],
+          "resolutionM": 200
+        },
+        {
+          "file": "columbia-hills-ctx-20m.png",
+          "bounds": [
+            175.156048,
+            -15.142635,
+            175.722495,
+            -14.172754
+          ],
+          "resolutionM": 20
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        },
+        {
+          "name": "MRO CTX DTM (Columbia Hills, 20 m)",
+          "agency": "USGS Astrogeology / NASA PDS",
+          "url": "https://astrogeology.usgs.gov/search/map/Mars/MarsReconnaissanceOrbiter/CTX/mars2020_landing_site_dtm"
+        }
+      ],
+      "elevationRangeM": [
+        -2888,
+        1445
+      ]
+    },
+    {
+      "targetId": "gale",
+      "body": "mars",
+      "bounds": [
+        135.939178,
+        -6.088213,
+        138.938772,
+        -3.08862
+      ],
+      "grids": [
+        {
+          "file": "gale-hrsc-mola-200m.png",
+          "bounds": [
+            135.939178,
+            -6.088213,
+            138.938772,
+            -3.08862
+          ],
+          "resolutionM": 200
+        },
+        {
+          "file": "gale-hirise-10m.png",
+          "bounds": [
+            137.249161,
+            -4.859832,
+            137.552832,
+            -4.556161
+          ],
+          "resolutionM": 10
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        },
+        {
+          "name": "MSL Gale Crater HiRISE DEM Mosaic 1 m v3",
+          "agency": "USGS Astrogeology / NASA PDS",
+          "url": "https://astrogeology.usgs.gov/search/map/Mars/MarsScienceLaboratory/Mosaics/MSL_Gale_DEM_Mosaic_1m_v3"
+        }
+      ],
+      "elevationRangeM": [
+        -4688,
+        1020
+      ],
+      "tracks": [
+        {
+          "id": "curiosity",
+          "name": "Curiosity (MSL)",
+          "file": "gale-curiosity.geojson",
+          "sols": [
+            3,
+            5073
+          ],
+          "lengthKm": 38.29,
+          "maxTiltDeg": 29.1,
+          "medianTiltDeg": 7.7,
+          "source": {
+            "name": "Curiosity (MSL) rover traverse and waypoints (MMGIS)",
+            "agency": "NASA / JPL-Caltech",
+            "url": "https://science.nasa.gov/mission/msl-curiosity/location-map/"
+          }
+        }
+      ]
+    },
+    {
+      "targetId": "meridiani",
+      "body": "mars",
+      "bounds": [
+        -7.02907,
+        -3.442902,
+        -4.029476,
+        -0.443309
+      ],
+      "grids": [
+        {
+          "file": "meridiani-hrsc-mola-200m.png",
+          "bounds": [
+            -7.02907,
+            -3.442902,
+            -4.029476,
+            -0.443309
           ],
           "resolutionM": 200
         }
@@ -113,8 +228,188 @@
         }
       ],
       "elevationRangeM": [
-        -2888,
-        1445
+        -3064,
+        -874
+      ]
+    },
+    {
+      "targetId": "elysium-insight",
+      "body": "mars",
+      "bounds": [
+        134.120527,
+        3.005043,
+        137.12012,
+        6.004636
+      ],
+      "grids": [
+        {
+          "file": "elysium-insight-hrsc-mola-200m.png",
+          "bounds": [
+            134.120527,
+            3.005043,
+            137.12012,
+            6.004636
+          ],
+          "resolutionM": 200
+        },
+        {
+          "file": "elysium-insight-ctx-20m.png",
+          "bounds": [
+            135.369716,
+            4.248943,
+            135.875998,
+            4.755224
+          ],
+          "resolutionM": 20
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        },
+        {
+          "name": "MRO CTX DTM (InSight landing site, 20 m)",
+          "agency": "USGS Astrogeology / NASA PDS",
+          "url": "https://astrogeology.usgs.gov/search/map/Mars/InSight/insight_landing_site_dtm"
+        }
+      ],
+      "elevationRangeM": [
+        -3500,
+        -1522
+      ]
+    },
+    {
+      "targetId": "utopia",
+      "body": "mars",
+      "bounds": [
+        132.787749,
+        46.143177,
+        135.787343,
+        49.142771
+      ],
+      "grids": [
+        {
+          "file": "utopia-hrsc-mola-200m.png",
+          "bounds": [
+            132.787749,
+            46.143177,
+            135.787343,
+            49.142771
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        }
+      ],
+      "elevationRangeM": [
+        -4707,
+        -4257
+      ]
+    },
+    {
+      "targetId": "deuteronilus",
+      "body": "mars",
+      "bounds": [
+        24.350254,
+        43.450629,
+        27.349847,
+        46.450222
+      ],
+      "grids": [
+        {
+          "file": "deuteronilus-hrsc-mola-200m.png",
+          "bounds": [
+            24.350254,
+            43.450629,
+            27.349847,
+            46.450222
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        }
+      ],
+      "elevationRangeM": [
+        -3871,
+        -2185
+      ]
+    },
+    {
+      "targetId": "arcadia",
+      "body": "mars",
+      "bounds": [
+        -166.651978,
+        45.083704,
+        -163.652385,
+        48.083297
+      ],
+      "grids": [
+        {
+          "file": "arcadia-hrsc-mola-200m.png",
+          "bounds": [
+            -166.651978,
+            45.083704,
+            -163.652385,
+            48.083297
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        }
+      ],
+      "elevationRangeM": [
+        -4021,
+        -3569
+      ]
+    },
+    {
+      "targetId": "mawrth-vallis",
+      "body": "mars",
+      "bounds": [
+        -18.001711,
+        20.86089,
+        -15.002117,
+        23.860483
+      ],
+      "grids": [
+        {
+          "file": "mawrth-vallis-hrsc-mola-200m.png",
+          "bounds": [
+            -18.001711,
+            20.86089,
+            -15.002117,
+            23.860483
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "Mars MGS MOLA - MEX HRSC Blended DEM Global 200m v2",
+          "agency": "USGS Astrogeology / ESA / NASA",
+          "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m"
+        }
+      ],
+      "elevationRangeM": [
+        -3742,
+        -1062
       ]
     }
   ]

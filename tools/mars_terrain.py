@@ -19,9 +19,11 @@ La web convierte esas rejillas en teselas de relieve en el navegador (web/src/ma
 
 Uso:  pip install -r tools/requirements.txt && python tools/mars_terrain.py
 """
+import concurrent.futures
 import json
 import math
 import os
+import struct
 import sys
 import urllib.request
 from pathlib import Path
@@ -30,6 +32,7 @@ import numpy as np
 import rasterio
 from PIL import Image
 from rasterio.enums import Resampling
+from rasterio.io import MemoryFile
 from rasterio.windows import Window, from_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +76,48 @@ HIGH_RES = [
         },
     },
 ]
+
+HIGH_RES.extend([
+    {
+        "id": "hirise",
+        "target_id": "gale",
+        "center": (-4.708, 137.401),
+        "url": f"{S3}/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif",
+        "download": False,
+        "step_m": 10,
+        "window_km": 18,
+        "source": {
+            "name": "MSL Gale Crater HiRISE DEM Mosaic 1 m v3",
+            "agency": "USGS Astrogeology / NASA PDS",
+            "url": "https://astrogeology.usgs.gov/search/map/Mars/MarsScienceLaboratory/Mosaics/MSL_Gale_DEM_Mosaic_1m_v3",
+        },
+    },
+    {
+        "id": "ctx",
+        "target_id": "columbia-hills",
+        "url": f"{S3}/mars2020_landing_site_dtm/F21_043907_1652_F21_043841_1654_20m_DTM.tif",
+        "download": True,
+        "step_m": 20,
+        "source": {
+            "name": "MRO CTX DTM (Columbia Hills, 20 m)",
+            "agency": "USGS Astrogeology / NASA PDS",
+            "url": "https://astrogeology.usgs.gov/search/map/Mars/MarsReconnaissanceOrbiter/CTX/mars2020_landing_site_dtm",
+        },
+    },
+    {
+        "id": "ctx",
+        "target_id": "elysium-insight",
+        "url": f"{S3}/insight_landing_site_dtm/F02_036761_1828_F04_037262_1841_20m_DTM_destripe.tif",
+        "download": True,
+        "step_m": 20,
+        "window_km": 30,
+        "source": {
+            "name": "MRO CTX DTM (InSight landing site, 20 m)",
+            "agency": "USGS Astrogeology / NASA PDS",
+            "url": "https://astrogeology.usgs.gov/search/map/Mars/InSight/insight_landing_site_dtm",
+        },
+    },
+])
 
 ENV = {"GDAL_DISABLE_READDIR_ON_OPEN": "EMPTY_DIR", "VSI_CACHE": "TRUE"}
 
@@ -157,7 +202,63 @@ def read_rows_direct(url, d, win, k):
     return out
 
 
+def decode_lzw_f32_row(strip_bytes: bytes, width: int) -> np.ndarray:
+    """Decodifica una tira (1 fila Float32 comprimida con LZW) usando libtiff vía rasterio.MemoryFile."""
+    entries = [
+        (256, 4, 1, width),
+        (257, 4, 1, 1),
+        (258, 3, 1, 32),
+        (259, 3, 1, 5),
+        (262, 3, 1, 1),
+        (273, 4, 1, 0),
+        (278, 4, 1, 1),
+        (279, 4, 1, len(strip_bytes)),
+        (339, 3, 1, 3),
+    ]
+    data_off = 8 + 2 + len(entries) * 12 + 4
+    ifd = struct.pack("<H", len(entries)) + b"".join(
+        struct.pack("<HHII", t, ty, c, data_off if t == 273 else v) for t, ty, c, v in entries
+    ) + struct.pack("<I", 0)
+    buf = b"II*\x00" + struct.pack("<I", 8) + ifd + strip_bytes
+    with MemoryFile(buf) as mf, mf.open() as ds:
+        return ds.read(1)[0]
+
+
+def read_rows_lzw_strided(url, d, win, k):
+    """Lee una de cada `k` filas de un TIFF LZW por tiras en rangos paralelos y promedia `k` columnas."""
+    row0, row1 = int(win.row_off), int(win.row_off + win.height)
+    col0, ncols = int(win.col_off), int(win.width)
+    rows = list(range(row0, row1 - k + 1, k))
+    out_cols = ncols // k
+    ranges = [
+        (r, int(d.get_tag_item(f"BLOCK_OFFSET_0_{r}", "TIFF", bidx=1)), int(d.get_tag_item(f"BLOCK_SIZE_0_{r}", "TIFF", bidx=1)))
+        for r in rows
+    ]
+    ref = d.read(1, window=Window(col0, rows[0], ncols, 1))[0]
+
+    def fetch_row(idx_off_sz):
+        idx, off, sz = idx_off_sz
+        req = urllib.request.Request(url, headers={"Range": f"bytes={off}-{off + sz - 1}"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            arr = decode_lzw_f32_row(resp.read(), d.width)[col0:col0 + out_cols * k].astype(np.float32)
+        if idx == 0 and not np.allclose(arr, ref[:out_cols * k], equal_nan=True):
+            raise RuntimeError("No coincide la tira LZW decodificada con rasterio")
+        arr[(arr < -1e30) | (arr == d.nodata)] = np.nan
+        with np.errstate(all="ignore"):
+            return idx, np.nanmean(arr.reshape(out_cols, k), axis=1)
+
+    out = np.empty((len(rows), out_cols), np.float32)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+        for done, (idx, row_vals) in enumerate(ex.map(fetch_row, [(i, o, s) for i, (_, o, s) in enumerate(ranges)]), 1):
+            out[idx] = row_vals
+            if done % 300 == 0 or done == len(rows):
+                print(f"    filas LZW {done}/{len(rows)}", flush=True)
+    return out
+
+
 def read_high_res(spec, target, region_bounds, cache: Path):
+    if spec.get("target_id") and spec["target_id"] != target["id"]:
+        return None
     deg_per_m = 180 / (math.pi * MARS_R)
     if spec["download"]:
         path = cache / Path(spec["url"]).name
@@ -167,18 +268,21 @@ def read_high_res(spec, target, region_bounds, cache: Path):
     else:
         src = f"/vsicurl/{spec['url']}"
     with rasterio.Env(**ENV), rasterio.open(src) as d:
-        r = d.crs.to_dict().get("R", MARS_R)
+        crs_d = d.crs.to_dict() if d.crs else {}
+        r = crs_d.get("R", MARS_R)
+        lon0 = crs_d.get("lon_0", 0.0)
         deg = 180 / (math.pi * r)
         b = d.bounds
-        full = (b.left * deg, b.bottom * deg, b.right * deg, b.top * deg)
+        full = (b.left * deg + lon0, b.bottom * deg, b.right * deg + lon0, b.top * deg)
         w, s, e, n = region_bounds
         if full[2] < w or full[0] > e or full[3] < s or full[1] > n:
             return None
         if spec.get("window_km"):
+            c_lat, c_lon = spec.get("center", (target["lat"], target["lon"]))
             half = spec["window_km"] * 1000 / 2 * deg_per_m
-            box = (target["lon"] - half, target["lat"] - half, target["lon"] + half, target["lat"] + half)
+            box = (c_lon - half, c_lat - half, c_lon + half, c_lat + half)
             box = (max(box[0], full[0]), max(box[1], full[1]), min(box[2], full[2]), min(box[3], full[3]))
-            win = from_bounds(*(x / deg for x in box), d.transform).round_offsets().round_lengths()
+            win = from_bounds((box[0] - lon0) / deg, box[1] / deg, (box[2] - lon0) / deg, box[3] / deg, d.transform).round_offsets().round_lengths()
         else:
             win = Window(0, 0, d.width, d.height)
         k = max(1, round(spec["step_m"] / abs(d.res[0])))
@@ -191,12 +295,15 @@ def read_high_res(spec, target, region_bounds, cache: Path):
             cached = cache / f"{spec['id']}_{target['id']}_{spec['window_km']}km_{spec['step_m']}m.npy"
             if cached.exists():
                 a = np.load(cached)
-            else:
+            elif d.compression is None:
                 a = read_rows_direct(spec["url"], d, win, k)
+                np.save(cached, a)
+            else:
+                a = read_rows_lzw_strided(spec["url"], d, win, k)
                 np.save(cached, a)
         win = Window(win.col_off, win.row_off, a.shape[1] * k, a.shape[0] * k)
         t = d.window_transform(win)
-    gb = (t.c * deg, (t.f + t.e * win.height) * deg, (t.c + t.a * win.width) * deg, t.f * deg)
+    gb = (t.c * deg + lon0, (t.f + t.e * win.height) * deg, (t.c + t.a * win.width) * deg + lon0, t.f * deg)
     return a, gb
 
 

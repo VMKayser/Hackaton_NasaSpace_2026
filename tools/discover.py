@@ -46,6 +46,44 @@ OUT = ROOT / "web/public/data/discoveries.json"
 CSV_OUT = ROOT / "docs/valores/descubrimiento.csv"
 POINTS_CSV = ROOT / "docs/valores/malla_puntos.csv"
 PLACES_JSON = ROOT / "docs/valores/malla_lugares.json"
+GEOLOGY_JSON = ROOT / "docs/valores/malla_geologia.json"
+
+
+def point_id(lat: float, lon: float) -> str:
+    """Identificador estable para un punto de la malla."""
+    return f"grid_{round(lat, 4):g}_{round(lon, 4):g}"
+
+
+def _load_geology_cache() -> dict:
+    if GEOLOGY_JSON.exists():
+        return json.loads(GEOLOGY_JSON.read_text(encoding="utf-8"))
+    return {}
+
+
+def macrostrat_detail(lat: float, lon: float, map_unit: str | None, cache: dict) -> dict | None:
+    """Obtiene litología, edad y descripción desde Macrostrat (cacheado por coordenada)."""
+    key = f"{round(lat, 4):g},{round(lon, 4):g}"
+    if key not in cache:
+        info = None
+        try:
+            url = f"https://macrostrat.org/api/v2/geologic_units/map?lat={lat:.4f}&lng={lon:.4f}"
+            req = urllib.request.Request(url, headers={"User-Agent": "GalaxyMatch/2.2"})
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                units = json.loads(resp.read().decode("utf-8")).get("success", {}).get("data") or []
+            if units:
+                u = next((x for x in units if x.get("name") == map_unit), units[0])
+                info = {
+                    "name": u.get("name") or map_unit or "",
+                    "lith": (u.get("lith") or "").strip() or None,
+                    "age": (u.get("best_int_name") or u.get("t_int_name") or "").strip() or None,
+                    "descrip": (u.get("descrip") or "").strip() or None,
+                    "url": f"https://macrostrat.org/map/#/z=8/lat={lat:.4f}/lng={lon:.4f}",
+                }
+        except Exception:
+            info = None
+        if info is not None:
+            cache[key] = info
+    return cache.get(key)
 COUNTRY = "Bolivia"
 # Empate: si más de TIE_MAX puntos quedan a menos de TIE_DELTA del mejor, la malla no distingue lugares.
 TIE_DELTA = 0.01
@@ -56,7 +94,7 @@ STEP_DEG = 0.1
 RADIUS_KM = 2.0  # el radio menor del catálogo
 NEAR_CATALOG_KM = 10.0
 MIN_SEPARATION_KM = 15.0
-TOP = 5
+TOP = 10
 VALIDATION_TOP = 20
 
 # Unidad del mapa geológico → entorno. Solo litologías del propio mapa; lo demás queda sin dato.
@@ -230,6 +268,7 @@ def main():
     by_measure = {d["measure"]: d for d in dims if d.get("measure")}
     geo = next((d for d in dims if d["id"] == "geology"), None)
     sites, targets = data["sites"], data["targets"]
+    min_cov = data["meta"].get("minCoverage")
 
     # Escalas: las mismas que tools/build_analogs.py.
     scales = {}
@@ -286,7 +325,7 @@ def main():
                 continue
             kind = "category" if d.get("categories") else None
             ds[d["id"]] = dim_score(vals[d["id"]], target["values"][d["id"]]["value"], kind, scales.get(d["id"]))
-        return weighted(ds, weights), ds, vals
+        return weighted(ds, weights, min_cov), ds, vals
 
     # Un salar es un cuerpo continuo de la unidad evaporítica del mapa: los puntos de la malla conectados
     # (vecinos de 8) con el punto de un sitio del catálogo forman parte de ese sitio y no son nuevos.
@@ -322,6 +361,8 @@ def main():
     producible = {setting for _, setting in SETTING_RULES}
     skipped = []
     candidates, validation, rows = [], [], []
+    points_raw = {}
+    units_by_dim = {d["id"]: (None if d.get("categories") else next((x["values"][d["id"]]["unit"] for x in sites), None)) for d in dims}
     for tid, pid, weights in jobs:
         t = target_by_id[tid]
         ranked = []
@@ -358,11 +399,15 @@ def main():
                 continue
             chosen.append((sim, p, ds, vals, pl))
         for rank, (sim, p, ds, vals, pl) in enumerate(chosen, 1):
-            units = {d["id"]: (None if d.get("categories") else next((x["values"][d["id"]]["unit"] for x in sites), None)) for d in dims}
+            pid_str = point_id(p["lat"], p["lon"])
+            elev = None if p.get("elevation_m") is None or math.isnan(p["elevation_m"]) else round(p["elevation_m"])
+            points_raw[pid_str] = (p, vals, pl, elev)
             candidates.append({
                 "targetId": tid, **({"purposeId": pid} if pid else {}), "rank": rank,
+                "pointId": pid_str,
                 "lat": p["lat"], "lon": p["lon"], "similarity": round(sim, 3),
-                "values": {k: {"value": v, "unit": units.get(k)} for k, v in vals.items()},
+                **({"elevationM": elev} if elev is not None else {}),
+                "values": {k: {"value": v, "unit": units_by_dim.get(k)} for k, v in vals.items()},
                 "dimensions": {k: (None if v is None else round(v, 3)) for k, v in ds.items()},
                 "mapUnit": p["map_unit"],
                 "place": {k: v for k, v in pl.items() if v},
@@ -373,6 +418,42 @@ def main():
         print(f"  {tid}{' / ' + pid if pid else ''}: {near_top}/{VALIDATION_TOP} de los mejores puntos están junto a un sitio del catálogo; "
               f"nuevos: {', '.join((c[4].get('feature') or c[4].get('peak') or c[4].get('municipality') or '?') + f' {c[0]:.2f}' for c in chosen)}",
               file=sys.stderr)
+
+    geo_cache = _load_geology_cache()
+    points_out = {}
+    purposes_cfg = data["meta"].get("purposes", [])
+    for pid_str, (p, vals, pl, elev) in points_raw.items():
+        per_target = {t["id"]: score(p, t, default_w) for t in targets}
+        detail = macrostrat_detail(p["lat"], p["lon"], p["map_unit"], geo_cache)
+        geology = {k: v for k, v in detail.items() if v} if detail else None
+        points_out[pid_str] = {
+            "id": pid_str,
+            "lat": p["lat"],
+            "lon": p["lon"],
+            "radiusKm": RADIUS_KM,
+            **({"elevationM": elev} if elev is not None else {}),
+            "coverage": round(p["coverage"], 3),
+            "values": {k: {"value": v, "unit": units_by_dim.get(k)} for k, v in vals.items()},
+            "mapUnit": p["map_unit"],
+            **({"geology": geology} if geology else {}),
+            "place": {k: v for k, v in pl.items() if v},
+            "nearestSite": {"id": p["nearest_site"], "km": p["nearest_km"]},
+            "scores": [
+                {
+                    "targetId": t["id"],
+                    "similarity": None if per_target[t["id"]][0] is None else round(per_target[t["id"]][0], 3),
+                    "dimensions": {k: (None if v is None else round(v, 3)) for k, v in per_target[t["id"]][1].items()},
+                }
+                for t in targets
+            ],
+            "purposeScores": {
+                pu["id"]: (lambda x: None if x is None else round(x, 3))(
+                    weighted(per_target[pu["targetId"]][1], pu["weights"], min_cov)
+                )
+                for pu in purposes_cfg
+            },
+        }
+    GEOLOGY_JSON.write_text(json.dumps(geo_cache, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
     out = {
         "meta": {
@@ -388,6 +469,7 @@ def main():
                 {"name": "OpenStreetMap (place names, Overpass API)", "agency": "OpenStreetMap contributors", "url": "https://www.openstreetmap.org/copyright"},
             ],
         },
+        "points": points_out,
         "candidates": candidates,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

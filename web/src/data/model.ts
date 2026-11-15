@@ -1,5 +1,5 @@
 import type { Lang } from '../i18n'
-import type { AnalogsFile, DiscoveriesFile, Dimension, Purpose, Site, Target, Text, TextsFile } from './schema'
+import type { AnalogsFile, DiscoveriesFile, DiscoveredPoint, Dimension, Purpose, Site, Target, Text, TextsFile } from './schema'
 
 /** Datos ya validados, con índices por id. */
 export interface Model {
@@ -11,6 +11,7 @@ export interface Model {
   purposes: Purpose[]
   targetById: Map<string, Target>
   siteById: Map<string, Site>
+  foundById: Map<string, DiscoveredPoint>
   purposeById: Map<string, Purpose>
   dimensionById: Map<string, Dimension>
 }
@@ -24,6 +25,7 @@ export function buildModel(file: AnalogsFile, texts: TextsFile, discoveries: Dis
     purposes: file.meta.purposes ?? [],
     targetById: new Map(file.targets.map((t) => [t.id, t])),
     siteById: new Map(file.sites.map((s) => [s.id, s])),
+    foundById: new Map(Object.entries(discoveries?.points ?? {})),
     purposeById: new Map((file.meta.purposes ?? []).map((p) => [p.id, p])),
     dimensionById: new Map(file.meta.dimensions.map((d) => [d.id, d])),
   }

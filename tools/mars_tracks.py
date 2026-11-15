@@ -32,6 +32,17 @@ TRACKS = [
             "url": "https://science.nasa.gov/mission/mars-2020-perseverance/location-map/",
         },
     },
+    {
+        "id": "curiosity",
+        "name": "Curiosity (MSL)",
+        "traverse": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_traverse.json",
+        "waypoints": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+        "source": {
+            "name": "Curiosity (MSL) rover traverse and waypoints (MMGIS)",
+            "agency": "NASA / JPL-Caltech",
+            "url": "https://science.nasa.gov/mission/msl-curiosity/location-map/",
+        },
+    },
 ]
 
 
@@ -73,7 +84,11 @@ def main():
     for spec in TRACKS:
         trav = fetch(spec["traverse"])
         ways = fetch(spec["waypoints"])
-        drives = sorted(trav["features"], key=lambda f: (f["properties"]["sol"], f["properties"]["SCLK_START"]))
+        # Curiosity (MSL) MMGIS no trae sol/SCLK_START por segmento y usa Length en mayúscula; viene ordenado.
+        drives = [f for _, f in sorted(
+            enumerate(trav["features"]),
+            key=lambda pair: (pair[1]["properties"].get("sol", pair[0]), pair[1]["properties"].get("SCLK_START", "")),
+        )]
         points = []
         for f in drives:
             g = f["geometry"]
@@ -111,12 +126,15 @@ def main():
         }
         name = f"{region['targetId']}-{spec['id']}.geojson"
         json.dump(geo, open(OUT / name, "w"), separators=(",", ":"))
-        length_km = sum(f["properties"]["length"] for f in drives) / 1000
+        length_km = sum((f["properties"].get("length") or f["properties"].get("Length") or 0) for f in drives) / 1000
+        sols = [s["properties"]["sol"] for s in stops if s["properties"].get("sol") is not None]
+        sol0 = drives[0]["properties"].get("sol", sols[0] if sols else 0)
+        sol1 = drives[-1]["properties"].get("sol", sols[-1] if sols else 0)
         region["tracks"] = [t for t in region.get("tracks", []) if t["id"] != spec["id"]] + [{
             "id": spec["id"],
             "name": spec["name"],
             "file": name,
-            "sols": [drives[0]["properties"]["sol"], drives[-1]["properties"]["sol"]],
+            "sols": [sol0, sol1],
             "lengthKm": round(length_km, 2),
             "maxTiltDeg": round(max(tilts), 1) if tilts else None,
             "medianTiltDeg": round(sorted(tilts)[len(tilts) // 2], 1) if tilts else None,

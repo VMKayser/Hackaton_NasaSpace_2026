@@ -1,8 +1,9 @@
-# Entrega de datos para la web (v2.1)
+# Entrega de datos para la web (v2.2)
 
 El rol 4 entrega un archivo `analogs.json` con puntajes precalculados. La web lo carga desde `web/public/data/analogs.json` para mostrar el ranking y las fichas de comparación que también usa el modo historia.
 
-La v2.1 mantiene todo el formato v2 y añade campos opcionales. Un archivo v2 sigue siendo válido.
+La v2.1 mantiene todo el formato v2 y añade campos opcionales; la v2.2 añade dos más (`meta.minCoverage` y
+`targets[].context`). Un archivo v2 sigue siendo válido.
 
 ## Formato del archivo
 
@@ -31,6 +32,8 @@ Los textos `summary`, `description`, `limits` y `exploration` los escribe el rol
 | Campo | Contenido | Para qué sirve |
 |---|---|---|
 | `meta.scoring` | Texto bilingüe: cómo se obtiene el total, cómo se tratan los faltantes y qué área se analizó. | Página de método. |
+| `meta.minCoverage` (v2.2) | Parte mínima del peso que debe tener dato para dar un total, de 0 a 1. Por debajo, se omite la entrada de `scores`. | Nivel de datos del objetivo: completos, parciales o insuficientes. |
+| `targets[].context` (v2.2) | Mediciones del objetivo sin equivalente medido en la Tierra: `id`, `label`, `value`, `unit`, `note` y `sources` (al menos una). | Se muestran en «Mediciones del objetivo»; no puntúan. |
 | `meta.dimensions[].sources[].body` | `earth`, `mars` o `moon`. | Mostrar qué dato corresponde a cada cuerpo. |
 | `meta.dimensions[].categories` | Objeto de código de categoría a texto bilingüe. | Traducir valores de categoría. |
 | `sites[].radiusKm` | Radio del área analizada alrededor del punto. | Dibujar el área en el mapa. |

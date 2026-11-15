@@ -11,14 +11,15 @@ python tools/build_analogs.py    # calcula los puntajes y escribe web/public/dat
 
 | Archivo | Quién lo escribe | Contenido |
 |---|---|---|
-| `../catalogo-sitios.csv` | a mano (rol 1) | Los 31 sitios: coordenadas, radio, tipo y marcas |
-| `objetivos.csv` | a mano (roles 1 y 3) | Los 12 objetivos: coordenadas y entorno geológico, cada uno con su fuente |
+| `../catalogo-sitios.csv` | a mano (rol 1) | Los 37 sitios (31 de Bolivia y Atacama, y 6 análogos ya estudiados de otros países): coordenadas, radio, tipo y marcas |
+| `objetivos.csv` | a mano (roles 1 y 3) | Los 16 objetivos: coordenadas y entorno geológico, cada uno con su fuente |
 | `geologia.csv` | a mano (rol 1) | Entorno geológico de cada sitio con su fuente, y la unidad del mapa geológico en su punto |
 | `puntaje.json` | a mano (rol 4) | Dimensiones, pesos y propósitos |
 | `pesos.md` | a mano (rol 4) | Las reglas y las fuentes de cada peso, y la prueba de estabilidad |
 | `sitios_valores.csv` | `measure_values.py` | Valores medidos de cada sitio |
 | `objetivos_valores.csv` | `measure_values.py` | Valores medidos de cada objetivo |
 | `fuentes.json` | `measure_values.py` | Unidad y fuentes de cada columna medida |
+| `objetivos_contexto.json` | `target_context.py` | Mediciones de contexto de los objetivos, sin puntaje |
 
 Una celda vacía es «sin dato» (`null`), nunca cero.
 
@@ -34,6 +35,8 @@ Una celda vacía es «sin dato» (`null`), nunca cero.
 | Utopia Planitia (Viking 2) | Marte | Aterrizaje de Viking 2 (NASA) | Sin categoría asignada |
 | Deuteronilus Mensae | Marte | Reflector basal de radar SHARAD con más detecciones en 5 km (Baker y Carter, ds03) | Glaciar cubierto de detritos (Plaut et al., 2009) |
 | Arcadia Planitia (Badger) | Marte | Cráter Badger (Bramson et al., 2015) | Hielo enterrado (Bramson et al., 2015) |
+| Mawrth Vallis | Marte | Centro del accidente (USGS, Gazetteer) | Sin categoría asignada: rocas en capas con arcillas (Poulet et al., 2020) |
+| Apollo 11, 15 y 17 | Luna | Módulos lunares (Wikipedia, lista de objetos en la Luna) | Volcánico: lava basáltica de los mares (Hiesinger y Head, 2006) |
 | Shackleton Rim | Luna | Punto A de Bussey et al. (2010) | Sin categoría comparable en la Tierra |
 | Connecting Ridge | Luna | Punto B de Bussey et al. (2010) | Igual |
 | de Gerlache Rim | Luna | Punto C de Bussey et al. (2010) | Igual |
@@ -81,7 +84,7 @@ independientes: [verificacion-rol-3.md](verificacion-rol-3.md).
   resolución: 24 estaciones (cada 15° de Ls) por 24 horas locales. La media anual pesa cada estación por su
   duración real (excentricidad 0,0934, perihelio en Ls 251°).
 - **Por definición, no medidos:** no hay precipitación líquida en Marte ni en la Luna, y la Luna no tiene
-  atmósfera apreciable. Todavía no hay fuente de temperatura lunar en el script (Diviner).
+  atmósfera apreciable. La temperatura lunar de Diviner se muestra como contexto, sin puntuar (ver abajo).
 - **Geología:** el entorno de cada sitio sale de su fuente (`geologia.csv`). Si ninguna fuente describe el
   sitio, se usa la unidad del mapa geológico de Sudamérica 1:5 000 000 (CGMW, 2019) en su punto, consultada
   en Macrostrat: es el caso de Valle de Rocas y Tupiza. La unidad del mapa se muestra en todos los sitios
@@ -91,7 +94,7 @@ independientes: [verificacion-rol-3.md](verificacion-rol-3.md).
 ## Puntajes
 
 `build_analogs.py` aplica `docs/metodo-similitud.md`:
-- escala entre los percentiles 5 y 95 de los 31 sitios, ampliada con los objetivos;
+- escala entre los percentiles 5 y 95 de los 37 sitios, ampliada con los objetivos;
 - similitud por dimensión `1 − min(1, |Tierra − objetivo| / escala)`;
 - en geología, 1 si el sitio y el objetivo comparten entorno y 0 si no;
 - media ponderada de las dimensiones con dato y peso positivo.
@@ -99,16 +102,26 @@ independientes: [verificacion-rol-3.md](verificacion-rol-3.md).
 Los pesos siguen tres reglas publicadas: [pesos.md](pesos.md). Si cambia una coordenada del catálogo, el
 script pide volver a medir.
 
-Puesto entre 31 por similitud general (15 de noviembre):
+Puesto entre 37 por similitud general (15 de noviembre, con los seis análogos de otros países):
 
-| Sitio | Jezero | Columbia Hills | Gale | Meridiani | InSight | Polo sur lunar (4 puntos) |
-|---|---|---|---|---|---|---|
-| Yungay, Atacama (referencia) | 20.º | 17.º | 20.º | 19.º | 23.º | 16.º a 18.º |
-| Trinidad, Beni (control) | 29.º | 29.º | 29.º | 29.º | 29.º | 31.º |
-| Coroico, Yungas (control) | 31.º | 31.º | 31.º | 31.º | 31.º | 30.º |
+| Sitio | Jezero | Columbia Hills | Gale | Meridiani | InSight | Apollo 15 | Polo sur lunar (4 puntos) |
+|---|---|---|---|---|---|---|---|
+| Yungay, Atacama (referencia) | 21.º | 18.º | 21.º | 21.º | 26.º | 21.º | 18.º a 23.º |
+| Dallol (ya estudiado) | 29.º | 7.º | 29.º | 27.º | 32.º | 32.º | 31.º a 34.º |
+| Askja (ya estudiado) | 32.º | 32.º | 32.º | 32.º | 20.º | 8.º | 34.º a 35.º |
+| Haughton (ya estudiado) | 24.º | 27.º | 24.º | 24.º | 29.º | 31.º | 30.º a 32.º |
+| Badwater (ya estudiado) | 14.º | 26.º | 14.º | 14.º | 27.º | 29.º | 29.º a 31.º |
+| Trinidad, Beni (control) | 36.º | 36.º | 36.º | 35.º | 36.º | 36.º | 37.º a 37.º |
+| Coroico, Yungas (control) | 37.º | 37.º | 37.º | 37.º | 37.º | 37.º | 33.º a 35.º |
 
 Los controles quedan abajo, como se esperaba. Atacama queda en la mitad: es análogo de la sequedad, pero es
 más cálida y está más baja que el Altiplano, y su geología no es de lago ni hidrotermal.
+
+Los análogos ya estudiados de otros países salen bien solo donde coincide su geología: Dallol frente a
+Columbia Hills (hidrotermal) y Askja frente a Apollo 15 (volcánico). En el resto quedan en la mitad o abajo:
+están cerca del nivel del mar o en climas cálidos o húmedos, y el método pesa igual la presión, la
+temperatura y la sequedad que el relieve y la geología. Esos sitios se eligieron como análogos por su
+geología o su forma, no por su clima, y el puntaje lo muestra.
 
 ## Descubrimiento de lugares nuevos
 
@@ -133,8 +146,9 @@ porcentual del mejor (movilidad de rover, que solo mira el relieve plano).
 |---|---|
 | `malla_puntos.csv` | Los 2016 puntos medidos |
 | `malla_lugares.json` | Nombres de OpenStreetMap ya consultados |
-| `descubrimiento.csv` | Los candidatos de cada objetivo y propósito |
-| `../../web/public/data/discoveries.json` | Lo mismo para la web, con la comprobación y las fuentes |
+| `malla_geologia.json` | Detalle geológico de Macrostrat ya consultado (`lith`, `age`, `descrip`, enlace) |
+| `descubrimiento.csv` | Los candidatos de cada objetivo y propósito (hasta 10 por caso) |
+| `../../web/public/data/discoveries.json` | Lo mismo para la web (`points` con elevación, Macrostrat y puntajes cruzados, `candidates`, comprobación y fuentes) |
 
 Resultado (15 de noviembre):
 - **Lagos (Jezero, Gale, Meridiani y el propósito de lagos antiguos):** 15 o 16 de los 20 puntos más
@@ -165,4 +179,29 @@ Resultado (15 de noviembre):
 5. **Sin medir:** albedo (la fuente abierta de NASA POWER tiene celdas de 1°, demasiado grandes para un
    sitio de 2 a 5 km), cobertura vegetal (MODIS exige cuenta de Earthdata), radiación ultravioleta, y luz y
    comunicaciones en los sitios lunares.
-6. **Luna:** sin temperatura, sus órdenes premian el relieve parecido, la sequedad y la altura.
+6. **Luna:** sin temperatura que puntúe, sus órdenes premian el relieve parecido, la sequedad y la altura.
+   Tiene la mitad del peso con dato: «datos parciales». Diviner da la media anual a 2 cm bajo la superficie
+   (−135 a −168 °C), no la de superficie que pide la dimensión. Además, como la escala de cada dimensión
+   se amplía con todos los objetivos, sumar −150 °C llevaría la escala de temperatura a unos 200 °C y
+   subiría la similitud de temperatura de todos los objetivos de Marte. Para puntuarla hay que decidir
+   antes una escala por cuerpo (rol 4).
+
+## Nivel de datos y contexto
+
+- **Mínimo de datos:** `minCoverage` de `puntaje.json` (0,5). Una pareja sin dato en al menos la mitad del
+  peso no tiene total y la web la muestra como «no evaluado». Hoy ninguna queda por debajo; la Luna queda
+  justo en la mitad.
+- **Contexto:** `python tools/target_context.py` escribe `objetivos_contexto.json` con mediciones de los
+  objetivos que no tienen equivalente medido en los sitios de Bolivia. No puntúan; `build_analogs.py` las
+  copia a `targets[].context`. Los archivos fuente se guardan en `.cache/target_context/` (fuera de git).
+
+| Cuerpo | Medición | Fuente |
+|---|---|---|
+| Marte | Inercia térmica nocturna en 5 km | TES, Putzig y Mellon (2007), PDS |
+| Marte | Reflectores basales de radar en depósitos de detritos (solo Deuteronilus) | SHARAD ds03, Baker y Carter (Zenodo) |
+| Luna | Mejor iluminación y media en 5 km; área en sombra permanente | LOLA, Mazarico et al. (2011), PGDA |
+| Luna | Temperatura media anual a 2 cm, máxima anual en superficie, área con hielo estable | Diviner PRP, PDS |
+
+Comprobación: la mejor iluminación a menos de 1 km de los puntos de Bussey et al. (2010) es de 63 a 87 %, y
+el máximo del mapa (88 %) cae a menos de 5 km de Connecting Ridge. En el píxel exacto del punto sale menos,
+porque sus coordenadas tienen unos 300 m de precisión y el mapa 60 m por píxel.

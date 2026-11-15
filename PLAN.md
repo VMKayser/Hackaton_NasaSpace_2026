@@ -179,11 +179,40 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
       fuentes independientes ([verificación](docs/valores/verificacion-rol-3.md)). Tres objetivos nuevos en
       Marte medidos con el mismo método: Viking 2, un glaciar cubierto de Deuteronilus (radar SHARAD) y el
       cráter Badger de Arcadia (hielo enterrado). Entorno «hielo enterrado» añadido a la geología.
+- [x] Nivel de datos de cada objetivo (completos, parciales o insuficientes, con mínimo de la mitad del peso)
+      y mediciones sin equivalente en la Tierra como contexto: inercia térmica (TES) en Marte, radar de
+      SHARAD en Deuteronilus, e iluminación (LOLA) y temperatura (Diviner) en el polo sur lunar. Contrato v2.2.
+- [x] Marca de origen de cada lugar: «Ya estudiado», «Referencia», «Candidato propuesto», «Control negativo» y
+      «Hallado por Galaxy Match» (malla), con forma e icono propios, en el ranking, la ficha y el mapa.
+- [x] Comandos de voz con un botón junto al buscador y en el inicio (Web Speech API del navegador; sin
+      ventana aparte). Reconoce objetivos, sitios, cuerpos y «volver», con nombres tomados de los datos; el
+      resto filtra el ranking. Adaptado de la rama `voz`, sin sus datos ni su filtro por país.
+- [x] Cuatro objetivos más de la rama `voz`, medidos con el mismo método: Mawrth Vallis y los sitios de
+      Apollo 11, 15 y 17. Quedan fuera los que no tienen coordenadas verificadas (Marius Hills, Mons Mouton,
+      Valles Marineris).
+- [x] Seis análogos ya estudiados de otros países, con fuente (Haughton, Badwater, MDRS, Askja, Kīlauea,
+      Dallol), medidos con el mismo método y dentro de la escala. Quedan fuera McMurdo (Terrain Tiles no tiene
+      relieve fino en la Antártida), Pampa de La Joya (sin coordenadas verificadas) y Río Tinto (su entorno
+      ácido no tiene categoría; lo decide el rol 1).
+- [x] Pin libre con un solo punto: en Marte o la Luna lista los lugares de la Tierra con relieve parecido; en la
+      Tierra lista los objetivos más parecidos y permite compararlos. Con los dos pines, además, la tabla lado a lado.
+- [x] Dos propósitos más con fuente: «Hielo enterrado y glaciares cubiertos» (Deuteronilus; Marchant y Head,
+      2007) y «Alunizaje en un mar lunar» (Apollo 11; criterios de la NASA de 1968), y tres tarjetas de adaptación.
 - [x] Cualquier punto de Marte: el pin libre lista los sitios de la Tierra con relieve más parecido
       (mismo método y pesos que los puntajes, solo relieve; excepción a la regla 10 de AGENTS.md).
 - [x] «Cómo adaptar el ensayo»: ventana con tarjetas por propósito y por cuerpo, cada una con fuente,
       buscador y comparación del sitio (qué ya se parece y qué hay que compensar). Buscador de sitios en
       el ranking.
+- [x] Pin libre directo: cada resultado tiene «Lado a lado en 3D», que pone el pin de la Tierra en ese lugar,
+      conserva el pin de Marte o la Luna y abre la vista 3D. Pestaña «Lugares nuevos»: el mismo parecido de
+      relieve contra los 1559 puntos de la malla de Bolivia (`tools/grid_relief.py`, `grid.json`), lejos del
+      catálogo. Sin pin en el otro cuerpo se usan las mediciones del objetivo, igual en la Luna que en Marte.
+- [x] Revisión de responsividad con medición automática (desbordes y tamaño táctil) en 320, 375, 414, 740×360,
+      768, 1024×600, 1024, 1366 y 1920 px: vista 3D usable en teléfono (barra en una fila deslizable, mapas más
+      altos, un solo desplazamiento), filtros deslizables, enlaces de 24 px en pantallas táctiles, cabecera
+      compacta con el teléfono acostado y puntaje que cabe en 320 px.
+- [x] Vista 3D del polo sur lunar (Shackleton, Connecting Ridge, de Gerlache, Malapert) con el modelo polar
+      de LOLA de 40 m en un marco local a escala real (`tools/moon_polar.py`, `web/src/lib/polarFrame.ts`).
 - [x] Descubrimiento de lugares nuevos: `tools/discover.py` mide una malla del Altiplano con el mismo
       método y lista los más parecidos fuera del catálogo (`discoveries.json`), con el botón «Poner un
       pin aquí».

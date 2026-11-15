@@ -4,6 +4,9 @@ import { useI18n } from '../i18n'
 import { formatPercent } from '../lib/format'
 import { INK, NOT_EVALUATED, scoreColor } from '../map/colors'
 import { BODIES } from '../map/bodies'
+import { siteOrigin } from '../lib/glyph'
+import type { Origin } from '../lib/glyph'
+import type { SearchHit } from '../lib/search'
 
 /** Misma forma que en el mapa: disco, anillo (conocido), punto (referencia), aro (control), aro gris (no evaluado). */
 export function SiteGlyph({
@@ -76,7 +79,7 @@ export function ScoreSummary({ similarity, purposeScore, dark = false }: {
               <>
                 <span className={`block font-bold leading-none tracking-tight tabular-nums ${dark
                   ? 'text-[1.6rem] text-white'
-                  : `text-[2rem] sm:text-4xl ${index ? 'text-ink' : 'text-rust'}`}`}>
+                  : `text-[1.75rem] min-[360px]:text-[2rem] sm:text-4xl ${index ? 'text-ink' : 'text-rust'}`}`}>
                   {formatPercent(score, lang)}
                 </span>
                 <ScoreBar score={score} className={dark ? 'mt-1 !bg-white/10' : 'mt-2 h-1.5'} />
@@ -103,23 +106,63 @@ export function BodyChip({ body }: { body: Body }) {
   )
 }
 
-export function SiteBadges({ site, evaluated }: { site: Site; evaluated: boolean }) {
+const ORIGIN_STYLE: Record<Origin, string> = {
+  known: 'border border-ink/45 bg-surface text-ink',
+  reference: 'border border-ink bg-ink text-surface',
+  candidate: 'border border-earth/30 bg-earth-soft text-earth',
+  found: 'border border-rust/35 bg-rust-soft text-rust',
+  control: 'border border-dashed border-muted/60 text-muted',
+}
+
+/** Icono distinto por origen, para no depender solo del color. */
+function OriginIcon({ origin }: { origin: Origin }) {
+  const common = { width: 11, height: 11, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true }
+  if (origin === 'known' || origin === 'reference')
+    return <svg {...common}><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19V5" /><path d="M9 8h6" /></svg>
+  if (origin === 'found')
+    return <svg {...common}><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /><path d="M11 8v6M8 11h6" /></svg>
+  if (origin === 'control') return <svg {...common}><circle cx="12" cy="12" r="8" /><path d="M8 12h8" /></svg>
+  return <svg {...common}><path d="M12 3v4M12 17v4M3 12h4M17 12h4" /><circle cx="12" cy="12" r="3.2" /></svg>
+}
+
+export function OriginTag({ origin }: { origin: Origin }) {
   const { t } = useI18n()
-  const items: string[] = []
-  if (site.reference) items.push(t('badge.reference'))
-  else if (site.known) items.push(t('badge.known'))
-  if (site.control) items.push(t('badge.control'))
-  if (!evaluated) items.push(t('badge.notEvaluated'))
-  if (!items.length) return null
-  // Texto simple: la forma del glifo ya distingue cada tipo de sitio.
   return (
-    <span className="inline-flex flex-wrap gap-x-1.5 text-[11px] font-medium text-ink/70">
-      {items.map((label, i) => (
-        <span key={label}>
-          {i > 0 && <span className="mr-1.5 text-faint" aria-hidden="true">·</span>}
+    <span
+      title={t(`origin.${origin}.hint`)}
+      className={`inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[10.5px] font-semibold leading-4 ${ORIGIN_STYLE[origin]}`}
+    >
+      <OriginIcon origin={origin} />
+      {t(`origin.${origin}`)}
+    </span>
+  )
+}
+
+/** País y división administrativa de un lugar (OpenStreetMap): etiquetas sin icono, en gris. */
+export function PlaceTags({ place }: { place?: Record<string, string> | null }) {
+  const { lang } = useI18n()
+  if (!place) return null
+  const country = (lang === 'en' && place.country_en) || place.country
+  const items = [country, place.department ?? place.state].filter((x): x is string => Boolean(x))
+  if (!items.length) return null
+  return (
+    <>
+      {items.map((label) => (
+        <span key={label} className="inline-flex items-center rounded-full border border-line bg-surface px-1.5 py-px text-[10.5px] font-medium leading-4 text-muted">
           {label}
         </span>
       ))}
+    </>
+  )
+}
+
+export function SiteBadges({ site, evaluated }: { site: Site; evaluated: boolean }) {
+  const { t } = useI18n()
+  return (
+    <span className="inline-flex flex-wrap items-center gap-1.5">
+      <OriginTag origin={siteOrigin(site)} />
+      <PlaceTags place={site.place} />
+      {!evaluated && <span className="text-[11px] font-medium text-ink/70">{t('badge.notEvaluated')}</span>}
     </span>
   )
 }
@@ -186,5 +229,23 @@ export function Logo({ size = 30 }: { size?: number }) {
       <circle cx="20" cy="16" r="9" fill="#b8461b" fillOpacity="0.9" />
       <path d="M16 8.2a9 9 0 0 1 0 15.6a9 9 0 0 1 0-15.6z" fill="#f5f2ec" />
     </svg>
+  )
+}
+
+/** Cita del texto donde coincide la búsqueda, con las palabras marcadas. Nada si ya se ve en la fila. */
+export function MatchSnippet({ hit, className = '' }: { hit: SearchHit | null | undefined; className?: string }) {
+  const { t } = useI18n()
+  if (!hit?.field || !hit.snippet) return null
+  return (
+    <span className={`block text-[11px] leading-snug text-muted ${className}`}>
+      <span className="font-semibold">{t('search.in', { field: t(`search.field.${hit.field}`) })}</span>{' '}
+      {hit.snippet.map((part, i) =>
+        part.hit ? (
+          <mark key={i} className="rounded-sm bg-[#facc15]/45 px-0.5 font-medium text-ink">{part.text}</mark>
+        ) : (
+          <span key={i}>{part.text}</span>
+        ),
+      )}
+    </span>
   )
 }

@@ -4,13 +4,17 @@ import { purposeLabel, purposeQuestion, targetSummary, targetTextSources } from 
 import type { Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
 import { formatCoords, formatPercent } from '../lib/format'
+import { activeWeights } from '../lib/ranking'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
-import { BackButton, BodyChip, KindIcon, Pending, ScoreBar, SiteBadges, SiteGlyph } from './ui'
+import { searchFields, siteFields } from '../lib/search'
+import { BackButton, BodyChip, KindIcon, MatchSnippet, Pending, ScoreBar, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
-import { TargetMeasurements } from './TargetMeasurements'
+import { DataLevelNote, TargetMeasurements } from './TargetMeasurements'
 import { ScoreMethod } from './ScoreMethod'
 import { SourceLinks } from './SourceLinks'
 import { DiscoveriesSection } from './DiscoveriesSection'
+import { VoiceControl } from './VoiceControl'
+import type { VoiceHandler } from './VoiceControl'
 import type { Point } from '../lib/state'
 
 interface Props {
@@ -25,9 +29,11 @@ interface Props {
   onCompare: () => void
   /** Pone el pin libre de la Tierra en un lugar nuevo de la malla. */
   onPin: (point: Point) => void
+  /** Comandos de voz que la app resuelve (objetivo, sitio, cuerpo, inicio); la búsqueda la resuelve el panel. */
+  onVoice?: VoiceHandler
 }
 
-function TargetCard({ model, target, question }: { model: Model; target: Target; question: string | null }) {
+function TargetCard({ model, target, question, weights }: { model: Model; target: Target; question: string | null; weights: Record<string, number> }) {
   const { t, lang } = useI18n()
   const summary = targetSummary(model, target, lang)
   const summarySources = targetTextSources(model, target)
@@ -38,6 +44,7 @@ function TargetCard({ model, target, question }: { model: Model; target: Target;
         <strong className="font-semibold text-ink">{target.name}</strong>
         <BodyChip body={target.body} />
       </p>
+      <DataLevelNote model={model} target={target} weights={weights} />
       <details key={target.id} className="mt-1">
         <summary className="cursor-pointer rounded py-1 text-xs font-semibold text-earth">{t('target.measurements')}</summary>
         {question && <p className="mt-1 text-[13px] leading-snug text-ink">{question}</p>}
@@ -50,11 +57,32 @@ function TargetCard({ model, target, question }: { model: Model; target: Target;
   )
 }
 
-export function RankingPanel({ model, purpose, target, rows, mode, selectedId, onSelect, onBack, onCompare, onPin }: Props) {
+export function RankingPanel({ model, purpose, target, rows, mode, selectedId, onSelect, onBack, onCompare, onPin, onVoice }: Props) {
   const { t, lang } = useI18n()
   const [query, setQuery] = useState('')
-  const fold = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
-  const shown = query.trim() ? rows.filter((r) => fold(r.site.name).includes(fold(query.trim()))) : rows
+  const [country, setCountry] = useState<string | null>(null)
+  const [department, setDepartment] = useState<string | null>(null)
+  // País y departamento salen de los datos (sites[].place, de OpenStreetMap); el texto busca también en ambos idiomas y siglas.
+  const countryOf = (r: RankedSite) => (lang === 'en' && r.site.place?.country_en) || r.site.place?.country || null
+  const departmentOf = (r: RankedSite) => r.site.place?.department ?? null
+  // La búsqueda mira también la geología y los textos de la ficha (descripción, qué probar, límites).
+  const q = query.trim()
+  const hits = new Map(q ? rows.map((r) => [r.site.id, searchFields(q, siteFields(model, r.site, lang))]) : [])
+  const shown = rows.filter(
+    (r) =>
+      (!q || hits.get(r.site.id)) &&
+      (!country || countryOf(r) === country) &&
+      (!department || departmentOf(r) === department),
+  )
+  const count = (values: (string | null)[]) => {
+    const m = new Map<string, number>()
+    for (const v of values) if (v) m.set(v, (m.get(v) ?? 0) + 1)
+    return [...m].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  }
+  const countries = count(rows.map(countryOf))
+  const departments = country ? count(rows.filter((r) => countryOf(r) === country).map(departmentOf)) : []
+  const chip = (active: boolean) =>
+    `min-h-8 rounded-full border px-2.5 text-[11px] font-semibold transition ${active ? 'border-earth bg-earth text-white' : 'border-line text-ink hover:bg-paper'}`
   const evaluated = rows.filter((r) => r.score !== null).length
   const dimLabel = (id: string) => model.dimensionById.get(id)?.label[lang] ?? id
   const question = purpose ? purposeQuestion(model, purpose, lang) : null
@@ -75,7 +103,7 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
       )}
 
       <div className="mt-3">
-        <TargetCard model={model} target={target} question={question} />
+        <TargetCard model={model} target={target} question={question} weights={activeWeights(model.file, mode === 'purpose' ? purpose : null)} />
       </div>
 
       <h2 className="mt-4 font-serif text-xl font-semibold leading-tight">{t('ranking.title')}</h2>
@@ -97,15 +125,52 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
 
       <ScoreMethod model={model} purpose={mode === 'purpose' ? purpose : null} />
 
-      <label className="mt-2 flex flex-col gap-1 text-[11px] font-medium text-muted">
+      <label htmlFor="ranking-search" className="mt-2 block text-[11px] font-medium text-muted">
         {t('ranking.search')}
+      </label>
+      <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
         <input
+          id="ranking-search"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="min-h-10 rounded-md border border-line px-2.5 text-sm text-ink focus:border-earth focus:outline-none"
+          placeholder={t('ranking.searchHint')}
+          className="min-h-10 min-w-0 flex-1 rounded-md border border-line px-2.5 text-sm text-ink placeholder:text-faint focus:border-earth focus:outline-none"
         />
-      </label>
+        {onVoice && (
+          <VoiceControl
+            model={model}
+            onCommand={(cmd) => {
+              if (cmd.kind === 'search') {
+                setQuery(cmd.query)
+                return true
+              }
+              return onVoice(cmd)
+            }}
+          />
+        )}
+      </div>
+      {countries.length > 1 && (
+        <div className="mt-2 gm-scroll-row -mx-5 flex gap-1.5 overflow-x-auto px-5 pb-0.5 [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label={t('ranking.byCountry')}>
+          <button type="button" aria-pressed={!country} onClick={() => { setCountry(null); setDepartment(null) }} className={chip(!country)}>
+            {t('ranking.allPlaces', { n: rows.length })}
+          </button>
+          {countries.map(([name, n]) => (
+            <button key={name} type="button" aria-pressed={country === name} onClick={() => { setCountry(country === name ? null : name); setDepartment(null) }} className={chip(country === name)}>
+              {name} ({n})
+            </button>
+          ))}
+        </div>
+      )}
+      {departments.length > 1 && (
+        <div className="mt-1.5 gm-scroll-row -mx-5 flex gap-1.5 overflow-x-auto px-5 pb-0.5 [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label={t('ranking.byDepartment')}>
+          {departments.map(([name, n]) => (
+            <button key={name} type="button" aria-pressed={department === name} onClick={() => setDepartment(department === name ? null : name)} className={chip(department === name)}>
+              {name} ({n})
+            </button>
+          ))}
+        </div>
+      )}
       {shown.length === 0 && <p className="mt-2 text-sm text-muted">{t('ranking.searchNone', { q: query.trim() })}</p>}
 
       <ol className="mt-2 divide-y divide-line border-y border-line">
@@ -136,6 +201,7 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
                     )}
                     <SiteBadges site={r.site} evaluated={r.score !== null} />
                   </span>
+                  <MatchSnippet hit={hits.get(r.site.id)} className="mt-1" />
                   {r.rank !== null && highlights.map(({ id, label }) => {
                     if (!id) return null
                     const score = r.dimensions[id]
@@ -177,7 +243,7 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
         })}
       </ol>
 
-      <DiscoveriesSection model={model} target={target} purpose={mode === 'purpose' ? purpose : null} onPin={onPin} />
+      <DiscoveriesSection model={model} target={target} purpose={mode === 'purpose' ? purpose : null} onSelect={onSelect} onPin={onPin} />
     </div>
   )
 }

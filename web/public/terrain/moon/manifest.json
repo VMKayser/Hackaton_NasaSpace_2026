@@ -1,0 +1,206 @@
+{
+  "encoding": "terrarium",
+  "datum": "sphere of 1737.4 km",
+  "regions": [
+    {
+      "targetId": "shackleton-rim",
+      "body": "moon",
+      "bounds": [
+        -2.97130755,
+        -2.97130755,
+        2.97130755,
+        2.97130755
+      ],
+      "grids": [
+        {
+          "file": "shackleton-rim-lola-40m.png",
+          "bounds": [
+            -0.49532785,
+            -0.49532785,
+            0.49532785,
+            0.49532785
+          ],
+          "resolutionM": 40
+        },
+        {
+          "file": "shackleton-rim-lola-200m.png",
+          "bounds": [
+            -2.97130755,
+            -2.97130755,
+            2.97130755,
+            2.97130755
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "LRO LOLA Polar DEM LDEM_85S_40M (40 m, south polar stereographic)",
+          "agency": "NASA GSFC LOLA team / PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/"
+        }
+      ],
+      "elevationRangeM": [
+        -4377,
+        3076
+      ],
+      "frame": {
+        "type": "south-polar-stereographic",
+        "lat": -89.68,
+        "lon": -166.0,
+        "x0": -2347.488,
+        "y0": -9415.262
+      }
+    },
+    {
+      "targetId": "connecting-ridge",
+      "body": "moon",
+      "bounds": [
+        -2.97130755,
+        -2.97130755,
+        2.97130755,
+        2.97130755
+      ],
+      "grids": [
+        {
+          "file": "connecting-ridge-lola-40m.png",
+          "bounds": [
+            -0.49532785,
+            -0.49532785,
+            0.49532785,
+            0.49532785
+          ],
+          "resolutionM": 40
+        },
+        {
+          "file": "connecting-ridge-lola-200m.png",
+          "bounds": [
+            -2.97130755,
+            -2.97130755,
+            2.97130755,
+            2.97130755
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "LRO LOLA Polar DEM LDEM_85S_40M (40 m, south polar stereographic)",
+          "agency": "NASA GSFC LOLA team / PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/"
+        }
+      ],
+      "elevationRangeM": [
+        -4375,
+        2378
+      ],
+      "frame": {
+        "type": "south-polar-stereographic",
+        "lat": -89.44,
+        "lon": -141.8,
+        "x0": -10501.324,
+        "y0": -13344.802
+      }
+    },
+    {
+      "targetId": "de-gerlache-rim",
+      "body": "moon",
+      "bounds": [
+        -2.97130755,
+        -2.97130755,
+        2.97130755,
+        2.97130755
+      ],
+      "grids": [
+        {
+          "file": "de-gerlache-rim-lola-40m.png",
+          "bounds": [
+            -0.49532785,
+            -0.49532785,
+            0.49532785,
+            0.49532785
+          ],
+          "resolutionM": 40
+        },
+        {
+          "file": "de-gerlache-rim-lola-200m.png",
+          "bounds": [
+            -2.97130755,
+            -2.97130755,
+            2.97130755,
+            2.97130755
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "LRO LOLA Polar DEM LDEM_85S_40M (40 m, south polar stereographic)",
+          "agency": "NASA GSFC LOLA team / PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/"
+        }
+      ],
+      "elevationRangeM": [
+        -5026,
+        3250
+      ],
+      "frame": {
+        "type": "south-polar-stereographic",
+        "lat": -88.71,
+        "lon": -68.7,
+        "x0": -36446.619,
+        "y0": 14209.943
+      }
+    },
+    {
+      "targetId": "malapert-massif",
+      "body": "moon",
+      "bounds": [
+        -2.97130755,
+        -2.97130755,
+        2.97130755,
+        2.97130755
+      ],
+      "grids": [
+        {
+          "file": "malapert-massif-lola-40m.png",
+          "bounds": [
+            -0.49532785,
+            -0.49532785,
+            0.49532785,
+            0.49532785
+          ],
+          "resolutionM": 40
+        },
+        {
+          "file": "malapert-massif-lola-200m.png",
+          "bounds": [
+            -2.97130755,
+            -2.97130755,
+            2.97130755,
+            2.97130755
+          ],
+          "resolutionM": 200
+        }
+      ],
+      "sources": [
+        {
+          "name": "LRO LOLA Polar DEM LDEM_85S_40M (40 m, south polar stereographic)",
+          "agency": "NASA GSFC LOLA team / PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/"
+        }
+      ],
+      "elevationRangeM": [
+        -4376,
+        6803
+      ],
+      "frame": {
+        "type": "south-polar-stereographic",
+        "lat": -86.04,
+        "lon": 2.7,
+        "x0": 5658.817,
+        "y0": 119994.934
+      }
+    }
+  ]
+}

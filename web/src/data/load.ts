@@ -1,6 +1,6 @@
 import type { z } from 'zod'
-import { AnalogsSchema, DiscoveriesSchema, TextsSchema } from './schema'
-import type { AnalogsFile, DiscoveriesFile, TextsFile } from './schema'
+import { AnalogsSchema, DiscoveriesSchema, GridSchema, TextsSchema } from './schema'
+import type { AnalogsFile, DiscoveriesFile, GridFile, TextsFile } from './schema'
 
 export type LoadResult =
   | { ok: true; analogs: AnalogsFile; texts: TextsFile; discoveries: DiscoveriesFile | null }
@@ -71,4 +71,26 @@ export async function loadData(base: string): Promise<LoadResult> {
   }
 
   return { ok: true, analogs: analogs.data, texts: texts.data, discoveries }
+}
+
+export function parseGrid(json: unknown) {
+  return GridSchema.safeParse(json)
+}
+
+let grid: Promise<GridFile | null> | null = null
+/**
+ * grid.json, cargado solo cuando se pide (búsqueda de lugares nuevos desde un pin). null si no existe;
+ * un archivo no válido es un error.
+ */
+export function loadGrid(base: string): Promise<GridFile | null> {
+  grid ??= fetchJson(`${base}data/grid.json`, true).then((raw) => {
+    if (!raw || typeof raw !== 'object' || Object.keys(raw).length === 0) return null
+    const parsed = parseGrid(raw)
+    if (!parsed.success) throw new Error(formatIssues(parsed.error).join('; '))
+    return parsed.data
+  })
+  grid.catch(() => {
+    grid = null
+  })
+  return grid
 }

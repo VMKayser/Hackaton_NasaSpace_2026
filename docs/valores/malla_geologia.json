@@ -1,0 +1,492 @@
+{
+ "-21.8,-68": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.8000/lng=-68.0000"
+ },
+ "-21,-66.3": {
+  "name": "Neogene Granitic",
+  "lith": "Granite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.0000/lng=-66.3000"
+ },
+ "-22.7,-67.8": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.7000/lng=-67.8000"
+ },
+ "-22.5,-67.4": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.5000/lng=-67.4000"
+ },
+ "-22.7,-67.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.7000/lng=-67.2000"
+ },
+ "-22.6,-67.5": {
+  "name": "Quaternary Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.6000/lng=-67.5000"
+ },
+ "-22.3,-67.8": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.3000/lng=-67.8000"
+ },
+ "-22,-68": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.0000/lng=-68.0000"
+ },
+ "-22.4,-67.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.4000/lng=-67.2000"
+ },
+ "-22.3,-67.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.3000/lng=-67.3000"
+ },
+ "-21.2,-67.9": {
+  "name": "Quaternary Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.2000/lng=-67.9000"
+ },
+ "-20.8,-67.9": {
+  "name": "Quaternary Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.8000/lng=-67.9000"
+ },
+ "-22,-67.6": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.0000/lng=-67.6000"
+ },
+ "-21.1,-68.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.1000/lng=-68.2000"
+ },
+ "-22.8,-67.7": {
+  "name": "Quaternary Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.8000/lng=-67.7000"
+ },
+ "-22.6,-67.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.6000/lng=-67.2000"
+ },
+ "-20.9,-68.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.9000/lng=-68.3000"
+ },
+ "-20.8,-68": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.8000/lng=-68.0000"
+ },
+ "-22.8,-67.4": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.8000/lng=-67.4000"
+ },
+ "-22.6,-67.8": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.6000/lng=-67.8000"
+ },
+ "-22,-67.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.0000/lng=-67.2000"
+ },
+ "-21.7,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.7000/lng=-67.9000"
+ },
+ "-21.4,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.4000/lng=-67.9000"
+ },
+ "-21.9,-67.5": {
+  "name": "Neogene Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.9000/lng=-67.5000"
+ },
+ "-18.9,-68.9": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-18.9000/lng=-68.9000"
+ },
+ "-21.1,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.1000/lng=-67.9000"
+ },
+ "-21.9,-66.9": {
+  "name": "Paleogene - Neogene Volcano-sedimentary",
+  "lith": "Volcaniclastic, volcanic",
+  "age": "Cenozoic",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.9000/lng=-66.9000"
+ },
+ "-20.7,-68.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.7000/lng=-68.2000"
+ },
+ "-21.3,-68": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.3000/lng=-68.0000"
+ },
+ "-21.4,-68.1": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.4000/lng=-68.1000"
+ },
+ "-22.4,-67.5": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.4000/lng=-67.5000"
+ },
+ "-21,-68.1": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.0000/lng=-68.1000"
+ },
+ "-22.7,-67.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.7000/lng=-67.3000"
+ },
+ "-21.6,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.6000/lng=-67.9000"
+ },
+ "-22.3,-67.9": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.3000/lng=-67.9000"
+ },
+ "-21.8,-67.6": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.8000/lng=-67.6000"
+ },
+ "-20.2,-68.6": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.2000/lng=-68.6000"
+ },
+ "-22,-67.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.0000/lng=-67.3000"
+ },
+ "-20.7,-68.4": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.7000/lng=-68.4000"
+ },
+ "-21.5,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.5000/lng=-67.9000"
+ },
+ "-20.1,-68.5": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.1000/lng=-68.5000"
+ },
+ "-21.7,-68.1": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.7000/lng=-68.1000"
+ },
+ "-22.8,-67.2": {
+  "name": "Neogene Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.8000/lng=-67.2000"
+ },
+ "-20.6,-68.5": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.6000/lng=-68.5000"
+ },
+ "-22.4,-67.9": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.4000/lng=-67.9000"
+ },
+ "-19.8,-68.6": {
+  "name": "Neogene Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-19.8000/lng=-68.6000"
+ },
+ "-19,-68.6": {
+  "name": "Neogene Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-19.0000/lng=-68.6000"
+ },
+ "-20.9,-67.9": {
+  "name": "Quaternary Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.9000/lng=-67.9000"
+ },
+ "-21.8,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.8000/lng=-67.9000"
+ },
+ "-22.6,-67.4": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.6000/lng=-67.4000"
+ },
+ "-22.5,-67.3": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.5000/lng=-67.3000"
+ },
+ "-22.3,-67.7": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.3000/lng=-67.7000"
+ },
+ "-21.3,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.3000/lng=-67.9000"
+ },
+ "-22.4,-67.6": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.4000/lng=-67.6000"
+ },
+ "-21.7,-68": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.7000/lng=-68.0000"
+ },
+ "-21.2,-68.1": {
+  "name": "Quaternary Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.2000/lng=-68.1000"
+ },
+ "-21,-68.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.0000/lng=-68.3000"
+ },
+ "-20.8,-68.1": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.8000/lng=-68.1000"
+ },
+ "-22.1,-67.2": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.1000/lng=-67.2000"
+ },
+ "-20.3,-68.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.3000/lng=-68.3000"
+ },
+ "-20.4,-68.3": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.4000/lng=-68.3000"
+ },
+ "-22.2,-67.9": {
+  "name": "Neogene Andesitic and related",
+  "lith": "Andesite and related volcanic",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.2000/lng=-67.9000"
+ },
+ "-22.1,-67.5": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-22.1000/lng=-67.5000"
+ },
+ "-21.9,-67.9": {
+  "name": "Neogene Rhyolitic",
+  "lith": "Rhyolite",
+  "age": "Neogene",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-21.9000/lng=-67.9000"
+ },
+ "-19.6,-65.6": {
+  "name": "Quaternary Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Quaternary",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-19.6000/lng=-65.6000"
+ },
+ "-20.3,-65.6": {
+  "name": "Ordovician Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Ordovician",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.3000/lng=-65.6000"
+ },
+ "-20.1,-65.5": {
+  "name": "Ordovician Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Ordovician",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-20.1000/lng=-65.5000"
+ },
+ "-18.8,-66": {
+  "name": "Ordovician Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Ordovician",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-18.8000/lng=-66.0000"
+ },
+ "-17.7,-66.2": {
+  "name": "Ordovician Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Ordovician",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-17.7000/lng=-66.2000"
+ },
+ "-19.2,-65.5": {
+  "name": "Cretaceous Siliciclastic",
+  "lith": "Siliciclastic",
+  "age": "Cretaceous",
+  "descrip": null,
+  "url": "https://macrostrat.org/map/#/z=8/lat=-19.2000/lng=-65.5000"
+ }
+}

@@ -1,0 +1,297 @@
+{
+ "uyuni": {
+  "lat": -20.13,
+  "lon": -67.49,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "coipasa": {
+  "lat": -19.38,
+  "lon": -68.13,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Provincia Ladislao Cabrera"
+ },
+ "sol-de-manana": {
+  "lat": -22.43,
+  "lon": -67.76,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "laguna-colorada": {
+  "lat": -22.2,
+  "lon": -67.78,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "siloli": {
+  "lat": -22.05,
+  "lon": -67.88,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "dali": {
+  "lat": -22.63,
+  "lon": -67.66,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "licancabur-laguna-verde": {
+  "lat": -22.79,
+  "lon": -67.82,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "uturuncu": {
+  "lat": -22.27,
+  "lon": -67.18,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "sajama": {
+  "lat": -18.11,
+  "lon": -68.88,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Provincia Sajama"
+ },
+ "ollague": {
+  "lat": -21.3,
+  "lon": -68.18,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "tunupa": {
+  "lat": -19.83,
+  "lon": -67.63,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Ladislao Cabrera"
+ },
+ "poopo": {
+  "lat": -18.8,
+  "lon": -67.0,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Provincia Avaroa"
+ },
+ "empexa": {
+  "lat": -20.33,
+  "lon": -68.45,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Daniel Campos"
+ },
+ "chiguana": {
+  "lat": -21.08,
+  "lon": -68.0,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "chalviri": {
+  "lat": -22.53,
+  "lon": -67.57,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "capina": {
+  "lat": -21.9,
+  "lon": -67.6,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "pastos-grandes": {
+  "lat": -21.63,
+  "lon": -67.8,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "laguna-hedionda": {
+  "lat": -21.57,
+  "lon": -68.05,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "polques": {
+  "lat": -22.53,
+  "lon": -67.65,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Sur Lípez"
+ },
+ "geiseres-sajama": {
+  "lat": -18.08,
+  "lon": -68.97,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Provincia Sajama"
+ },
+ "tata-sabaya": {
+  "lat": -19.23,
+  "lon": -68.47,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Provincia Sabaya"
+ },
+ "los-frailes": {
+  "lat": -19.5,
+  "lon": -66.3,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Tomás Frías"
+ },
+ "jayu-khota": {
+  "lat": -19.47,
+  "lon": -67.43,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Oruro",
+  "province": "Ladislao Cabrera"
+ },
+ "valle-de-rocas": {
+  "lat": -21.6,
+  "lon": -67.6,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Nor Lípez"
+ },
+ "tupiza": {
+  "lat": -21.42,
+  "lon": -65.72,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Sur Chichas"
+ },
+ "valle-de-la-luna": {
+  "lat": -16.57,
+  "lon": -68.09,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "La Paz",
+  "province": "Provincia Pedro Domingo Murillo"
+ },
+ "huayna-potosi": {
+  "lat": -16.26,
+  "lon": -68.15,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "La Paz",
+  "province": "Provincia Pedro Domingo Murillo"
+ },
+ "umajalanta": {
+  "lat": -18.13,
+  "lon": -65.76,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Potosí",
+  "province": "Provincia Charcas"
+ },
+ "yungay-atacama": {
+  "lat": -24.08,
+  "lon": -69.92,
+  "country": "Chile",
+  "country_en": "Chile",
+  "department": "Región de Antofagasta",
+  "province": "Provincia de Antofagasta"
+ },
+ "trinidad-control": {
+  "lat": -14.83,
+  "lon": -64.9,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "Beni",
+  "province": "Cercado"
+ },
+ "coroico-control": {
+  "lat": -16.19,
+  "lon": -67.73,
+  "country": "Bolivia",
+  "country_en": "Bolivia",
+  "department": "La Paz",
+  "province": "Provincia Nor Yungas"
+ },
+ "haughton": {
+  "lat": 75.383,
+  "lon": -89.667,
+  "country": "Canadá",
+  "country_en": "Canada",
+  "department": "Nunavut",
+  "province": "Región de Qikiqtaaluk"
+ },
+ "badwater": {
+  "lat": 36.25028,
+  "lon": -116.82583,
+  "country": "Estados Unidos de América",
+  "country_en": "United States",
+  "department": "California",
+  "province": "Inyo County"
+ },
+ "mdrs-utah": {
+  "lat": 38.4064583,
+  "lon": -110.7919028,
+  "country": "Estados Unidos de América",
+  "country_en": "United States",
+  "department": "Utah",
+  "province": "Wayne County"
+ },
+ "askja": {
+  "lat": 65.033,
+  "lon": -16.783,
+  "country": "Islandia",
+  "country_en": "Iceland",
+  "department": "Norðurland eystra",
+  "province": "Þingeyjarsveit"
+ },
+ "kilauea": {
+  "lat": 19.4211,
+  "lon": -155.2868,
+  "country": "Estados Unidos de América",
+  "country_en": "United States",
+  "department": "Hawái",
+  "province": "Condado de Hawái"
+ },
+ "dallol": {
+  "lat": 14.24167,
+  "lon": 40.3,
+  "country": "Etiopía",
+  "country_en": "Ethiopia",
+  "department": "Afar"
+ }
+}

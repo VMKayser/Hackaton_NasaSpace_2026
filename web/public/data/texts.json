@@ -200,6 +200,78 @@
           "url": "https://doi.org/10.1002/2015GL064844"
         }
       ]
+    },
+    "mawrth-vallis": {
+      "summary": {
+        "en": "Ancient outflow channel whose layered rocks are rich in clay minerals, which form in the presence of water.",
+        "es": "Antiguo canal de desagüe con rocas en capas ricas en minerales de arcilla, que se forman en presencia de agua."
+      },
+      "sources": [
+        {
+          "name": "Poulet et al. (2020), Mawrth Vallis, Mars: a fascinating place for future in situ exploration",
+          "agency": "Astrobiology",
+          "url": "https://doi.org/10.1089/ast.2019.2074"
+        },
+        {
+          "name": "Mawrth Vallis, Gazetteer of Planetary Nomenclature",
+          "agency": "USGS / IAU",
+          "url": "https://planetarynames.wr.usgs.gov/Feature/3763"
+        }
+      ]
+    },
+    "apollo-11": {
+      "summary": {
+        "en": "Plain of Mare Tranquillitatis where Apollo 11 landed in 1969. The lunar maria are plains of basaltic lava.",
+        "es": "Llanura del Mar de la Tranquilidad donde aterrizó Apollo 11 en 1969. Los mares lunares son llanuras de lava basáltica."
+      },
+      "sources": [
+        {
+          "name": "Apollo 11",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/mission/apollo-11/"
+        },
+        {
+          "name": "Hiesinger and Head (2006), New views of lunar geoscience: an introduction and overview",
+          "agency": "Reviews in Mineralogy and Geochemistry",
+          "url": "https://doi.org/10.2138/rmg.2006.60.1"
+        }
+      ]
+    },
+    "apollo-15": {
+      "summary": {
+        "en": "Site beside Hadley Rille, at the foot of the Apennine mountains, where Apollo 15 landed in 1971. The plain is mare basaltic lava.",
+        "es": "Sitio junto a Hadley Rille, al pie de los montes Apeninos, donde aterrizó Apollo 15 en 1971. La llanura es lava basáltica de un mar lunar."
+      },
+      "sources": [
+        {
+          "name": "Apollo 15",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/mission/apollo-15/"
+        },
+        {
+          "name": "Hiesinger and Head (2006), New views of lunar geoscience: an introduction and overview",
+          "agency": "Reviews in Mineralogy and Geochemistry",
+          "url": "https://doi.org/10.2138/rmg.2006.60.1"
+        }
+      ]
+    },
+    "apollo-17": {
+      "summary": {
+        "en": "Taurus–Littrow valley, where Apollo 17 landed in 1972: a valley floor of mare basalt between highland massifs.",
+        "es": "Valle de Taurus–Littrow, donde aterrizó Apollo 17 en 1972: un fondo de basalto de mar lunar entre macizos de las tierras altas."
+      },
+      "sources": [
+        {
+          "name": "Apollo 17",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/mission/apollo-17/"
+        },
+        {
+          "name": "Hiesinger and Head (2006), New views of lunar geoscience: an introduction and overview",
+          "agency": "Reviews in Mineralogy and Geochemistry",
+          "url": "https://doi.org/10.2138/rmg.2006.60.1"
+        }
+      ]
     }
   },
   "purposes": {
@@ -241,6 +313,26 @@
       "question": {
         "en": "Where can a lander and a rover rehearse on slopes like those of the Artemis III candidate regions?",
         "es": "¿Dónde ensayar un alunizaje y el tránsito de un rover con pendientes como las de las regiones candidatas de Artemis III?"
+      }
+    },
+    "buried-ice": {
+      "label": {
+        "en": "Buried ice and debris-covered glaciers",
+        "es": "Hielo enterrado y glaciares cubiertos"
+      },
+      "question": {
+        "en": "Where to study ice kept under debris, like the glaciers of Deuteronilus Mensae?",
+        "es": "¿Dónde estudiar hielo conservado bajo detritos, como los glaciares de Deuteronilus Mensae?"
+      }
+    },
+    "mare-landing": {
+      "label": {
+        "en": "Landing on a lunar mare",
+        "es": "Alunizaje en un mar lunar"
+      },
+      "question": {
+        "en": "Where to rehearse a landing on flat, smooth ground like the one chosen for Apollo 11?",
+        "es": "¿Dónde ensayar un alunizaje en terreno llano y liso como el que se eligió para Apollo 11?"
       }
     }
   },
@@ -1030,6 +1122,157 @@
           "url": "https://es.wikipedia.org/wiki/Parque_nacional_Toro_Toro"
         }
       ]
+    },
+    "haughton": {
+      "description": {
+        "en": "Impact crater on Devon Island, in the Canadian Arctic, inside a polar desert. Its geology and climate have earned it the name «Mars on Earth», and the Haughton-Mars Project studies it as a Mars analog.",
+        "es": "Cráter de impacto en la isla Devon, en el Ártico canadiense, dentro de un desierto polar. Por su geología y su clima lo llaman «Marte en la Tierra», y el Haughton-Mars Project lo estudia como análogo de Marte."
+      },
+      "limits": {
+        "en": "It is at sea level: its air pressure (about 990 hPa) is far higher than on the Altiplano and on Mars, so it scores low in pressure.",
+        "es": "Está al nivel del mar: su presión (unos 990 hPa) es mucho mayor que la del Altiplano y la de Marte, así que puntúa bajo en presión."
+      },
+      "exploration": {
+        "en": "Reference of an analog already studied: compare its scores with those of the Altiplano to see what each one reproduces.",
+        "es": "Referencia de un análogo ya estudiado: comparar sus puntajes con los del Altiplano para ver qué reproduce cada uno."
+      },
+      "sources": [
+        {
+          "name": "Lee and Osinski (2005), The Haughton-Mars Project: overview of science investigations",
+          "agency": "Meteoritics & Planetary Science",
+          "url": "https://doi.org/10.1111/j.1945-5100.2005.tb00144.x"
+        },
+        {
+          "name": "Lacelle et al. (2008), Weathering regime in a polar desert environment, Haughton impact structure",
+          "agency": "Canadian Journal of Earth Sciences",
+          "url": "https://doi.org/10.1139/e08-063"
+        },
+        {
+          "name": "Haughton impact crater",
+          "agency": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Haughton_impact_crater"
+        }
+      ]
+    },
+    "badwater": {
+      "description": {
+        "en": "Salt flat at the bottom of Death Valley, below sea level. The salt crust dissolves in floods and crystallizes again when the water evaporates. It has been used for Mars remote-sensing analog studies.",
+        "es": "Salar en el fondo del Valle de la Muerte, bajo el nivel del mar. La costra de sal se disuelve con las crecidas y vuelve a cristalizar cuando el agua se evapora. Se ha usado en estudios de teledetección como análogo de Marte."
+      },
+      "limits": {
+        "en": "Below sea level and hot: its pressure and temperature are the opposite of Mars, so it scores low in climate.",
+        "es": "Bajo el nivel del mar y caluroso: su presión y su temperatura son lo contrario de Marte, así que puntúa bajo en clima."
+      },
+      "exploration": {
+        "en": "Reference of an evaporite analog already studied, to compare with the salt flats of the Altiplano.",
+        "es": "Referencia de un análogo de evaporitas ya estudiado, para comparar con los salares del Altiplano."
+      },
+      "sources": [
+        {
+          "name": "Baldridge et al. (2004), Mars remote-sensing analog studies in the Badwater Basin, Death Valley",
+          "agency": "Journal of Geophysical Research: Planets",
+          "url": "https://doi.org/10.1029/2004JE002315"
+        },
+        {
+          "name": "Badwater Basin",
+          "agency": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Badwater_Basin"
+        }
+      ]
+    },
+    "mdrs-utah": {
+      "description": {
+        "en": "Station of the Mars Society in the Utah desert, where crews rehearse Mars missions. The place was chosen for its Mars-like terrain and appearance.",
+        "es": "Estación de la Mars Society en el desierto de Utah, donde las tripulaciones ensayan misiones a Marte. El lugar se eligió por su terreno y su aspecto parecidos a Marte."
+      },
+      "limits": {
+        "en": "Much warmer than Mars and at about 1400 m: its pressure is far from that of Mars and from that of the Altiplano.",
+        "es": "Mucho más cálido que Marte y a unos 1400 m: su presión está lejos de la de Marte y de la del Altiplano."
+      },
+      "exploration": {
+        "en": "Reference of a site already used for crewed rehearsals: compare what it reproduces with the Altiplano.",
+        "es": "Referencia de un sitio ya usado para ensayos con tripulación: comparar lo que reproduce con el Altiplano."
+      },
+      "sources": [
+        {
+          "name": "Mars Desert Research Station",
+          "agency": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Mars_Desert_Research_Station"
+        }
+      ]
+    },
+    "askja": {
+      "description": {
+        "en": "Volcanic caldera in the highlands of Iceland. NASA used the area to train Apollo astronauts in geology before the lunar missions.",
+        "es": "Caldera volcánica en las tierras altas de Islandia. La NASA usó la zona para entrenar en geología a los astronautas de Apollo antes de las misiones a la Luna."
+      },
+      "limits": {
+        "en": "It gets snow and rain (about 860 mm a year measured) and its pressure (about 910 hPa) is far from the Moon, which has no atmosphere.",
+        "es": "Recibe nieve y lluvia (unos 860 mm al año medidos) y su presión (unos 910 hPa) está lejos de la Luna, que no tiene atmósfera."
+      },
+      "exploration": {
+        "en": "Reference of a volcanic analog already used for astronaut training, to compare with the volcanic sites of the Altiplano.",
+        "es": "Referencia de un análogo volcánico ya usado para entrenar astronautas, para comparar con los sitios volcánicos del Altiplano."
+      },
+      "sources": [
+        {
+          "name": "Askja",
+          "agency": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Askja"
+        }
+      ]
+    },
+    "kilauea": {
+      "description": {
+        "en": "Active shield volcano in Hawaiʻi. NASA used the area to train Apollo astronauts to recognize volcanic features, and the BASALT program rehearsed Mars field science on its lava fields.",
+        "es": "Volcán en escudo activo en Hawái. La NASA usó la zona para enseñar a los astronautas de Apollo a reconocer formas volcánicas, y el programa BASALT ensayó ciencia de campo para Marte en sus coladas."
+      },
+      "limits": {
+        "en": "Humid tropical climate: its temperature and rainfall are very far from Mars and the Moon, so it scores low in climate.",
+        "es": "Clima tropical húmedo: su temperatura y su lluvia están muy lejos de Marte y de la Luna, así que puntúa bajo en clima."
+      },
+      "exploration": {
+        "en": "Reference of a basaltic analog already studied, to compare with the lava of the lunar maria and with the Altiplano.",
+        "es": "Referencia de un análogo basáltico ya estudiado, para comparar con la lava de los mares lunares y con el Altiplano."
+      },
+      "sources": [
+        {
+          "name": "Lim et al. (2019), The BASALT Research Program",
+          "agency": "Astrobiology",
+          "url": "https://doi.org/10.1089/ast.2018.1869"
+        },
+        {
+          "name": "Kīlauea",
+          "agency": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/K%C4%ABlauea"
+        }
+      ]
+    },
+    "dallol": {
+      "description": {
+        "en": "Hydrothermal field in the Danakil Depression, below sea level, with hyper-acidic and hyper-saline springs and salt cones. It is described as an exceptional planetary field analog.",
+        "es": "Campo hidrotermal en la depresión de Danakil, bajo el nivel del mar, con manantiales hiperácidos e hipersalinos y conos de sal. Se describe como un análogo planetario de campo excepcional."
+      },
+      "limits": {
+        "en": "Hot (about 28 °C of mean surface temperature measured) and below sea level: its temperature and pressure are far from Mars.",
+        "es": "Caluroso (unos 28 °C de temperatura media de superficie medidos) y bajo el nivel del mar: su temperatura y su presión están lejos de Marte."
+      },
+      "exploration": {
+        "en": "Reference of a hydrothermal analog already studied, to compare with Sol de Mañana and the other geothermal fields of the Altiplano.",
+        "es": "Referencia de un análogo hidrotermal ya estudiado, para comparar con Sol de Mañana y los otros campos geotérmicos del Altiplano."
+      },
+      "sources": [
+        {
+          "name": "Cavalazzi et al. (2019), The Dallol geothermal area, northern Afar (Ethiopia): an exceptional planetary field analog on Earth",
+          "agency": "Astrobiology",
+          "url": "https://doi.org/10.1089/ast.2018.1926"
+        },
+        {
+          "name": "Dallol (hydrothermal system)",
+          "agency": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Dallol_(hydrothermal_system)"
+        }
+      ]
     }
   },
   "story": [
@@ -1331,6 +1574,63 @@
           "name": "NASA Identifies Candidate Regions for Landing Next Americans on Moon (2022)",
           "agency": "NASA",
           "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+        }
+      ]
+    },
+    {
+      "id": "mare-landing-criteria",
+      "purposeId": "mare-landing",
+      "title": {
+        "en": "Use the Apollo landing criteria",
+        "es": "Usar los criterios de alunizaje de Apollo"
+      },
+      "text": {
+        "en": "For Apollo, NASA required few craters, no large hills, cliffs or deep craters along the approach, and a general slope of the landing area under 2°. On site, landing zones can be chosen and checked with those same limits.",
+        "es": "Para Apollo, la NASA exigió pocos cráteres, ninguna colina grande, acantilado ni cráter profundo en la aproximación, y una pendiente general de la zona de alunizaje menor de 2°. En el sitio se pueden elegir y comprobar zonas de alunizaje con esos mismos límites."
+      },
+      "sources": [
+        {
+          "name": "50 Years Ago: Lunar Landing Sites Selected (criteria of February 1968)",
+          "agency": "NASA",
+          "url": "https://www.nasa.gov/feature/50-years-ago-lunar-landing-sites-selected"
+        }
+      ]
+    },
+    {
+      "id": "ice-debris-cover",
+      "purposeId": "buried-ice",
+      "title": {
+        "en": "Reach ice under a debris cover",
+        "es": "Llegar al hielo bajo una capa de detritos"
+      },
+      "text": {
+        "en": "Radar shows that the debris aprons of Deuteronilus Mensae are mostly ice under a thin layer of debris. The test should cross that layer: drills and ground radar that must tell debris from ice.",
+        "es": "El radar indica que los depósitos de detritos de Deuteronilus Mensae son sobre todo hielo bajo una capa delgada de detritos. El ensayo debe atravesar esa capa: taladros y radar de suelo que distingan los detritos del hielo."
+      },
+      "sources": [
+        {
+          "name": "Plaut et al. (2009), Radar evidence for ice in lobate debris aprons in the mid-northern latitudes of Mars",
+          "agency": "Geophysical Research Letters",
+          "url": "https://doi.org/10.1029/2008GL036379"
+        }
+      ]
+    },
+    {
+      "id": "moon-cold",
+      "body": "moon",
+      "title": {
+        "en": "Polar cold",
+        "es": "Frío polar"
+      },
+      "text": {
+        "en": "At the four south-pole points, Diviner gives a mean annual temperature of −135 to −168 °C at 2 cm below the surface. No catalog site comes close, so thermal tests of equipment need a thermal-vacuum chamber.",
+        "es": "En los cuatro puntos del polo sur, Diviner da una temperatura media anual de −135 a −168 °C a 2 cm bajo la superficie. Ningún sitio del catálogo se acerca, así que las pruebas térmicas de equipos necesitan una cámara de vacío térmico."
+      },
+      "sources": [
+        {
+          "name": "LRO Diviner polar resource product, south (LRO-L-DLRE-5-PRP-V2.0)",
+          "agency": "NASA PDS Geosciences Node / UCLA",
+          "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/"
         }
       ]
     }

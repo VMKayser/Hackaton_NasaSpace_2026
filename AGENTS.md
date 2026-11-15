@@ -17,10 +17,13 @@ la Tierra y en el objetivo, las fuentes de esos datos y una explicación de dón
 **Decisiones de enfoque ya tomadas:**
 
 - Cuerpos objetivo: **Marte** (cinco sitios de aterrizaje, el de Viking 2 en Utopia Planitia y dos zonas
-  de hielo: un glaciar cubierto en Deuteronilus Mensae y el hielo enterrado de Arcadia Planitia) y
-  **la Luna** (cuatro puntos del polo sur en regiones candidatas de Artemis III). La app es neutral respecto al cuerpo: un objetivo es solo otra fila.
+  de hielo: un glaciar cubierto en Deuteronilus Mensae y el hielo enterrado de Arcadia Planitia, más Mawrth
+  Vallis) y **la Luna** (cuatro puntos del polo sur en regiones candidatas de Artemis III y los sitios de
+  Apollo 11, 15 y 17). La app es neutral respecto al cuerpo: un objetivo es solo otra fila.
 - Región piloto: **Bolivia** (Altiplano y Sur de Lípez), con un **catálogo fijo de sitios**
-  (`docs/catalogo-sitios.csv`). El método es general; Bolivia es el caso de estudio.
+  (`docs/catalogo-sitios.csv`). El método es general; Bolivia es el caso de estudio. Seis análogos ya
+  estudiados de otros países (Haughton, Badwater, MDRS, Askja, Kīlauea, Dallol) entran en el catálogo y en la
+  escala para comparar, cada uno con su fuente.
 - **Atacama** se incluye como referencia para comprobar una analogía documentada, y hay **controles
   negativos** que deben salir con puntaje bajo.
 - Usuario principal: equipos de misión que prueban instrumentos, robots y operaciones.
@@ -75,9 +78,13 @@ antes de publicar.
 | Luna | `https://cartocdn-gusc.global.ssl.fastly.net/opmbuilder/api/v1/map/named/opm-moon-basemap-v0-1/all/{z}/{x}/{y}.png` | Igual. No cubre más allá de 85° de latitud |
 | Relieve global de Marte (USGS) | `https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif` | GeoTIFF Int16 sin compresión, una fila por tira; se lee por rangos (CORS con `Range`). 200 m, metros sobre el areoide |
 | Relieve de la Luna (USGS) | `https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/LolaKaguya_Topo/Lunar_LRO_LOLAKaguya_DEMmerge_60N60S_512ppd.tif` | Igual; 59 m, entre 60° N y 60° S, 0,5 m por unidad. Ver `web/src/map/usgsDem.ts` |
+| Relieve del polo sur de la Luna (LOLA) | `https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_85s_40m.img` | 40 m, 85° S al polo, estereográfica polar. Lo lee `tools/moon_polar.py` (no el navegador) |
 
-Un objetivo en el polo sur lunar no cabe en Web Mercator: usar una imagen fija con atribución. Lo
-mismo si el servicio de Marte falla. Las teselas de NASA Trek son equirectangulares y no sirven como
+Un objetivo en el polo sur lunar no cabe en Web Mercator: el mapa 2D usa una imagen fija con atribución.
+Para la vista 3D, `tools/moon_polar.py` guarda su relieve en un **marco local** (el plano estereográfico
+reubicado en torno a 0°, 0° a escala real; región con `frame` en `terrain/moon/manifest.json`, conversión en
+`web/src/lib/polarFrame.ts`). Ahí no hay imagen orbital: se muestra el sombreado del mismo relieve. Si el
+servicio de Marte falla, también imagen fija. Las teselas de NASA Trek son equirectangulares y no sirven como
 fuente directa en MapLibre.
 
 ### Detalles del mapa
@@ -111,7 +118,8 @@ docs/                rol 6 y coordinación
   valores/                 objetivos, geología, valores medidos, pesos y sus fuentes (ver su README)
   contrato-rol-4.md        guía de entrega que se envía al rol 4
   analogs.example.json     ejemplo del formato
-  catalogo-sitios.csv      catálogo fijo: 12 de núcleo, 16 de ampliación, 3 de validación
+  catalogo-sitios.csv      catálogo fijo: 12 de núcleo, 16 de ampliación, 3 de validación y 6 análogos
+                           ya estudiados de otros países (grupo `world`, `known: true`)
   texts.json               esqueleto de textos; en la Fase 1 se mueve a web/public/data/
 ```
 
@@ -120,8 +128,8 @@ docs/                rol 6 y coordinación
 Dos archivos en `web/public/data/`. Las claves van en inglés. Los textos que ve el usuario van en
 los dos idiomas.
 
-Versión 2.1 (14 de noviembre): es la v2 más campos opcionales, marcados con `?`. Un archivo v2 sigue
-siendo válido. La [guía de entrega](docs/contrato-rol-4.md) es lo que se envía al rol 4 y manda sobre
+Versión 2.2 (15 de noviembre): es la v2.1 más `meta.minCoverage` y `targets[].context`, los dos opcionales.
+La 2.1 era la v2 más campos opcionales, marcados con `?`. Un archivo v2 sigue siendo válido. La [guía de entrega](docs/contrato-rol-4.md) es lo que se envía al rol 4 y manda sobre
 este resumen; el [JSON de ejemplo](docs/analogs.example.json) usa este formato.
 
 ### `analogs.json`, del rol 4
@@ -140,6 +148,7 @@ interface AnalogsFile {
     version: string;                       // versión del formato, p. ej. "2.1.0"
     generated: string;                     // fecha ISO
     scoring?: Text;                        // cómo se obtiene el total, faltantes, área analizada
+    minCoverage?: number;                  // parte mínima del peso con dato para dar un total (0 a 1)
     dimensions: {
       id: DimensionId;
       label: Text;
@@ -171,6 +180,10 @@ interface AnalogsFile {
     lat: number; lon: number;              // grados decimales; longitud este positiva, −180 a 180
     summary?: Text;
     values: Record<DimensionId, Value>;
+    context?: {                            // mediciones sin equivalente en la Tierra: se muestran, no puntúan
+      id: string; label: Text; value: number | string | null; unit: string | null;
+      note?: Text; sources: Source[];      // al menos una fuente
+    }[];
   }[];
   sites: {                                 // candidatos en la Tierra
     id: string;                            // los de docs/catalogo-sitios.csv
@@ -180,6 +193,7 @@ interface AnalogsFile {
     reference: boolean;                    // true para el sitio de referencia de Atacama
     control: boolean;                      // true para un sitio de contraste; si falta, false
     radiusKm?: number;                     // radio del área analizada
+    place?: Record<string, string>;        // v2.2: país y departamento (OpenStreetMap), para etiquetas y filtros
     type?: Text;                           // salar, volcánico, hidrotermal...
     description?: Text;
     limits?: Text;                         // dónde falla la analogía
@@ -222,6 +236,13 @@ método y los mismos pesos que `analogs.json`. Cada candidato tiene `targetId`, 
 `lat`, `lon`, `similarity`, `values`, `dimensions`, `place` (nombres de OpenStreetMap) y `nearestSite`.
 `meta` describe la malla, la comprobación con el catálogo y las fuentes. La web solo los muestra.
 
+### `grid.json`, de `tools/grid_relief.py` (opcional)
+
+Relieve de cada punto de la malla del Altiplano que ya midió `tools/discover.py` (solo los de Bolivia, según
+Natural Earth): `values` por nombre de medición (`slope_median_deg`, `slope_p90_deg`, `roughness_tri_m`),
+`elevationM`, `nearestSite` y `place` si OpenStreetMap le dio nombre. La web lo carga solo al pulsar
+«Lugares nuevos» en el pin libre (ver regla 10).
+
 ### Reglas del contrato
 
 - Los IDs se mantienen entre entregas y son los mismos en los dos archivos. Cada `targetId` debe
@@ -263,9 +284,12 @@ Si el contrato cambia, se actualiza en `docs/contrato-rol-4.md`, aquí y en `web
    Confirmar la regla exacta de Space Apps 2026.
 9. No añadir dependencias ni funciones fuera de `PLAN.md` sin acordarlo.
 10. **La app no calcula ni recalcula puntajes.** Única excepción (15 de noviembre): con el pin libre en
-    Marte, el navegador calcula el **parecido de relieve** del punto con los sitios de la Tierra, con la
+    Marte o la Luna, el navegador calcula el **parecido de relieve** del punto con los sitios de la Tierra, y
+    con un pin en la Tierra, su parecido con cada objetivo, con la
     escala y los pesos de `tools/build_analogs.py` y solo con las dimensiones cuyo `measure` sabe medir
-    (`web/src/lib/terrainMatch.ts`). Se rotula como cálculo del navegador y solo de relieve.
+    (`web/src/lib/terrainMatch.ts`). Se rotula como cálculo del navegador y solo de relieve. El mismo
+    cálculo compara el punto con los puntos de la malla (`grid.json`) para proponer lugares nuevos.
+    Sin pin en el otro cuerpo se usan las mediciones del objetivo en `analogs.json`.
 11. **Ningún identificador de datos en el código:** dimensiones, sitios, objetivos, propósitos y
     pasos de la historia salen de los archivos.
 12. **Ningún texto fijo dice "Marte".** Se usa el `body` del objetivo.

@@ -16,6 +16,10 @@ Método (docs/metodo-similitud.md):
   categoría (un sitio puede tener varias, separadas por «+») y 0 si no.
   Si falta un dato, la dimensión queda sin puntaje (null), nunca en 0.
 - Total: media ponderada de las dimensiones con puntaje y peso positivo. Por propósito, con sus pesos.
+  Si las dimensiones con puntaje no llegan a `minCoverage` del peso (puntaje.json), no hay total:
+  datos insuficientes.
+- Contexto de cada objetivo (docs/valores/objetivos_contexto.json, de tools/target_context.py):
+  mediciones sin equivalente en la Tierra. Se copian a `targets[].context`; no puntúan.
 
 La web solo muestra y ordena estos puntajes; no los recalcula.
 
@@ -53,14 +57,22 @@ def dim_score(earth, target, kind, scale):
     return 1 - min(1.0, abs(earth - target) / scale)
 
 
-def weighted(scores: dict, weights: dict):
-    num_, den = 0.0, 0.0
+def weighted(scores: dict, weights: dict, min_coverage: float | None = None):
+    """Media ponderada de las dimensiones con puntaje. Sin total si su peso no llega a `min_coverage`
+    del peso positivo (datos insuficientes)."""
+    num_, den, total = 0.0, 0.0, 0.0
     for d, w in weights.items():
+        if w <= 0:
+            continue
+        total += w
         s = scores.get(d)
-        if w > 0 and s is not None:
+        if s is not None:
             num_ += w * s
             den += w
-    return num_ / den if den > 0 else None
+    # La cobertura se redondea a 3 decimales: los pesos tienen 4 (0,3333) y la mitad exacta debe contar.
+    if den == 0 or (min_coverage is not None and round(den / total, 3) < min_coverage):
+        return None
+    return num_ / den
 
 
 def r3(x):
@@ -118,6 +130,14 @@ def main():
         scales[d["id"]] = float(hi - lo) if hi > lo else None
 
     default_w = {d["id"]: d["weight"] for d in dims}
+    min_cov = cfg.get("minCoverage")
+    places_path = VAL / "sitios_lugares.json"
+    places = json.loads(places_path.read_text(encoding="utf-8")) if places_path.exists() else {}
+    context_path = VAL / "objetivos_contexto.json"
+    context = json.loads(context_path.read_text(encoding="utf-8")) if context_path.exists() else {}
+    unknown = set(context) - set(targets)
+    if unknown:
+        sys.exit(f"objetivos_contexto.json tiene objetivos que no existen: {sorted(unknown)}")
     out_sites = []
     for s, row in catalog.items():
         per_target, scores = {}, []
@@ -125,7 +145,7 @@ def main():
             ds = {d["id"]: dim_score(site_vals[s][d["id"]], target_vals[t][d["id"]], d.get("kind"), scales.get(d["id"]))
                   for d in dims}
             per_target[t] = ds
-            total = weighted(ds, default_w)
+            total = weighted(ds, default_w, min_cov)
             if total is not None:  # sin puntaje total, se omite la pareja
                 scores.append({"targetId": t, "similarity": r3(total), "dimensions": {k: r3(v) for k, v in ds.items()}})
         unit = lambda d: None if d.get("kind") == "category" else sources[d["column"]]["unit"]
@@ -139,9 +159,10 @@ def main():
             "control": row["control"] == "true",
             "radiusKm": float(row["radius_km"]),
             **({"type": cfg["siteTypes"][row["type"]]} if row["type"] in cfg["siteTypes"] else {}),
+            **({"place": {k: v for k, v in places[s].items() if k not in ("lat", "lon")}} if s in places else {}),
             "values": {d["id"]: {"value": site_vals[s][d["id"]], "unit": unit(d)} for d in dims},
             "scores": scores,
-            "purposeScores": {p["id"]: r3(weighted(per_target[p["targetId"]], p["weights"])) for p in cfg["purposes"]},
+            "purposeScores": {p["id"]: r3(weighted(per_target[p["targetId"]], p["weights"], min_cov)) for p in cfg["purposes"]},
         })
 
     out_targets = [{
@@ -152,6 +173,7 @@ def main():
         "lon": float(row["lon"]),
         "values": {d["id"]: {"value": target_vals[t][d["id"]], "unit": None if d.get("kind") == "category" else sources[d["column"]]["unit"]}
                    for d in dims},
+        **({"context": context[t]} if context.get(t) else {}),
     } for t, row in targets.items()]
 
     # Solo las fuentes de los cuerpos que aparecen en el archivo.
@@ -179,9 +201,10 @@ def main():
     out = {
         "meta": {
             "mock": False,
-            "version": "2.1.0",
+            "version": "2.2.0",
             "generated": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
             "scoring": cfg["scoring"],
+            **({"minCoverage": min_cov} if min_cov is not None else {}),
             "dimensions": meta_dims,
             "purposes": [{k: p[k] for k in ("id", "kind", "targetId", "weights")} for p in cfg["purposes"]],
         },

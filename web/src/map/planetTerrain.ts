@@ -4,6 +4,8 @@ import { z } from 'zod'
 import { elevationAt, encodeTerrarium, decodeTerrarium, sampleGrid } from '../lib/terrain'
 import type { ElevationGrid } from '../lib/terrain'
 import { BODIES } from './bodies'
+import { toLocal } from '../lib/polarFrame'
+import type { PolarFrame } from '../lib/polarFrame'
 import type { Planet } from './planetaryImagery'
 import { boxAround, demCovers, GLOBAL_DEMS, readDemWindow } from './usgsDem'
 
@@ -20,6 +22,14 @@ const Region = z.object({
   grids: z.array(Grid).min(1),
   sources: z.array(z.object({ name: z.string(), agency: z.string(), url: z.string() })),
   elevationRangeM: z.tuple([z.number(), z.number()]),
+  /** Marco local del polo sur (tools/moon_polar.py): los límites y las rejillas van en ese marco. */
+  frame: z.object({
+    type: z.literal('south-polar-stereographic'),
+    lat: z.number(),
+    lon: z.number(),
+    x0: z.number(),
+    y0: z.number(),
+  }).optional(),
   tracks: z.array(z.object({
     id: z.string(),
     name: z.string(),
@@ -105,6 +115,19 @@ export function regionGrids(body: Planet, region: TerrainRegion): Promise<Elevat
   return p
 }
 
+/** Posición de un punto real dentro del marco de la región: el mismo punto si la región no tiene marco. */
+export function regionPoint(region: TerrainRegion, lon: number, lat: number): { lon: number; lat: number } {
+  return region.frame ? toLocal(region.frame as PolarFrame, lat, lon) : { lon, lat }
+}
+
+/** ¿El punto real cae dentro de la región, con un margen en grados del marco? */
+export function regionContains(region: TerrainRegion, lon: number, lat: number, margin = 0): boolean {
+  if (region.frame && lat > -80) return false
+  const p = regionPoint(region, lon, lat)
+  const [w, s, e, n] = region.bounds
+  return p.lon >= w + margin && p.lon <= e - margin && p.lat >= s + margin && p.lat <= n - margin
+}
+
 /** Región por id: las del manifiesto o las creadas a partir del modelo global. */
 async function findRegion(body: Planet, id: string): Promise<TerrainRegion | null> {
   return dynamic.get(`${body}/${id}`) ?? (await loadTerrainRegions(body)).find((r) => r.targetId === id) ?? null
@@ -140,9 +163,9 @@ function feather(detail: ElevationGrid, context: ElevationGrid): ElevationGrid {
  */
 export async function terrainAt(body: Planet, lon: number, lat: number, preferredId?: string, detailKm = 12): Promise<TerrainRegion | null> {
   const margin = 0.3
-  const inside = (r: TerrainRegion) =>
-    lon >= r.bounds[0] + margin && lon <= r.bounds[2] - margin && lat >= r.bounds[1] + margin && lat <= r.bounds[3] - margin
+  const inside = (r: TerrainRegion) => regionContains(r, lon, lat, margin)
   const regions = await loadTerrainRegions(body)
+  // Las regiones con marco local (polo sur) se eligen por su objetivo o por la posición real del punto.
   const known = regions.find((r) => r.targetId === preferredId && inside(r)) ?? regions.find(inside)
   if (known) return known
 
