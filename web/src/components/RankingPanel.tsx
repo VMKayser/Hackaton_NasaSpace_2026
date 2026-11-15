@@ -2,11 +2,12 @@ import type { Model } from '../data/model'
 import { purposeLabel, purposeQuestion, targetSummary } from '../data/model'
 import type { Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
-import { formatCoords, score100 } from '../lib/format'
+import { formatCoords, formatPercent } from '../lib/format'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
 import { BackButton, BodyChip, KindIcon, Pending, ScoreBar, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
 import { TargetMeasurements } from './TargetMeasurements'
+import { ScoreMethod } from './ScoreMethod'
 
 interface Props {
   model: Model
@@ -20,19 +21,23 @@ interface Props {
   onCompare: () => void
 }
 
-export function TargetCard({ model, target }: { model: Model; target: Target }) {
+function TargetCard({ model, target, question }: { model: Model; target: Target; question: string | null }) {
   const { t, lang } = useI18n()
   const summary = targetSummary(model, target, lang)
   return (
-    <div className="rounded-xl border border-line bg-paper/70 p-4">
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">{t('target.comparing')}</span>
+    <div className="rounded-lg bg-paper px-3 py-2.5">
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+        <span className="text-muted">{t('target.comparing')}</span>
+        <strong className="font-semibold text-ink">{target.name}</strong>
         <BodyChip body={target.body} />
-      </div>
-      <p className="mt-1.5 font-serif text-lg font-semibold leading-tight">{target.name}</p>
-      <p className="font-mono text-[11px] text-faint">{formatCoords(target.lat, target.lon, lang)}</p>
-      <p className="mt-2 text-sm leading-snug text-muted">{summary ?? <Pending />}</p>
-      <TargetMeasurements key={target.id} model={model} target={target} />
+      </p>
+      <details key={target.id} className="mt-1">
+        <summary className="cursor-pointer rounded py-1 text-xs font-semibold text-earth">{t('target.measurements')}</summary>
+        {question && <p className="mt-1 text-[13px] leading-snug text-ink">{question}</p>}
+        <p className="mt-1 text-[13px] leading-snug text-muted">{summary ?? <Pending />}</p>
+        <p className="mt-1 font-mono text-[11px] text-muted">{formatCoords(target.lat, target.lon, lang)}</p>
+        <TargetMeasurements model={model} target={target} />
+      </details>
     </div>
   )
 }
@@ -42,83 +47,106 @@ export function RankingPanel({ model, purpose, target, rows, mode, selectedId, o
   const evaluated = rows.filter((r) => r.score !== null).length
   const dimLabel = (id: string) => model.dimensionById.get(id)?.label[lang] ?? id
   const question = purpose ? purposeQuestion(model, purpose, lang) : null
+  const rankingLabel = t(mode === 'purpose' ? 'ranking.byPurpose' : 'ranking.bySimilarity')
 
   return (
-    <div className="px-5 pb-8 pt-4 sm:px-7">
+    <div className="px-5 pb-8 pt-3 sm:px-7">
       <BackButton onClick={onBack}>{t('nav.changePurpose')}</BackButton>
 
       {purpose && (
-        <div className="mt-3 flex items-start gap-3">
+        <div className="mt-2 flex items-start gap-3">
           <KindIcon kind={purpose.kind} />
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-faint">{t(`kind.${purpose.kind}`)}</p>
+            <p className="sr-only">{t(`kind.${purpose.kind}`)}</p>
             <h1 className="font-serif text-xl font-semibold leading-tight">{purposeLabel(model, purpose, lang)}</h1>
-            {question && <p className="mt-1 text-sm leading-snug text-muted">{question}</p>}
           </div>
         </div>
       )}
 
-      <div className="mt-5">
-        <TargetCard model={model} target={target} />
+      <div className="mt-3">
+        <TargetCard model={model} target={target} question={question} />
       </div>
-      {rows.length >= 2 && (
-        <button type="button" onClick={onCompare} className="mt-3 rounded-lg border border-line px-3 py-1.5 text-sm font-medium hover:border-ink/30">
-          {t('compare.title')}
-        </button>
-      )}
 
-      <div className="mt-7 flex items-end justify-between gap-3">
-        <div>
-          <h2 className="font-serif text-lg font-semibold leading-tight">{t('ranking.title')}</h2>
-          <p className="text-xs text-muted">{mode === 'purpose' ? t('ranking.byPurpose') : t('ranking.bySimilarity')}</p>
+      <h2 className="mt-4 font-serif text-xl font-semibold leading-tight">{t('ranking.title')}</h2>
+      <div className="mt-1 flex items-center justify-between gap-2">
+        <div className="min-w-0 space-y-0.5 text-[11px] leading-snug text-muted">
+          <p>{rankingLabel}</p>
+          <p>{t('ranking.count', { n: evaluated, total: rows.length })}</p>
         </div>
-        <p className="shrink-0 font-mono text-[11px] text-faint">{t('ranking.count', { n: evaluated, total: rows.length })}</p>
+        {rows.length >= 2 && (
+          <button
+            type="button"
+            onClick={onCompare}
+            className="min-h-9 shrink-0 rounded-md border border-line px-2.5 text-xs font-semibold text-earth transition hover:bg-earth-soft"
+          >
+            {t('compare.title')}
+          </button>
+        )}
       </div>
 
-      <ol className="mt-3 divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
+      <ScoreMethod model={model} purpose={mode === 'purpose' ? purpose : null} />
+
+      <ol className="mt-2 divide-y divide-line border-y border-line">
         {rows.map((r) => {
           const selected = r.site.id === selectedId
-          const muted = r.score === null
+          const highlights = [
+            { id: r.top[0], label: 'ranking.highest' },
+            { id: r.low, label: 'ranking.lowest' },
+          ] as const
           return (
             <li key={r.site.id}>
               <button
                 type="button"
                 onClick={() => onSelect(r.site.id)}
                 aria-current={selected ? 'true' : undefined}
-                className={`grid w-full grid-cols-[1.6rem_1.5rem_1fr_auto] items-center gap-3 px-3.5 py-3 text-left transition ${
+                className={`grid w-full grid-cols-[1rem_1.25rem_minmax(0,1fr)_auto] items-start gap-1.5 rounded-md py-3 text-left transition ${
                   selected ? 'bg-rust-soft/60' : 'hover:bg-paper'
-                } ${muted ? 'opacity-70' : ''}`}
+                }`}
               >
-                <span className="text-center font-mono text-sm tabular-nums text-faint">{r.rank ?? '–'}</span>
-                <SiteGlyph {...siteGlyphProps(r.site, r.score)} />
+                <span className="pt-0.5 text-center font-mono text-xs tabular-nums text-muted">{r.rank ?? '–'}</span>
+                <SiteGlyph {...siteGlyphProps(r.site, r.score)} size={20} />
                 <span className="min-w-0">
-                  <span className="block truncate font-medium text-ink">{r.site.name}</span>
-                  <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+                  <span className="block wrap-anywhere text-[14px] font-semibold leading-snug text-ink">{r.site.name}</span>
+                  <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted">
                     {r.site.type && <span>{r.site.type[lang]}</span>}
+                    {r.site.type && (r.site.reference || r.site.known || r.site.control || r.score === null) && (
+                      <span className="text-faint" aria-hidden="true">·</span>
+                    )}
                     <SiteBadges site={r.site} evaluated={r.score !== null} />
                   </span>
-                  {r.top.length > 0 && (
-                    <span className="mt-1 block truncate text-[11px] text-faint">
-                      ↑ {t('ranking.strongest')}: {r.top.map(dimLabel).join(', ')}
-                      {r.low && (
-                        <>
-                          {' · ↓ '}
-                          {t('ranking.weakest')}: {dimLabel(r.low)}
-                        </>
-                      )}
-                    </span>
-                  )}
-                </span>
-                <span className="w-12 text-right">
-                  {r.score !== null ? (
-                    <>
-                      <span className="block font-mono text-lg font-semibold leading-none tabular-nums text-ink">
-                        {score100(r.score)}
+                  {r.rank !== null && highlights.map(({ id, label }) => {
+                    if (!id) return null
+                    const score = r.dimensions[id]
+                    if (score === null || score === undefined) return null
+                    return (
+                      <span key={label} className="mt-1.5 block text-[11px] leading-snug text-muted">
+                        <span className="block font-semibold">{t(label)}</span>
+                        {dimLabel(id)} <span className="whitespace-nowrap font-bold tabular-nums text-ink">{formatPercent(score, lang)}</span>
                       </span>
-                      <ScoreBar score={r.score} className="mt-1.5" />
+                    )
+                  })}
+                </span>
+                <span className="w-[5.25rem] text-right">
+                  {r.similarity !== null ? (
+                    <>
+                      <span className="block text-xl font-bold leading-none tracking-tight tabular-nums text-rust">
+                        <span className="sr-only">{t('detail.similarity')} </span>{formatPercent(r.similarity, lang)}
+                      </span>
+                      <ScoreBar score={r.similarity} className="mt-1.5 h-1.5" />
                     </>
                   ) : (
                     <span className="font-mono text-sm text-faint">–</span>
+                  )}
+                  {mode === 'purpose' && (
+                    <>
+                      {r.similarity !== null && <span aria-hidden="true" className="mt-1 block text-[10px] leading-tight text-muted">{t('detail.similarity')}</span>}
+                      <span className="mt-2 block text-[10px] leading-tight text-muted">
+                        {t('ranking.purposeOrder')}
+                        <span className="mt-0.5 block text-xs font-bold tabular-nums text-ink">
+                          {r.score === null ? t('badge.notEvaluated') : formatPercent(r.score, lang)}
+                        </span>
+                      </span>
+                    </>
                   )}
                 </span>
               </button>

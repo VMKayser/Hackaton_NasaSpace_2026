@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@custom-variant explore-wide {
+  @media (min-width: 64rem) and (min-height: 44rem) {
+    @slot;
+  }
+}
+
 /* Tokens de diseño. La paleta final la define el rol 6: cambiarla aquí. */
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -59,6 +65,45 @@ body {
 
 .maplibregl-ctrl-attrib {
   font-size: 10px;
+}
+
+@media (width < 64rem) {
+  /* Conserva el tamaño del mapa y oculta los controles de MapLibre con visibilidad propia. */
+  .gm-map-hidden,
+  .gm-map-hidden * {
+    visibility: hidden !important;
+  }
+}
+
+.gm-map-panes {
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.gm-map-divider {
+  border-top-width: 1px;
+}
+
+.gm-comparison-table tbody + tbody tr:first-child > * {
+  border-top: 1px solid var(--color-line);
+}
+
+@media (pointer: coarse) {
+  #map-workspace .maplibregl-ctrl-group button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (min-width: 40rem), (min-width: 32rem) and (orientation: landscape) {
+  .gm-map-panes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .gm-map-divider {
+    border-top-width: 0;
+    border-left-width: 1px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -127,4 +172,96 @@ body {
 /* Vista 3D: atribución plegada hasta que se pulsa el botón de información. */
 .gm-explore .maplibregl-ctrl-attrib.maplibregl-compact-show:not(:hover):not(:focus-within) .maplibregl-ctrl-attrib-inner {
   display: none;
+}
+
+/* Vista 3D, comparación. La transparencia (--alpha) y el tono van en el grupo del lienzo de cada mapa,
+   no en su contenedor, para que los controles y la atribución de MapLibre no cambien. El área aísla la
+   mezcla: el lienzo del objetivo solo se combina con el de la Tierra. */
+.gm-compare {
+  isolation: isolate;
+}
+
+.gm-compare .maplibregl-canvas-container {
+  isolation: isolate;
+  opacity: var(--alpha, 1);
+}
+
+.gm-compare .maplibregl-canvas {
+  transition: filter 0.45s ease;
+}
+
+/* Tono por cuerpo: el brillo de cada imagen (en gris) multiplicado por el color de su lado (--tint).
+   Los dos colores suman blanco, así que en la superposición lo claro en los dos queda blanco o gris. */
+.gm-compare .maplibregl-canvas-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--tint, #fff);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.gm-tone .maplibregl-canvas {
+  filter: grayscale(1) contrast(1.08);
+}
+
+.gm-tone .maplibregl-canvas-container::after {
+  opacity: 1;
+}
+
+/* Superposición con tono: suma de la luz de los dos lienzos. */
+.gm-add .maplibregl-canvas-container {
+  mix-blend-mode: plus-lighter;
+}
+
+/* Deslizador de la mezcla: la pista va del color de la Tierra al del otro cuerpo. */
+.gm-mix {
+  appearance: none;
+  background: transparent;
+}
+
+.gm-mix::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #9cc7ec, #f2b48c);
+}
+
+.gm-mix::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #9cc7ec, #f2b48c);
+}
+
+.gm-mix::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border: 3px solid #0b1726;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / 50%);
+}
+
+.gm-mix::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 3px solid #0b1726;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / 50%);
+}
+
+.gm-mix:focus-visible {
+  outline: none;
+}
+
+.gm-mix:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px #fde68a;
+}
+
+.gm-mix:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px #fde68a;
 }

@@ -1,13 +1,22 @@
 import type { FeatureCollection } from 'geojson'
 import { AttributionControl, LngLat, Map as MlMap } from 'maplibre-gl'
-import type { GeoJSONSource, MapLibreEvent, RasterTileSource, SkySpecification, StyleSpecification } from 'maplibre-gl'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type {
+  ControlPosition,
+  GeoJSONSource,
+  JumpToOptions,
+  MapLibreEvent,
+  RasterTileSource,
+  SkySpecification,
+  StyleSpecification,
+} from 'maplibre-gl'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, RefObject } from 'react'
 import type { Model } from '../data/model'
 import { siteText } from '../data/model'
 import type { Dimension, Purpose, Target } from '../data/schema'
 import { LANGS, useI18n } from '../i18n'
 import type { Lang } from '../i18n'
-import { formatCoords, formatNumber, formatValue, score100 } from '../lib/format'
+import { formatCoords, formatNumber, formatPercent, formatValue } from '../lib/format'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
 import { activeWeights, scoredCount } from '../lib/ranking'
 import {
@@ -25,10 +34,14 @@ import { BODIES } from '../map/bodies'
 import { scoreColor } from '../map/colors'
 import { IMAGERY, MARS_DETAIL } from '../map/planetaryImagery'
 import type { Planet } from '../map/planetaryImagery'
-import { loadTerrainRegions, loadTrack, planetElevationAt } from '../map/planetTerrain'
+import { loadTrack, planetElevationAt, terrainAt } from '../map/planetTerrain'
+import { measurePins } from '../map/pinMeasure'
+import type { PinMeasurement } from '../map/pinMeasure'
+import { STEEP_DEG } from '../lib/patch'
+import type { PatchStats } from '../lib/patch'
 import type { TerrainRegion, TrackData } from '../map/planetTerrain'
 import { EARTH_LENS_MAX_ZOOM, elevationAtPoint } from '../map/reliefLens'
-import { prefersReducedMotion } from '../map/runtime'
+import { hasWebgl2, prefersReducedMotion } from '../map/runtime'
 import { baseStyle, DEM_SOURCE } from '../map/style'
 import '../map/planetTiles'
 import { boundsOf, profileStats, resample, transplant } from '../lib/route'
@@ -36,7 +49,7 @@ import type { LonLat } from '../lib/route'
 import { STEEP_THRESHOLDS } from '../lib/route'
 import { RouteProfile } from './RouteProfile'
 import type { RouteProfileData } from './RouteProfile'
-import { BodyChip, Pending, ScoreBar } from './ui'
+import { BodyChip, Pending, ScoreBar, ScoreSummary } from './ui'
 
 // Vista inmersiva: el sitio de la Tierra y el objetivo, con relieve real, a la misma escala horizontal
 // y con la misma exageración vertical. Las cámaras giran juntas. Las capas de comparación (pendiente y
@@ -50,16 +63,39 @@ const LENS_LAYERS = { slope: 'lens-slope', relative: 'lens-relative' } as const
 const GROUPS: Likeness[] = ['similar', 'partial', 'different', 'noData']
 const TRACK_LAYERS = ['track-glow', 'track-line', 'track-stops']
 
-// Recorrido guiado: qué se muestra en cada paso y cuánto dura.
-type TourStep = 'overview' | 'close' | 'slope' | 'relative' | 'route' | 'conditions'
-const TOUR_ORDER: TourStep[] = ['overview', 'close', 'slope', 'relative', 'route', 'conditions']
-const TOUR: Record<TourStep, { lens: Lens; route: boolean; panel: boolean; orbit: boolean; ms: number }> = {
-  overview: { lens: 'imagery', route: false, panel: false, orbit: true, ms: 7000 },
-  close: { lens: 'imagery', route: false, panel: false, orbit: true, ms: 8000 },
-  slope: { lens: 'slope', route: false, panel: false, orbit: true, ms: 7000 },
-  relative: { lens: 'relative', route: false, panel: false, orbit: true, ms: 7000 },
-  route: { lens: 'imagery', route: true, panel: false, orbit: false, ms: 11000 },
-  conditions: { lens: 'imagery', route: false, panel: true, orbit: true, ms: 8000 },
+// Disposición de los dos mapas: lado a lado, o uno sobre otro con una cortina o con transparencia.
+// Apilados, los dos mapas tienen el mismo tamaño y se mueven juntos, también al desplazarse.
+type Layout = 'side' | 'swipe' | 'blend'
+const LAYOUTS: Layout[] = ['side', 'swipe', 'blend']
+const attributionCorner = (layout: Layout, i: number): ControlPosition =>
+  layout === 'side' ? 'top-right' : i === 0 ? 'bottom-left' : 'bottom-right'
+const clamp100 = (v: number) => Math.min(100, Math.max(0, v))
+// Color de cada lado en toda la vista (fichas, cortina, mediciones y tono por cuerpo).
+const EARTH_TINT = '#9cc7ec'
+const OTHER_TINT = '#f2b48c'
+// Tono por cuerpo: colores saturados que suman blanco (0, 0,55, 1) + (1, 0,45, 0), para que en la
+// superposición lo que es claro en los dos lados se vea blanco y no de un color.
+const TONES = ['#008cff', '#ff7300'] as const
+// Vaivén automático: amplitud (en %) y periodo de la cortina y de la superposición.
+const SWING = { split: { amp: 42, ms: 8000 }, mix: { amp: 50, ms: 6000 } } as const
+type Motion = keyof typeof SWING
+const ease = (k: number) => (k < 0.5 ? 4 * k ** 3 : 1 - (-2 * k + 2) ** 3 / 2)
+
+// Recorrido guiado: qué se muestra en cada paso y cuánto dura. En los pasos apilados (cortina y
+// superposición) la división o la mezcla se mueven solas mientras dura el paso.
+type TourStep = 'overview' | 'close' | 'swipe' | 'blend' | 'slope' | 'relative' | 'route' | 'conditions'
+const TOUR_ORDER: TourStep[] = ['overview', 'close', 'swipe', 'blend', 'slope', 'relative', 'route', 'conditions']
+interface TourConfig { lens: Lens; layout: Layout; tone: boolean; route: boolean; panel: boolean; orbit: boolean; ms: number }
+const SIDE = { layout: 'side', tone: false } as const
+const TOUR: Record<TourStep, TourConfig> = {
+  overview: { ...SIDE, lens: 'imagery', route: false, panel: false, orbit: true, ms: 7000 },
+  close: { ...SIDE, lens: 'imagery', route: false, panel: false, orbit: true, ms: 8000 },
+  swipe: { lens: 'imagery', layout: 'swipe', tone: false, route: false, panel: false, orbit: true, ms: 10000 },
+  blend: { lens: 'imagery', layout: 'blend', tone: true, route: false, panel: false, orbit: true, ms: 10000 },
+  slope: { ...SIDE, lens: 'slope', route: false, panel: false, orbit: true, ms: 7000 },
+  relative: { ...SIDE, lens: 'relative', route: false, panel: false, orbit: true, ms: 7000 },
+  route: { ...SIDE, lens: 'imagery', route: true, panel: false, orbit: false, ms: 11000 },
+  conditions: { ...SIDE, lens: 'imagery', route: false, panel: true, orbit: true, ms: 8000 },
 }
 const PROFILE_STEP_M = 100
 
@@ -220,10 +256,11 @@ function planetStyle(body: Planet, region: TerrainRegion | null, target: Target,
   return style
 }
 
-/** Zoom para que el círculo del área ocupe cerca de un tercio del ancho y se vea el paisaje. */
-function framingZoom(lat: number, radiusKm: number, widthPx: number): number {
+/** Zoom para que el círculo del área quepa en la dimensión más corta del mapa. */
+function framingZoom(lat: number, radiusKm: number, container: HTMLElement): number {
   const kmPerPxAtZ0 = (2 * Math.PI * EARTH_RADIUS_KM * Math.cos((lat * Math.PI) / 180)) / 256
-  const wantKmPerPx = (radiusKm * 6.5) / Math.max(320, widthPx)
+  const size = Math.min(container.clientWidth, container.clientHeight)
+  const wantKmPerPx = (radiusKm * 6.5) / Math.max(160, size)
   return Math.min(13, Math.max(10, Math.log2(kmPerPxAtZ0 / wantKmPerPx)))
 }
 
@@ -243,6 +280,91 @@ function RampLegend({ ramp, unit }: { ramp: RampStop[]; unit: string }) {
   )
 }
 
+/**
+ * División de la cortina: se arrastra o se mueve con las flechas. A la izquierda, la Tierra. La posición
+ * dibujada sale de la variable CSS `--split` del área (así se anima sin volver a pintar React).
+ */
+function SwipeDivider({ value, onChange, area, label, valueText, earthName, otherName }: {
+  value: number
+  onChange: (v: number) => void
+  area: RefObject<HTMLDivElement | null>
+  label: string
+  valueText: string
+  earthName: string
+  otherName: string
+}) {
+  const fromPointer = (x: number) => {
+    const rect = area.current?.getBoundingClientRect()
+    if (rect && rect.width > 0) onChange(clamp100(((x - rect.left) / rect.width) * 100))
+  }
+  const onKeyDown = (e: ReactKeyboardEvent) => {
+    const step = e.shiftKey ? 10 : 2
+    const next: Record<string, number> = {
+      ArrowLeft: value - step,
+      ArrowDown: value - step,
+      ArrowRight: value + step,
+      ArrowUp: value + step,
+      PageDown: value - 10,
+      PageUp: value + 10,
+      Home: 0,
+      End: 100,
+    }
+    if (!(e.key in next)) return
+    e.preventDefault()
+    onChange(clamp100(next[e.key]))
+  }
+  return (
+    <div
+      role="slider"
+      tabIndex={0}
+      aria-label={label}
+      aria-orientation="horizontal"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(value)}
+      aria-valuetext={valueText}
+      onPointerDown={(e) => {
+        e.currentTarget.setPointerCapture(e.pointerId)
+        fromPointer(e.clientX)
+      }}
+      onPointerMove={(e) => {
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) fromPointer(e.clientX)
+      }}
+      onKeyDown={onKeyDown}
+      className="group absolute inset-y-0 z-10 w-8 -translate-x-1/2 cursor-ew-resize touch-none select-none"
+      style={{ left: 'var(--split)', outline: 'none' }}
+    >
+      {/* Línea con el brillo de cada lado en el color de su cuerpo. */}
+      <div
+        className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-white"
+        style={{ boxShadow: `-3px 0 10px ${EARTH_TINT}cc, 3px 0 10px ${OTHER_TINT}cc, 0 0 2px #0b1726` }}
+      />
+      <div
+        className="absolute left-1/2 top-1/2 flex h-10 w-12 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full text-ink shadow-[0_4px_14px_rgba(11,23,38,0.55)] ring-2 ring-white group-focus-visible:ring-4 group-focus-visible:ring-[#fde68a]"
+        aria-hidden="true"
+      >
+        <span className="grid flex-1 place-items-center text-base font-bold" style={{ background: EARTH_TINT }}>‹</span>
+        <span className="grid flex-1 place-items-center text-base font-bold" style={{ background: OTHER_TINT }}>›</span>
+      </div>
+      {/* Etiquetas que viajan con la cortina; en los extremos salen del área y se recortan. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[calc(50%+1.9rem)] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold text-ink shadow-lg"
+        style={{ background: EARTH_TINT }}
+      >
+        {earthName}
+      </span>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[calc(50%+1.9rem)] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold text-ink shadow-lg"
+        style={{ background: OTHER_TINT }}
+      >
+        {otherName}
+      </span>
+    </div>
+  )
+}
+
 function ConditionRow({ dim, row, target, counted }: { dim: Dimension; row: RankedSite; target: Target; counted: boolean }) {
   const { t, lang } = useI18n()
   const s = row.dimensions[dim.id] ?? null
@@ -253,7 +375,7 @@ function ConditionRow({ dim, row, target, counted }: { dim: Dimension; row: Rank
     <li className="py-2">
       <div className="flex items-baseline justify-between gap-2">
         <span className="text-[13px] text-white">{dim.label[lang]}</span>
-        <span className="font-mono text-xs tabular-nums text-white">{s === null ? '–' : score100(s)}</span>
+        <span className="shrink-0 text-xs tabular-nums text-white">{s === null ? t('value.noData') : formatPercent(s, lang)}</span>
       </div>
       <div className="mt-0.5 flex gap-3 font-mono text-xs tabular-nums">
         <span style={{ color: '#9cc7ec' }}>{earth ?? none}</span>
@@ -280,17 +402,7 @@ function ConditionsPanel({ model, row, target, purpose, mode }: { model: Model; 
   return (
     <div className="space-y-5 p-4">
       <section className="rounded-xl bg-white/[0.06] p-3">
-        {row.score !== null ? (
-          <div className="flex items-end gap-3">
-            <p className="font-mono text-4xl font-semibold leading-none tabular-nums">{score100(row.score)}<span className="text-sm text-white/50">/100</span></p>
-            <div className="min-w-0 flex-1 pb-0.5">
-              <p className="text-xs text-white/80">{mode === 'purpose' ? t('detail.purposeScore') : t('detail.similarity')}</p>
-              <ScoreBar score={row.score} className="mt-1 !bg-white/10" />
-            </div>
-          </div>
-        ) : (
-          <p className="text-sm text-white/80">{t('detail.notEvaluated')}</p>
-        )}
+        <ScoreSummary similarity={row.similarity} purposeScore={mode === 'purpose' ? row.score : undefined} dark />
         <p className="mt-2 text-[11px] text-white/55">{t('detail.dimsScored', { n: scored, total })}</p>
       </section>
 
@@ -332,20 +444,110 @@ interface Props {
   onSite: (id: string) => void
   onLang: (lang: Lang) => void
   onClose: () => void
+  /**
+   * Pin libre: el sitio y el objetivo son puntos elegidos en el mapa, sin puntajes. Se ocultan la
+   * navegación del ranking y las condiciones, y se muestran la pendiente y el relieve medidos.
+   */
+  free?: boolean
 }
 
-export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onLang, onClose }: Props) {
+export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onLang, onClose, free = false }: Props) {
   const { t, lang } = useI18n()
   const { site } = row
   const body = target.body as Planet
   const earthRef = useRef<HTMLDivElement>(null)
   const planetRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
+  const conditionsRef = useRef<HTMLElement>(null)
+  const areaRef = useRef<HTMLDivElement>(null)
   const maps = useRef<{ earth: MlMap | null; planet: MlMap | null }>({ earth: null, planet: null })
+  const attributions = useRef<AttributionControl[]>([])
+  // Vista y tono elegidos por el usuario; durante el recorrido guiado manda el paso actual.
+  const [layoutChoice, setLayoutChoice] = useState<Layout>('side')
+  const [split, setSplit] = useState(50)
+  const [mix, setMix] = useState(50)
+  // Tono por cuerpo: cada mapa en el color de su lado (solo con la capa de imagen; las capas de
+  // pendiente y relieve ya usan su propia rampa de color).
+  const [toneChoice, setToneChoice] = useState(false)
+  const [looping, setLooping] = useState(false)
+  // Valores dibujados de la cortina y de la mezcla. Las animaciones escriben las variables CSS del área
+  // en cada cuadro y el estado de React recibe el valor final al terminar.
+  const live = useRef<Record<Motion, number>>({ split: 50, mix: 50 })
+  const motion = useRef<number | null>(null)
+  const mixInput = useRef<HTMLInputElement>(null)
+  const show = useCallback((key: Motion, v: number) => {
+    live.current[key] = v
+    areaRef.current?.style.setProperty(key === 'split' ? '--split' : '--mix', key === 'split' ? `${v}%` : String(v / 100))
+    // El deslizador de la mezcla no lo controla React, para que siga la animación sin volver atrás.
+    if (key === 'mix' && mixInput.current) mixInput.current.value = String(Math.round(v))
+  }, [])
+  const commitMotion = useCallback(() => {
+    setSplit(Math.round(live.current.split))
+    setMix(Math.round(live.current.mix))
+  }, [])
+  const halt = useCallback(() => {
+    if (motion.current === null) return
+    cancelAnimationFrame(motion.current)
+    motion.current = null
+    commitMotion()
+  }, [commitMotion])
+  /** Corre `frame` en cada cuadro hasta que devuelva false. */
+  const run = useCallback((frame: (ms: number) => boolean) => {
+    if (motion.current !== null) cancelAnimationFrame(motion.current)
+    // El reloj empieza en el primer cuadro: al cambiar de vista los mapas se redimensionan y ese
+    // cuadro puede tardar; contando desde el clic, la transición se saltaría.
+    let start = -1
+    const tick = (now: number) => {
+      if (start < 0) start = now
+      if (frame(now - start)) {
+        motion.current = requestAnimationFrame(tick)
+      } else {
+        motion.current = null
+        commitMotion()
+      }
+    }
+    motion.current = requestAnimationFrame(tick)
+  }, [commitMotion])
+  /** Lleva la cortina o la mezcla a `to`, con una transición corta salvo con movimiento reducido. */
+  const glide = useCallback((key: Motion, to: number, ms = 700, from = live.current[key]) => {
+    setLooping(false)
+    if (prefersReducedMotion()) {
+      halt()
+      show(key, to)
+      commitMotion()
+      return
+    }
+    show(key, from)
+    run((t) => {
+      const k = Math.min(1, t / ms)
+      show(key, from + (to - from) * ease(k))
+      return k < 1
+    })
+  }, [halt, show, commitMotion, run])
+  /** Vaivén continuo desde la posición actual. */
+  const swing = useCallback((key: Motion) => {
+    const { amp, ms } = SWING[key]
+    const phase = Math.asin(Math.min(1, Math.max(-1, (live.current[key] - 50) / amp)))
+    run((t) => {
+      show(key, 50 + amp * Math.sin(phase + (2 * Math.PI * t) / ms))
+      return true
+    })
+  }, [run, show])
+  useEffect(() => () => {
+    if (motion.current !== null) cancelAnimationFrame(motion.current)
+  }, [])
   const [orbiting, setOrbiting] = useState(() => !prefersReducedMotion())
+  const [webgl] = useState(hasWebgl2)
   const orbitRef = useRef(orbiting)
   const [ready, setReady] = useState(false)
-  const [region, setRegion] = useState<TerrainRegion | null | undefined>(undefined)
+  // Relieve del objetivo, guardado con la clave del punto para el que se cargó: mientras llega el de un
+  // punto nuevo, la región es undefined y los mapas esperan (no se usa el relieve de otro lugar).
+  const [regionState, setRegionState] = useState<{ key: string; region: TerrainRegion | null } | null>(null)
+  const radiusKm = site.radiusKm ?? 3
+  // Detalle a resolución completa alrededor del círculo cuando el relieve sale del modelo global.
+  const detailKm = Math.max(12, Math.ceil(radiusKm) + 4)
+  const regionKey = `${body}|${target.id}|${target.lon}|${target.lat}|${detailKm}`
+  const region = regionState?.key === regionKey ? regionState.region : undefined
   // Elección del usuario; durante el recorrido guiado manda el paso actual.
   const [lensChoice, setLensChoice] = useState<Lens>('imagery')
   const [panelChoice, setPanelChoice] = useState(() => window.innerWidth >= 1024)
@@ -358,31 +560,99 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   const profileKey = `${site.id}|${target.id}`
   const profile = profileState?.key === profileKey ? profileState.data : null
   const track = region?.tracks?.[0] ?? null
-  const tourSteps = useMemo(() => (track ? TOUR_ORDER : TOUR_ORDER.filter((step) => step !== 'route')), [track])
+  const tourSteps = useMemo(
+    () => TOUR_ORDER.filter((step) => (step !== 'route' || track) && (step !== 'conditions' || !free)),
+    [track, free],
+  )
   const tourStep = tour === null ? null : (tourSteps[tour] ?? null)
   const lens: Lens = tourStep ? TOUR[tourStep].lens : lensChoice
+  const layout: Layout = tourStep ? TOUR[tourStep].layout : layoutChoice
+  const layoutRef = useRef(layout)
+  const stacked = layout !== 'side'
+  const tone = tourStep ? TOUR[tourStep].tone : toneChoice
+  const toned = tone && lens === 'imagery'
+  // En los pasos apilados del recorrido la cortina o la mezcla se mueven solas (ver el efecto del recorrido).
+  const swinging = tourStep ? stacked && !prefersReducedMotion() : looping
   const route = tourStep ? TOUR[tourStep].route && !!track : routeChoice
-  const panelOpen = tourStep ? TOUR[tourStep].panel : panelChoice
-  const setLens = (l: Lens) => {
+  const panelOpen = !free && (tourStep ? TOUR[tourStep].panel : panelChoice)
+  /**
+   * Un gesto del usuario durante el recorrido lo detiene y conserva lo que se ve (vista y tono): así,
+   * al arrastrar la cortina en el paso de la cortina, la vista no salta a la que había antes.
+   */
+  const takeOver = () => {
+    if (tour === null) return
+    setLayoutChoice(layout)
+    setToneChoice(tone)
     setTour(null)
+  }
+  const setLens = (l: Lens) => {
+    takeOver()
     setLensChoice(l)
   }
   const setRoute = (next: (r: boolean) => boolean) => {
-    setTour(null)
+    takeOver()
     setRouteChoice(next(route))
   }
   const setPanelOpen = (next: (o: boolean) => boolean) => {
-    setTour(null)
+    takeOver()
     setPanelChoice(next(panelOpen))
+  }
+  const setTone = (on: boolean) => {
+    takeOver()
+    setToneChoice(on)
+  }
+  /** Cambio hecho por el usuario (arrastre, teclado o deslizador): detiene cualquier animación. */
+  const userSet = (key: Motion, v: number) => {
+    takeOver()
+    halt()
+    setLooping(false)
+    show(key, v)
+    if (key === 'split') setSplit(v)
+    else setMix(v)
+  }
+  const toggleSwing = () => {
+    takeOver()
+    if (swinging) {
+      halt()
+      setLooping(false)
+    } else if (stacked) {
+      swing(layout === 'swipe' ? 'split' : 'mix')
+      setLooping(true)
+    }
+  }
+  // Al elegir una vista apilada, el otro cuerpo entra con una transición: la cortina se desliza desde
+  // la derecha o la superposición aparece poco a poco hasta la mitad.
+  const chooseLayout = (next: Layout) => {
+    if (next === layout) return
+    takeOver()
+    halt()
+    setLooping(false)
+    if (next === 'swipe') glide('split', 50, 1100, 100)
+    if (next === 'blend') glide('mix', 50, 900, 0)
+    setLayoutChoice(next)
+  }
+  /** Mezcla hasta un extremo (botones «solo Tierra» y «solo {body}»). */
+  const mixTo = (v: number) => {
+    takeOver()
+    glide('mix', v, 500)
   }
   const [centres, setCentres] = useState<{ earth: number | null; planet: number | null } | null>(null)
   const offsetRef = useRef(0)
   const shownSite = useRef<string | null>(null)
   const latest = useRef(row)
+  // El objetivo de un pin se vuelve a crear al cambiar de idioma (su nombre cambia); los mapas solo
+  // dependen de su id y sus coordenadas, para no recargarlos por eso.
+  const latestTarget = useRef(target)
+  const targetKey = `${target.id}|${target.lon}|${target.lat}`
   useEffect(() => {
     latest.current = row
+    layoutRef.current = layout
+    latestTarget.current = target
   })
-  const radiusKm = site.radiusKm ?? 3
+  // Pin libre: pendiente y relieve medidos igual que en el panel del pin.
+  const [pinStats, setPinStats] = useState<{ key: string; data: PinMeasurement } | null>(null)
+  const statsKey = `${site.lon}|${site.lat}|${target.lon}|${target.lat}|${body}|${radiusKm}`
+  const measured = free && pinStats?.key === statsKey ? pinStats.data : null
   const color = scoreColor(row.score)
   const evaluated = useMemo(() => rows.filter((r) => r.score !== null), [rows])
   const index = evaluated.findIndex((r) => r.site.id === site.id)
@@ -410,24 +680,43 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   }, [onClose])
 
   useEffect(() => {
+    if (panelOpen) conditionsRef.current?.scrollIntoView({ block: 'nearest' })
+  }, [panelOpen])
+
+  useEffect(() => {
     let alive = true
-    loadTerrainRegions(body).then((regions) => alive && setRegion(regions.find((r) => r.targetId === target.id) ?? null))
+    // La región del manifiesto que contiene el punto o, si no hay, una ventana del modelo global de USGS.
+    terrainAt(body, target.lon, target.lat, target.id, detailKm)
+      .then((r) => alive && setRegionState({ key: regionKey, region: r }))
+      .catch(() => alive && setRegionState({ key: regionKey, region: null }))
     return () => {
       alive = false
     }
-  }, [body, target.id])
+  }, [body, target.id, target.lon, target.lat, detailKm, regionKey])
+
+  useEffect(() => {
+    if (!free) return
+    let alive = true
+    measurePins({ lon: site.lon, lat: site.lat }, { lon: target.lon, lat: target.lat }, body, radiusKm)
+      .then((data) => alive && setPinStats({ key: statsKey, data }))
+      .catch(() => undefined)
+    return () => {
+      alive = false
+    }
+  }, [free, statsKey, site.lon, site.lat, target.lon, target.lat, body, radiusKm])
 
   // Los dos mapas se crean una vez por objetivo. Cambiar de sitio solo mueve la cámara de la Tierra.
   useEffect(() => {
-    if (region === undefined || !earthRef.current || !planetRef.current) return
+    if (!webgl || region === undefined || !earthRef.current || !planetRef.current) return
     const first = latest.current.site
+    const target = latestTarget.current
     const firstRadius = first.radiusKm ?? 3
     const reduced = prefersReducedMotion()
-    const zEarth = framingZoom(first.lat, firstRadius, earthRef.current.clientWidth)
+    const zEarth = framingZoom(first.lat, firstRadius, earthRef.current)
     const zPlanet = sameScaleZoom(zEarth, first.lat, target.lat, BODIES[body].radiusKm)
     offsetRef.current = zPlanet - zEarth
     shownSite.current = first.id
-    framedFor.current = first.id
+    framedFor.current = `${first.id}|${layoutRef.current}`
 
     const common = { attributionControl: false, maxPitch: 85, fadeDuration: 0 } as const
     const earth = new MlMap({
@@ -445,8 +734,14 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
       zoom: zPlanet - 4,
     })
     maps.current = { earth, planet }
-    // Atribución arriba a la derecha, plegada, para dejar libre la parte de abajo.
-    for (const m of [earth, planet]) m.addControl(new AttributionControl({ compact: true }), 'top-right')
+    // Atribución plegada. Lado a lado va arriba a la derecha, para dejar libre la parte de abajo;
+    // apilados, cada mapa la pone en una esquina inferior para que se vean las dos.
+    attributions.current = [earth, planet].map((m, i) => {
+      const control = new AttributionControl({ compact: true })
+      m.addControl(control, attributionCorner(layoutRef.current, i))
+      return control
+    })
+    const planetRadius = BODIES[body].radiusKm
 
     let loaded = 0
     let raf = 0
@@ -470,29 +765,45 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
       const flight = { pitch: PITCH, bearing: -20, duration: reduced ? 0 : 5000, essential: true, curve: 1.3 }
       earth.flyTo({ ...flight, center: [first.lon, first.lat], zoom: zEarth })
       planet.flyTo({ ...flight, center: [target.lon, target.lat], zoom: zPlanet })
-      earth.once('moveend', () => {
-        last = performance.now()
-        raf = requestAnimationFrame(spin)
-      })
+      // El bucle corre desde ya y no gira mientras haya un vuelo; así no depende de que llegue un
+      // `moveend` (con movimiento reducido el vuelo dura 0 ms y el evento podía perderse).
+      last = performance.now()
+      raf = requestAnimationFrame(spin)
     }
     earth.once('load', onLoad)
     planet.once('load', onLoad)
 
     // Lo que hace el usuario en un mapa se copia en el otro: rumbo, inclinación y zoom a la misma escala.
+    // Con los mapas apilados también se copia el desplazamiento, en metros reales, para que sigan
+    // superpuestos. Lado a lado cada mapa conserva su centro.
     const stopOrbit = () => {
       orbitRef.current = false
       setOrbiting(false)
     }
-    const mirror = (from: MlMap, to: MlMap, sign: 1 | -1) => (e: MapLibreEvent<unknown>) => {
+    const lastCentre = new Map<MlMap, LngLat>()
+    const mirror = (from: MlMap, to: MlMap, sign: 1 | -1, fromRadius: number, toRadius: number) => (e: MapLibreEvent<unknown>) => {
+      const before = lastCentre.get(from)
+      const now = from.getCenter()
+      lastCentre.set(from, now)
       if (!e.originalEvent) return
-      to.jumpTo({ bearing: from.getBearing(), pitch: from.getPitch(), zoom: from.getZoom() + sign * offsetRef.current })
+      const camera: JumpToOptions = { bearing: from.getBearing(), pitch: from.getPitch(), zoom: from.getZoom() + sign * offsetRef.current }
+      if (layoutRef.current !== 'side' && before) {
+        const c = to.getCenter()
+        camera.center = transplant([[now.lng, now.lat]], [before.lng, before.lat], fromRadius, [c.lng, c.lat], toRadius)[0]
+      }
+      to.jumpTo(camera)
     }
-    earth.on('move', mirror(earth, planet, 1))
-    planet.on('move', mirror(planet, earth, -1))
+    earth.on('move', mirror(earth, planet, 1, EARTH_RADIUS_KM, planetRadius))
+    planet.on('move', mirror(planet, earth, -1, planetRadius, EARTH_RADIUS_KM))
+    // Solo un gesto del usuario detiene el giro. `setBearing` (el propio giro) y `flyTo` también
+    // disparan `rotatestart`, pero sin `originalEvent`: antes el giro se apagaba en su primer cuadro.
+    const byUser = (e: MapLibreEvent<unknown>) => {
+      if (e.originalEvent) stopOrbit()
+    }
     for (const m of [earth, planet]) {
-      m.on('dragstart', stopOrbit)
-      m.on('rotatestart', stopOrbit)
-      m.on('pitchstart', (e) => e.originalEvent && stopOrbit())
+      m.on('dragstart', byUser)
+      m.on('rotatestart', byUser)
+      m.on('pitchstart', byUser)
     }
 
     return () => {
@@ -500,9 +811,10 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
       earth.remove()
       planet.remove()
       maps.current = { earth: null, planet: null }
+      attributions.current = []
       setReady(false)
     }
-  }, [region, target, body])
+  }, [webgl, region, targetKey, body])
 
   // Datos del sitio de la Tierra al cambiar de sitio: anillo, punto y centro del relieve relativo.
   useEffect(() => {
@@ -520,24 +832,41 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   const frameSite = useCallback((duration: number) => {
     const { earth, planet } = maps.current
     if (!earth || !planet) return
-    const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer().clientWidth)
+    const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer())
     const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
     offsetRef.current = zPlanet - zEarth
     earth.flyTo({ center: [site.lon, site.lat], zoom: zEarth, pitch: PITCH, duration, essential: true })
     planet.flyTo({ center: [target.lon, target.lat], zoom: zPlanet, pitch: PITCH, duration, essential: true })
   }, [site, radiusKm, target, body])
 
+  // Al cambiar la disposición: tamaño nuevo de los lienzos y atribución en su esquina.
+  useEffect(() => {
+    const { earth, planet } = maps.current
+    if (!earth || !planet) return
+    earth.resize()
+    planet.resize()
+    attributions.current = [earth, planet].map((m, i) => {
+      const old = attributions.current[i]
+      if (old && m.hasControl(old)) m.removeControl(old)
+      const control = new AttributionControl({ compact: true })
+      m.addControl(control, attributionCorner(layout, i))
+      return control
+    })
+  }, [layout])
+
   // Se encuadra el sitio salvo cuando se muestra la ruta completa o la vista general del recorrido.
+  // Un cambio de disposición vuelve a encuadrar: así los mapas apilados empiezan alineados.
   useEffect(() => {
     if (!ready) return
     if (route || tourStep === 'overview') {
       framedFor.current = ''
       return
     }
-    if (framedFor.current === site.id) return
-    framedFor.current = site.id
+    const key = `${site.id}|${layout}`
+    if (framedFor.current === key) return
+    framedFor.current = key
     frameSite(prefersReducedMotion() ? 0 : 3200)
-  }, [ready, route, tourStep, site.id, frameSite])
+  }, [ready, route, tourStep, site.id, layout, frameSite])
 
   // Recorrido guiado: cámara de la vista general y avance automático de los pasos.
   useEffect(() => {
@@ -545,7 +874,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     const { earth, planet } = maps.current
     orbitRef.current = TOUR[tourStep].orbit && !prefersReducedMotion()
     if (tourStep === 'overview' && earth && planet) {
-      const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer().clientWidth) - 2.6
+      const zEarth = framingZoom(site.lat, radiusKm, earth.getContainer()) - 2.6
       const zPlanet = sameScaleZoom(zEarth, site.lat, target.lat, BODIES[body].radiusKm)
       offsetRef.current = zPlanet - zEarth
       const duration = prefersReducedMotion() ? 0 : 3500
@@ -555,6 +884,25 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     const id = window.setTimeout(() => setTour((n) => (n === null || n + 1 >= tourSteps.length ? null : n + 1)), TOUR[tourStep].ms)
     return () => window.clearTimeout(id)
   }, [tour, tourStep, ready, tourSteps.length, site, radiusKm, target, body])
+
+  // Pasos apilados del recorrido: la cortina va y viene entre los dos lugares (empieza casi toda en la
+  // Tierra) y la superposición pasa de solo la Tierra a solo el otro cuerpo y vuelve. Antes de pintar,
+  // para que el paso no se vea un cuadro con la posición anterior.
+  useLayoutEffect(() => {
+    if (!ready || !tourStep) return
+    const step = TOUR[tourStep]
+    if (step.layout === 'side') return
+    const key: Motion = step.layout === 'swipe' ? 'split' : 'mix'
+    if (prefersReducedMotion()) {
+      halt()
+      show(key, 50)
+      commitMotion()
+      return
+    }
+    show(key, key === 'split' ? 50 + SWING.split.amp : 0)
+    swing(key)
+    return () => halt()
+  }, [ready, tourStep, halt, show, commitMotion, swing])
 
   // Al terminar el recorrido, el giro vuelve a lo que eligió el usuario.
   useEffect(() => {
@@ -610,7 +958,9 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     const { earth, planet } = maps.current
     if (!ready || !earth || !planet || !trackData || !earthTrack || !route) return
     const eb = boundsOf(earthTrack)
-    const cam = earth.cameraForBounds([[eb[0], eb[1]], [eb[2], eb[3]]], { padding: 50 })
+    const { clientWidth, clientHeight } = earth.getContainer()
+    const padding = Math.min(50, Math.floor(Math.min(clientWidth, clientHeight) / 5))
+    const cam = earth.cameraForBounds([[eb[0], eb[1]], [eb[2], eb[3]]], { padding })
     if (!cam?.center || cam.zoom === undefined) return
     const ec = LngLat.convert(cam.center)
     const pb = boundsOf(trackData.line)
@@ -621,7 +971,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     const duration = prefersReducedMotion() ? 0 : 3500
     earth.flyTo({ center: [ec.lng, ec.lat], zoom: zEarth, pitch: 55, bearing: 0, duration, essential: true })
     planet.flyTo({ center: pc, zoom: zPlanet, pitch: 55, bearing: 0, duration, essential: true })
-  }, [ready, trackData, earthTrack, route, body])
+  }, [ready, trackData, earthTrack, route, body, layout])
 
   // Perfil de elevación cada 100 m: la ruta real en el objetivo y la trasladada en la Tierra.
   useEffect(() => {
@@ -632,7 +982,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     const { points, dist } = resample(trackData.line, PROFILE_STEP_M, radius)
     const earthPoints = transplant(points, trackData.line[0], radius, [site.lon, site.lat], EARTH_RADIUS_KM)
     Promise.all([
-      Promise.all(points.map(([lon, lat]) => planetElevationAt(body, target.id, lon, lat).catch(() => null))),
+      Promise.all(points.map(([lon, lat]) => planetElevationAt(body, region.targetId, lon, lat).catch(() => null))),
       Promise.all(earthPoints.map(([lon, lat]) => elevationAtPoint('earth', '-', lon, lat).catch(() => null))),
     ]).then(([planetElev, earthElev]) => {
       if (!alive) return
@@ -670,7 +1020,7 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
     let alive = true
     Promise.all([
       elevationAtPoint('earth', '-', site.lon, site.lat).catch(() => null),
-      region ? elevationAtPoint(body, target.id, target.lon, target.lat) : Promise.resolve(null),
+      region ? elevationAtPoint(body, region.targetId, target.lon, target.lat) : Promise.resolve(null),
     ]).then(([earth, planet]) => alive && setCentres({ earth, planet }))
     return () => {
       alive = false
@@ -687,52 +1037,137 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
   }
 
   const label = (text: string) => <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{text}</span>
-  const chip = 'rounded-lg px-3 py-2 text-xs font-semibold'
+  const chip = 'min-h-9 rounded-lg px-2.5 py-1 text-xs font-semibold sm:px-3'
   const round = (v: number | null | undefined) => (v === null || v === undefined ? '–' : formatNumber(Math.round(v), lang))
+  const bodyName = t(`body.${body}`)
+
+  const panes = [
+    { b: 'earth' as const, name: site.name, lat: site.lat, lon: site.lon, note: null as string | null, centre: centres?.earth },
+    {
+      b: body,
+      name: target.name,
+      lat: target.lat,
+      lon: target.lon,
+      note: region === null
+        ? t('explore.noTerrain')
+        : region
+          ? t('explore.elevation', { min: formatNumber(region.elevationRangeM[0], lang), max: formatNumber(region.elevationRangeM[1], lang) })
+          : null,
+      centre: centres?.planet,
+    },
+  ]
+  const infoBox = 'pointer-events-none absolute top-2 rounded-lg border-l-[3px] bg-space/80 px-2 py-1.5 shadow-lg backdrop-blur sm:top-3 sm:px-3 sm:py-2'
+  const paneInfo = (pane: (typeof panes)[number]) => (
+    <>
+      <div className="flex items-center gap-2">
+        <BodyChip body={pane.b} />
+        <strong className="min-w-0 truncate text-sm">{pane.name}</strong>
+      </div>
+      <p className="mt-0.5 font-mono text-[10px] text-white/60">{formatCoords(pane.lat, pane.lon, lang)}</p>
+      {pane.note && <p className="mt-1 text-[11px] text-white/80">{pane.note}</p>}
+      {lens === 'relative' && pane.centre !== undefined && (
+        <p className="mt-1 font-mono text-[11px] text-white/85">{t('explore.lens.centre', { m: round(pane.centre) })}</p>
+      )}
+    </>
+  )
 
   return (
     <div role="dialog" aria-modal="true" aria-label={t('explore.title')} className="gm-explore fixed inset-0 z-50 flex flex-col bg-space text-white">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-white/10 bg-space px-4 py-2.5">
-        <div className="flex min-w-0 items-center gap-2">
-          <button type="button" onClick={() => go(-1)} aria-label={t('explore.prev')} className="grid size-8 shrink-0 place-items-center rounded-lg bg-white/10 hover:bg-white/20">‹</button>
-          <div className="min-w-0">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-x-2 gap-y-2 border-b border-white/10 bg-space px-2 py-2 sm:gap-x-4 sm:px-4">
+        {free ? (
+          <div className="min-w-0 flex-1">
             {label(t('explore.title'))}
-            <div className="flex min-w-0 items-baseline gap-2">
-              <select
-                aria-label={t('explore.site')}
-                value={site.id}
-                onChange={(e) => onSite(e.target.value)}
-                className="min-w-0 max-w-[14rem] truncate rounded-md bg-transparent font-serif text-lg font-semibold leading-tight outline-offset-2 hover:bg-white/10 sm:max-w-xs"
-              >
-                {evaluated.map((r) => (
-                  <option key={r.site.id} value={r.site.id} className="bg-space font-sans text-sm">
-                    {t('explore.rankOption', { rank: r.rank ?? '–', name: r.site.name, score: r.score === null ? '–' : score100(r.score) })}
-                  </option>
-                ))}
-              </select>
-              <span className="shrink-0 font-serif text-lg font-semibold text-white/50">↔</span>
-              <span className="truncate font-serif text-lg font-semibold">{target.name}</span>
+            <p className="truncate font-serif text-base font-semibold leading-tight sm:text-lg">
+              {site.name} <span className="text-white/50">↔</span> {target.name}
+            </p>
+          </div>
+        ) : (
+          <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2">
+            <button type="button" onClick={() => go(-1)} aria-label={t('explore.prev')} className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/10 hover:bg-white/20">‹</button>
+            <div className="min-w-0">
+              {label(t('explore.title'))}
+              <div className="flex min-w-0 items-baseline gap-2">
+                <select
+                  aria-label={t('explore.site')}
+                  value={site.id}
+                  onChange={(e) => onSite(e.target.value)}
+                  className="min-w-0 max-w-full truncate rounded-md bg-transparent font-serif text-base font-semibold leading-tight outline-offset-2 hover:bg-white/10 sm:max-w-[14rem] sm:text-lg"
+                >
+                  {evaluated.map((r) => (
+                    <option key={r.site.id} value={r.site.id} className="bg-space font-sans text-sm">
+                      {t('explore.rankOption', { rank: r.rank ?? '–', name: r.site.name, score: r.score === null ? t('badge.notEvaluated') : formatPercent(r.score, lang) })}
+                    </option>
+                  ))}
+                </select>
+                <span className="hidden shrink-0 font-serif text-lg font-semibold text-white/50 sm:inline">↔</span>
+                <span className="hidden truncate font-serif text-lg font-semibold sm:inline">{target.name}</span>
+              </div>
+            </div>
+            <button type="button" onClick={() => go(1)} aria-label={t('explore.next')} className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/10 hover:bg-white/20">›</button>
+          </div>
+        )}
+        <button ref={closeRef} type="button" onClick={onClose} className={`shrink-0 ${chip} bg-white text-ink hover:bg-white/90`}>
+          {t('explore.close')}
+        </button>
+        <div className="flex w-full flex-wrap items-center gap-x-3 gap-y-1.5 2xl:w-auto">
+          {/* Primero cómo se ven los dos lugares (vista) y luego qué se pinta encima (capa). */}
+          <div className="flex items-center gap-1.5">
+            <span aria-hidden="true" className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#fde68a]">{t('explore.layout')}</span>
+            <select
+              aria-label={t('explore.layout')}
+              value={layout}
+              onChange={(event) => chooseLayout(event.target.value as Layout)}
+              className="min-h-9 rounded-lg bg-white/10 px-1 text-base font-semibold md:hidden [&_option]:bg-space"
+            >
+              {LAYOUTS.map((l) => <option key={l} value={l}>{t(`explore.layout.${l}`)}</option>)}
+            </select>
+            <div role="group" aria-label={t('explore.layout')} className="hidden flex-wrap rounded-lg bg-white/10 p-0.5 md:flex">
+              {LAYOUTS.map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  aria-pressed={layout === l}
+                  onClick={() => chooseLayout(l)}
+                  className={`${chip} ${layout === l ? 'bg-[#fde68a] text-ink' : 'text-white/85 hover:text-white'}`}
+                >
+                  {t(`explore.layout.${l}`)}
+                </button>
+              ))}
             </div>
           </div>
-          <button type="button" onClick={() => go(1)} aria-label={t('explore.next')} className="grid size-8 shrink-0 place-items-center rounded-lg bg-white/10 hover:bg-white/20">›</button>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <div role="group" aria-label={t('explore.lens')} className="flex rounded-lg bg-white/10 p-0.5">
-            {LENSES.map((l) => (
-              <button
-                key={l}
-                type="button"
-                aria-pressed={lens === l}
-                onClick={() => setLens(l)}
-                className={`rounded-md px-2.5 py-1.5 text-xs font-semibold ${lens === l ? 'bg-white text-ink' : 'text-white/85 hover:text-white'}`}
-              >
-                {t(`explore.lens.${l}`)}
-              </button>
-            ))}
+          <div className="flex items-center gap-1.5">
+            <span aria-hidden="true" className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{t('explore.lens')}</span>
+            <select
+              aria-label={t('explore.lens')}
+              value={lens}
+              onChange={(event) => setLens(event.target.value as Lens)}
+              className="min-h-9 rounded-lg bg-white/10 px-1 text-base font-semibold md:hidden [&_option]:bg-space"
+            >
+              {LENSES.map((l) => <option key={l} value={l}>{t(`explore.lens.${l}`)}</option>)}
+            </select>
+            <div role="group" aria-label={t('explore.lens')} className="hidden flex-wrap rounded-lg bg-white/10 p-0.5 md:flex">
+              {LENSES.map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  aria-pressed={lens === l}
+                  onClick={() => setLens(l)}
+                  className={`${chip} ${lens === l ? 'bg-white text-ink' : 'text-white/85 hover:text-white'}`}
+                >
+                  {t(`explore.lens.${l}`)}
+                </button>
+              ))}
+            </div>
           </div>
+          <div className="flex flex-wrap items-center gap-1.5">
           <button
             type="button"
-            onClick={() => setTour((n) => (n === null ? 0 : null))}
+            onClick={() => {
+              // El vaivén propio se detiene: durante el recorrido, cada paso decide qué se mueve.
+              halt()
+              setLooping(false)
+              setTour((n) => (n === null ? 0 : null))
+            }}
             aria-pressed={tour !== null}
             className={`${chip} ${tour !== null ? 'bg-[#fde68a] text-ink' : 'bg-white/10 hover:bg-white/20'}`}
           >
@@ -747,9 +1182,11 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
               {t('explore.route.toggle')}
             </button>
           )}
-          <button type="button" onClick={() => setPanelOpen((o) => !o)} aria-pressed={panelOpen} className={`${chip} ${panelOpen ? 'bg-white/25' : 'bg-white/10 hover:bg-white/20'}`}>
-            {t('explore.conditions')}
-          </button>
+          {!free && (
+            <button type="button" onClick={() => setPanelOpen((o) => !o)} aria-pressed={panelOpen} className={`${chip} ${panelOpen ? 'bg-white/25' : 'bg-white/10 hover:bg-white/20'}`}>
+              {t('explore.conditions')}
+            </button>
+          )}
           <button type="button" onClick={toggleOrbit} aria-pressed={orbiting} className={`${chip} bg-white/10 hover:bg-white/20`}>
             {orbiting ? t('explore.pause') : t('explore.orbit')}
           </button>
@@ -760,15 +1197,13 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
                 type="button"
                 aria-pressed={l === lang}
                 onClick={() => onLang(l)}
-                className={`rounded-md px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide ${l === lang ? 'bg-white text-ink' : 'text-white/85 hover:text-white'}`}
+                className={`${chip} uppercase tracking-wide ${l === lang ? 'bg-white text-ink' : 'text-white/85 hover:text-white'}`}
               >
                 {l}
               </button>
             ))}
           </div>
-          <button ref={closeRef} type="button" onClick={onClose} className={`${chip} bg-white text-ink hover:bg-white/90`}>
-            {t('explore.close')}
-          </button>
+          </div>
         </div>
       </header>
 
@@ -792,97 +1227,238 @@ export function Explore3D({ model, rows, row, target, purpose, mode, onSite, onL
         </div>
       )}
 
-      <div className="relative flex min-h-0 flex-1">
-        <div className="relative grid min-h-0 min-w-0 flex-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1">
-          {[
-            { ref: earthRef, b: 'earth' as const, name: site.name, lat: site.lat, lon: site.lon, note: null as string | null, centre: centres?.earth },
-            {
-              ref: planetRef,
-              b: body,
-              name: target.name,
-              lat: target.lat,
-              lon: target.lon,
-              note: region === null
-                ? t('explore.noTerrain')
-                : region
-                  ? t('explore.elevation', { min: formatNumber(region.elevationRangeM[0], lang), max: formatNumber(region.elevationRangeM[1], lang) })
-                  : null,
-              centre: centres?.planet,
-            },
-          ].map((pane, i) => (
-            <div key={pane.b} className={`relative min-h-0 overflow-hidden ${i === 1 ? 'border-t border-white/15 md:border-l md:border-t-0' : ''}`}>
-              {/* maplibre-gl.css pone position: relative en el contenedor: el posicionamiento va en un div exterior. */}
-              <div className="absolute inset-0" role="region" aria-label={t('map.planet', { body: t(`body.${pane.b}`) })}>
-                <div ref={pane.ref} className="h-full w-full" />
-              </div>
-              <div className="pointer-events-none absolute left-3 top-3 max-w-[85%] rounded-xl bg-space/80 px-3 py-2 shadow-lg backdrop-blur">
-                <div className="flex items-center gap-2">
-                  <BodyChip body={pane.b} />
-                  <strong className="truncate text-sm">{pane.name}</strong>
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain explore-wide:flex-row">
+        <div className="flex min-w-0 flex-1 flex-col explore-wide:min-h-0">
+          <div
+            ref={areaRef}
+            className={`gm-compare relative grid min-h-40 flex-1 overflow-hidden ${stacked ? 'grid-cols-1 grid-rows-1' : 'gm-map-panes'}`}
+            // Posición de la cortina y mezcla; las animaciones las cambian directamente (ver `show`).
+            style={{ '--split': `${split}%`, '--mix': String(mix / 100) } as CSSProperties}
+          >
+            {panes.map((pane, i) => (
+              <div
+                key={pane.b}
+                className={`relative min-h-0 min-w-0 overflow-hidden ${
+                  stacked ? 'col-start-1 row-start-1' : i === 1 ? 'gm-map-divider border-white/15' : ''
+                } ${stacked && i === 1 && layout === 'blend' ? 'pointer-events-none' : ''} ${toned ? 'gm-tone' : ''} ${
+                  toned && i === 1 && layout === 'blend' ? 'gm-add' : ''
+                }`}
+                // Apilados, el mapa del objetivo va encima: recortado por la cortina o con transparencia
+                // (la transparencia va en el lienzo, así la atribución sigue visible). En la superposición
+                // no recibe gestos: los recibe la Tierra y se copian (la atribución sí responde).
+                // Con el tono por cuerpo, la superposición suma la luz de los dos lienzos y el deslizador
+                // apaga uno al acercarse al otro extremo.
+                style={{
+                  '--tint': TONES[i],
+                  ...(layout === 'swipe' && i === 1 && { clipPath: 'inset(0 0 0 var(--split))' }),
+                  ...(layout === 'blend' && {
+                    '--alpha': i === 1
+                      ? (toned ? 'min(1, calc(2 * var(--mix)))' : 'var(--mix)')
+                      : (toned ? 'min(1, calc(2 - 2 * var(--mix)))' : '1'),
+                  }),
+                } as CSSProperties}
+              >
+                {/* maplibre-gl.css pone position: relative en el contenedor: el posicionamiento va en un div exterior. */}
+                <div className="absolute inset-0" role="region" aria-label={t('map.planet', { body: t(`body.${pane.b}`) })}>
+                  <div ref={i === 0 ? earthRef : planetRef} className="h-full w-full" />
                 </div>
-                <p className="mt-0.5 font-mono text-[10px] text-white/60">{formatCoords(pane.lat, pane.lon, lang)}</p>
-                {pane.note && <p className="mt-1 text-[11px] text-white/80">{pane.note}</p>}
-                {lens === 'relative' && pane.centre !== undefined && (
-                  <p className="mt-1 font-mono text-[11px] text-white/85">{t('explore.lens.centre', { m: round(pane.centre) })}</p>
+                {!stacked && (
+                  <>
+                    <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-1" style={{ background: i === 0 ? EARTH_TINT : OTHER_TINT }} />
+                    <div className={`${infoBox} left-2 max-w-[calc(100%-2.75rem)] sm:left-3`} style={{ borderColor: i === 0 ? EARTH_TINT : OTHER_TINT }}>{paneInfo(pane)}</div>
+                  </>
                 )}
               </div>
-            </div>
-          ))}
+            ))}
 
-          {lens !== 'imagery' && (
-            <div className={`pointer-events-none absolute left-1/2 top-3 z-10 w-[min(26rem,calc(100%-1.5rem))] -translate-x-1/2 rounded-xl bg-space/85 px-3 py-2 shadow-xl backdrop-blur ${route ? '' : 'md:top-auto md:bottom-40'}`}>
-              <RampLegend ramp={lens === 'slope' ? SLOPE_RAMP : RELATIVE_RAMP} unit={lens === 'slope' ? '°' : ' m'} />
-              <p className="mt-1.5 text-[11px] leading-snug text-white/80">{t(lens === 'slope' ? 'explore.lens.slopeNote' : 'explore.lens.relativeNote')}</p>
-              {region === null && <p className="mt-1 text-[11px] text-[#f3d27a]">{t('explore.lens.noTerrain', { body: t(`body.${body}`) })}</p>}
-            </div>
-          )}
+            {/* Franja superior con el color de cada lado: en la cortina sigue a la división. */}
+            {stacked && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1"
+                style={{
+                  background: layout === 'swipe'
+                    ? `linear-gradient(90deg, ${EARTH_TINT} var(--split), ${OTHER_TINT} var(--split))`
+                    : `linear-gradient(90deg, ${EARTH_TINT}, ${toned ? '#ffffff' : EARTH_TINT} 50%, ${OTHER_TINT})`,
+                }}
+              />
+            )}
 
-          {route && track && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-10 z-10 flex justify-center px-3">
-              <RouteProfile track={track} target={target} data={profile} />
-            </div>
-          )}
+            {/* Apilados, las fichas van fuera de los mapas: la Tierra a la izquierda y el objetivo a la derecha. */}
+            {stacked && panes.map((pane, i) => (
+              <div
+                key={`info-${pane.b}`}
+                className={`${infoBox} z-10 max-w-[calc(50%-0.75rem)] ${i === 0 ? 'left-2 sm:left-3' : 'right-2 sm:right-3'}`}
+                style={{ borderColor: i === 0 ? EARTH_TINT : OTHER_TINT }}
+              >
+                {paneInfo(pane)}
+              </div>
+            ))}
 
-          {!route && !panelOpen && keyDims.length > 0 && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-14 z-10 flex justify-center px-3 sm:bottom-10">
-              <div className="pointer-events-auto grid w-full max-w-3xl grid-cols-3 gap-px overflow-hidden rounded-xl bg-white/15 shadow-2xl backdrop-blur">
-                {keyDims.map((d) => {
-                  const s = row.dimensions[d.id] ?? null
-                  return (
-                    <div key={d.id} className="min-w-0 bg-space/85 px-2.5 py-2 sm:px-3">
-                      <p className="truncate text-[10px] text-white/65 sm:text-[11px]">{d.label[lang]}</p>
-                      <div className="mt-0.5 flex items-end justify-between gap-2">
-                        <div className="min-w-0 font-mono text-xs leading-tight tabular-nums sm:text-sm">
-                          <span className="block truncate" style={{ color: '#9cc7ec' }}>{formatValue(site.values[d.id], d, lang)}</span>
-                          <span className="block truncate" style={{ color: '#f2b48c' }}>{formatValue(target.values[d.id], d, lang)}</span>
-                        </div>
-                        <span className="shrink-0 font-mono text-xs text-white">{s === null ? '–' : score100(s)}</span>
-                      </div>
-                      <ScoreBar score={s} className="mt-1 !bg-white/15" />
-                    </div>
-                  )
-                })}
+            {layout === 'swipe' && (
+              <SwipeDivider
+                value={split}
+                onChange={(v) => userSet('split', v)}
+                area={areaRef}
+                label={t('explore.layout.split', { body: bodyName })}
+                valueText={t('explore.layout.splitValue', { earth: Math.round(split), other: 100 - Math.round(split), body: bodyName })}
+                earthName={t('body.earth')}
+                otherName={bodyName}
+              />
+            )}
+
+            {/* Barra de comparación, la misma en las tres vistas: mezcla (superposición), tono y vaivén. */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-3 z-20 flex justify-center px-11">
+              <div
+                role="group"
+                aria-label={t('explore.compare')}
+                className={`pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl bg-space/85 px-2 py-1 text-xs font-semibold shadow-lg ring-1 ring-white/10 backdrop-blur ${
+                  layout === 'blend' ? 'w-full max-w-[32rem]' : ''
+                }`}
+              >
+                {layout === 'blend' && (
+                  <div className="flex min-w-[min(15rem,100%)] flex-1 items-center gap-1.5">
+                    <button type="button" onClick={() => mixTo(0)} aria-label={t('explore.layout.only', { body: t('body.earth') })} className="shrink-0 rounded-full px-1.5 py-1 hover:bg-white/10" style={{ color: EARTH_TINT }}>
+                      {t('body.earth')}
+                    </button>
+                    <input
+                      ref={mixInput}
+                      type="range"
+                      min={0}
+                      max={100}
+                      defaultValue={mix}
+                      onChange={(event) => userSet('mix', Number(event.target.value))}
+                      aria-label={t('explore.layout.mix', { body: bodyName })}
+                      aria-valuetext={`${mix} %`}
+                      className="gm-mix h-9 min-w-0 flex-1 cursor-pointer"
+                    />
+                    <button type="button" onClick={() => mixTo(100)} aria-label={t('explore.layout.only', { body: bodyName })} className="shrink-0 rounded-full px-1.5 py-1 hover:bg-white/10" style={{ color: OTHER_TINT }}>
+                      {bodyName}
+                    </button>
+                  </div>
+                )}
+                <div className="flex shrink-0 items-center gap-1">
+                  <button
+                    type="button"
+                    aria-pressed={toned}
+                    disabled={lens !== 'imagery'}
+                    title={lens !== 'imagery' ? t('explore.tone.imageryOnly') : undefined}
+                    onClick={() => setTone(!tone)}
+                    className={`flex min-h-8 items-center gap-1.5 rounded-full px-2.5 py-1 disabled:cursor-not-allowed disabled:opacity-45 ${toned ? 'bg-white text-ink' : 'bg-white/10 hover:bg-white/20'}`}
+                  >
+                    <span aria-hidden="true" className="flex">
+                      <span className="size-2.5 rounded-full ring-1 ring-space/40" style={{ background: TONES[0] }} />
+                      <span className="-ml-1 size-2.5 rounded-full ring-1 ring-space/40" style={{ background: TONES[1] }} />
+                    </span>
+                    {t('explore.tone')}
+                  </button>
+                  {stacked && (
+                    <button
+                      type="button"
+                      aria-pressed={swinging}
+                      onClick={toggleSwing}
+                      className={`flex min-h-8 items-center gap-1.5 rounded-full px-2.5 py-1 ${swinging ? 'bg-[#fde68a] text-ink' : 'bg-white/10 hover:bg-white/20'}`}
+                    >
+                      <span aria-hidden="true" className="w-3 text-center">{swinging ? '❚❚' : '▶'}</span>
+                      {swinging ? t('explore.animate.stop') : t('explore.animate')}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          )}
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-2 z-10 flex justify-center px-3">
-            <p className="rounded-full bg-space/85 px-3 py-1 text-center text-[11px] text-white/85 backdrop-blur">
+            {!ready && (
+              <div className="absolute inset-0 z-20 grid place-items-center bg-space/90 px-4 text-center text-sm text-white/85" role="status">
+                {t(webgl ? 'explore.loading' : 'map.noWebgl')}
+              </div>
+            )}
+          </div>
+
+          <div className="max-h-[30dvh] shrink-0 space-y-2 overflow-y-auto border-t border-white/15 px-2 py-2 sm:px-3 explore-wide:max-h-[36dvh]" tabIndex={0} role="region" aria-label={t('detail.evidence')}>
+            {route && track && (
+              <div className="flex justify-center">
+                <RouteProfile track={track} target={target} data={profile} />
+              </div>
+            )}
+
+            {lens !== 'imagery' && (
+              <div className="mx-auto max-w-3xl rounded-lg bg-white/[0.06] px-3 py-2">
+                <RampLegend ramp={lens === 'slope' ? SLOPE_RAMP : RELATIVE_RAMP} unit={lens === 'slope' ? '°' : ' m'} />
+                <p className="mt-1.5 text-[11px] leading-snug text-white/80">{t(lens === 'slope' ? 'explore.lens.slopeNote' : 'explore.lens.relativeNote')}</p>
+                {region === null && <p className="mt-1 text-[11px] text-[#f3d27a]">{t('explore.lens.noTerrain', { body: t(`body.${body}`) })}</p>}
+              </div>
+            )}
+
+            {!route && measured && (
+              <div className="flex justify-center">
+                <div className="grid w-full max-w-3xl grid-cols-3 gap-px overflow-hidden rounded-lg bg-white/15">
+                  {[
+                    { label: t('pin.metric.slopeMedian'), get: (s: PatchStats) => `${formatNumber(s.slopeMedian, lang)}°` },
+                    { label: t('pin.metric.steep', { deg: STEEP_DEG }), get: (s: PatchStats) => formatPercent(s.steepShare, lang) },
+                    { label: t('pin.metric.relief'), get: (s: PatchStats) => `${formatNumber(Math.round(s.reliefM), lang)} m` },
+                  ].map((m) => (
+                    <div key={m.label} className="min-w-0 bg-space/85 px-2.5 py-2 sm:px-3">
+                      <p className="wrap-anywhere text-[10px] text-white/65 sm:text-[11px]">{m.label}</p>
+                      <div className="mt-0.5 font-mono text-xs leading-tight tabular-nums sm:text-sm">
+                        <span className="block" style={{ color: '#9cc7ec' }}>{measured.earth ? m.get(measured.earth) : t('value.noData')}</span>
+                        <span className="block" style={{ color: '#f2b48c' }}>{measured.planet ? m.get(measured.planet) : t('value.noData')}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {free && measured && (
+              <p className="text-center text-[11px] text-white/70">
+                {t('pin.measuredLead', { km: formatNumber(radiusKm, lang), step: formatNumber(measured.stepM, lang) })} {t('pin.pilot')}: {t('pin.noScoreShort')}
+              </p>
+            )}
+
+            {!route && !panelOpen && keyDims.length > 0 && (
+              <div className="flex justify-center">
+                <div className="grid w-full max-w-3xl grid-cols-3 gap-px overflow-hidden rounded-lg bg-white/15">
+                  {keyDims.map((d) => {
+                    const s = row.dimensions[d.id] ?? null
+                    return (
+                      <div key={d.id} className="min-w-0 bg-space/85 px-2.5 py-2 sm:px-3">
+                        <p className="wrap-anywhere text-[10px] text-white/65 sm:text-[11px]">{d.label[lang]}</p>
+                        <div className="mt-0.5 flex flex-wrap items-end justify-between gap-1">
+                          <div className="min-w-0 font-mono text-xs leading-tight tabular-nums sm:text-sm">
+                            <span className="block wrap-anywhere" style={{ color: '#9cc7ec' }}>{formatValue(site.values[d.id], d, lang)}</span>
+                            <span className="block wrap-anywhere" style={{ color: '#f2b48c' }}>{formatValue(target.values[d.id], d, lang)}</span>
+                          </div>
+                          <span className="shrink-0 text-xs tabular-nums text-white">{s === null ? t('value.noData') : formatPercent(s, lang)}</span>
+                        </div>
+                        <ScoreBar score={s} className="mt-1 !bg-white/15" />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {stacked && <p className="mx-auto max-w-3xl text-center text-[11px] leading-snug text-white/80">{t('explore.layout.note')}</p>}
+            {toned && (
+              <p className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-[11px] leading-snug text-white/80">
+                <span className="inline-flex items-center gap-1.5"><span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: TONES[0] }} />{t('body.earth')}</span>
+                <span className="inline-flex items-center gap-1.5"><span aria-hidden="true" className="size-2.5 rounded-full" style={{ background: TONES[1] }} />{bodyName}</span>
+                {layout === 'blend' && <span className="inline-flex items-center gap-1.5"><span aria-hidden="true" className="size-2.5 rounded-full bg-white" />{t('explore.tone.both')}</span>}
+                <span>{t('explore.tone.note', { body: bodyName })}</span>
+              </p>
+            )}
+
+            <p className="text-center text-[11px] text-white/85">
               {t('explore.scaleNote', { x: formatNumber(VISUAL_EXAGGERATION, lang), km: formatNumber(radiusKm, lang) })}
             </p>
           </div>
-
-          {!ready && (
-            <div className="absolute inset-0 z-20 grid place-items-center bg-space/90 text-sm text-white/85" role="status">
-              {t('explore.loading')}
-            </div>
-          )}
         </div>
 
         {panelOpen && (
           <aside
+            ref={conditionsRef}
             aria-label={t('explore.conditions')}
-            className="absolute inset-x-0 bottom-0 z-30 max-h-[62%] overflow-y-auto rounded-t-2xl border-t border-white/15 bg-space/95 shadow-2xl backdrop-blur lg:static lg:max-h-none lg:w-[22rem] lg:shrink-0 lg:rounded-none lg:border-l lg:border-t-0"
+            tabIndex={0}
+            className="max-h-[32dvh] shrink-0 overflow-y-auto border-t border-white/15 explore-wide:max-h-none explore-wide:w-[22rem] explore-wide:border-l explore-wide:border-t-0"
           >
             <ConditionsPanel model={model} row={row} target={target} purpose={purpose} mode={mode} />
           </aside>

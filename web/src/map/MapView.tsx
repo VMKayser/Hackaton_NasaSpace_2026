@@ -3,8 +3,9 @@ import { LngLat, LngLatBounds, Map as MlMap, NavigationControl, Popup } from 'ma
 import type { GeoJSONSource, MapLayerMouseEvent } from 'maplibre-gl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { RankedSite } from '../lib/ranking'
-import type { View } from '../lib/state'
+import type { Point, View } from '../lib/state'
 import { circleRing, EARTH_RADIUS_KM } from '../lib/terrain'
+import { PIN_SOURCE, pinData, pinLayers } from './pinLayers'
 import { AREA_SOURCE, areaLayers, baseStyle, columnLayer, COLUMNS_SOURCE, DEM_SOURCE, siteLayers, SITES_HIT_LAYER, SITES_SOURCE } from './style'
 import { hasWebgl2, prefersReducedMotion } from './runtime'
 
@@ -21,6 +22,12 @@ interface Props {
   noWebglText: string
   scoreLabel: (row: RankedSite) => string
   onSelect: (id: string) => void
+  /** Pin libre en la Tierra y radio del círculo medido. */
+  pin: Point | null
+  pinRadiusKm: number
+  /** Con el modo de pin activo, un clic pone el pin en lugar de elegir un sitio. */
+  pinMode: boolean
+  onPin: (point: Point) => void
 }
 
 function toGeoJson(rows: RankedSite[], selectedId: string | null, compareIds: string[] | null, neutral: boolean): FeatureCollection {
@@ -74,16 +81,16 @@ function boundsOf(rows: RankedSite[]): LngLatBounds | null {
   return b
 }
 
-export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey, label, noWebglText, scoreLabel, onSelect }: Props) {
+export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey, label, noWebglText, scoreLabel, onSelect, pin, pinRadiusKm, pinMode, onPin }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MlMap | null>(null)
   const [ready, setReady] = useState(false)
   const [webgl] = useState(hasWebgl2)
 
   // Valores actuales para los manejadores de eventos del mapa, que se registran una sola vez.
-  const latest = useRef({ rows, onSelect, scoreLabel })
+  const latest = useRef({ rows, onSelect, scoreLabel, pin, pinMode, onPin })
   useEffect(() => {
-    latest.current = { rows, onSelect, scoreLabel }
+    latest.current = { rows, onSelect, scoreLabel, pin, pinMode, onPin }
   })
 
   const data = useMemo(() => toGeoJson(rows, selectedId, compareIds, neutral), [rows, selectedId, compareIds, neutral])
@@ -102,7 +109,7 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
       maxPitch: 75,
     })
     mapRef.current = map
-    map.addControl(new NavigationControl({ visualizePitch: true }), 'bottom-right')
+    map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right')
 
     const popup = new Popup({ closeButton: false, closeOnClick: false, offset: 14, className: 'gm-popup' })
 
@@ -114,16 +121,22 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
       map.addLayer(columnLayer)
       for (const layer of areaLayers) map.addLayer(layer)
       for (const layer of siteLayers) map.addLayer(layer)
+      map.addSource(PIN_SOURCE, { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      for (const layer of pinLayers) map.addLayer(layer)
 
       map.on('click', SITES_HIT_LAYER, (e: MapLayerMouseEvent) => {
+        if (latest.current.pinMode) return
         const id = e.features?.[0]?.properties?.id
         if (typeof id === 'string') latest.current.onSelect(id)
+      })
+      map.on('click', (e) => {
+        if (latest.current.pinMode) latest.current.onPin({ lon: e.lngLat.wrap().lng, lat: e.lngLat.lat })
       })
       map.on('mousemove', SITES_HIT_LAYER, (e: MapLayerMouseEvent) => {
         const id = e.features?.[0]?.properties?.id
         const row = latest.current.rows.find((r) => r.site.id === id)
         if (!row) return
-        map.getCanvas().style.cursor = 'pointer'
+        map.getCanvas().style.cursor = latest.current.pinMode ? 'crosshair' : 'pointer'
         const el = document.createElement('div')
         const name = document.createElement('strong')
         name.textContent = row.site.name
@@ -134,10 +147,13 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
         popup.setLngLat([row.site.lon, row.site.lat]).setDOMContent(el).addTo(map)
       })
       map.on('mouseleave', SITES_HIT_LAYER, () => {
-        map.getCanvas().style.cursor = ''
+        map.getCanvas().style.cursor = latest.current.pinMode ? 'crosshair' : ''
         popup.remove()
       })
       setReady(true)
+      // Pin que llega en la URL (enlace compartido): se encuadra al abrir.
+      const first = latest.current.pin
+      if (first) map.jumpTo({ center: [first.lon, first.lat], zoom: 9 })
     })
 
     return () => {
@@ -163,6 +179,18 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
     if (!ready || !map) return
     ;(map.getSource(AREA_SOURCE) as GeoJSONSource | undefined)?.setData(toArea(selectedRow))
   }, [ready, selectedRow])
+
+  // Pin libre: el punto, su círculo y el cursor de colocación.
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    ;(map.getSource(PIN_SOURCE) as GeoJSONSource | undefined)?.setData(pinData(pin, pinRadiusKm, EARTH_RADIUS_KM))
+  }, [ready, pin, pinRadiusKm])
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    map.getCanvas().style.cursor = pinMode ? 'crosshair' : ''
+  }, [ready, pinMode])
 
   // Vista: globo o 2D con relieve.
   useEffect(() => {
@@ -203,12 +231,15 @@ export function MapView({ rows, neutral, selectedId, compareIds, view, frameKey,
       })
       return
     }
+    // Con un pin libre no se vuelve a encuadrar: el usuario está mirando la zona donde lo puso.
+    if (latest.current.pin) return
     const compared = comparedKey.split(',')
     const bounds = boundsOf(comparedKey
       ? latest.current.rows.filter((row) => compared.includes(row.site.id))
       : latest.current.rows)
     if (!bounds) return
-    const isSmall = map.getContainer().clientWidth < 420
+    const { clientWidth, clientHeight } = map.getContainer()
+    const isSmall = clientWidth < 420 || clientHeight < 300
     map.fitBounds(bounds, {
       padding: isSmall ? 28 : { top: 70, bottom: 50, left: 48, right: 48 },
       maxZoom: 7,

@@ -7,12 +7,12 @@ export function StoryControls({ step, total, caption, onStep }: {
 }) {
   const { t, lang } = useI18n()
   const last = step === total - 1
-  const buttonClass = 'rounded-lg border border-line bg-surface px-3 py-1.5 text-xs font-semibold hover:border-ink/40 disabled:opacity-40'
+  const buttonClass = 'min-h-10 rounded-lg border border-line bg-surface px-3 text-xs font-semibold hover:border-ink/40 disabled:opacity-40'
   return (
-    <section aria-label={t('story.start')} className="sticky top-0 z-10 border-b border-line bg-earth-soft px-5 py-3 sm:px-7">
+    <section aria-label={t('story.start')} className="border-b border-line bg-earth-soft px-5 py-3 sm:px-7 lg:sticky lg:top-0 lg:z-10">
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs font-semibold text-earth">{t('story.progress', { current: step + 1, total })}</p>
-        <button className="rounded px-1 py-1 text-xs text-muted underline underline-offset-2" onClick={() => onStep(null)} type="button">
+        <button className="min-h-9 rounded px-1 text-xs text-muted underline underline-offset-2" onClick={() => onStep(null)} type="button">
           {t('story.exit')}
         </button>
       </div>

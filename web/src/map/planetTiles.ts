@@ -31,9 +31,17 @@ addProtocol('planet-trek', async ({ url }, { signal }) => {
   const jobs = columns.flatMap((column, columnIndex) =>
     Array.from({ length: lastRow - firstRow + 1 }, async (_, index) => {
       const tileRow = index + firstRow
-      const response = await fetch(tileUrl(level, tileRow, column), { signal })
-      if (!response.ok) throw new Error(`Planetary imagery returned ${response.status}`)
-      const bitmap = await createImageBitmap(await response.blob())
+      let bitmap: ImageBitmap
+      try {
+        const response = await fetch(tileUrl(level, tileRow, column), { signal })
+        if (!response.ok) throw new Error(`Planetary imagery returned ${response.status}`)
+        bitmap = await createImageBitmap(await response.blob())
+      } catch (error) {
+        // El mosaico CTX de Esri tiene huecos: ahí responde 500 sin cabeceras CORS. Esa parte queda
+        // transparente (se ve el mosaico de Viking debajo) en lugar de perder la tesela entera.
+        if (hostname === 'mars-ctx' && !signal.aborted) return
+        throw error
+      }
       try {
         signal.throwIfAborted()
         sourceRows.forEach((sourceRow, outputRow) => {

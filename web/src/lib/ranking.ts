@@ -8,6 +8,8 @@ export interface RankedSite {
   site: Site
   /** Puntaje usado para ordenar; null = no evaluado. */
   score: number | null
+  /** Similitud general para el objetivo, incluso cuando se ordena por propósito. */
+  similarity: number | null
   dimensions: Record<string, number | null>
   rank: number | null
   /** Dimensiones más altas (hasta dos) y la más baja, entre las que tienen peso. */
@@ -35,7 +37,8 @@ export function explain(
     .filter((e): e is [string, number] => e[1] !== null && (weights[e[0]] ?? 0) > 0)
     .sort((a, b) => b[1] - a[1] || (weights[b[0]] ?? 0) - (weights[a[0]] ?? 0))
   const top = scored.slice(0, 2).map(([id]) => id)
-  const low = scored.length > 2 ? scored[scored.length - 1][0] : null
+  const weakest = scored.at(-1)
+  const low = weakest && weakest[1] < scored[0][1] ? weakest[0] : null
   return { top, low }
 }
 
@@ -45,12 +48,13 @@ export function rankSites(file: AnalogsFile, targetId: string, purpose: Purpose 
 
   const rows: RankedSite[] = file.sites.map((site) => {
     const entry = site.scores.find((s) => s.targetId === targetId)
+    const similarity = entry?.similarity ?? null
     const dimensions = entry?.dimensions ?? {}
     let score: number | null = null
     if (entry) {
-      score = mode === 'purpose' && purpose ? (site.purposeScores?.[purpose.id] ?? null) : entry.similarity
+      score = mode === 'purpose' && purpose ? (site.purposeScores?.[purpose.id] ?? null) : similarity
     }
-    return { site, score, dimensions, rank: null, ...explain(dimensions, weights) }
+    return { site, score, similarity, dimensions, rank: null, ...explain(dimensions, weights) }
   })
 
   const byName = (a: RankedSite, b: RankedSite) => a.site.name.localeCompare(b.site.name)

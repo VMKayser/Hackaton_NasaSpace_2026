@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useI18n } from '../i18n'
+import { formatPercent } from '../lib/format'
 import type { View } from '../lib/state'
 import { SCORE_GRADIENT } from '../map/colors'
 import { SiteGlyph } from './ui'
@@ -11,14 +12,14 @@ export function ViewToggle({ view, onView }: { view: View; onView: (v: View) => 
     { id: '2d', label: t('map.relief') },
   ]
   return (
-    <div role="group" aria-label={t('map.view')} className="flex rounded-lg bg-space/80 p-1 shadow-lg ring-1 ring-white/10 backdrop-blur">
+    <div role="group" aria-label={t('map.view')} className="flex rounded-lg bg-white/10 p-0.5">
       {options.map((o) => (
         <button
           key={o.id}
           type="button"
           aria-pressed={view === o.id}
           onClick={() => onView(o.id)}
-          className={`rounded-md px-3 py-1.5 text-xs font-semibold transition ${
+          className={`min-h-9 rounded-md px-3 text-xs font-semibold transition ${
             view === o.id ? 'bg-white text-ink' : 'text-white/80 hover:text-white'
           }`}
         >
@@ -29,9 +30,9 @@ export function ViewToggle({ view, onView }: { view: View; onView: (v: View) => 
   )
 }
 
-export function Legend() {
-  const { t } = useI18n()
-  const [open, setOpen] = useState(() => window.innerWidth >= 1024)
+export function Legend({ purposeScore }: { purposeScore: boolean }) {
+  const { t, lang } = useI18n()
+  const [open, setOpen] = useState(() => matchMedia('(min-width: 64rem) and (min-height: 34rem)').matches)
   const items = [
     { label: t('badge.candidate'), glyph: { score: 0.8, known: false, reference: false, control: false } },
     { label: t('badge.known'), glyph: { score: 0.8, known: true, reference: false, control: false } },
@@ -40,12 +41,12 @@ export function Legend() {
     { label: t('badge.notEvaluated'), glyph: { score: null, known: false, reference: false, control: false } },
   ]
   return (
-    <div className={`${open ? 'w-44 max-w-[43vw] sm:w-52' : 'w-28'} rounded-xl bg-surface/95 text-xs shadow-lg backdrop-blur`}>
+    <div className={`pointer-events-auto flex max-h-full max-w-full flex-col rounded-xl bg-surface/95 text-xs shadow-lg backdrop-blur ${open ? 'w-48' : 'w-28'}`}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between px-3 py-2 font-semibold text-ink"
+        className="flex min-h-9 shrink-0 items-center justify-between px-3 font-semibold text-ink"
       >
         {t('legend.title')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`transition ${open ? 'rotate-180' : ''}`} aria-hidden="true">
@@ -53,13 +54,11 @@ export function Legend() {
         </svg>
       </button>
       {open && (
-        <div className="border-t border-line px-3 pb-3 pt-2">
-          <p className="text-muted">{t('legend.score')}</p>
+        <div className="min-h-0 overflow-y-auto overscroll-contain border-t border-line px-3 pb-3 pt-2">
+          <p className="text-muted">{t(purposeScore ? 'detail.purposeScore' : 'detail.similarity')}</p>
           <div className="mt-1.5 h-2 rounded-full" style={{ background: SCORE_GRADIENT }} />
           <div className="mt-1 flex justify-between font-mono text-[10px] text-faint">
-            <span>0</span>
-            <span>50</span>
-            <span>100</span>
+            {[0, 0.5, 1].map((score) => <span key={score}>{formatPercent(score, lang)}</span>)}
           </div>
           <ul className="mt-2.5 space-y-1">
             {items.map((i) => (

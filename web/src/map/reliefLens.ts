@@ -22,7 +22,8 @@ async function decodePng(blob: Blob): Promise<Uint8ClampedArray> {
 }
 
 const earthTiles = new Map<string, Promise<Float32Array>>()
-function earthTileElevations(z: number, x: number, y: number, signal?: AbortSignal): Promise<Float32Array> {
+/** Elevaciones reales (m) de los 256 x 256 píxeles de una tesela de Terrain Tiles. */
+export function earthTileElevations(z: number, x: number, y: number, signal?: AbortSignal): Promise<Float32Array> {
   const key = `${z}/${x}/${y}`
   let p = earthTiles.get(key)
   if (!p) {

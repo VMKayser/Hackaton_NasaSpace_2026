@@ -177,6 +177,20 @@ Sustituye a los pesos en el navegador, que quedan fuera del plan.
 - [x] Soporte para objetivos lunares y respaldo con imagen fija para el polo sur lunar.
 - [ ] Capas planetarias temáticas adicionales.
 - [ ] Incorporar un objetivo lunar si el rol 1 confirma el sitio y se reciben sus mediciones.
+- [x] Vista 3D: lado a lado, cortina y superposición, con las cámaras unidas a la misma escala.
+- [x] Buscar en ambos sentidos: en la ficha de un sitio, su similitud frente a cada objetivo
+      (puntajes del rol 4 por pareja; la web solo ordena). Para resultados lunares hacen falta
+      sitios de la Luna con mediciones y puntajes.
+- [x] Pin libre (piloto): un punto en cualquier lugar de la Tierra y otro en Marte o la Luna. Mide pendiente y relieve con el mismo radio y el mismo paso (la resolución
+      más gruesa de los dos modelos). Solo mediciones del relieve real, sin puntaje. Estado en la URL
+      (`pin=lat,lon`, `tpin=mars:lat,lon` o `tpin=moon:lat,lon`).
+- [ ] Pin libre con todas las dimensiones: que el rol 4 precalcule zonas o calcule al recibir la consulta.
+- [x] Modelos globales de USGS leídos por rangos en el navegador: HRSC-MOLA 200 m (Marte) y LOLA + Kaguya
+      59 m (Luna, 60° N a 60° S). El pin libre funciona en cualquier punto de los dos cuerpos.
+- [x] Pin libre en 3D, con lado a lado, cortina y superposición.
+- [x] Botón «Explorar en 3D» visible en la ficha, en la barra del mapa y en el panel del pin.
+- [x] «Recorrido 3D» con dos pasos apilados para el video de la demo: la cortina en vaivén y la superposición
+      con colores por cuerpo (de solo la Tierra a solo el objetivo y vuelta).
 
 ## Propuestas para el rol 1
 

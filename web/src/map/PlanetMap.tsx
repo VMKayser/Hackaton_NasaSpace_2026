@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Map as MlMap, Marker } from 'maplibre-gl'
-import type { StyleSpecification } from 'maplibre-gl'
+import type { GeoJSONSource, StyleSpecification } from 'maplibre-gl'
 import type { Target } from '../data/schema'
 import { useI18n } from '../i18n'
+import type { Point } from '../lib/state'
+import { BODIES } from './bodies'
+import { COVERAGE_SOURCE, coverageData, coverageLayers, PIN_SOURCE, pinData, pinLayers } from './pinLayers'
+import { GLOBAL_DEMS } from './usgsDem'
 import { PlanetFallback } from './PlanetFallback'
 import { IMAGERY, MARS_DETAIL, MERCATOR_LIMIT } from './planetaryImagery'
 import type { Planet } from './planetaryImagery'
@@ -83,8 +87,13 @@ function planetStyle(body: Planet): StyleSpecification {
   return style
 }
 
-export function PlanetMap({ body, targets, target, onTarget }: {
+export function PlanetMap({ body, targets, target, onTarget, pin = null, pinRadiusKm = 5, pinMode = false, onPin }: {
   body: Planet; targets: Target[]; target: Target | null; onTarget: (id: string) => void
+  /** Pin libre en este cuerpo, donde lo cubre el modelo global de elevación de USGS. */
+  pin?: Point | null
+  pinRadiusKm?: number
+  pinMode?: boolean
+  onPin?: (point: Point) => void
 }) {
   const { t } = useI18n()
   const ref = useRef<HTMLDivElement>(null)
@@ -95,6 +104,15 @@ export function PlanetMap({ body, targets, target, onTarget }: {
   )
   const failed = status === 'failed'
   const [showDetailCredit, setShowDetailCredit] = useState(false)
+  const [styleReady, setStyleReady] = useState(false)
+  // Zona que cubre el modelo global de USGS: todo Marte; la Luna entre 60° N y 60° S.
+  const dem = GLOBAL_DEMS[body]
+  const coverageBounds: [number, number, number, number] = [-180, dem.south, 180, dem.north]
+  const partialCoverage = dem.north < 85 || dem.south > -85
+  const latest = useRef({ pinMode, onPin, coverageBounds })
+  useEffect(() => {
+    latest.current = { pinMode, onPin, coverageBounds }
+  })
   const [overviewLon, overviewLat] = overviewCenter(body, targets)
   const lon = target?.lon
   const lat = target?.lat
@@ -137,11 +155,24 @@ export function PlanetMap({ body, targets, target, onTarget }: {
       map.on('zoomend', () => setShowDetailCredit(map.getZoom() >= MARS_DETAIL.startZoom))
     }
     map.on('webglcontextlost', () => setStatus('failed'))
+    map.once('load', () => {
+      map.addSource(COVERAGE_SOURCE, { type: 'geojson', data: coverageData(null) })
+      map.addSource(PIN_SOURCE, { type: 'geojson', data: pinData(null, 1, 1) })
+      for (const layer of [...coverageLayers, ...pinLayers]) map.addLayer(layer)
+      setStyleReady(true)
+    })
+    map.on('click', (e) => {
+      const { pinMode: active, onPin: place, coverageBounds: b } = latest.current
+      if (!active || !place) return
+      const { lng, lat } = e.lngLat.wrap()
+      if (lng >= b[0] && lng <= b[2] && lat >= b[1] && lat <= b[3]) place({ lon: lng, lat })
+    })
 
     return () => {
       window.clearTimeout(timeout)
       map.remove()
       mapRef.current = null
+      setStyleReady(false)
     }
   }, [body, failed, overviewLon, overviewLat])
 
@@ -193,6 +224,17 @@ export function PlanetMap({ body, targets, target, onTarget }: {
     focusPlanetTarget(map, [lon, lat])
   }, [failed, lon, lat, overviewLon, overviewLat])
 
+  // Límite del modelo (solo si no cubre todo el cuerpo), mientras se ponen pines o hay uno.
+  const showCoverage = (pinMode || !!pin) && partialCoverage
+  const [south, north] = [dem.south, dem.north]
+  useEffect(() => {
+    const map = mapRef.current
+    if (!styleReady || !map) return
+    ;(map.getSource(COVERAGE_SOURCE) as GeoJSONSource | undefined)?.setData(coverageData(showCoverage ? [-180, south, 180, north] : null))
+    ;(map.getSource(PIN_SOURCE) as GeoJSONSource | undefined)?.setData(pinData(pin, pinRadiusKm, BODIES[body].radiusKm))
+    map.getCanvas().style.cursor = pinMode ? 'crosshair' : ''
+  }, [styleReady, showCoverage, south, north, pin, pinRadiusKm, pinMode, body])
+
   const showOverview = () => {
     const map = mapRef.current
     if (!map) return
@@ -216,7 +258,7 @@ export function PlanetMap({ body, targets, target, onTarget }: {
       {failed && <PlanetFallback body={body} />}
       {status === 'ready' && (
         <>
-          <div className="absolute bottom-8 right-2 flex flex-col gap-1" role="group" aria-label={t('map.view')}>
+          <div className="absolute bottom-9 right-2 flex gap-1 lg:flex-col" role="group" aria-label={t('map.view')}>
             <button type="button" className={tool} aria-label={t('map.overview')} title={t('map.overview')} onClick={showOverview}>
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                 <circle cx="12" cy="12" r="9" /><ellipse cx="12" cy="12" rx="4" ry="9" /><path d="M3 12h18" />

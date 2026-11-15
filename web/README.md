@@ -69,7 +69,20 @@ dragging, tilting or zooming one map moves the other.
   terrain tiles (`src/map/planetTerrain.ts`).
 - MapLibre draws every body with Earth's radius. To keep real proportions, the target map zooms out by
   `log2(R_body·cos φ_body / R_earth·cos φ_earth)` and its relief is multiplied by `R_earth / R_body` (`src/lib/terrain.ts`).
-- A target without an entry in the manifest is shown with imagery only, and the view says so.
+- Anywhere else on Mars or the Moon (free pins, or a target outside the manifest), the browser reads the
+  global USGS models directly from their public S3 bucket with HTTP range requests, row by row, without
+  downloading the whole file (`src/map/usgsDem.ts`): the [HRSC-MOLA Blended DEM 200 m v2](https://astrogeology.usgs.gov/search/map/mars_mgs_mola_mex_hrsc_blended_dem_global_200m)
+  for Mars and the [LRO LOLA – SELENE Kaguya TC DEM Merge 60N60S, 59 m](https://astrogeology.usgs.gov/search/map/moon_lro_lola_selene_kaguya_tc_dem_merge_60n60s_59m)
+  for the Moon (between 60° N and 60° S). Both files are uncompressed Int16 GeoTIFFs with one row per strip;
+  their layout and scale (1 m and 0.5 m per unit) were checked against the file headers and ISIS labels.
+- The 3D view has three layouts: **side by side**, **swipe** (one map over the other with a draggable
+  divider) and **overlay** (the target over Earth with adjustable opacity). Stacked, both maps also pan together
+  by the same real metres. In every layout, **Color by body** paints each image's own brightness in blue (Earth)
+  or orange (the target); in the overlay the two add up, so ground that is bright on both sides shows white.
+  **Animate** sweeps the divider or the opacity back and forth. Only the display color changes, not the data.
+- **Free pin (pilot)**: a pin anywhere on Earth and one on Mars or the Moon. Slope and relief are measured
+  inside the same radius with the same sampling step (the coarser of the two models). These are measurements
+  of real elevation models, not a similarity score. Pins can also be opened in 3D.
 - In relief view, each evaluated site also rises as a column whose height and color are its score.
 - **Compare** layers, computed in the browser from the same real terrain shown and drawn with the same color
   ramp on both maps (`src/map/reliefLens.ts`): **Slope** (degrees) and **Relative relief** (metres above or below
@@ -82,5 +95,5 @@ dragging, tilting or zooming one map moves the other.
   simulation (`src/lib/route.ts`). A profile every 100 m compares elevation, total climb, steepest segment and
   share of steep ground, next to the rover's real tilt at its stops. `tools/mars_tracks.py` prepares the route
   (run it after `tools/mars_terrain.py`).
-- **3D tour**: six captioned steps (overview, close-up, slope, relative relief, rover route, conditions) for
-  presenting or recording the demo.
+- **3D tour**: eight captioned steps (overview, close-up, swipe, overlay, slope, relative relief, rover route,
+  conditions) for presenting or recording the demo.

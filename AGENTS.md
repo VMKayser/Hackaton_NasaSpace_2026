@@ -55,7 +55,8 @@ Versiones comprobadas el 14 de noviembre de 2026. Usar las que instale la planti
 - **Tailwind CSS 4** con el plugin `@tailwindcss/vite`; sin `tailwind.config.js`.
 - **Zod 4** para validar los archivos de datos al cargar. **Vitest 5** para la lógica pura.
 - Sin router, sin librería de estado y sin `react-map-gl`: `useReducer` y estado en la URL
-  (`?purpose=&target=&site=&compare=&view=&lang=&step=`).
+  (`?purpose=&target=&site=&compare=&view=&lang=&step=&pin=&tpin=`). `pin` es «lat,lon» del pin
+  libre en la Tierra y `tpin` es «mars:lat,lon» o «moon:lat,lon».
 - Sitio **estático**, sin servidor propio. Publicación en **Vercel**, directorio raíz `web`.
 
 ### Fuentes de mapa
@@ -70,6 +71,8 @@ antes de publicar.
 | Relieve | `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png` | `raster-dem`, `encoding: "terrarium"`, `tileSize: 256` |
 | Marte | `https://cartocdn-gusc.global.ssl.fastly.net/opmbuilder/api/v1/map/named/opm-mars-basemap-v0-2/all/{z}/{x}/{y}.png` | OpenPlanetaryMap, servicio comunitario |
 | Luna | `https://cartocdn-gusc.global.ssl.fastly.net/opmbuilder/api/v1/map/named/opm-moon-basemap-v0-1/all/{z}/{x}/{y}.png` | Igual. No cubre más allá de 85° de latitud |
+| Relieve global de Marte (USGS) | `https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif` | GeoTIFF Int16 sin compresión, una fila por tira; se lee por rangos (CORS con `Range`). 200 m, metros sobre el areoide |
+| Relieve de la Luna (USGS) | `https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/LolaKaguya_Topo/Lunar_LRO_LOLAKaguya_DEMmerge_60N60S_512ppd.tif` | Igual; 59 m, entre 60° N y 60° S, 0,5 m por unidad. Ver `web/src/map/usgsDem.ts` |
 
 Un objetivo en el polo sur lunar no cabe en Web Mercator: usar una imagen fija con atribución. Lo
 mismo si el servicio de Marte falla. Las teselas de NASA Trek son equirectangulares y no sirven como

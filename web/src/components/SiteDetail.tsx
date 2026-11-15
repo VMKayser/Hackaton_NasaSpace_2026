@@ -1,17 +1,20 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { Model } from '../data/model'
 import { siteText } from '../data/model'
 import type { Dimension, Purpose, Target } from '../data/schema'
 import { useI18n } from '../i18n'
-import { formatCoords, formatNumber, formatValue, score100 } from '../lib/format'
+import { formatCoords, formatNumber, formatPercent, formatValue } from '../lib/format'
 import type { RankedSite, ScoreMode } from '../lib/ranking'
 import { activeWeights, scoredCount } from '../lib/ranking'
 import { BODIES } from '../map/bodies'
-import { BackButton, BodyChip, Pending, ScoreBar, SiteBadges, SiteGlyph } from './ui'
+import { BackButton, BodyChip, Pending, ScoreBar, ScoreSummary, SectionTitle, SiteBadges, SiteGlyph } from './ui'
 import { siteGlyphProps } from '../lib/glyph'
 import { SourceLinks } from './SourceLinks'
+import { ScoreMethod } from './ScoreMethod'
 
 const DimensionRadar = lazy(() => import('./DimensionRadar'))
+
+const ACTION = 'inline-flex min-h-10 items-center gap-1.5 rounded-md border border-line px-2.5 py-1.5 text-xs font-semibold text-ink transition hover:border-ink/30'
 
 interface Props {
   model: Model
@@ -22,11 +25,16 @@ interface Props {
   mode: ScoreMode
   onBack: () => void
   onCompare: () => void
+  onShowMap: () => void
   /** Abre la vista 3D; null si el objetivo no se puede mostrar en 3D. */
   onExplore: (() => void) | null
+  /** Todos los objetivos, para ver este sitio frente a cada uno. */
+  targets: Target[]
+  /** Cambia el objetivo y conserva este sitio. */
+  onTarget: (id: string) => void
 }
 
-function DimensionRows({
+function DimensionResult({
   dim,
   row,
   target,
@@ -42,57 +50,37 @@ function DimensionRows({
   const score = row.dimensions[dim.id] ?? null
   const earth = formatValue(row.site.values[dim.id], dim, lang)
   const other = formatValue(target.values[dim.id], dim, lang)
-  const noData = <span className="font-sans text-[11px] italic text-faint">{t('value.noData')}</span>
+  const noData = <span className="font-sans text-xs italic text-muted">{t('value.noData')}</span>
 
   return (
-    <tbody className={`border-t border-line ${share === null ? 'bg-paper/40' : ''}`}>
-      <tr className="align-top">
-        <th scope="row" className="pb-1 pl-4 pr-2 pt-3 text-left font-normal">
-          <span className="block text-sm font-medium leading-snug text-ink">{dim.label[lang]}</span>
+    <li className="py-3">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h4 className="wrap-anywhere text-sm font-semibold leading-snug">{dim.label[lang]}</h4>
           {share !== null && (
-            <span className="font-mono text-[10px] uppercase tracking-wide text-faint">
-              {t('table.weight', { pct: Math.round(share * 100) })}
-            </span>
+            <p className="mt-0.5 text-[11px] text-muted">{t('table.weight', { pct: formatPercent(share, lang) })}</p>
           )}
-        </th>
-        <td className="whitespace-nowrap px-2 pb-1 pt-3 text-right font-mono text-[13px] tabular-nums text-earth">
-          {earth ?? noData}
-        </td>
-        <td
-          className="whitespace-nowrap px-2 pb-1 pt-3 text-right font-mono text-[13px] tabular-nums"
-          style={{ color: BODIES[target.body].color }}
-        >
-          {other ?? noData}
-        </td>
-        <td className="w-16 pb-1 pl-2 pr-4 pt-3">
-          {score !== null ? (
-            <>
-              <span className="block text-right font-mono text-[13px] font-semibold tabular-nums">{score100(score)}</span>
-              <ScoreBar score={score} className="mt-1" />
-            </>
-          ) : (
-            <span className="block text-right text-[11px] italic text-faint">{t('value.noData')}</span>
+        </div>
+        <p className="shrink-0 text-right">
+          <span className="block text-[11px] leading-snug text-muted">{t('detail.dimensionScore')}</span>
+          {score === null ? noData : (
+            <span className="block text-xl font-bold leading-tight tabular-nums text-rust">{formatPercent(score, lang)}</span>
           )}
-        </td>
-      </tr>
-      <tr>
-        <td colSpan={4} className="px-4 pb-3">
-          <SourceLinks sources={dim.sources} />
-        </td>
-      </tr>
-    </tbody>
-  )
-}
-
-function GroupHeading({ children }: { children: string }) {
-  return (
-    <tbody>
-      <tr className="border-t border-line bg-paper/70">
-        <th colSpan={4} scope="colgroup" className="px-4 py-1.5 text-left text-[11px] font-semibold uppercase tracking-wide text-muted">
-          {children}
-        </th>
-      </tr>
-    </tbody>
+        </p>
+      </div>
+      {score !== null && <ScoreBar score={score} className="mt-2" />}
+      <dl className="mt-2.5 grid grid-cols-2 gap-2 rounded-md bg-paper px-2.5 py-2 wrap-anywhere">
+        <div style={{ color: BODIES.earth.color }}>
+          <dt className="text-xs font-medium">{t('body.earth')}</dt>
+          <dd className="mt-0.5 font-mono text-[13px] tabular-nums">{earth ?? noData}</dd>
+        </div>
+        <div style={{ color: BODIES[target.body].color }}>
+          <dt className="text-xs font-medium">{target.name}</dt>
+          <dd className="mt-0.5 font-mono text-[13px] tabular-nums">{other ?? noData}</dd>
+        </div>
+      </dl>
+      <div className="mt-2 wrap-anywhere"><SourceLinks sources={dim.sources} /></div>
+    </li>
   )
 }
 
@@ -116,7 +104,7 @@ function ShareButton() {
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink/30"
+      className={ACTION}
     >
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
         <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" strokeLinecap="round" />
@@ -126,9 +114,11 @@ function ShareButton() {
   )
 }
 
-export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare, onExplore }: Props) {
+export function SiteDetail({ model, row, total, target, purpose, mode, onBack, onCompare, onShowMap, onExplore, targets, onTarget }: Props) {
   const { t, lang } = useI18n()
   const { site } = row
+  const measurementsRef = useRef<HTMLHeadingElement>(null)
+  const [radarOpen, setRadarOpen] = useState(false)
   const description = siteText(model, site, 'description', lang)
   const limits = siteText(model, site, 'limits', lang)
   const exploration = siteText(model, site, 'exploration', lang)
@@ -140,17 +130,27 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
   const counted = withWeight.filter((d) => d.w > 0).sort((a, b) => b.w - a.w)
   const context = withWeight.filter((d) => d.w <= 0)
   const weightSum = counted.reduce((sum, d) => sum + d.w, 0) || 1
+  const groups = [
+    { title: 'table.counted', dimensions: counted },
+    { title: 'table.context', dimensions: context },
+  ] as const
+
+  // En el otro sentido: este sitio frente a cada objetivo, con la similitud que entrega el rol 4.
+  // Solo se ordena; los que no tienen puntaje van al final como «no evaluado».
+  const pairs = targets
+    .map((tg) => ({ target: tg, similarity: site.scores.find((s) => s.targetId === tg.id)?.similarity ?? null }))
+    .sort((a, b) => (b.similarity ?? -1) - (a.similarity ?? -1))
 
   return (
-    <article className="px-5 pb-10 pt-4 sm:px-7">
+    <article className="px-5 pb-10 pt-3 sm:px-7">
       <BackButton onClick={onBack}>{t('nav.backToRanking')}</BackButton>
 
-      <header className="mt-3">
+      <header className="mt-2">
         <div className="flex items-center gap-2">
-          <SiteGlyph {...siteGlyphProps(site, row.score)} size={26} />
+          <SiteGlyph {...siteGlyphProps(site, row.score)} size={22} />
           <SiteBadges site={site} evaluated={row.score !== null} />
         </div>
-        <h1 className="mt-2 font-serif text-[1.65rem] font-semibold leading-tight tracking-tight">{site.name}</h1>
+        <h1 className="mt-1.5 font-serif text-[1.55rem] font-semibold leading-tight tracking-tight">{site.name}</h1>
         <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs text-muted">
           {site.type && <span>{site.type[lang]}</span>}
           <span className="font-mono text-faint">{formatCoords(site.lat, site.lon, lang)}</span>
@@ -160,127 +160,132 @@ export function SiteDetail({ model, row, total, target, purpose, mode, onBack, o
         </p>
       </header>
 
-      <section className="mt-5 rounded-xl border border-line bg-surface p-4">
-        {row.score !== null ? (
-          <div className="flex items-end gap-4">
-            <p className="font-mono text-5xl font-semibold leading-none tracking-tight tabular-nums">
-              {score100(row.score)}
-              <span className="ml-1 text-base font-normal text-faint">/100</span>
-            </p>
-            <div className="min-w-0 flex-1 pb-1">
-              <p className="text-sm font-medium text-ink">
-                {mode === 'purpose' ? t('detail.purposeScore') : t('detail.similarity')}
-              </p>
-              <ScoreBar score={row.score} className="mt-1.5 h-2" />
-            </div>
-          </div>
-        ) : (
-          <p className="text-sm text-muted">{t('detail.notEvaluated')}</p>
-        )}
-        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line pt-3 text-xs text-muted">
+      <section aria-label={t('detail.similarity')} className="mt-4 rounded-xl border border-line bg-paper px-3.5 py-3 sm:px-4">
+        <ScoreSummary similarity={row.similarity} purposeScore={mode === 'purpose' ? row.score : undefined} />
+        <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
           {row.rank !== null && <span className="font-medium text-ink">{t('detail.rank', { rank: row.rank, total })}</span>}
+          {row.rank !== null && <span className="text-faint" aria-hidden="true">·</span>}
           <span>{t('detail.dimsScored', { n: scored, total: dimTotal })}</span>
-          <span className="flex items-center gap-1.5">
-            {t('target.comparing')} <strong className="font-medium text-ink">{target.name}</strong>
-            <BodyChip body={target.body} />
-          </span>
-        </div>
+        </p>
+        <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+          {t('target.comparing')} <strong className="font-medium text-ink">{target.name}</strong>
+          <BodyChip body={target.body} />
+        </p>
+        <ScoreMethod model={model} purpose={mode === 'purpose' ? purpose : null} />
       </section>
 
       {onExplore && (
         <button
           type="button"
           onClick={onExplore}
-          className="group mt-3 flex w-full items-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-space via-[#1c2f46] to-[#7a3416] px-4 py-3 text-left text-white shadow-lg shadow-rust/10 transition hover:shadow-xl hover:shadow-rust/20"
+          title={t('explore.openHint')}
+          className="mt-3 flex min-h-11 w-full flex-col items-center justify-center rounded-md bg-space px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#1c2f46]"
         >
-          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-white/10" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+          <span className="inline-flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
               <path d="M3 18l5-8 4 5 3-4 6 7z" strokeLinejoin="round" />
               <circle cx="17" cy="6" r="2" />
             </svg>
+            {t('explore.open')}
           </span>
-          <span className="min-w-0 flex-1">
-            <span className="block font-semibold">{t('explore.open')}</span>
-            <span className="block text-xs text-white/70">{t('explore.openHint')}</span>
-          </span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 transition group-hover:translate-x-0.5" aria-hidden="true">
-            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <span className="text-xs font-normal text-white/70">{t('explore.openModes')}</span>
         </button>
       )}
 
-      <section className="mt-6">
-        <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">{t('detail.about')}</h2>
-        <p className="mt-2 text-[15px] leading-relaxed text-ink">{description ?? <Pending />}</p>
-      </section>
+      <div role="group" aria-label={t('detail.actions')} className="mt-2 flex flex-wrap gap-2">
+        <button type="button" onClick={() => {
+          const heading = measurementsRef.current
+          if (!heading) return
+          const panel = heading.closest('#results-workspace')
+          if (!panel) return
+          panel.scrollBy({ top: heading.getBoundingClientRect().top - panel.getBoundingClientRect().top - 16 })
+          heading.focus({ preventScroll: true })
+        }} className={ACTION}>
+          {t('nav.measurements')}
+        </button>
+        <button type="button" onClick={onShowMap} className={ACTION}>
+          {t('nav.showSiteOnMap')}
+        </button>
+        <button type="button" onClick={onCompare} className={ACTION}>
+          {t('compare.add')}
+        </button>
+        <ShareButton />
+      </div>
 
-      <section className="mt-6 rounded-xl border border-line bg-paper/55 p-3">
-        <h2 className="font-serif text-lg font-semibold">{t('radar.title')}</h2>
-        <Suspense fallback={<div className="h-[200px]" />}>
-          <DimensionRadar key={`${site.id}|${target.id}`} model={model} site={site} target={target} />
-        </Suspense>
-      </section>
-
-      <section className="mt-7">
-        <h2 className="font-serif text-lg font-semibold leading-tight">{t('detail.evidence')}</h2>
-        <p className="mt-1 text-xs text-muted">{t('detail.evidenceLead')}</p>
-        <div className="mt-3 overflow-x-auto rounded-xl border border-line bg-surface">
-          <table className="w-full min-w-[22rem] border-collapse">
-            <thead>
-              <tr className="bg-paper/70 text-[11px] uppercase tracking-wide text-muted">
-                <th scope="col" className="py-2 pl-4 pr-2 text-left font-semibold">
-                  {t('table.dimension')}
-                </th>
-                <th scope="col" className="px-2 py-2 text-right font-semibold text-earth">
-                  {t('table.earth')}
-                </th>
-                <th scope="col" className="max-w-[6rem] truncate px-2 py-2 text-right font-semibold" style={{ color: BODIES[target.body].color }}>
-                  {target.name}
-                </th>
-                <th scope="col" className="py-2 pl-2 pr-4 text-right font-semibold">
-                  {t('table.score')}
-                </th>
-              </tr>
-            </thead>
-            {counted.length > 0 && <GroupHeading>{t('table.counted')}</GroupHeading>}
-            {counted.map(({ dim, w }) => (
-              <DimensionRows key={dim.id} dim={dim} row={row} target={target} share={w / weightSum} />
-            ))}
-            {context.length > 0 && <GroupHeading>{t('table.context')}</GroupHeading>}
-            {context.map(({ dim }) => (
-              <DimensionRows key={dim.id} dim={dim} row={row} target={target} share={null} />
-            ))}
-          </table>
-        </div>
-      </section>
-
-      <section className="mt-7 rounded-xl border border-caution/25 bg-caution-soft p-4">
-        <h2 className="flex items-center gap-2 font-serif text-base font-semibold text-caution">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          {t('detail.limits')}
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink">{limits ?? <Pending />}</p>
-        <p className="mt-2 text-xs leading-relaxed text-caution">{t(`limits.general.${target.body}`)}</p>
-      </section>
-
-      <section className="mt-4 rounded-xl border border-ok/20 bg-ok-soft p-4">
-        <h2 className="flex items-center gap-2 font-serif text-base font-semibold text-ok">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <section className="mt-4 rounded-r-lg border-l-2 border-ok/50 bg-ok-soft/55 px-3 py-2.5">
+        <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-ok">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M9 3h6M10 3v6.5L5.2 18a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 9.5V3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           {t('detail.exploration')}
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink">{exploration ?? <Pending />}</p>
+        <p className="mt-1 text-sm leading-relaxed text-ink">{exploration ?? <Pending />}</p>
       </section>
 
-      <div className="mt-6 flex flex-wrap gap-2">
-        <ShareButton />
-        <button type="button" onClick={onCompare} className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium hover:border-ink/30">
-          {t('compare.add')}
-        </button>
-      </div>
+      <section className="mt-2 rounded-r-lg border-l-2 border-caution/60 bg-caution-soft/55 px-3 py-2.5">
+        <h2 className="flex items-center gap-1.5 text-[13px] font-semibold text-caution">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          {t('detail.limits')}
+        </h2>
+        <p className="mt-1 text-sm leading-relaxed text-ink">{limits ?? <Pending />}</p>
+        <p className="mt-1.5 text-xs leading-relaxed text-muted">{t(`limits.general.${target.body}`)}</p>
+      </section>
+
+      {pairs.length > 1 && (
+        <section className="mt-5">
+          <SectionTitle lead={t('detail.otherTargetsLead')}>{t('detail.otherTargets')}</SectionTitle>
+          <ul className="mt-1.5 divide-y divide-line">
+            {pairs.map(({ target: tg, similarity }) => (
+              <li key={tg.id} className="flex min-h-11 items-center gap-2 py-1.5">
+                <BodyChip body={tg.body} />
+                <span className="min-w-0 flex-1 text-sm font-medium leading-snug wrap-anywhere">{tg.name}</span>
+                <span className="hidden w-16 shrink-0 sm:block"><ScoreBar score={similarity} /></span>
+                <span className="w-16 shrink-0 text-right text-sm tabular-nums">
+                  {similarity === null ? <span className="text-xs text-muted">{t('badge.notEvaluated')}</span> : formatPercent(similarity, lang)}
+                </span>
+                {tg.id === target.id ? (
+                  <span className="w-20 shrink-0 text-right text-[11px] text-muted">{t('detail.currentTarget')}</span>
+                ) : (
+                  <button type="button" onClick={() => onTarget(tg.id)} className="min-h-9 w-20 shrink-0 text-right text-xs font-semibold text-earth underline underline-offset-2">
+                    {t('detail.compareWith')}
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="mt-6">
+        <h2 ref={measurementsRef} tabIndex={-1} className="scroll-mt-4 font-serif text-xl font-semibold leading-tight">{t('detail.dimensionsTitle')}</h2>
+        <p className="mt-1 text-xs leading-relaxed text-muted">{t('detail.evidenceLead')}</p>
+        <details className="mt-2" onToggle={(event) => setRadarOpen(event.currentTarget.open)}>
+          <summary className="cursor-pointer rounded py-1 text-xs font-semibold text-earth">{t('radar.title')}</summary>
+          {radarOpen && (
+            <Suspense fallback={<div className="h-[200px]" />}>
+              <DimensionRadar key={`${site.id}|${target.id}`} model={model} site={site} target={target} />
+            </Suspense>
+          )}
+        </details>
+        {groups.map(({ title, dimensions }) => dimensions.length > 0 && (
+          <section key={title} className="mt-4">
+            <h3 className="border-b border-line pb-1.5 text-xs font-semibold text-muted">{t(title)}</h3>
+            <ul className="divide-y divide-line">
+              {dimensions.map(({ dim, w }) => (
+                <DimensionResult key={dim.id} dim={dim} row={row} target={target} share={w > 0 ? w / weightSum : null} />
+              ))}
+            </ul>
+          </section>
+        ))}
+      </section>
+
+      <section className="mt-5">
+        <SectionTitle>{t('detail.about')}</SectionTitle>
+        <p className="mt-1.5 text-sm leading-relaxed text-ink">{description ?? <Pending />}</p>
+      </section>
+
     </article>
   )
 }

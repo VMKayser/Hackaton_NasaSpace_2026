@@ -2,6 +2,7 @@ import type { Dimension, Value } from '../data/schema'
 import type { Lang } from '../i18n'
 
 const numberFormats = new Map<string, Intl.NumberFormat>()
+const percentFormats = new Map<Lang, Intl.NumberFormat>()
 
 function nf(lang: Lang, digits: number) {
   const key = `${lang}-${digits}`
@@ -27,9 +28,14 @@ export function formatValue(v: Value | undefined, dim: Dimension, lang: Lang): s
   return v.unit.startsWith('°') ? `${n}${v.unit}` : `${n} ${v.unit}`
 }
 
-/** Puntaje de 0 a 1 mostrado de 0 a 100. */
-export function score100(score: number): number {
-  return Math.round(score * 100)
+/** Puntaje de 0 a 1 mostrado como porcentaje. */
+export function formatPercent(score: number, lang: Lang): string {
+  let formatter = percentFormats.get(lang)
+  if (!formatter) {
+    formatter = new Intl.NumberFormat(lang, { style: 'percent', maximumFractionDigits: 1 })
+    percentFormats.set(lang, formatter)
+  }
+  return formatter.format(score)
 }
 
 export function formatCoords(lat: number, lon: number, lang: Lang): string {
