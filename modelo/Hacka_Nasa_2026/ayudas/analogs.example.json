@@ -1,0 +1,297 @@
+{
+  "meta": {
+    "mock": true,
+    "version": "2.1.0",
+    "generated": "2026-11-14T00:00:00Z",
+    "scoring": {
+      "en": "Demo measurements and scores are illustrative. The total is the weighted mean of available dimension scores.",
+      "es": "Las mediciones y los puntajes de la demo son ilustrativos. El total es la media ponderada de los puntajes disponibles por dimensión."
+    },
+    "dimensions": [
+      {
+        "id": "terrain",
+        "label": {
+          "en": "Median slope",
+          "es": "Pendiente mediana"
+        },
+        "weight": 0.75,
+        "sources": [
+          {
+            "name": "NASADEM HGT",
+            "agency": "NASA",
+            "url": "https://data.nasa.gov/dataset/nasadem-merged-dem-global-1-arc-second-v001",
+            "body": "earth"
+          },
+          {
+            "name": "HiRISE Jezero Depositional Fan DTM",
+            "agency": "NASA / University of Arizona",
+            "url": "https://www.uahirise.org/dtm/dtm.php?ID=PSP_002387_1985",
+            "body": "mars"
+          }
+        ]
+      },
+      {
+        "id": "relief",
+        "label": {
+          "en": "Local relief",
+          "es": "Relieve local"
+        },
+        "weight": 0.25,
+        "sources": [
+          {
+            "name": "NASADEM HGT",
+            "agency": "NASA",
+            "url": "https://data.nasa.gov/dataset/nasadem-merged-dem-global-1-arc-second-v001",
+            "body": "earth"
+          },
+          {
+            "name": "HiRISE Jezero Depositional Fan DTM",
+            "agency": "NASA / University of Arizona",
+            "url": "https://www.uahirise.org/dtm/dtm.php?ID=PSP_002387_1985",
+            "body": "mars"
+          }
+        ]
+      }
+    ],
+    "purposes": [
+      {
+        "id": "rover-mobility",
+        "kind": "task",
+        "targetId": "jezero",
+        "weights": {
+          "terrain": 0.75,
+          "relief": 0.25
+        },
+        "label": {
+          "en": "Rover mobility on sloped terrain",
+          "es": "Movilidad de rover en terreno con pendiente"
+        },
+        "question": {
+          "en": "Where can a rover route planner be rehearsed?",
+          "es": "¿Dónde se puede ensayar un planificador de rutas de rover?"
+        }
+      }
+    ]
+  },
+  "targets": [
+    {
+      "id": "jezero",
+      "name": "Jezero",
+      "body": "mars",
+      "lat": 18.44,
+      "lon": 77.45,
+      "summary": {
+        "en": "Martian target for the rover mobility demo.",
+        "es": "Objetivo marciano para la demostración de movilidad de rover."
+      },
+      "values": {
+        "terrain": {
+          "value": 9.7,
+          "unit": "°"
+        },
+        "relief": {
+          "value": 80,
+          "unit": "m"
+        }
+      }
+    }
+  ],
+  "sites": [
+    {
+      "id": "siloli",
+      "name": "Desierto de Siloli",
+      "lat": -22.05,
+      "lon": -67.88,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2,
+      "type": {
+        "en": "Volcanic desert",
+        "es": "Desierto volcánico"
+      },
+      "description": {
+        "en": "Illustrative candidate for the demo.",
+        "es": "Candidato ilustrativo para la demostración."
+      },
+      "limits": {
+        "en": "Slope alone cannot establish wheel traction or rock composition.",
+        "es": "La pendiente por sí sola no permite determinar la tracción de las ruedas ni la composición de las rocas."
+      },
+      "exploration": {
+        "en": "Evaluate a route planner on terrain with varying slopes.",
+        "es": "Evaluar un planificador de rutas en terreno con pendientes variables."
+      },
+      "values": {
+        "terrain": {
+          "value": 8.2,
+          "unit": "°"
+        },
+        "relief": {
+          "value": 65,
+          "unit": "m"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.82,
+          "dimensions": {
+            "terrain": 0.84,
+            "relief": 0.76
+          }
+        }
+      ],
+      "purposeScores": {
+        "rover-mobility": 0.82
+      }
+    },
+    {
+      "id": "dali",
+      "name": "Desierto Salvador Dalí",
+      "lat": -22.60,
+      "lon": -67.63,
+      "known": false,
+      "reference": false,
+      "control": false,
+      "radiusKm": 2,
+      "type": {
+        "en": "Volcanic desert",
+        "es": "Desierto volcánico"
+      },
+      "description": {
+        "en": "Second illustrative candidate, with incomplete relief data.",
+        "es": "Segundo candidato ilustrativo, con datos incompletos de relieve."
+      },
+      "limits": {
+        "en": "Only the slope comparison is available.",
+        "es": "Solo está disponible la comparación de pendientes."
+      },
+      "exploration": {
+        "en": "Use the slope estimate to select an area for further survey.",
+        "es": "Usar la estimación de pendiente para elegir un área que convenga medir en campo."
+      },
+      "values": {
+        "terrain": {
+          "value": 7.4,
+          "unit": "°"
+        },
+        "relief": {
+          "value": null,
+          "unit": "m"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.74,
+          "dimensions": {
+            "terrain": 0.74,
+            "relief": null
+          }
+        }
+      ],
+      "purposeScores": {
+        "rover-mobility": 0.74
+      }
+    },
+    {
+      "id": "yungay-atacama",
+      "name": "Yungay, Atacama (Chile)",
+      "lat": -24.08,
+      "lon": -69.92,
+      "known": true,
+      "reference": true,
+      "control": false,
+      "radiusKm": 2,
+      "type": {
+        "en": "Desert",
+        "es": "Desierto"
+      },
+      "description": {
+        "en": "Catalog reference for the demo.",
+        "es": "Referencia del catálogo para la demostración."
+      },
+      "limits": {
+        "en": "The documented use of Atacama as an analog depends on the property and study site.",
+        "es": "El uso documentado de Atacama como análogo depende de la propiedad y del sitio estudiado."
+      },
+      "exploration": {
+        "en": "Compare the terrain with the proposed candidates using the same measures.",
+        "es": "Comparar el terreno con el de los candidatos propuestos usando los mismos indicadores."
+      },
+      "values": {
+        "terrain": {
+          "value": 7.1,
+          "unit": "°"
+        },
+        "relief": {
+          "value": 92,
+          "unit": "m"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.7,
+          "dimensions": {
+            "terrain": 0.66,
+            "relief": 0.82
+          }
+        }
+      ],
+      "purposeScores": {
+        "rover-mobility": 0.7
+      }
+    },
+    {
+      "id": "trinidad-control",
+      "name": "Trinidad, Beni",
+      "lat": -14.83,
+      "lon": -64.90,
+      "known": false,
+      "reference": false,
+      "control": true,
+      "radiusKm": 2,
+      "type": {
+        "en": "Humid lowland",
+        "es": "Llanura húmeda"
+      },
+      "description": {
+        "en": "Illustrative flat-terrain control in the lowlands of Beni.",
+        "es": "Control ilustrativo de terreno llano en las tierras bajas del Beni."
+      },
+      "limits": {
+        "en": "This control represents only the selected flat area.",
+        "es": "Este control representa solo el área llana seleccionada."
+      },
+      "exploration": {
+        "en": "Check how the score responds to an almost flat area.",
+        "es": "Comprobar cómo responde el puntaje ante un terreno casi plano."
+      },
+      "values": {
+        "terrain": {
+          "value": 0.4,
+          "unit": "°"
+        },
+        "relief": {
+          "value": 2,
+          "unit": "m"
+        }
+      },
+      "scores": [
+        {
+          "targetId": "jezero",
+          "similarity": 0.05,
+          "dimensions": {
+            "terrain": 0,
+            "relief": 0.2
+          }
+        }
+      ],
+      "purposeScores": {
+        "rover-mobility": 0.05
+      }
+    }
+  ]
+}

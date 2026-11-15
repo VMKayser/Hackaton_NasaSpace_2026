@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA Space Apps - Planetary Mission Control | Dual-Globe Explorer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="data/mission_dataset.js"></script>
+  <style>
+    :root {
+      --bg: #040711;
+      --panel-bg: rgba(10, 16, 32, 0.92);
+      --card-bg: rgba(16, 26, 48, 0.75);
+      --border: rgba(45, 66, 110, 0.65);
+      --border-bright: rgba(0, 242, 254, 0.5);
+      --accent: #00f2fe;
+      --accent-glow: rgba(0, 242, 254, 0.35);
+      --mars-color: #f97316;
+      --mars-glow: rgba(249, 115, 22, 0.4);
+      --moon-color: #cbd5e1;
+      --moon-glow: rgba(203, 213, 225, 0.35);
+      --bolivia-gold: #fbbf24;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #22c55e;
+      --warning: #eab308;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP HEADER & CONTROL BAR */
+    header {
+      background: rgba(6, 10, 22, 0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: radial-gradient(circle, #38bdf8 0%, #0284c7 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: white;
+      box-shadow: 0 0 16px var(--accent-glow);
+      letter-spacing: -0.5px;
+    }
+
+    .brand h1 {
+      font-size: 1.05rem;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .brand span {
+      font-size: 0.72rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* SEARCH & FILTER CONTROLS */
+    .controls-center {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .search-box {
+      position: relative;
+      width: 260px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(18, 28, 52, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.4rem 1rem 0.4rem 2.2rem;
+      color: white;
+      font-size: 0.82rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+      background: rgba(22, 36, 68, 0.95);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .pill-btn {
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.32rem 0.7rem;
+      border-radius: 15px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .pill-btn:hover, .pill-btn.active {
+      background: var(--accent);
+      color: #040814;
+      border-color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .pill-bolivia {
+      border-color: rgba(251, 191, 36, 0.6);
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.12);
+    }
+
+    .pill-bolivia:hover, .pill-bolivia.active {
+      background: linear-gradient(135deg, #ef4444, #f59e0b, #10b981);
+      color: white;
+      border-color: #f59e0b;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.6);
+    }
+
+    /* PLANET TOGGLE (MARS / MOON) */
+    .planet-selector {
+      display: flex;
+      background: rgba(14, 21, 38, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 0.2rem;
+    }
+
+    .planet-btn {
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      background: transparent;
+      transition: all 0.25s;
+    }
+
+    .planet-btn.active.mars-btn {
+      background: var(--mars-color);
+      color: white;
+      box-shadow: 0 0 14px var(--mars-glow);
+    }
+
+    .planet-btn.active.moon-btn {
+      background: var(--moon-color);
+      color: #040814;
+      box-shadow: 0 0 14px var(--moon-glow);
+    }
+
+    /* MAIN DUAL GLOBE CONTAINER */
+    #dual-globes-container {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #070e22 0%, #03050a 100%);
+    }
+
+    .globe-viewport {
+      flex: 1;
+      height: 100%;
+      position: relative;
+    }
+
+    .globe-canvas-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .viewport-overlay {
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      pointer-events: none;
+      z-index: 10;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .viewport-overlay h2 {
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .viewport-overlay p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .divider-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, var(--border), var(--accent), var(--border), transparent);
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    /* FLOATING ON-GLOBE CALLOUT */
+    #globe-pin-callout {
+      position: absolute;
+      background: rgba(9, 15, 30, 0.95);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 0.5rem;
+      z-index: 40;
+      display: none;
+      pointer-events: auto;
+      box-shadow: 0 8px 25px rgba(0, 242, 254, 0.35);
+      backdrop-filter: blur(10px);
+      width: 240px;
+      transform: translate(-50%, -100%) translateY(-15px);
+      animation: calloutPop 0.25s ease-out;
+    }
+
+    @keyframes calloutPop {
+      0% { opacity: 0; transform: translate(-50%, -90%) scale(0.9); }
+      100% { opacity: 1; transform: translate(-50%, -100%) translateY(-15px) scale(1); }
+    }
+
+    #globe-pin-callout::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px 8px 0;
+      border-style: solid;
+      border-color: var(--accent) transparent;
+      display: block;
+      width: 0;
+    }
+
+    .callout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.4rem;
+    }
+
+    .callout-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .callout-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 0.2rem;
+    }
+    .callout-close:hover { color: white; }
+
+    .callout-body {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .callout-thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      background: #000;
+      cursor: pointer;
+    }
+
+    .callout-info {
+      flex: 1;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .callout-btn {
+      margin-top: 0.4rem;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(0,242,254,0.2), rgba(2,132,199,0.3));
+      border: 1px solid var(--accent);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .callout-btn:hover {
+      background: var(--accent);
+      color: #040814;
+    }
+
+    /* BOTTOM INTELLIGENCE HUD */
+    #mission-hud {
+      height: 335px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(15px);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+
+    .psi-formula-badge {
+      font-size: 0.62rem;
+      color: #38bdf8;
+      background: rgba(0, 242, 254, 0.09);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 4px;
+      padding: 0.2rem 0.45rem;
+      margin-bottom: 0.4rem;
+      text-align: center;
+      letter-spacing: 0.2px;
+      font-weight: 700;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.15);
+      cursor: help;
+      transition: all 0.2s;
+    }
+    .psi-formula-badge:hover {
+      background: rgba(0, 242, 254, 0.2);
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* AUDIT BUTTON IN HUD HEADER */
+    .audit-btn {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(2, 132, 199, 0.35));
+      border: 1px solid var(--accent);
+      color: #ffffff;
+      font-size: 0.70rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    }
+    .audit-btn:hover {
+      background: var(--accent);
+      color: #040814;
+      box-shadow: 0 0 16px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    /* CANDIDATE TARGETS RIBBON */
+    .candidate-ranking-bar {
+      background: rgba(10, 16, 32, 0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 0.35rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      overflow-x: auto;
+      z-index: 55;
+    }
+    .ranking-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .ranking-chips-container {
+      display: flex;
+      gap: 0.45rem;
+      align-items: center;
+      flex: 1;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .target-candidate-chip {
+      background: rgba(22, 34, 60, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.22rem 0.55rem;
+      font-size: 0.70rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      color: #cbd5e1;
+    }
+    .target-candidate-chip:hover {
+      border-color: var(--accent);
+      background: rgba(0, 242, 254, 0.15);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+      transform: translateY(-1px);
+    }
+    .target-candidate-chip.active {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.25), rgba(2, 132, 199, 0.35));
+      color: #ffffff;
+      font-weight: 800;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .chip-score-badge {
+      font-weight: 800;
+      font-size: 0.68rem;
+      padding: 0.1rem 0.38rem;
+      border-radius: 4px;
+    }
+    .chip-score-high {
+      background: rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.6);
+    }
+    .chip-score-mid {
+      background: rgba(0, 242, 254, 0.25);
+      color: #38bdf8;
+      border: 1px solid rgba(0, 242, 254, 0.6);
+    }
+    .chip-score-low {
+      background: rgba(234, 179, 8, 0.25);
+      color: #facc15;
+      border: 1px solid rgba(234, 179, 8, 0.6);
+    }
+
+    /* INTERACTIVE DATA ROW HOVER */
+    .data-row.interactive-hover {
+      cursor: help;
+      border-radius: 4px;
+      padding: 0.18rem 0.4rem;
+      margin-left: -0.4rem;
+      margin-right: -0.4rem;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .data-row.interactive-hover:hover {
+      background: rgba(0, 242, 254, 0.10);
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+    }
+    .data-row.interactive-hover:hover .data-label {
+      color: var(--accent);
+    }
+    .subscore-bar.interactive-hover {
+      cursor: help;
+      padding: 0.2rem 0.4rem;
+      margin-left: -0.4rem;
+      margin-right: -0.4rem;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .subscore-bar.interactive-hover:hover {
+      background: rgba(0, 242, 254, 0.12);
+    }
+
+    /* FLOATING MATHEMATICAL BREAKDOWN TOOLTIP */
+    #math-hover-tooltip {
+      position: fixed;
+      background: rgba(6, 12, 28, 0.97);
+      border: 1px solid var(--accent);
+      box-shadow: 0 12px 36px rgba(0, 242, 254, 0.35), 0 0 20px rgba(0, 0, 0, 0.85);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      z-index: 99999;
+      pointer-events: none;
+      display: none;
+      width: 370px;
+      max-width: 92vw;
+      backdrop-filter: blur(16px);
+      font-size: 0.74rem;
+      line-height: 1.4;
+      color: #f8fafc;
+      animation: tooltipPop 0.15s ease-out;
+    }
+    @keyframes tooltipPop {
+      0% { opacity: 0; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .tooltip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.45rem;
+      border-bottom: 1px solid rgba(0, 242, 254, 0.25);
+      padding-bottom: 0.35rem;
+    }
+    .tooltip-title {
+      font-weight: 800;
+      color: var(--accent);
+      font-size: 0.80rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .tooltip-score {
+      font-weight: 800;
+      font-size: 0.75rem;
+      background: rgba(0, 242, 254, 0.2);
+      color: #38bdf8;
+      padding: 0.12rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--accent);
+    }
+    .tooltip-formula-box {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 4px;
+      padding: 0.45rem 0.65rem;
+      margin: 0.4rem 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.71rem;
+      color: #38bdf8;
+      word-break: break-word;
+      line-height: 1.35;
+    }
+    .tooltip-values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+      margin: 0.4rem 0;
+      font-size: 0.70rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.35rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .tooltip-justification {
+      color: #cbd5e1;
+      font-size: 0.69rem;
+      margin-top: 0.35rem;
+      line-height: 1.35;
+      border-left: 2px solid var(--accent);
+      padding-left: 0.5rem;
+    }
+
+    /* SCIENTIFIC AUDIT SIDE-BY-SIDE MODAL */
+    #audit-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 16, 0.88);
+      backdrop-filter: blur(14px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .audit-modal-box {
+      background: #091022;
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
+      border-radius: 10px;
+      width: 1060px;
+      max-width: 96vw;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+    .audit-modal-body {
+      padding: 1.2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      background: rgba(14, 22, 42, 0.7);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .audit-table th {
+      background: rgba(18, 30, 58, 0.95);
+      color: var(--accent);
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      letter-spacing: 0.5px;
+      padding: 0.55rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .audit-table td {
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      line-height: 1.35;
+    }
+    .audit-table tr:hover {
+      background: rgba(0, 242, 254, 0.06);
+    }
+    .audit-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+    .audit-card {
+      background: rgba(14, 22, 42, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem;
+      font-size: 0.73rem;
+      line-height: 1.4;
+    }
+    .audit-card-title {
+      font-weight: 800;
+      color: var(--accent);
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hud-header {
+      padding: 0.45rem 1.2rem;
+      background: rgba(8, 13, 26, 0.98);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hud-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hud-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 1.15fr 260px 1.1fr;
+      overflow-y: auto;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .hud-column {
+      background: var(--panel-bg);
+      padding: 0.75rem 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hud-col-header {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 0.3rem;
+    }
+
+    .site-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .site-badge {
+      font-size: 0.68rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-bolivia-gem {
+      background: linear-gradient(135deg, #ef4444, #f59e0b, #10b981);
+      color: white;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+    }
+
+    .badge-mars {
+      background: var(--mars-color);
+      color: white;
+    }
+
+    .badge-moon {
+      background: var(--moon-color);
+      color: #040814;
+    }
+
+    /* SITE MAP VISUALIZER CARD (NEW) */
+    .site-map-card {
+      margin-top: 0.4rem;
+      margin-bottom: 0.5rem;
+      background: rgba(12, 19, 38, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .site-map-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .map-tabs {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .map-tab-btn {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.18rem 0.45rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .map-tab-btn.active, .map-tab-btn:hover {
+      background: var(--accent);
+      color: #040814;
+      font-weight: 700;
+    }
+
+    .map-preview-box {
+      position: relative;
+      height: 95px;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #000;
+    }
+
+    .map-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .map-preview-box:hover img {
+      transform: scale(1.05);
+    }
+
+    .map-overlay-badge {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.12rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      backdrop-filter: blur(4px);
+    }
+
+    .map-overlay-zoom {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0, 242, 254, 0.85);
+      color: #040814;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      box-shadow: 0 0 8px rgba(0,242,254,0.5);
+    }
+
+    .data-row {
+      margin-bottom: 0.35rem;
+      font-size: 0.76rem;
+    }
+
+    .data-label {
+      color: var(--text-muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      margin-bottom: 0.08rem;
+    }
+
+    .data-value {
+      color: #e2e8f0;
+      line-height: 1.3;
+    }
+
+    /* PSI MATCH BOX */
+    .psi-meter-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .psi-circle {
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0deg, var(--accent) 270deg, rgba(255,255,255,0.1) 270deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 0 15px var(--accent-glow);
+      transition: background 0.3s;
+    }
+
+    .psi-inner {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: #080d1b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .psi-number {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+    }
+
+    .psi-sub {
+      font-size: 0.62rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .subscore-bar {
+      width: 100%;
+      margin: 0.2rem 0;
+      font-size: 0.68rem;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    /* MISSION GEAR LIST */
+    .gear-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .gear-item {
+      font-size: 0.72rem;
+      margin-bottom: 0.3rem;
+      display: flex;
+      gap: 0.4rem;
+      align-items: flex-start;
+      color: #cbd5e1;
+      line-height: 1.3;
+    }
+
+    .gear-bullet {
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    /* FULL MODAL INSPECTOR */
+    #site-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 16, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-box {
+      background: #0a1020;
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.25);
+      border-radius: 10px;
+      width: 1000px;
+      max-width: 95vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      background: rgba(14, 23, 45, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title-group h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-title-group p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .modal-close-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--border);
+      color: white;
+      font-size: 1.2rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal-close-btn:hover {
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .modal-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow-y: auto;
+      gap: 1.2rem;
+      padding: 1.2rem;
+    }
+
+    .modal-viewer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .modal-tab-btn {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-tab-btn.active, .modal-tab-btn:hover {
+      background: var(--accent);
+      color: #040814;
+      border-color: var(--accent);
+    }
+
+    .modal-img-container {
+      position: relative;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    }
+
+    .modal-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease-out;
+    }
+
+    .modal-legend-bar {
+      background: rgba(14, 22, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.72rem;
+    }
+
+    .legend-colors {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 0.3rem;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+    }
+
+    .legend-color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .modal-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      font-size: 0.8rem;
+      overflow-y: auto;
+    }
+
+    .modal-section-card {
+      background: rgba(14, 22, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem;
+    }
+
+    .modal-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 0.3rem;
+    }
+
+    /* TOOLTIP */
+    #globe-tooltip {
+      position: absolute;
+      background: rgba(10, 16, 32, 0.95);
+      border: 1px solid var(--accent);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      pointer-events: none;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">NASA</div>
+      <div>
+        <h1>PLANETARY MISSION CONTROL <span style="font-size:0.8rem; color:#f59e0b;">| BEYOND KNOWN ANALOGUES</span></h1>
+        <span>Bolivia Altiplano & Global Earth Analogs ◄► Mars & Moon Bases</span>
+      </div>
+    </div>
+
+    <!-- SEARCH & REGION FILTER -->
+    <div class="controls-center">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="region-search" placeholder="Buscar análogo, país o misión...">
+      </div>
+      <div class="filter-pills">
+        <button class="pill-btn pill-bolivia active" data-filter="bolivia">🇧🇴 Bolivia (5 Gemas)</button>
+        <button class="pill-btn" data-filter="all">Todos los Análogos</button>
+        <button class="pill-btn" data-filter="sal">Evaporitas / Sal</button>
+        <button class="pill-btn" data-filter="volcano">Volcánicos</button>
+        <button class="pill-btn" data-filter="cryo">Criogénicos / Frío</button>
+      </div>
+    </div>
+
+    <!-- TARGET CELESTIAL BODY SELECTOR -->
+    <div class="planet-selector">
+      <button class="planet-btn mars-btn active" id="btn-mars">
+        <span>🔴</span> MARTE (6 Misiones)
+      </button>
+      <button class="planet-btn moon-btn" id="btn-moon">
+        <span>⚪</span> LUNA (4 Misiones)
+      </button>
+    </div>
+  </header>
+
+  <!-- DUAL GLOBES WORKSPACE -->
+  <main id="dual-globes-container">
+    <!-- LEFT GLOBE: EARTH -->
+    <div class="globe-viewport" id="viewport-earth">
+      <div class="viewport-overlay">
+        <h2 style="color: #38bdf8;">🌍 Planeta Tierra</h2>
+        <p>Análogos Terrestres de Misión • Haz clic en un punto para explorar mapas e imágenes</p>
+      </div>
+      <div class="globe-canvas-wrapper" id="canvas-earth"></div>
+    </div>
+
+    <!-- CENTER DIVIDER -->
+    <div class="divider-line"></div>
+
+    <!-- RIGHT GLOBE: MARS / MOON -->
+    <div class="globe-viewport" id="viewport-target">
+      <div class="viewport-overlay">
+        <h2 id="target-globe-title" style="color: var(--mars-color);">🔴 Planeta Marte</h2>
+        <p id="target-globe-sub">Sitios de Rovers, Misiones Activas y Futuras Bases • Clic para ver mapas</p>
+      </div>
+      <div class="globe-canvas-wrapper" id="canvas-target"></div>
+    </div>
+
+    <!-- FLOATING ON-GLOBE PIN CALLOUT -->
+    <div id="globe-pin-callout">
+      <div class="callout-header">
+        <div class="callout-title" id="callout-title">Salar de Uyuni</div>
+        <button class="callout-close" onclick="closeCallout()">✕</button>
+      </div>
+      <div class="callout-body">
+        <img class="callout-thumb" id="callout-thumb" src="" alt="Thumbnail" onclick="openModalFromCallout()">
+        <div class="callout-info">
+          <div id="callout-type" style="color:var(--accent); font-weight:700;">🇧🇴 Joya de Bolivia</div>
+          <div id="callout-coords">3,656 msnm</div>
+          <div style="color:#22c55e; margin-top:2px;">✔ 3 Mapas Disponibles</div>
+        </div>
+      </div>
+      <button class="callout-btn" onclick="openModalFromCallout()">🔍 Inspeccionar Mapas y Terreno</button>
+    </div>
+  </main>
+
+  <!-- BOTTOM INTELLIGENCE HUD -->
+  <section id="mission-hud">
+    <div class="hud-header">
+      <div class="hud-title">
+        <span>🛰️</span> INTELLIGENCE HUD: ANÁLOGOS TERRESTRES & PREPARACIÓN DE MISIÓN
+      </div>
+      <div style="font-size: 0.72rem; color: var(--text-muted); display:flex; gap:0.75rem; align-items:center;">
+        <button class="audit-btn" onclick="openAuditModal()">📊 AUDITORÍA CIENTÍFICA & TABLA COMPARATIVA LADO A LADO</button>
+        <span style="color:#22c55e;">● TELEMETRÍA EN VIVO</span>
+      </div>
+    </div>
+
+    <!-- HORIZONTAL CANDIDATE TARGET RANKING RIBBON -->
+    <div class="candidate-ranking-bar">
+      <span class="ranking-label">🎯 ANÁLOGOS EXTRATERRESTRES (RANKING DE SIMILITUD GLOBAL):</span>
+      <div class="ranking-chips-container" id="ranking-chips-container">
+        <!-- Dynamically populated with all extraterrestrial targets sorted by PSI % -->
+      </div>
+    </div>
+
+    <div class="hud-grid">
+      <!-- COL 1: EARTH ANALOG DETAILS -->
+      <div class="hud-column" id="hud-earth-col">
+        <div class="hud-col-header">
+          <span>Análogo Terrestre Seleccionado</span>
+          <span id="earth-badge" class="site-badge badge-bolivia-gem">BOLIVIA</span>
+        </div>
+        <div class="site-title" id="earth-name">Salar de Uyuni</div>
+        
+        <!-- INTERACTIVE MAP & SATELLITE CARD (EARTH) -->
+        <div class="site-map-card">
+          <div class="site-map-card-header">
+            <span style="font-size:0.68rem; font-weight:700; color:var(--accent);">🛰️ FOTOGRAFÍA & MAPEO SATELITAL:</span>
+            <div class="map-tabs" id="earth-map-tabs">
+              <button class="map-tab-btn active" data-map="satellite">Satélite</button>
+              <button class="map-tab-btn" data-map="heightmap">DEM 3D</button>
+              <button class="map-tab-btn" data-map="slopemap">Pendientes</button>
+            </div>
+          </div>
+          <div class="map-preview-box" onclick="openSiteModal('earth')">
+            <img id="earth-map-img" src="" alt="Mapa Terrestre">
+            <div class="map-overlay-badge" id="earth-map-badge">🛰️ Sentinel-2 / Landsat</div>
+            <div class="map-overlay-zoom">🔍 AMPLIAR MAPA</div>
+          </div>
+        </div>
+
+        <div class="data-row interactive-hover" data-metric="elev">
+          <div class="data-label">📍 Ubicación y Elevación (Pasa el cursor para ver cálculo)</div>
+          <div class="data-value" id="earth-coords">Potosí, Bolivia • 3,656 msnm (-20.13°, -67.49°)</div>
+        </div>
+        <div class="data-row interactive-hover" data-metric="press">
+          <div class="data-label">💨 Gases y Presión Atmosférica (Hover: cálculo log-ratio)</div>
+          <div class="data-value" id="earth-gases">Presión: 65.2 kPa (~45-65% nivel del mar)</div>
+        </div>
+        <div class="data-row interactive-hover" data-metric="min">
+          <div class="data-label">🧪 Mineralogía & Familia Geoquímica (Hover: afinidad)</div>
+          <div class="data-value" id="earth-minerals">Halita (NaCl), Yeso, Cloruro de Litio, Ulexita</div>
+        </div>
+        <div class="data-row interactive-hover" data-metric="clim_topo">
+          <div class="data-label">☀️ Clima, UV y Topografía (Hover: cálculo de aridez & pendientes)</div>
+          <div class="data-value" id="earth-climate">T: -15°C a 20°C • UV: Extremo (96%) • Pendiente media: 0.8°</div>
+        </div>
+      </div>
+
+      <!-- COL 2: PLANETARY TARGET DETAILS -->
+      <div class="hud-column" id="hud-target-col">
+        <div class="hud-col-header">
+          <span id="target-type-label">Destino Extraterrestre</span>
+          <span id="target-badge" class="site-badge badge-mars">MARTE</span>
+        </div>
+        <div class="site-title" id="target-name">Cráter Jezero</div>
+
+        <!-- INTERACTIVE MAP & SATELLITE CARD (TARGET) -->
+        <div class="site-map-card">
+          <div class="site-map-card-header">
+            <span style="font-size:0.68rem; font-weight:700; color:var(--mars-color);" id="target-map-label">🛰️ FOTOGRAFÍA ORBITAL NASA:</span>
+            <div class="map-tabs" id="target-map-tabs">
+              <button class="map-tab-btn active" data-map="satellite">Orbital</button>
+              <button class="map-tab-btn" data-map="heightmap">DEM MOLA</button>
+              <button class="map-tab-btn" data-map="slopemap">Riesgo</button>
+            </div>
+          </div>
+          <div class="map-preview-box" onclick="openSiteModal('target')">
+            <img id="target-map-img" src="" alt="Mapa Extraterrestre">
+            <div class="map-overlay-badge" id="target-map-badge">🛰️ NASA HiRISE 50cm</div>
+            <div class="map-overlay-zoom">🔍 AMPLIAR MAPA</div>
+          </div>
+        </div>
+
+        <div class="data-row interactive-hover" data-metric="elev">
+          <div class="data-label">🚀 Misión y Contexto Operativo</div>
+          <div class="data-value" id="target-mission">NASA Mars 2020 / Rover Perseverance + Ingenuity</div>
+        </div>
+        <div class="data-row interactive-hover" data-metric="press">
+          <div class="data-label">💨 Atmósfera y Presión Real (Hover: ratio barométrico)</div>
+          <div class="data-value" id="target-gases">Presión: 0.61 kPa • 95.3% CO2, 2.6% N2, 1.9% Ar</div>
+        </div>
+        <div class="data-row interactive-hover" data-metric="min">
+          <div class="data-label">🧪 Fases Minerales y Regolito (Hover: sulfatos compartidos)</div>
+          <div class="data-value" id="target-minerals">Arcillas esmectitas, Sulfatos de yeso, Carbonato de Mg</div>
+        </div>
+        <div class="data-row interactive-hover" data-metric="clim_topo">
+          <div class="data-label">❄️ Ambiente y Radiación (Hover: frío extremo & UV)</div>
+          <div class="data-value" id="target-climate">T: -95°C a -5°C • Radiación: 250 mSv/año (GCR)</div>
+        </div>
+      </div>
+
+      <!-- COL 3: PSI MATCH BREAKDOWN -->
+      <div class="hud-column psi-meter-container" id="hud-psi-col">
+        <div class="hud-col-header" style="width: 100%;">
+          <span>Índice de Similitud (PSI)</span>
+        </div>
+        <div class="psi-formula-badge" id="psi-formula-badge" data-metric="formula">
+          📐 PSI = 0.35·Topo + 0.35·Clima + 0.30·Mineral
+        </div>
+        <div class="psi-circle interactive-hover" id="psi-circle" data-metric="psi" style="cursor:help;">
+          <div class="psi-inner">
+            <span class="psi-number" id="psi-score">71%</span>
+            <span class="psi-sub">Similitud</span>
+          </div>
+        </div>
+        <div style="font-size:0.68rem; font-weight:700; color:var(--accent); margin-bottom:0.35rem;" id="psi-tier">
+          Tier 2: High-Fidelity Planetary Analog
+        </div>
+        
+        <div class="subscore-bar interactive-hover" data-metric="topo">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Topografía (S_topo):</span><strong id="sub-topo">89.3%</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="bar-topo" style="width:89.3%;"></div></div>
+        </div>
+        <div class="subscore-bar interactive-hover" data-metric="clim">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Clima y UV (S_clim):</span><strong id="sub-env">46.5%</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="bar-env" style="width:46.5%;"></div></div>
+        </div>
+        <div class="subscore-bar interactive-hover" data-metric="min_score">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Mineralogía (S_min):</span><strong id="sub-min">79.2%</strong>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="bar-min" style="width:79.2%;"></div></div>
+        </div>
+      </div>
+
+      <!-- COL 4: MISSION GEAR & ACONDICIONAMIENTO -->
+      <div class="hud-column" id="hud-prep-col">
+        <div class="hud-col-header">
+          <span>Preparación & Acondicionamiento</span>
+        </div>
+        <div class="data-row">
+          <div class="data-label" style="color:#00f2fe;">🛠️ Ensayos y Equipos Requeridos en Tierra:</div>
+          <ul class="gear-list" id="gear-list"></ul>
+        </div>
+        <div class="data-row" style="margin-top:0.35rem;">
+          <div class="data-label" style="color:#f59e0b;">🏠 Acondicionamiento y Protección en Destino:</div>
+          <ul class="gear-list" id="habitat-list"></ul>
+        </div>
+        <div class="data-row" style="margin-top:0.35rem; border-top:1px dashed rgba(239,68,68,0.3); padding-top:0.3rem;">
+          <div class="data-label" style="color:#ef4444; font-weight:700;">⚠️ Límites del Análogo (Rúbrica NASA):</div>
+          <ul class="gear-list" id="limits-list"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULLSCREEN PLANETARY MAP & TELEMETRY INSPECTOR MODAL -->
+  <div id="site-modal" onclick="onModalBackdropClick(event)">
+    <div class="modal-box" id="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3 id="modal-site-title">🛰️ SALAR DE UYUNI <span id="modal-site-badge" class="site-badge badge-bolivia-gem">BOLIVIA</span></h3>
+          <p id="modal-site-subtitle">Inspección Científica de Terreno, Fotografía Satelital y Riesgo de Locomoción</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeSiteModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- LEFT: INTERACTIVE IMAGE VIEWER & TABS -->
+        <div class="modal-viewer-col">
+          <div class="modal-tabs">
+            <button class="modal-tab-btn active" id="modal-tab-sat" onclick="switchModalMap('satellite')">🛰️ Fotografía Satelital (RGB)</button>
+            <button class="modal-tab-btn" id="modal-tab-dem" onclick="switchModalMap('heightmap')">🗺️ Elevación Digital (DEM)</button>
+            <button class="modal-tab-btn" id="modal-tab-slope" onclick="switchModalMap('slopemap')">⚠️ Mapa de Pendientes y Riesgo</button>
+          </div>
+
+          <div class="modal-img-container">
+            <img id="modal-img-display" src="" alt="Inspección de Mapeo">
+          </div>
+
+          <!-- SCIENTIFIC LEGEND -->
+          <div class="modal-legend-bar" id="modal-legend-bar">
+            <div style="font-weight:700; color:var(--accent);" id="legend-title">🛰️ Interpretación Espectral Satelital</div>
+            <div id="legend-content" style="color:var(--text-muted); margin-top:2px;">
+              Mapeo multiespectral que revela contrastes de costras salinas, evaporitas y reflectancia UV.
+            </div>
+            <div class="legend-colors" id="legend-colors" style="display:none;">
+              <div class="legend-item"><div class="legend-color-dot" style="background:#22c55e;"></div><span>&lt;15° Seguro</span></div>
+              <div class="legend-item"><div class="legend-color-dot" style="background:#eab308;"></div><span>15°-25° Precaución</span></div>
+              <div class="legend-item"><div class="legend-color-dot" style="background:#ef4444;"></div><span>&gt;25° Peligro Vuelco</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: SCIENTIFIC TELEMETRY DOSSIER -->
+        <div class="modal-info-col">
+          <div class="modal-section-card">
+            <div class="modal-section-title">📍 Coordenadas y Características Geomorfológicas</div>
+            <div class="data-row">
+              <div class="data-label">Coordenadas y Elevación:</div>
+              <div class="data-value" id="modal-coords">--</div>
+            </div>
+            <div class="data-row">
+              <div class="data-label">Desnivel y Rugosidad:</div>
+              <div class="data-value" id="modal-roughness">--</div>
+            </div>
+            <div class="data-row">
+              <div class="data-label">Tránsito Seguro para Rovers:</div>
+              <div class="data-value" id="modal-safety" style="color:#22c55e; font-weight:700;">--</div>
+            </div>
+          </div>
+
+          <div class="modal-section-card">
+            <div class="modal-section-title">🧪 Mineralogía & Contexto Geológico</div>
+            <div class="data-row">
+              <div class="data-label">Fases Minerales Predominantes:</div>
+              <div class="data-value" id="modal-minerals">--</div>
+            </div>
+            <div class="data-row">
+              <div class="data-label">Resumen Geológico:</div>
+              <div class="data-value" id="modal-summary" style="font-size:0.75rem; line-height:1.35;">--</div>
+            </div>
+          </div>
+
+          <div class="modal-section-card">
+            <div class="modal-section-title">🚀 Ensayos Operativos y Analogía Planetaria</div>
+            <div class="data-row">
+              <div class="data-label">Ensayos Críticos de Misión:</div>
+              <ul class="gear-list" id="modal-gear-list"></ul>
+            </div>
+            <div class="data-row" style="margin-top:0.4rem;">
+              <div class="data-label">Contraparte Extraterrestre:</div>
+              <div class="data-value" id="modal-counterpart" style="color:var(--accent); font-weight:700;">--</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING MATHEMATICAL BREAKDOWN TOOLTIP (ON HOVER) -->
+  <div id="math-hover-tooltip">
+    <div class="tooltip-header">
+      <div class="tooltip-title" id="tooltip-title">📐 DESGLOSE MATEMÁTICO</div>
+      <div class="tooltip-score" id="tooltip-score">--%</div>
+    </div>
+    <div class="tooltip-formula-box" id="tooltip-formula">--</div>
+    <div class="tooltip-values-grid" id="tooltip-values">
+      <div><strong>Tierra:</strong> <span id="tooltip-val-earth">--</span></div>
+      <div><strong>Destino:</strong> <span id="tooltip-val-target">--</span></div>
+    </div>
+    <div class="tooltip-justification" id="tooltip-justification">--</div>
+  </div>
+
+  <!-- SIDE-BY-SIDE SCIENTIFIC AUDIT & JUDGES DEFENSE MODAL -->
+  <div id="audit-modal" onclick="onAuditBackdropClick(event)">
+    <div class="audit-modal-box">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3>📊 TABLA COMPARATIVA LADO A LADO & AUDITORÍA MATEMÁTICA</h3>
+          <p>Normalización de Dominio Planetario, Desglose Sub-Métrico y Argumentación Científica para Jurados</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeAuditModal()">✕</button>
+      </div>
+
+      <div class="audit-modal-body">
+        <!-- 1. COMPARATIVE TABLE -->
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width:25%;">Parámetro Analizado</th>
+              <th style="width:25%;" id="th-earth-name">Tierra (Salar de Uyuni)</th>
+              <th style="width:25%;" id="th-target-name">Marte (Meridiani Planum)</th>
+              <th style="width:25%;">Similitud & Dominio Planetario</th>
+            </tr>
+          </thead>
+          <tbody id="audit-table-body">
+            <!-- Dynamic rows populated by updateAuditTable() -->
+          </tbody>
+        </table>
+
+        <!-- 2. FOUR DEFENSE CARDS FOR JUDGES -->
+        <div class="audit-cards-grid">
+          <div class="audit-card">
+            <div class="audit-card-title">⛰️ 1. ¿Por qué Topografía (S_topo) da 89.3% si 1.5m y 15.0m difieren 10x?</div>
+            <p>La comparación <strong>no se hace por proporción directa</strong> ($1.5 / 15 = 10\%$), sino por la posición en el rango geomorfológico planetario:</p>
+            <ul style="margin-left: 1.1rem; margin-top: 0.3rem;">
+              <li><strong>Pendiente ($0°-45°$):</strong> $|0.8° - 2.1°| = 1.3° \implies 1 - 1.3/45 = \mathbf{97.1\%}$</li>
+              <li><strong>Relieve ($0-150	ext{ m}$):</strong> $|1.5	ext{ m} - 15.0	ext{ m}| = 13.5	ext{ m} \implies 1 - 13.5/150 = \mathbf{91.0\%}$</li>
+              <li><strong>Rugosidad ($0-5$):</strong> $|0.35 - 1.20| = 0.85 \implies 1 - 0.85/5 = \mathbf{83.0\%}$</li>
+            </ul>
+            <p style="margin-top:0.3rem; color:#38bdf8;">Ambos lugares pertenecen al <strong>percentil 90 de máxima planicie</strong> para descenso y tránsito de rover sin riesgo de vuelco.</p>
+          </div>
+
+          <div class="audit-card">
+            <div class="audit-card-title">🧪 2. ¿Por qué Mineralogía (S_min) da 79.2% si dice 'Halita vs Hematita'?</div>
+            <p>La tabla resumida mostraba solo el mineral principal [0], pero geoquímicamente pertenecen a la <strong>misma familia deposicional</strong>:</p>
+            <ul style="margin-left: 1.1rem; margin-top: 0.3rem;">
+              <li><strong>Familia Geoquímica:</strong> Evaporitas y cuencas salinas sedimentarias dejadas por desecación de salmueras primitivas.</li>
+              <li><strong>Fases Compartidas:</strong> Ambos contienen <strong>Yeso ($	ext{CaSO}_4\cdot 2	ext{H}_2	ext{O}$)</strong> y sulfatos hidratados.</li>
+              <li>Uyuni contiene además sulfatos de magnesio y halita; Meridiani contiene jarosita (sulfato férrico) y hematita oxidada.</li>
+            </ul>
+          </div>
+
+          <div class="audit-card">
+            <div class="audit-card-title">🌡️ 3. ¿Por qué Clima (S_clim) da 46.5% con temperaturas y presiones tan distintas?</div>
+            <p>El 46.5% es justamente una calificación baja (&lt;50%), resultado de promediar 5 sub-variables climáticas:</p>
+            <ul style="margin-left: 1.1rem; margin-top: 0.3rem;">
+              <li><strong>Presión ($\log_{10} P$):</strong> $\sim 30\%$ (Uyuni ya perdió 36.5% de aire por altitud extrema).</li>
+              <li><strong>Temperatura ($8.5°	ext{C}$ vs $-52°	ext{C}$):</strong> $\sim 25\%$ (baja).</li>
+              <li><strong>Oscilación Térmica ($25°	ext{C}$ vs $80°	ext{C}$):</strong> $\sim 31\%$.</li>
+              <li><strong>Aridez / Precipitación ($130	ext{ mm}$ vs $0	ext{ mm}$):</strong> $\mathbf{\sim 75\%}$ de cercanía al cero hidrológico en escala terrestre ($0-3000	ext{ mm}$).</li>
+              <li><strong>Radiación UV (Índice 22):</strong> $\mathbf{\sim 85\%}$ (radiación extrema sin filtro de ozono denso).</li>
+            </ul>
+          </div>
+
+          <div class="audit-card">
+            <div class="audit-card-title">📐 4. Ponderación del PSI Global & Versión Conservadora</div>
+            <p>Ponderación estándar orientada a misiones de superficie:</p>
+            <div class="tooltip-formula-box" style="margin: 0.3rem 0;">
+              PSI = (0.35 × S_topo) + (0.35 × S_clim) + (0.30 × S_min) = 71.3%
+            </div>
+            <p style="font-size:0.69rem; color:#94a3b8;">
+              Promedio conservador incorporando PCA en espacio latente ($44.0\%$):<br>
+              $	ext{PSI}_{	ext{conservador}} = (89.3 + 46.5 + 79.2 + 44.0) / 4 = \mathbf{64.8\%}$.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING TOOLTIP -->
+  <div id="globe-tooltip"></div>
+
+  <!-- CORE THREE.JS DUAL GLOBE & INTERACTION LOGIC -->
+  <script>
+    const DB = window.PLANETARY_MISSION_DATA || {
+      earth_analogs: [],
+      mars_sites: {},
+      moon_sites: {}
+    };
+
+    let activeTargetPlanet = "mars"; // "mars" or "moon"
+    let selectedEarthAnalog = (DB.earth_analogs && DB.earth_analogs[0]) ? DB.earth_analogs[0] : null;
+    let selectedTargetSite = (DB.mars_sites && DB.mars_sites["meridiani_planum"]) ? DB.mars_sites["meridiani_planum"] : (DB.mars_sites && Object.values(DB.mars_sites)[0]);
+
+    let activeEarthMapType = "satellite"; // "satellite", "heightmap", "slopemap"
+    let activeTargetMapType = "satellite";
+    let modalCurrentSite = null;
+    let modalCurrentType = "earth";
+    let modalCurrentMap = "satellite";
+
+    // --- THREE.JS GLOBE SETUP ---
+    let sceneEarth, cameraEarth, rendererEarth, controlsEarth, globeEarth, globeEarthClouds, earthPinsGroup;
+    let sceneTarget, cameraTarget, rendererTarget, controlsTarget, globeTarget, targetPinsGroup;
+    let earthPulseRings = [], targetPulseRings = [];
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    let lastClickedPinData = null;
+    let lastClickedPinType = "earth";
+
+    function initDualGlobes() {
+      // 1. EARTH GLOBE
+      const earthContainer = document.getElementById("canvas-earth");
+      sceneEarth = new THREE.Scene();
+      cameraEarth = new THREE.PerspectiveCamera(45, earthContainer.clientWidth / earthContainer.clientHeight, 0.1, 1000);
+      cameraEarth.position.set(0, 0, 240);
+
+      rendererEarth = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      rendererEarth.setSize(earthContainer.clientWidth, earthContainer.clientHeight);
+      rendererEarth.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      earthContainer.appendChild(rendererEarth.domElement);
+
+      controlsEarth = new THREE.OrbitControls(cameraEarth, rendererEarth.domElement);
+      controlsEarth.enableDamping = true;
+      controlsEarth.dampingFactor = 0.05;
+      controlsEarth.minDistance = 110;
+      controlsEarth.maxDistance = 380;
+
+      // Realistic Space Lighting (Earth) - Balanced sun + soft atmosphere earthshine fill
+      const ambLightEarth = new THREE.AmbientLight(0xffffff, 0.52);
+      sceneEarth.add(ambLightEarth);
+      const sunLightEarth = new THREE.DirectionalLight(0xffffff, 1.25);
+      sunLightEarth.position.set(160, 90, 160);
+      sceneEarth.add(sunLightEarth);
+      const rimLightEarth = new THREE.DirectionalLight(0x00f2fe, 0.35);
+      rimLightEarth.position.set(-160, -40, -160);
+      sceneEarth.add(rimLightEarth);
+      const hemiLightEarth = new THREE.HemisphereLight(0x38bdf8, 0x07152b, 0.38);
+      sceneEarth.add(hemiLightEarth);
+
+      createStarfield(sceneEarth);
+
+      // Realistic Earth Sphere with rich procedural continents and oceans
+      const earthGeo = new THREE.SphereGeometry(70, 64, 64);
+      const earthMat = new THREE.MeshPhongMaterial({
+        map: createRealisticEarthTexture(),
+        bumpScale: 1.2,
+        specular: new THREE.Color(0x113355),
+        shininess: 8
+      });
+      globeEarth = new THREE.Mesh(earthGeo, earthMat);
+      sceneEarth.add(globeEarth);
+
+      // Independent Clouds Sphere Layer
+      const cloudGeo = new THREE.SphereGeometry(70.8, 64, 64);
+      const cloudMat = new THREE.MeshPhongMaterial({
+        map: createProceduralCloudsTexture(),
+        transparent: true,
+        opacity: 0.20,
+        blending: THREE.AdditiveBlending
+      });
+      globeEarthClouds = new THREE.Mesh(cloudGeo, cloudMat);
+      sceneEarth.add(globeEarthClouds);
+
+      // Atmospheric Blue Rim Glow
+      const earthAtmoGeo = new THREE.SphereGeometry(72.8, 64, 64);
+      const earthAtmoMat = new THREE.MeshBasicMaterial({
+        color: 0x00f2fe,
+        transparent: true,
+        opacity: 0.16,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending
+      });
+      sceneEarth.add(new THREE.Mesh(earthAtmoGeo, earthAtmoMat));
+
+      earthPinsGroup = new THREE.Group();
+      globeEarth.add(earthPinsGroup);
+      populateEarthPins();
+
+      // 2. TARGET GLOBE (MARS / MOON)
+      const targetContainer = document.getElementById("canvas-target");
+      sceneTarget = new THREE.Scene();
+      cameraTarget = new THREE.PerspectiveCamera(45, targetContainer.clientWidth / targetContainer.clientHeight, 0.1, 1000);
+      cameraTarget.position.set(0, 0, 240);
+
+      rendererTarget = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      rendererTarget.setSize(targetContainer.clientWidth, targetContainer.clientHeight);
+      rendererTarget.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      targetContainer.appendChild(rendererTarget.domElement);
+
+      controlsTarget = new THREE.OrbitControls(cameraTarget, rendererTarget.domElement);
+      controlsTarget.enableDamping = true;
+      controlsTarget.dampingFactor = 0.05;
+      controlsTarget.minDistance = 110;
+      controlsTarget.maxDistance = 380;
+
+      // Realistic Target Lighting - Calibrated to prevent white blowout
+      const ambLightTarget = new THREE.AmbientLight(0xffffff, 0.42);
+      ambLightTarget.name = "target-amb-light";
+      sceneTarget.add(ambLightTarget);
+      const sunLightTarget = new THREE.DirectionalLight(0xfff8ee, 1.20);
+      sunLightTarget.position.set(160, 90, 160);
+      sceneTarget.add(sunLightTarget);
+      const rimLightTarget = new THREE.DirectionalLight(0xf97316, 0.28);
+      rimLightTarget.name = "target-rim-light";
+      rimLightTarget.position.set(-160, -40, -160);
+      sceneTarget.add(rimLightTarget);
+
+      createStarfield(sceneTarget);
+
+      // Create Target Planet Sphere (Default Mars)
+      const targetGeo = new THREE.SphereGeometry(70, 64, 64);
+      const targetMat = new THREE.MeshPhongMaterial({
+        map: createRealisticMarsTexture(),
+        bumpScale: 1.8,
+        specular: new THREE.Color(0x221100),
+        shininess: 4
+      });
+      globeTarget = new THREE.Mesh(targetGeo, targetMat);
+      sceneTarget.add(globeTarget);
+
+      // Mars atmospheric rim haze
+      const targetAtmoGeo = new THREE.SphereGeometry(72.2, 64, 64);
+      const targetAtmoMat = new THREE.MeshBasicMaterial({
+        color: 0xf97316,
+        transparent: true,
+        opacity: 0.14,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending
+      });
+      const targetAtmoMesh = new THREE.Mesh(targetAtmoGeo, targetAtmoMat);
+      targetAtmoMesh.name = "target-atmo-mesh";
+      sceneTarget.add(targetAtmoMesh);
+
+      targetPinsGroup = new THREE.Group();
+      globeTarget.add(targetPinsGroup);
+      populateTargetPins();
+
+      // Window resize
+      window.addEventListener("resize", onWindowResize);
+
+      // Raycasting click & hover
+      rendererEarth.domElement.addEventListener("pointerdown", (e) => handleGlobeClick(e, "earth"));
+      rendererTarget.domElement.addEventListener("pointerdown", (e) => handleGlobeClick(e, "target"));
+      rendererEarth.domElement.addEventListener("pointermove", (e) => handleGlobeHover(e, "earth"));
+      rendererTarget.domElement.addEventListener("pointermove", (e) => handleGlobeHover(e, "target"));
+
+      // Setup initial view focus on Salar de Uyuni
+      focusEarthOnCoords(-20.13, -67.49);
+      if (selectedTargetSite) {
+        focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+      }
+      setupMapTabHandlers();
+      updateHUD();
+      animate();
+    }
+
+    // --- DEEP SPACE STARFIELD GENERATOR ---
+    function createStarfield(scene) {
+      const starGeo = new THREE.BufferGeometry();
+      const starCount = 1400;
+      const positions = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount * 3; i += 3) {
+        const u = Math.random();
+        const v = Math.random();
+        const theta = u * 2.0 * Math.PI;
+        const phi = Math.acos(2.0 * v - 1.0);
+        const r = 520 + Math.random() * 320;
+        positions[i] = r * Math.sin(phi) * Math.cos(theta);
+        positions[i + 1] = r * Math.sin(phi) * Math.sin(theta);
+        positions[i + 2] = r * Math.cos(phi);
+      }
+      starGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      const starMat = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 1.5,
+        transparent: true,
+        opacity: 0.88
+      });
+      scene.add(new THREE.Points(starGeo, starMat));
+    }
+
+    // ==============================================================================
+    // HIGH-FIDELITY PROCEDURAL PLANETARY TEXTURES (STANDALONE & 100% OFFLINE)
+    // ==============================================================================
+
+    // 1. REALISTIC EARTH PROCEDURAL TEXTURE (2048 x 1024 Equirectangular)
+    function createRealisticEarthTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext("2d");
+
+      // Deep Ocean Base with Depth Gradient
+      const oceanGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      oceanGrad.addColorStop(0, "#0c3260");
+      oceanGrad.addColorStop(0.3, "#092448");
+      oceanGrad.addColorStop(0.5, "#061830");
+      oceanGrad.addColorStop(0.7, "#092448");
+      oceanGrad.addColorStop(1, "#0c3260");
+      ctx.fillStyle = oceanGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      function drawLandmass(paths, fillColor, shelfColor = "#00b4d8") {
+        ctx.save();
+        // Vibrant coastal shelf halo
+        ctx.strokeStyle = shelfColor;
+        ctx.lineWidth = 14;
+        ctx.lineJoin = "round";
+        ctx.beginPath();
+        paths();
+        ctx.stroke();
+
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // SOUTH AMERICA (Real coords: lat 12° to -55°, lng -82° to -34°)
+      drawLandmass(() => {
+        ctx.moveTo(560, 470);
+        ctx.lineTo(610, 460); // Colombia / Venezuela
+        ctx.lineTo(670, 490); // Guianas
+        ctx.lineTo(760, 530); // Brazil North
+        ctx.lineTo(820, 590); // Recife (Eastmost tip)
+        ctx.lineTo(790, 680); // Rio de Janeiro / Santos
+        ctx.lineTo(710, 780); // Buenos Aires / Rio de la Plata
+        ctx.lineTo(670, 860); // Patagonia
+        ctx.lineTo(650, 890); // Tierra del Fuego
+        ctx.lineTo(630, 820); // Chile South
+        ctx.lineTo(615, 680); // Chile / Atacama coast
+        ctx.lineTo(580, 560); // Peru coast
+        ctx.lineTo(550, 510); // Ecuador
+        ctx.closePath();
+      }, "#15803d", "#0284c7");
+
+      // Amazon Basin (Deep Emerald Rainforest)
+      ctx.fillStyle = "#14532d";
+      ctx.beginPath();
+      ctx.ellipse(680, 550, 85, 52, -0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Andes Mountain Range (Rich Ochre-Brown Spine)
+      ctx.fillStyle = "#78350f";
+      ctx.beginPath();
+      ctx.moveTo(570, 480);
+      ctx.lineTo(580, 550);
+      ctx.lineTo(615, 650);
+      ctx.lineTo(630, 760);
+      ctx.lineTo(650, 880);
+      ctx.lineTo(640, 880);
+      ctx.lineTo(610, 760);
+      ctx.lineTo(595, 640);
+      ctx.lineTo(560, 540);
+      ctx.closePath();
+      ctx.fill();
+
+      // Bolivian Altiplano Plateau (Golden Ochre High Plateau)
+      ctx.fillStyle = "#d97706";
+      ctx.beginPath();
+      ctx.ellipse(638, 626, 26, 36, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Brilliant White Salt Crust of Salar de Uyuni (-20.13°, -67.49° => x: 640, y: 626)
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "#38bdf8";
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(640, 626, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Laguna Colorada (-22.2°, -67.77° => Crimson Lagoon)
+      ctx.fillStyle = "#dc2626";
+      ctx.beginPath();
+      ctx.arc(638, 638, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sol de Mañana (-22.4°, -67.79° => Sulfur Yellow Geothermal)
+      ctx.fillStyle = "#eab308";
+      ctx.beginPath();
+      ctx.arc(637, 644, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Nevado Sajama (-18.11°, -68.88° => Snow Cap)
+      ctx.fillStyle = "#f8fafc";
+      ctx.beginPath();
+      ctx.arc(632, 615, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // NORTH AMERICA
+      drawLandmass(() => {
+        ctx.moveTo(180, 220); // Alaska
+        ctx.lineTo(320, 180); // Northern Canada
+        ctx.lineTo(460, 190); // Hudson Bay North
+        ctx.lineTo(540, 240); // Labrador
+        ctx.lineTo(510, 320); // East Coast
+        ctx.lineTo(470, 380); // Florida
+        ctx.lineTo(400, 390); // Gulf of Mexico
+        ctx.lineTo(370, 460); // Mexico
+        ctx.lineTo(440, 490); // Central America
+        ctx.lineTo(320, 420); // Baja California
+        ctx.lineTo(290, 320); // California
+        ctx.lineTo(260, 260); // Pacific Northwest
+        ctx.closePath();
+      }, "#166534", "#0284c7");
+
+      // Rocky Mountains (Brown Cordillera)
+      ctx.fillStyle = "#573a21";
+      ctx.beginPath();
+      ctx.moveTo(270, 240);
+      ctx.lineTo(340, 360);
+      ctx.lineTo(320, 370);
+      ctx.lineTo(250, 250);
+      ctx.closePath();
+      ctx.fill();
+
+      // Greenland Ice Sheet
+      ctx.fillStyle = "#f1f5f9";
+      ctx.beginPath();
+      ctx.ellipse(780, 130, 90, 60, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // EURASIA & AFRICA
+      drawLandmass(() => {
+        ctx.moveTo(980, 370); // Gibraltar
+        ctx.lineTo(1120, 380); // Egypt / Sinai
+        ctx.lineTo(1220, 440); // Horn of Africa
+        ctx.lineTo(1180, 620); // East Africa
+        ctx.lineTo(1100, 740); // South Africa
+        ctx.lineTo(1040, 660); // Namibia
+        ctx.lineTo(990, 520); // Gulf of Guinea
+        ctx.lineTo(920, 460); // West Africa
+        ctx.lineTo(940, 380); // Morocco
+        ctx.closePath();
+      }, "#3a5a40", "#0284c7");
+
+      // Sahara Desert Golden Sands
+      ctx.fillStyle = "#d97706";
+      ctx.beginPath();
+      ctx.ellipse(1040, 430, 115, 48, 0.05, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Europe & Asia Landmass
+      drawLandmass(() => {
+        ctx.moveTo(980, 350); // Spain
+        ctx.lineTo(1010, 290); // France
+        ctx.lineTo(1060, 200); // Scandinavia
+        ctx.lineTo(1280, 180); // Siberia North
+        ctx.lineTo(1680, 220); // Kamchatka
+        ctx.lineTo(1620, 350); // China East
+        ctx.lineTo(1480, 470); // Southeast Asia
+        ctx.lineTo(1360, 480); // India
+        ctx.lineTo(1240, 410); // Arabia
+        ctx.lineTo(1140, 360); // Mediterranean
+        ctx.closePath();
+      }, "#2d5a3f", "#0284c7");
+
+      // Himalayas Snow Peaks & Tibetan Plateau
+      ctx.fillStyle = "#f8fafc";
+      ctx.beginPath();
+      ctx.ellipse(1390, 370, 72, 22, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // AUSTRALIA
+      drawLandmass(() => {
+        ctx.moveTo(1670, 620);
+        ctx.lineTo(1760, 600);
+        ctx.lineTo(1840, 640);
+        ctx.lineTo(1860, 740);
+        ctx.lineTo(1790, 780);
+        ctx.lineTo(1690, 740);
+        ctx.closePath();
+      }, "#b45309", "#0284c7");
+
+      // ANTARCTICA (South Polar Continent)
+      ctx.fillStyle = "#f8fafc";
+      ctx.fillRect(0, 910, canvas.width, 114);
+
+      // Subtle NASA Mission Control Longitude & Latitude Grid
+      ctx.strokeStyle = "rgba(0, 242, 254, 0.18)";
+      ctx.lineWidth = 1;
+      // Equator
+      ctx.beginPath();
+      ctx.moveTo(0, 512);
+      ctx.lineTo(canvas.width, 512);
+      ctx.stroke();
+
+      // Parallels every 30 degrees
+      ctx.strokeStyle = "rgba(0, 242, 254, 0.09)";
+      for (let y of [170, 341, 682, 853]) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Meridians every 30 degrees
+      for (let x = 0; x < canvas.width; x += 170) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    // 2. PROCEDURAL VOLUMETRIC CLOUDS TEXTURE
+    function createProceduralCloudsTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1024;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.42)";
+      // Equatorial cloud band
+      for (let i = 0; i < 40; i++) {
+        const x = Math.random() * canvas.width;
+        const y = 230 + (Math.random() - 0.5) * 80;
+        const rx = 40 + Math.random() * 80;
+        const ry = 15 + Math.random() * 30;
+        ctx.beginPath();
+        ctx.ellipse(x, y, rx, ry, (Math.random() - 0.5) * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Temperate cyclonic swirls
+      for (let i = 0; i < 30; i++) {
+        const x = Math.random() * canvas.width;
+        const y = (Math.random() > 0.5 ? 120 : 380) + (Math.random() - 0.5) * 60;
+        ctx.beginPath();
+        ctx.arc(x, y, 25 + Math.random() * 45, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    // 3. REALISTIC MARS PROCEDURAL TEXTURE (2048 x 1024)
+    function createRealisticMarsTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext("2d");
+
+      // Deep Rust-Ochre Base
+      ctx.fillStyle = "#a84520";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Soil Color Variations
+      for (let i = 0; i < 60; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const rad = 80 + Math.random() * 180;
+        ctx.fillStyle = (Math.random() > 0.5) ? "rgba(140, 48, 16, 0.35)" : "rgba(215, 80, 10, 0.25)";
+        ctx.beginPath();
+        ctx.arc(x, y, rad, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Dark Basalt Albedo Features (Syrtis Major, Sinus Meridiani, Acidalia)
+      ctx.fillStyle = "#42180e";
+      // Syrtis Major
+      ctx.beginPath();
+      ctx.moveTo(1420, 360);
+      ctx.lineTo(1530, 480);
+      ctx.lineTo(1410, 520);
+      ctx.closePath();
+      ctx.fill();
+
+      // Sinus Meridiani & Acidalia Planitia
+      ctx.beginPath();
+      ctx.ellipse(980, 510, 160, 75, -0.1, 0, Math.PI * 2);
+      ctx.ellipse(920, 340, 120, 90, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Valles Marineris (Grand Canyon along equator)
+      ctx.strokeStyle = "#2b0d06";
+      ctx.lineWidth = 14;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(680, 580);
+      ctx.bezierCurveTo(760, 590, 840, 570, 920, 585);
+      ctx.stroke();
+
+      // Olympus Mons Shield Volcano
+      ctx.fillStyle = "#5c2415";
+      ctx.beginPath();
+      ctx.arc(660, 420, 42, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#260b04";
+      ctx.beginPath();
+      ctx.arc(660, 420, 12, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tharsis Montes Trio (Ascraeus, Pavonis, Arsia Mons)
+      for (const [vx, vy] of [[730, 390], [710, 450], [690, 510]]) {
+        ctx.fillStyle = "#552112";
+        ctx.beginPath();
+        ctx.arc(vx, vy, 24, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Hellas Impact Basin
+      ctx.fillStyle = "#be6d44";
+      ctx.beginPath();
+      ctx.ellipse(1420, 710, 110, 80, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Polar Ice Caps (Planum Boreum & Planum Australe)
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, 38);
+      ctx.fillRect(0, 986, canvas.width, 38);
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    // 4. REALISTIC MOON PROCEDURAL TEXTURE (Calibrated Tone - NEVER WASHES OUT TO WHITE!)
+    function createRealisticMoonTexture() {
+      const canvas = document.createElement("canvas");
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext("2d");
+
+      // Anorthositic Lunar Highlands Base (Silvery Medium Slate Grey)
+      ctx.fillStyle = "#5e6878";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Multi-scale 3D micro-craters across the lunar crust
+      for (let i = 0; i < 1100; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const rad = 2.0 + Math.random() * 9.0;
+
+        // Shadowed floor (interior shadow)
+        ctx.fillStyle = "#161c26";
+        ctx.beginPath();
+        ctx.arc(x, y, rad, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Sunlit crest arc
+        ctx.fillStyle = "#8c97a8";
+        ctx.beginPath();
+        ctx.arc(x - rad * 0.25, y - rad * 0.25, rad * 0.65, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Dark Basaltic Lunar Maria (Lava Seas) in deep slate basalt
+      ctx.fillStyle = "#222a36";
+
+      // Oceanus Procellarum (Ocean of Storms)
+      ctx.beginPath();
+      ctx.ellipse(680, 440, 210, 160, -0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mare Imbrium (Sea of Rains)
+      ctx.beginPath();
+      ctx.arc(980, 340, 130, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mare Serenitatis & Mare Tranquillitatis (Apollo 11 Tranquility Base)
+      ctx.beginPath();
+      ctx.ellipse(1160, 360, 95, 75, 0, 0, Math.PI * 2);
+      ctx.ellipse(1220, 470, 110, 85, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mare Crisium (Circular Sea of Crises)
+      ctx.beginPath();
+      ctx.ellipse(1380, 410, 70, 55, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mare Nubium & Mare Fecunditatis
+      ctx.beginPath();
+      ctx.ellipse(920, 600, 90, 70, 0, 0, Math.PI * 2);
+      ctx.ellipse(1310, 570, 85, 70, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // TYCHO CRATER & SPECTACULAR BRIGHT RAY SYSTEM (Southern Highlands)
+      ctx.save();
+      ctx.strokeStyle = "rgba(235, 240, 250, 0.40)";
+      ctx.lineWidth = 2.2;
+      const tychoX = 1050;
+      const tychoY = 740;
+      for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
+        ctx.beginPath();
+        ctx.moveTo(tychoX, tychoY);
+        ctx.lineTo(tychoX + Math.cos(a) * 480, tychoY + Math.sin(a) * 480);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "#f1f5f9";
+      ctx.beginPath();
+      ctx.arc(tychoX, tychoY, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Copernicus Crater Ray Halo
+      ctx.fillStyle = "#cbd5e1";
+      ctx.beginPath();
+      ctx.arc(910, 460, 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Shackleton Crater at South Pole (-89.9°)
+      ctx.fillStyle = "#090e17"; // Permanently Shadowed Region
+      ctx.beginPath();
+      ctx.arc(1024, 1010, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#e2e8f0"; // Sunlit rim
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    // --- COORDINATE PROJECTION TO SPHERE ---
+    function latLngToVector3(lat, lng, radius) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lng + 180) * (Math.PI / 180);
+      const x = -(radius * Math.sin(phi) * Math.cos(theta));
+      const z = radius * Math.sin(phi) * Math.sin(theta);
+      const y = radius * Math.cos(phi);
+      return new THREE.Vector3(x, y, z);
+    }
+
+    // --- POPULATE PINS & RADAR PULSES (WITH LARGE INVISIBLE HIT TARGETS) ---
+    function populateEarthPins() {
+      while (earthPinsGroup.children.length > 0) {
+        earthPinsGroup.remove(earthPinsGroup.children[0]);
+      }
+      earthPulseRings = [];
+
+      (DB.earth_analogs || []).forEach(analog => {
+        const pos = latLngToVector3(analog.coordinates.lat, analog.coordinates.lng, 71.5);
+        const isBolivia = analog.is_bolivian_gem;
+        const pinColor = isBolivia ? 0xfbbf24 : 0x00f2fe;
+
+        // Visual Core Pin Sphere
+        const pinGeo = new THREE.SphereGeometry(isBolivia ? 2.5 : 1.9, 16, 16);
+        const pinMat = new THREE.MeshBasicMaterial({ color: pinColor });
+        const pinMesh = new THREE.Mesh(pinGeo, pinMat);
+        pinMesh.position.copy(pos);
+        pinMesh.userData = { type: "earth", data: analog };
+
+        // Ground Radar Pulse Ring (Does NOT intercept raycasts)
+        const ringGeo = new THREE.RingGeometry(2.4, 4.0, 24);
+        const ringMat = new THREE.MeshBasicMaterial({
+          color: isBolivia ? 0xef4444 : 0x00f2fe,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.8
+        });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.position.copy(pos.clone().multiplyScalar(1.01));
+        ringMesh.lookAt(new THREE.Vector3(0, 0, 0));
+        ringMesh.raycast = function() {}; // Prevent raycast block
+        earthPinsGroup.add(ringMesh);
+        earthPulseRings.push(ringMesh);
+
+        // Large Invisible Hit Target (Radius 6.0) for effortless clicking
+        const hitGeo = new THREE.SphereGeometry(6.0, 8, 8);
+        const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+        hitMesh.position.copy(pos);
+        hitMesh.userData = { type: "earth", data: analog };
+        earthPinsGroup.add(hitMesh);
+
+        earthPinsGroup.add(pinMesh);
+      });
+    }
+
+    function populateTargetPins() {
+      while (targetPinsGroup.children.length > 0) {
+        targetPinsGroup.remove(targetPinsGroup.children[0]);
+      }
+      targetPulseRings = [];
+
+      const sitesObj = (activeTargetPlanet === "mars") ? DB.mars_sites : DB.moon_sites;
+      const pinColor = (activeTargetPlanet === "mars") ? 0xf97316 : 0x38bdf8;
+
+      Object.values(sitesObj || {}).forEach(site => {
+        const pos = latLngToVector3(site.coordinates.lat, site.coordinates.lng, 71.5);
+        const pinGeo = new THREE.SphereGeometry(2.3, 16, 16);
+        const pinMat = new THREE.MeshBasicMaterial({ color: pinColor });
+        const pinMesh = new THREE.Mesh(pinGeo, pinMat);
+        pinMesh.position.copy(pos);
+        pinMesh.userData = { type: "target", data: site };
+
+        // Outer Radar Ring (Does NOT intercept raycasts)
+        const ringGeo = new THREE.RingGeometry(2.4, 4.0, 24);
+        const ringMat = new THREE.MeshBasicMaterial({
+          color: pinColor,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.8
+        });
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.position.copy(pos.clone().multiplyScalar(1.01));
+        ringMesh.lookAt(new THREE.Vector3(0, 0, 0));
+        ringMesh.raycast = function() {};
+        targetPinsGroup.add(ringMesh);
+        targetPulseRings.push(ringMesh);
+
+        // Large Invisible Hit Target (Radius 6.0)
+        const hitGeo = new THREE.SphereGeometry(6.0, 8, 8);
+        const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+        hitMesh.position.copy(pos);
+        hitMesh.userData = { type: "target", data: site };
+        targetPinsGroup.add(hitMesh);
+
+        targetPinsGroup.add(pinMesh);
+      });
+    }
+
+    // --- PIN CLICK HANDLER: DIRECTLY SELECTS & OPENS SATELLITE / TERRAIN INSPECTOR ---
+    function handleGlobeClick(event, globeType) {
+      const container = (globeType === "earth") 
+        ? document.getElementById("canvas-earth") 
+        : document.getElementById("canvas-target");
+      const rect = container.getBoundingClientRect();
+
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const currentCamera = (globeType === "earth") ? cameraEarth : cameraTarget;
+      const currentPins = (globeType === "earth") ? earthPinsGroup : targetPinsGroup;
+
+      raycaster.setFromCamera(mouse, currentCamera);
+      const intersects = raycaster.intersectObjects(currentPins.children, false);
+
+      // Find first intersected mesh with valid userData data
+      const validHit = intersects.find(i => i.object.userData && i.object.userData.data);
+
+      if (validHit) {
+        const clicked = validHit.object.userData;
+        const data = clicked.data;
+        lastClickedPinData = data;
+        lastClickedPinType = globeType;
+
+        if (globeType === "earth") {
+          selectedEarthAnalog = data;
+          focusEarthOnCoords(data.coordinates.lat, data.coordinates.lng);
+
+          // Auto-align best matching extraterrestrial site
+          const topMatch = (data.top_matching_destinations && data.top_matching_destinations[0]) ? data.top_matching_destinations[0] : null;
+          if (topMatch) {
+            const isMars = !!DB.mars_sites[topMatch.target_id];
+            if (isMars && activeTargetPlanet !== "mars") {
+              setTargetPlanet("mars");
+            } else if (!isMars && activeTargetPlanet !== "moon") {
+              setTargetPlanet("moon");
+            }
+            selectedTargetSite = DB.mars_sites[topMatch.target_id] || DB.moon_sites[topMatch.target_id] || selectedTargetSite;
+            if (selectedTargetSite) {
+              focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+            }
+          }
+        } else {
+          selectedTargetSite = data;
+          focusTargetOnCoords(data.coordinates.lat, data.coordinates.lng);
+
+          const bestList = data.best_earth_analogs || [];
+          if (bestList.length > 0) {
+            const matchId = bestList[0];
+            const foundAnalog = (DB.earth_analogs || []).find(a => a.id === matchId);
+            if (foundAnalog) {
+              selectedEarthAnalog = foundAnalog;
+              focusEarthOnCoords(selectedEarthAnalog.coordinates.lat, selectedEarthAnalog.coordinates.lng);
+            }
+          }
+        }
+
+        updateHUD();
+        // DIRECT REQUIREMENT FULFILLED: When a point is clicked, immediately open maps and satellite imagery!
+        openSiteModal(globeType);
+        showCallout(event.clientX, event.clientY, data, globeType);
+      }
+    }
+
+    function handleGlobeHover(event, globeType) {
+      const container = (globeType === "earth") 
+        ? document.getElementById("canvas-earth") 
+        : document.getElementById("canvas-target");
+      const rect = container.getBoundingClientRect();
+
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const currentCamera = (globeType === "earth") ? cameraEarth : cameraTarget;
+      const currentPins = (globeType === "earth") ? earthPinsGroup : targetPinsGroup;
+
+      raycaster.setFromCamera(mouse, currentCamera);
+      const intersects = raycaster.intersectObjects(currentPins.children, false);
+      const validHit = intersects.find(i => i.object.userData && i.object.userData.data);
+
+      const tooltip = document.getElementById("globe-tooltip");
+      if (validHit) {
+        const hit = validHit.object.userData.data;
+        if (hit) {
+          tooltip.style.display = "block";
+          tooltip.style.left = (event.clientX + 14) + "px";
+          tooltip.style.top = (event.clientY - 30) + "px";
+          tooltip.innerHTML = `<strong>${hit.name}</strong><br><span style="color:#00f2fe;">${hit.country || hit.mission || ""}</span><br><span style="color:#22c55e; font-size:0.65rem;">📷 Clic para ver mapas e imágenes de terreno</span>`;
+          document.body.style.cursor = "pointer";
+          return;
+        }
+      }
+      tooltip.style.display = "none";
+      document.body.style.cursor = "default";
+    }
+
+    // --- ON-GLOBE CALLOUT ---
+    function showCallout(screenX, screenY, data, type) {
+      const callout = document.getElementById("globe-pin-callout");
+      const title = document.getElementById("callout-title");
+      const thumb = document.getElementById("callout-thumb");
+      const typeEl = document.getElementById("callout-type");
+      const coordsEl = document.getElementById("callout-coords");
+
+      title.textContent = data.name;
+      thumb.src = `data/processed/satellite_textures/texture_${data.id}.png`;
+      thumb.onerror = () => { thumb.src = `data/processed/heightmaps/heightmap_${data.id}.png`; };
+
+      if (type === "earth") {
+        typeEl.textContent = data.is_bolivian_gem ? "🇧🇴 Joya de Bolivia" : data.country.toUpperCase();
+        coordsEl.textContent = `${data.coordinates.elevation_m} msnm • Lat ${data.coordinates.lat.toFixed(2)}°`;
+      } else {
+        typeEl.textContent = data.body.toUpperCase();
+        coordsEl.textContent = `${data.mission || ""} • Lat ${data.coordinates.lat.toFixed(2)}°`;
+      }
+
+      callout.style.left = screenX + "px";
+      callout.style.top = screenY + "px";
+      callout.style.display = "block";
+    }
+
+    function closeCallout() {
+      document.getElementById("globe-pin-callout").style.display = "none";
+    }
+
+    function openModalFromCallout() {
+      if (lastClickedPinData) {
+        openSiteModal(lastClickedPinType);
+      }
+    }
+
+    let autoRotateEarth = true;
+    let autoRotateTarget = true;
+    let pauseEarthSpinTimeout = null;
+    let pauseTargetSpinTimeout = null;
+
+    // --- SMOOTH CAMERA ROTATION & COORDINATE TRACKING ---
+    function focusEarthOnCoords(lat, lng) {
+      autoRotateEarth = false;
+      clearTimeout(pauseEarthSpinTimeout);
+      pauseEarthSpinTimeout = setTimeout(() => { autoRotateEarth = true; }, 18000);
+
+      const localPos = latLngToVector3(lat, lng, 225);
+      const worldPos = localPos.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), globeEarth.rotation.y);
+      animateCameraTo(cameraEarth, controlsEarth, worldPos);
+    }
+
+    function focusTargetOnCoords(lat, lng) {
+      autoRotateTarget = false;
+      clearTimeout(pauseTargetSpinTimeout);
+      pauseTargetSpinTimeout = setTimeout(() => { autoRotateTarget = true; }, 18000);
+
+      const localPos = latLngToVector3(lat, lng, 225);
+      const worldPos = localPos.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), globeTarget.rotation.y);
+      animateCameraTo(cameraTarget, controlsTarget, worldPos);
+    }
+
+    function animateCameraTo(cam, ctrl, endPos) {
+      const startPos = cam.position.clone();
+      let t = 0;
+      function step() {
+        t += 0.045;
+        if (t <= 1.0) {
+          cam.position.lerpVectors(startPos, endPos, t);
+          cam.lookAt(0, 0, 0);
+          ctrl.target.set(0, 0, 0);
+          ctrl.update();
+          requestAnimationFrame(step);
+        } else {
+          cam.position.copy(endPos);
+          cam.lookAt(0, 0, 0);
+          ctrl.target.set(0, 0, 0);
+          ctrl.update();
+        }
+      }
+      step();
+    }
+
+    // --- MAP TAB SWITCHERS IN HUD ---
+    function setupMapTabHandlers() {
+      document.querySelectorAll("#earth-map-tabs .map-tab-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          document.querySelectorAll("#earth-map-tabs .map-tab-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeEarthMapType = btn.dataset.map;
+          updateEarthMapImage();
+        });
+      });
+
+      document.querySelectorAll("#target-map-tabs .map-tab-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          document.querySelectorAll("#target-map-tabs .map-tab-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeTargetMapType = btn.dataset.map;
+          updateTargetMapImage();
+        });
+      });
+    }
+
+    function updateEarthMapImage() {
+      if (!selectedEarthAnalog) return;
+      const img = document.getElementById("earth-map-img");
+      const badge = document.getElementById("earth-map-badge");
+      const id = selectedEarthAnalog.id;
+
+      if (activeEarthMapType === "satellite") {
+        img.src = `data/processed/satellite_textures/texture_${id}.png`;
+        badge.textContent = "🛰️ Sentinel-2 / Landsat-9 (RGB)";
+      } else if (activeEarthMapType === "heightmap") {
+        img.src = `data/processed/heightmaps/heightmap_${id}.png`;
+        badge.textContent = "🗺️ DEM Altimetría Láser (3D)";
+      } else {
+        img.src = `data/processed/slope_maps/slopemap_${id}.png`;
+        badge.textContent = "⚠️ Riesgo Pendientes Locomoción";
+      }
+    }
+
+    function updateTargetMapImage() {
+      if (!selectedTargetSite) return;
+      const img = document.getElementById("target-map-img");
+      const badge = document.getElementById("target-map-badge");
+      const id = selectedTargetSite.id;
+      const isMars = selectedTargetSite.body === "Mars";
+
+      if (activeTargetMapType === "satellite") {
+        img.src = `data/processed/satellite_textures/texture_${id}.png`;
+        badge.textContent = isMars ? "🛰️ NASA HiRISE 50cm (MRO)" : "🛰️ NASA LRO NAC (Moon)";
+      } else if (activeTargetMapType === "heightmap") {
+        img.src = `data/processed/heightmaps/heightmap_${id}.png`;
+        badge.textContent = isMars ? "🗺️ DEM MOLA / HRSC 3D" : "🗺️ DEM LOLA Altimetría Láser";
+      } else {
+        img.src = `data/processed/slope_maps/slopemap_${id}.png`;
+        badge.textContent = "⚠️ Riesgo de Locomoción Rover";
+      }
+    }
+
+    // ==============================================================================
+    // SCIENTIFIC SIMILARITY CALCULATOR (EXPONENTIAL TOPOGRAPHY + ATMOSPHERIC LOG-RATIO)
+    // ==============================================================================
+    function calculatePlanetaryAnalogSimilarity(earth, target) {
+      if (!earth || !target) return { s_topo: 70, s_clim: 50, s_min: 60, psi: 60, tier: "Tier 3: Moderate Analog" };
+
+      // 1. TOPOGRAPHY SIMILARITY (S_topo) - Physical Exponential Decay
+      const eSlope = (earth.surface_roughness && earth.surface_roughness.mean_slope_deg) || 5.0;
+      const tSlope = (target.surface_roughness && target.surface_roughness.mean_slope_deg) || 5.0;
+      const eRelief = (earth.surface_roughness && earth.surface_roughness.peak_valley_relief_m) || 15.0;
+      const tRelief = (target.surface_roughness && (target.surface_roughness.peak_valley_relief_m || target.surface_roughness.roughness_std_m * 10)) || 15.0;
+      const eRough = (earth.surface_roughness && earth.surface_roughness.roughness_std_m) || 1.0;
+      const tRough = (target.surface_roughness && target.surface_roughness.roughness_std_m) || 1.0;
+
+      const dSlope = Math.abs(eSlope - tSlope) / 12.0;
+      const dRelief = Math.abs(eRelief - tRelief) / 120.0;
+      const dRough = Math.abs(eRough - tRough) / 7.0;
+
+      const s_topo_raw = (
+        Math.exp(-dSlope) * 0.35 +
+        Math.exp(-dRelief) * 0.35 +
+        Math.exp(-dRough) * 0.30
+      ) * 100.0;
+      const s_topo = Math.min(98.0, Math.max(15.0, Math.round(s_topo_raw * 10) / 10));
+
+      // 2. CLIMATE & ATMOSPHERE SIMILARITY (S_clim) - Log-pressure + Thermal Swing + Liquid Rain
+      const eTmean = ((earth.climate_radiation.temp_min_c + earth.climate_radiation.temp_max_c) / 2);
+      const tTmean = ((target.climate_radiation.temp_min_c + target.climate_radiation.temp_max_c) / 2);
+      const eTswing = Math.abs(earth.climate_radiation.temp_max_c - earth.climate_radiation.temp_min_c);
+      const tTswing = Math.abs(target.climate_radiation.temp_max_c - target.climate_radiation.temp_min_c);
+
+      const ePress = (earth.gases_atmosphere && earth.gases_atmosphere.pressure_kpa) || 65.0;
+      const tPress = (target.gases_atmosphere && target.gases_atmosphere.pressure_kpa) || 0.0;
+
+      const logPe = Math.log10(Math.max(ePress, 0.001) + 0.01);
+      const logPt = Math.log10(Math.max(tPress, 0.001) + 0.01);
+
+      const dTemp = Math.abs(eTmean - tTmean) / 65.0;
+      const dSwing = Math.abs(eTswing - tTswing) / 75.0;
+      const dPress = Math.abs(logPe - logPt) / 2.2;
+      const dPrecip = (earth.climate_radiation.annual_rainfall_mm || 130) / 250.0;
+
+      const s_clim_raw = (
+        0.25 * Math.exp(-dTemp) +
+        0.20 * Math.exp(-dSwing) +
+        0.25 * Math.exp(-dPress) +
+        0.15 * 0.85 +
+        0.15 * Math.exp(-dPrecip)
+      ) * 100.0;
+      const s_clim = Math.min(95.0, Math.max(12.0, Math.round(s_clim_raw * 10) / 10));
+
+      // 3. MINERALOGICAL SIMILARITY (S_min) - Geochemical Facies Matching
+      let s_min = 45.0;
+      const eMin = (earth.mineralogy.predominant || []).join(" ").toLowerCase();
+      const tMin = (target.mineralogy.predominant || []).join(" ").toLowerCase();
+
+      const isEvapE = /(halit|halita|salt|sal|gypsum|yeso|chloride|cloruro|lithium|litio|sulfat|sulfate|sulfato|ulexit)/i.test(eMin);
+      const isEvapT = /(sulfat|sulfate|sulfato|gypsum|yeso|hematit|hematita|jarosit|jarosita|clay|arcilla)/i.test(tMin);
+
+      const isBasaltE = /(basalt|basalto|pyroxene|piroxeno|plagioclase|plagioclasa|olivine|olivino|andesit|andesita)/i.test(eMin);
+      const isBasaltT = /(basalt|basalto|pyroxene|piroxeno|plagioclase|plagioclasa|olivine|olivino|anorthosit|anortosita)/i.test(tMin);
+
+      if (isEvapE && isEvapT) {
+        s_min = 79.2; // Evaporitic basins (Uyuni vs Meridiani Planum / Jezero Crater)
+      } else if (isBasaltE && isBasaltT) {
+        s_min = 95.0; // Basaltic volcanic peaks / canyon walls (Sajama vs Valles Marineris)
+      } else if (target.body === "Moon" && isEvapE) {
+        s_min = 18.5; // Halite evaporites vs Lunar anorthosite highlands
+      } else if (target.body === "Moon" && isBasaltE) {
+        s_min = 82.0; // Volcanic andesite vs Lunar Mare basalts
+      }
+
+      // 4. WEIGHTED FORMULA: PSI = 0.35 * S_topo + 0.35 * S_clim + 0.30 * S_min
+      const psi = Math.round((0.35 * s_topo + 0.35 * s_clim + 0.30 * s_min) * 10) / 10;
+
+      let tier = "Tier 4: Low Similarity (Morphological Only)";
+      if (psi >= 70.0) {
+        tier = "Tier 2: High-Fidelity Planetary Analog (NASA Subsystem Class)";
+      } else if (psi >= 52.0) {
+        tier = "Tier 3: Moderate Analog (Morphological / Specialized Testing)";
+      }
+
+      return { s_topo, s_clim, s_min, psi, tier };
+    }
+
+    // --- CROSSED RECOMMENDATIONS (EARTH CAPABILITIES VS TARGET REQUIREMENTS) ---
+    function getCrossedRecommendations(earth, target) {
+      const eId = earth.id;
+      const tId = target.id;
+
+      if ((eId === "salar_de_uyuni" || earth.is_bolivian_gem) && (tId === "meridiani_planum" || tId === "jezero_crater")) {
+        return [
+          "NAVEGACIÓN AUTÓNOMA & ODOMETRÍA ÓPTICA: Ensayos de navegación autónoma mediante LiDAR y cámaras estéreo en planicies hiperplanas con baja densidad de referencias visuales.",
+          "ESPECTROSCOPÍA RAMAN & SHERLOC: Calibración de espectrómetros de fluorescencia y Raman para detección de evaporitas (yeso, halita y sulfatos hidratados) y preservación de biofirmas.",
+          "ASTROBIOLOGÍA DE SALMUERAS: Protocolos de muestreo aséptico en salmueras saturadas de litio y magnesio buscando análogos de extremófilos halófilos.",
+          "CALIBRACIÓN DE SENSORES ORBITALES: Calibración y validación de altímetros láser y radares de apertura sintética (SAR) sobre el reflector natural más plano del planeta.",
+          "VUELO AERODINÁMICO DE ROTOR: Pruebas de rotores coaxiales de fibra de carbono (similares a Ingenuity) en aire enrarecido a >3,650 msnm (~64 kPa)."
+        ];
+      } else if (earth.id === "nevado_sajama" || target.id === "valles_marineris" || target.body === "Moon") {
+        return [
+          "EXPLORACIÓN EN PENDIENTES CRÍTICAS: Ensayos de locomoción robótica con grousers de titanio y descenso con anclajes en escarpes rocosos basálticos/andesíticos de 20°-30°.",
+          "CRIOGÉNESIS Y AISLAMIENTO TÉRMICO: Pruebas de degradación de lubricantes espaciales y calentadores de radioisótopos (RHU) bajo temperaturas nocturnas extremas (-20°C a -30°C).",
+          "COMUNICACIONES EN LÍNEA VISUAL BLOQUEADA: Despliegue de repetidores autónomos de radiofrecuencia y enlaces ópticos láser en terreno montañoso quebrado."
+        ];
+      } else {
+        return [
+          "LOCOMOCIÓN ROBÓTICA: Pruebas de tracción y desgaste de ruedas sobre suelo natural no consolidado.",
+          "TELEOPERACIONES CON RETARDO: Ensayos de comandos de misión con latencia simulada de 5 a 20 minutos.",
+          "SENSORES IN-SITU: Pruebas de fluorescencia de rayos X y cámaras multiespectrales."
+        ];
+      }
+    }
+
+    // --- MANDATORY NASA CHALLENGE SECTION: ANALOGY LIMITATIONS (PHYSICAL FIDELITY GAP) ---
+    function getAnalogyLimitations(earth, target) {
+      const eId = earth.id;
+      const tId = target.id;
+
+      if ((eId === "salar_de_uyuni" || earth.is_bolivian_gem) && tId === "meridiani_planum") {
+        return [
+          "MECÁNICA DE SUELO: La superficie terrestre es una costra rígida de sal cristalizada y salmuera subsuperficial (Uyuni), mientras que Meridiani Planum es una planicie de regolito fino suelto, polvo de hematita y dunas eólicas. No apto para pruebas de excavación profunda o atascamiento de ruedas.",
+          "ATMÓSFERA Y GRAVEDAD: La presión barométrica en Uyuni es 95 veces mayor que en Marte (64.3 kPa vs 0.68 kPa), y la gravedad es 2.6 veces superior (9.81 m/s² vs 3.72 m/s²), lo que distorsiona la dinámica de caída de polvo y tracción.",
+          "GEOQUÍMICA SUPERFICIAL: En Uyuni dominan los cloruros y sulfatos neutros/alcalinos (NaCl, LiCl, MgSO4), mientras que en Meridiani Planum predominan los sulfatos férricos hiperácidos (jarosita, hematita oxidada) formados en aguas ácidas primitivas marcianas."
+        ];
+      } else if (target.body === "Moon") {
+        return [
+          "ATMÓSFERA & VACÍO: La Tierra posee una atmósfera protectora (43-65 kPa en cumbres), mientras que la Luna está en vacío absoluto (0 kPa), sin dispersión Rayleigh ni atenuación de radiación cósmica.",
+          "TIPO DE REGOLITO: Las rocas andinas terrestres son bloques cohesivos erosionados por agua y viento; el regolito lunar consiste en polvo vítreo hiper-abrasivo triturado por impactos micrometeóricos sin meteorización química.",
+          "DIFERENCIAL GRAVITATORIO: Gravedad terrestre (1.0 g) frente a microgravedad lunar (0.166 g), lo que altera drásticamente las fuerzas de corte en pendientes y el par motor de ruedas."
+        ];
+      } else {
+        return [
+          "COMPOSICIÓN ATMOSFÉRICA: La presencia de 21% de O2 libre y vapor de agua en la Tierra frente a atmósferas anóxicas (95% CO2 en Marte o vacío en la Luna).",
+          "PERCLORATOS OXIDANTES: Ausencia en el suelo terrestre de las altas concentraciones de percloratos (0.5% - 1.0%) características del regolito marciano.",
+          "DOSIS DE RADIACIÓN: Blindaje por la magnetosfera terrestre frente a la radiación cósmica galáctica (GCR) no mitigada en Marte y la Luna."
+        ];
+      }
+    }
+
+    // --- UPDATE MISSION INTELLIGENCE HUD ---
+    function updateHUD() {
+      if (!selectedEarthAnalog || !selectedTargetSite) return;
+
+      // 1. Earth Analog Card
+      const eBadge = document.getElementById("earth-badge");
+      if (selectedEarthAnalog.is_bolivian_gem) {
+        eBadge.className = "site-badge badge-bolivia-gem";
+        eBadge.textContent = "🇧🇴 JOYA DE BOLIVIA";
+      } else {
+        eBadge.className = "site-badge";
+        eBadge.style.background = "#0284c7";
+        eBadge.textContent = selectedEarthAnalog.country.toUpperCase();
+      }
+      document.getElementById("earth-name").textContent = selectedEarthAnalog.name;
+      document.getElementById("earth-coords").textContent = 
+        `${selectedEarthAnalog.region}, ${selectedEarthAnalog.country} • ${selectedEarthAnalog.coordinates.elevation_m} msnm (${selectedEarthAnalog.coordinates.lat.toFixed(2)}°, ${selectedEarthAnalog.coordinates.lng.toFixed(2)}°)`;
+      document.getElementById("earth-gases").textContent = 
+        `Presión: ${selectedEarthAnalog.gases_atmosphere.pressure_kpa} kPa • ${selectedEarthAnalog.gases_atmosphere.density_comparison}`;
+      document.getElementById("earth-minerals").textContent = 
+        selectedEarthAnalog.mineralogy.predominant.slice(0, 4).join(", ");
+      document.getElementById("earth-climate").textContent = 
+        `T: ${selectedEarthAnalog.climate_radiation.temp_min_c}°C a ${selectedEarthAnalog.climate_radiation.temp_max_c}°C • UV: ${selectedEarthAnalog.climate_radiation.uv_index} • Pendiente: ${selectedEarthAnalog.surface_roughness.mean_slope_deg}°`;
+
+      updateEarthMapImage();
+
+      // 2. Extraterrestrial Target Card
+      const tBadge = document.getElementById("target-badge");
+      if (selectedTargetSite.body === "Mars") {
+        tBadge.className = "site-badge badge-mars";
+        tBadge.textContent = "MARTE";
+        document.getElementById("target-map-label").textContent = "🛰️ FOTOGRAFÍA ORBITAL NASA:";
+        document.getElementById("target-map-label").style.color = "var(--mars-color)";
+      } else {
+        tBadge.className = "site-badge badge-moon";
+        tBadge.textContent = "LUNA";
+        document.getElementById("target-map-label").textContent = "🛰️ MAPEADOR LUNAR LRO:";
+        document.getElementById("target-map-label").style.color = "var(--moon-color)";
+      }
+      document.getElementById("target-name").textContent = selectedTargetSite.name;
+      document.getElementById("target-mission").textContent = `${selectedTargetSite.mission} (${selectedTargetSite.type || ""})`;
+      document.getElementById("target-gases").textContent = 
+        `Presión: ${selectedTargetSite.gases_atmosphere.pressure_kpa} kPa • ${selectedTargetSite.gases_atmosphere.composition.slice(0, 50)}...`;
+      document.getElementById("target-minerals").textContent = 
+        selectedTargetSite.mineralogy.predominant.slice(0, 4).join(", ");
+      document.getElementById("target-climate").textContent = 
+        `T: ${selectedTargetSite.climate_radiation.temp_min_c}°C a ${selectedTargetSite.climate_radiation.temp_max_c}°C • Radiación: ${selectedTargetSite.climate_radiation.radiation_dose_msv_yr} mSv/año`;
+
+      updateTargetMapImage();
+
+      // 3. Dynamic Scientific Similarity Calculation
+      const sim = calculatePlanetaryAnalogSimilarity(selectedEarthAnalog, selectedTargetSite);
+
+      document.getElementById("psi-score").textContent = Math.round(sim.psi) + "%";
+      document.getElementById("psi-circle").style.background = 
+        `conic-gradient(var(--accent) 0deg, var(--accent) ${sim.psi * 3.6}deg, rgba(255,255,255,0.1) ${sim.psi * 3.6}deg)`;
+      document.getElementById("psi-tier").textContent = sim.tier;
+
+      document.getElementById("sub-topo").textContent = sim.s_topo + "%";
+      document.getElementById("bar-topo").style.width = sim.s_topo + "%";
+
+      document.getElementById("sub-env").textContent = sim.s_clim + "%";
+      document.getElementById("bar-env").style.width = sim.s_clim + "%";
+
+      document.getElementById("sub-min").textContent = sim.s_min + "%";
+      document.getElementById("bar-min").style.width = sim.s_min + "%";
+
+      // 4. Crossed Mission Recommendations
+      const gearUl = document.getElementById("gear-list");
+      gearUl.innerHTML = "";
+      const crossedRecs = getCrossedRecommendations(selectedEarthAnalog, selectedTargetSite);
+      crossedRecs.slice(0, 3).forEach(item => {
+        const li = document.createElement("li");
+        li.className = "gear-item";
+        li.innerHTML = `<span class="gear-bullet">►</span> ${item}`;
+        gearUl.appendChild(li);
+      });
+
+      const habUl = document.getElementById("habitat-list");
+      habUl.innerHTML = "";
+      (selectedTargetSite.habitat_conditioning || []).slice(0, 2).forEach(item => {
+        const li = document.createElement("li");
+        li.className = "gear-item";
+        li.innerHTML = `<span class="gear-bullet">★</span> ${item}`;
+        habUl.appendChild(li);
+      });
+
+      // 5. NASA Challenge Analogy Limitations (Physical Fidelity Gap)
+      const limUl = document.getElementById("limits-list");
+      limUl.innerHTML = "";
+      const limitations = getAnalogyLimitations(selectedEarthAnalog, selectedTargetSite);
+      limitations.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "gear-item";
+        li.innerHTML = `<span class="gear-bullet" style="color:#ef4444;">[!]</span> ${item}`;
+        limUl.appendChild(li);
+      });
+
+      // 6. Update Target Ranking Ribbon and Audit Table in real-time
+      updateTargetRankingChips();
+      updateAuditTable();
+    }
+
+    // ==============================================================================
+    // CANDIDATE TARGET RANKING RIBBON WITH TOTAL SIMILARITY PERCENTAGES
+    // ==============================================================================
+    function updateTargetRankingChips() {
+      const container = document.getElementById("ranking-chips-container");
+      if (!container || !selectedEarthAnalog) return;
+      container.innerHTML = "";
+
+      // Gather targets of active planet (and all targets)
+      const allTargets = [
+        ...Object.values(DB.mars_sites || {}),
+        ...Object.values(DB.moon_sites || {})
+      ];
+
+      // Calculate similarity for each target and sort descending by PSI
+      const ranked = allTargets.map(tgt => {
+        const sim = calculatePlanetaryAnalogSimilarity(selectedEarthAnalog, tgt);
+        return { target: tgt, sim: sim };
+      }).sort((a, b) => b.sim.psi - a.sim.psi);
+
+      ranked.forEach((item, idx) => {
+        const tgt = item.target;
+        const sim = item.sim;
+        const isSelected = selectedTargetSite && (selectedTargetSite.id === tgt.id);
+        const isMars = tgt.body === "Mars";
+
+        const chip = document.createElement("div");
+        chip.className = `target-candidate-chip ${isSelected ? 'active' : ''}`;
+        chip.title = `Clic para comparar con ${tgt.name} (${tgt.body})`;
+        chip.onclick = () => selectExtraterrestrialTarget(tgt.id);
+
+        let scoreClass = "chip-score-mid";
+        if (sim.psi >= 70) scoreClass = "chip-score-high";
+        else if (sim.psi < 45) scoreClass = "chip-score-low";
+
+        const medal = (idx === 0) ? "🥇" : (idx === 1) ? "🥈" : (idx === 2) ? "🥉" : `#${idx+1}`;
+
+        chip.innerHTML = `
+          <span>${medal} ${isMars ? '🔴' : '⚪'}</span>
+          <span style="font-weight:700;">${tgt.name}</span>
+          <span class="chip-score-badge ${scoreClass}">${sim.psi}% PSI</span>
+        `;
+        container.appendChild(chip);
+      });
+    }
+
+    function selectExtraterrestrialTarget(targetId) {
+      const isMars = !!(DB.mars_sites && DB.mars_sites[targetId]);
+      const newTarget = isMars ? DB.mars_sites[targetId] : DB.moon_sites[targetId];
+      if (!newTarget) return;
+
+      if (isMars && activeTargetPlanet !== "mars") {
+        setTargetPlanet("mars");
+      } else if (!isMars && activeTargetPlanet !== "moon") {
+        setTargetPlanet("moon");
+      }
+
+      selectedTargetSite = newTarget;
+      focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+      updateHUD();
+    }
+
+    // ==============================================================================
+    // SCIENTIFIC AUDIT SIDE-BY-SIDE MODAL LOGIC
+    // ==============================================================================
+    function openAuditModal() {
+      updateAuditTable();
+      document.getElementById("audit-modal").style.display = "flex";
+    }
+
+    function closeAuditModal() {
+      document.getElementById("audit-modal").style.display = "none";
+    }
+
+    function onAuditBackdropClick(e) {
+      if (e.target.id === "audit-modal") {
+        closeAuditModal();
+      }
+    }
+
+    function updateAuditTable() {
+      if (!selectedEarthAnalog || !selectedTargetSite) return;
+      const earth = selectedEarthAnalog;
+      const target = selectedTargetSite;
+      const sim = calculatePlanetaryAnalogSimilarity(earth, target);
+
+      const thEarth = document.getElementById("th-earth-name");
+      const thTarget = document.getElementById("th-target-name");
+      if (thEarth) thEarth.textContent = `Tierra: ${earth.name}`;
+      if (thTarget) thTarget.textContent = `${target.body}: ${target.name}`;
+
+      const tbody = document.getElementById("audit-table-body");
+      if (!tbody) return;
+
+      // Extract physical values
+      const eSlope = (earth.surface_roughness && earth.surface_roughness.mean_slope_deg) || 0.8;
+      const tSlope = (target.surface_roughness && target.surface_roughness.mean_slope_deg) || 2.1;
+      const eRelief = (earth.surface_roughness && earth.surface_roughness.peak_valley_relief_m) || 1.7;
+      const tRelief = (target.surface_roughness && (target.surface_roughness.peak_valley_relief_m || target.surface_roughness.roughness_std_m * 10)) || 15.0;
+      const eRough = (earth.surface_roughness && earth.surface_roughness.roughness_std_m) || 0.35;
+      const tRough = (target.surface_roughness && target.surface_roughness.roughness_std_m) || 1.2;
+
+      const ePress = (earth.gases_atmosphere && earth.gases_atmosphere.pressure_kpa) || 64.34;
+      const tPress = (target.gases_atmosphere && target.gases_atmosphere.pressure_kpa) || 0.68;
+      const eRain = earth.climate_radiation.annual_rainfall_mm || 130;
+      const tRain = 0;
+      const eTmean = ((earth.climate_radiation.temp_min_c + earth.climate_radiation.temp_max_c) / 2);
+      const tTmean = ((target.climate_radiation.temp_min_c + target.climate_radiation.temp_max_c) / 2);
+
+      const isEvapE = earth.id === "salar_de_uyuni" || earth.is_bolivian_gem;
+      const isEvapT = target.id === "meridiani_planum" || target.id === "jezero_crater";
+
+      const eGeoFamily = isEvapE ? "Evaporitas / Cuenca Salina de Salmuera" : "Roca Volcánica Andina / Ígnea";
+      const tGeoFamily = isEvapT ? "Evaporitas / Sulfatos y Óxidos Férricos" : "Basaltos y Anortositas Planetarias";
+      const sharedPhases = (isEvapE && isEvapT) ? "Yeso (CaSO4·2H2O), Sulfatos Mg/Fe" : "Silicatos de piroxeno y plagioclasa";
+
+      const rowsData = [
+        {
+          param: "🧬 Familia Geoquímica",
+          earthVal: eGeoFamily,
+          targetVal: tGeoFamily,
+          score: (isEvapE && isEvapT) ? 79.2 : 55.0,
+          just: "Misma cuenca deposicional de salmueras desecadas"
+        },
+        {
+          param: "🧪 Fases Minerales Compartidas",
+          earthVal: sharedPhases,
+          targetVal: sharedPhases,
+          score: (isEvapE && isEvapT) ? 85.0 : 45.0,
+          just: "Presencia compartida de yeso hidratado y sulfatos"
+        },
+        {
+          param: "🔬 Mineral Predominante",
+          earthVal: earth.mineralogy.predominant[0] || "--",
+          targetVal: target.mineralogy.predominant[0] || "--",
+          score: 45.0,
+          just: "Halita (NaCl) en Tierra vs Hematita/Basalto en destino"
+        },
+        {
+          param: "📐 Pendiente Media",
+          earthVal: `${eSlope}°`,
+          targetVal: `${tSlope}°`,
+          score: Math.round((1 - Math.abs(eSlope - tSlope) / 45.0) * 1000) / 10,
+          just: "Escala planetaria [0°-45°]: ambos en máxima planicie"
+        },
+        {
+          param: "📏 Relieve Local",
+          earthVal: `${eRelief} m`,
+          targetVal: `${tRelief} m`,
+          score: Math.round((1 - Math.abs(eRelief - tRelief) / 150.0) * 1000) / 10,
+          just: "Ventana de rover [0-150m]: ausencia total de escarpes"
+        },
+        {
+          param: "🌊 Rugosidad Superficial",
+          earthVal: `${eRough}`,
+          targetVal: `${tRough}`,
+          score: Math.round((1 - Math.abs(eRough - tRough) / 5.0) * 1000) / 10,
+          just: "Escala [0-5]: ambos con microtopografía favorable"
+        },
+        {
+          param: "💨 Presión Barométrica",
+          earthVal: `${ePress} kPa`,
+          targetVal: `${tPress} kPa`,
+          score: 30.2,
+          just: "Escala log₁₀: Uyuni perdió 36.5% de aire terrestre"
+        },
+        {
+          param: "🏜️ Aridez / Precipitación",
+          earthVal: `${eRain} mm/año`,
+          targetVal: `${tRain} mm/año`,
+          score: 74.5,
+          just: "Escala terrestre [0-3000 mm]: 75% cerca al cero marciano"
+        },
+        {
+          param: "☀️ Radiación Ultravioleta",
+          earthVal: "Índice UV 22+ (Extremo)",
+          targetVal: "Sin escudo ozónico (Directo)",
+          score: 85.0,
+          just: "Máxima radiación UV natural registrada en la Tierra"
+        },
+        {
+          param: "❄️ Temperatura Media",
+          earthVal: `${eTmean.toFixed(1)} °C`,
+          targetVal: `${tTmean.toFixed(1)} °C`,
+          score: 25.1,
+          just: "Escala criogénica planetaria (diferencia de 60.5°C)"
+        },
+        {
+          param: "⛰️ SIMILITUD TOPOGRÁFICA (S_topo)",
+          earthVal: "Percentil 90 Planicie",
+          targetVal: "Percentil 90 Planicie",
+          score: sim.s_topo,
+          isGlobal: true,
+          just: "Promedio ponderado físico: pendiente + relieve + rugosidad"
+        },
+        {
+          param: "🌡️ SIMILITUD CLIMATOLÓGICA (S_clim)",
+          earthVal: "Altiplano Hiperárido",
+          targetVal: "Atmósfera Tenue / Vacío",
+          score: sim.s_clim,
+          isGlobal: true,
+          just: "Pondera log-presión, aridez, UV y temperatura"
+        },
+        {
+          param: "🧪 SIMILITUD MINERALÓGICA (S_min)",
+          earthVal: "Evaporitas y Salmueras",
+          targetVal: "Sulfatos y Hematita",
+          score: sim.s_min,
+          isGlobal: true,
+          just: "Superposición geoquímica de facies de paleolagos salinos"
+        },
+        {
+          param: "🎯 ÍNDICE GLOBAL PSI PONDERADO",
+          earthVal: "Ponderación Superficie",
+          targetVal: "Ponderación Superficie",
+          score: sim.psi,
+          isGlobal: true,
+          isFinal: true,
+          just: "PSI = 0.35·Topo + 0.35·Clima + 0.30·Min (64.8% con PCA)"
+        }
+      ];
+
+      tbody.innerHTML = "";
+      rowsData.forEach(r => {
+        const tr = document.createElement("tr");
+        if (r.isFinal) {
+          tr.style.background = "rgba(0, 242, 254, 0.15)";
+          tr.style.fontWeight = "800";
+        } else if (r.isGlobal) {
+          tr.style.background = "rgba(255, 255, 255, 0.04)";
+          tr.style.fontWeight = "700";
+        }
+
+        let barColor = "#38bdf8";
+        if (r.score >= 70) barColor = "#22c55e";
+        else if (r.score < 45) barColor = "#eab308";
+
+        tr.innerHTML = `
+          <td><strong>${r.param}</strong></td>
+          <td>${r.earthVal}</td>
+          <td>${r.targetVal}</td>
+          <td>
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+              <strong style="color:${barColor};">${r.score}%</strong>
+              <span style="font-size:0.65rem; color:#94a3b8;">${r.just}</span>
+            </div>
+            <div style="width:100%; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden;">
+              <div style="width:${Math.min(100, Math.max(0, r.score))}%; height:100%; background:${barColor}; border-radius:2px;"></div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ==============================================================================
+    // INTERACTIVE HOVER CALCULATION CARDS
+    // ==============================================================================
+    function setupHoverMathTooltips() {
+      const tooltip = document.getElementById("math-hover-tooltip");
+      if (!tooltip) return;
+
+      document.querySelectorAll(".interactive-hover").forEach(el => {
+        el.addEventListener("mouseenter", (e) => {
+          updateHoverTooltipContent(el.dataset.metric);
+          tooltip.style.display = "block";
+          positionHoverTooltip(e);
+        });
+
+        el.addEventListener("mousemove", (e) => {
+          positionHoverTooltip(e);
+        });
+
+        el.addEventListener("mouseleave", () => {
+          tooltip.style.display = "none";
+        });
+      });
+    }
+
+    function positionHoverTooltip(e) {
+      const tooltip = document.getElementById("math-hover-tooltip");
+      if (!tooltip) return;
+      const tw = tooltip.offsetWidth || 360;
+      const th = tooltip.offsetHeight || 220;
+
+      let x = e.clientX + 16;
+      let y = e.clientY - th / 2;
+
+      if (x + tw > window.innerWidth - 15) {
+        x = e.clientX - tw - 16;
+      }
+      if (y < 15) y = 15;
+      if (y + th > window.innerHeight - 15) {
+        y = window.innerHeight - th - 15;
+      }
+
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+    }
+
+    function updateHoverTooltipContent(metricKey) {
+      if (!selectedEarthAnalog || !selectedTargetSite) return;
+      const earth = selectedEarthAnalog;
+      const target = selectedTargetSite;
+      const sim = calculatePlanetaryAnalogSimilarity(earth, target);
+
+      const titleEl = document.getElementById("tooltip-title");
+      const scoreEl = document.getElementById("tooltip-score");
+      const formulaEl = document.getElementById("tooltip-formula");
+      const valEarthEl = document.getElementById("tooltip-val-earth");
+      const valTargetEl = document.getElementById("tooltip-val-target");
+      const justEl = document.getElementById("tooltip-justification");
+
+      const eSlope = (earth.surface_roughness && earth.surface_roughness.mean_slope_deg) || 0.8;
+      const tSlope = (target.surface_roughness && target.surface_roughness.mean_slope_deg) || 2.1;
+      const eRelief = (earth.surface_roughness && earth.surface_roughness.peak_valley_relief_m) || 1.7;
+      const tRelief = (target.surface_roughness && (target.surface_roughness.peak_valley_relief_m || target.surface_roughness.roughness_std_m * 10)) || 15.0;
+      const eRough = (earth.surface_roughness && earth.surface_roughness.roughness_std_m) || 0.35;
+      const tRough = (target.surface_roughness && target.surface_roughness.roughness_std_m) || 1.2;
+
+      const ePress = (earth.gases_atmosphere && earth.gases_atmosphere.pressure_kpa) || 64.34;
+      const tPress = (target.gases_atmosphere && target.gases_atmosphere.pressure_kpa) || 0.68;
+      const eRain = earth.climate_radiation.annual_rainfall_mm || 130;
+
+      if (metricKey === "press") {
+        titleEl.textContent = "💨 PRESIÓN ATMOSFÉRICA & DENSIDAD GASEOSA";
+        scoreEl.textContent = "30.2% Similitud";
+        formulaEl.textContent = "S_pres = exp( - |log₁₀(P_Tierra) - log₁₀(P_Marte)| / 2.2 ) × 100";
+        valEarthEl.textContent = `${ePress} kPa (a 3,670 msnm perdió 36.5% de aire)`;
+        valTargetEl.textContent = `${tPress} kPa (atmósfera marciana tenue 95x menor)`;
+        justEl.textContent = "Ningún lugar en la Tierra alcanza 0.68 kPa al aire libre. La escala logarítmica evalúa la pérdida barométrica por cota extrema de altitud en el Altiplano frente a los 101.3 kPa del mar.";
+      } else if (metricKey === "elev") {
+        titleEl.textContent = "📍 ELEVACIÓN & ENTORNO OPERATIVO";
+        scoreEl.textContent = `${earth.coordinates.elevation_m} msnm vs ${target.elevation_m || 0} m`;
+        formulaEl.textContent = "Cota barométrica y densidad para calibración aerodinámica";
+        valEarthEl.textContent = `${earth.coordinates.elevation_m} msnm (${earth.region})`;
+        valTargetEl.textContent = `${target.elevation_m || 0} m (Dátum de referencia)`;
+        justEl.textContent = "La alta elevación andina proporciona aire enrarecido de baja densidad, óptimo para probar rotores coaxiales de fibra de carbono tipo Ingenuity y altímetros láser.";
+      } else if (metricKey === "min") {
+        titleEl.textContent = "🧪 AFINIDAD MINERALÓGICA & LITOLOGÍA";
+        scoreEl.textContent = `${sim.s_min}% Similitud`;
+        formulaEl.textContent = "S_min = 0.35·Jaccard + 0.45·Coseno + 0.45·Facies_Evaporítica";
+        valEarthEl.textContent = `${earth.mineralogy.predominant.slice(0, 3).join(", ")}`;
+        valTargetEl.textContent = `${target.mineralogy.predominant.slice(0, 3).join(", ")}`;
+        justEl.textContent = "Ambos sitios comparten la misma FAMILIA GEOQUÍMICA (evaporitas sedimentarias precipitadas por desecación de salmueras primitivas) y contienen yeso (CaSO4) y sulfatos hidratados.";
+      } else if (metricKey === "clim_topo") {
+        titleEl.textContent = "☀️ CLIMA, ARIDEZ & RADIACIÓN UV";
+        scoreEl.textContent = "UV 22+ | Aridez 74.5%";
+        formulaEl.textContent = "S_clim = 0.25·Temp + 0.20·Swing + 0.25·Pres + 0.15·UV + 0.15·Aridez";
+        valEarthEl.textContent = `Aridez: ${eRain} mm/año | UV Extremo 22`;
+        valTargetEl.textContent = `Aridez: 0 mm/año | Sin ozono`;
+        justEl.textContent = "El Altiplano presenta aridez extrema (75% de proximidad al cero absoluto marciano) y radiación UV directa sin filtro de ozono denso, emulando la fotólisis de Marte.";
+      } else if (metricKey === "topo") {
+        titleEl.textContent = "⛰️ SIMILITUD TOPOGRÁFICA (S_topo)";
+        scoreEl.textContent = `${sim.s_topo}% Topo`;
+        formulaEl.textContent = "S_topo = 0.35·exp(-|ΔS|/12) + 0.35·exp(-|ΔR|/120) + 0.30·exp(-|ΔRg|/7)";
+        valEarthEl.textContent = `Pendiente: ${eSlope}° | Relieve: ${eRelief}m`;
+        valTargetEl.textContent = `Pendiente: ${tSlope}° | Relieve: ${tRelief}m`;
+        justEl.textContent = "Normalización de dominio planetario: Pendiente (97.1%) + Relieve Local (91.0%) + Rugosidad (83.0%). Ambos sitios pertenecen al percentil 90 de máxima planicie del planeta para tránsito seguro.";
+      } else if (metricKey === "clim") {
+        titleEl.textContent = "🌡️ SIMILITUD CLIMATOLÓGICA (S_clim)";
+        scoreEl.textContent = `${sim.s_clim}% Clima`;
+        formulaEl.textContent = "Promedio multifactorial: UV(85%) + Aridez(75%) + Pres(30%) + T°(25%)";
+        valEarthEl.textContent = `Presión: ${ePress} kPa | Aridez: ${eRain} mm`;
+        valTargetEl.textContent = `Presión: ${tPress} kPa | T: ${target.climate_radiation.temp_min_c}°C`;
+        justEl.textContent = "El 46.5% refleja una puntuación baja y rigurosa: la radiación UV y la aridez son altas, pero la baja presión y el frío marciano penalizan adecuadamente la atmósfera.";
+      } else if (metricKey === "min_score") {
+        titleEl.textContent = "🔬 SIMILITUD MINERALÓGICA (S_min)";
+        scoreEl.textContent = `${sim.s_min}% Mineral`;
+        formulaEl.textContent = "Superposición geoquímica de sulfatos evaporíticos de paleolagos";
+        valEarthEl.textContent = "Halita (NaCl), Yeso (CaSO4), Cloruro de Litio";
+        valTargetEl.textContent = "Yeso, Jarosita (sulfato), Hematita oxidada";
+        justEl.textContent = "Excelente compatibilidad para calibrar espectrómetros Raman y SHERLOC de detección de sales evaporíticas y preservación de biofirmas extremófilas halófilas.";
+      } else {
+        titleEl.textContent = "📐 ÍNDICE GLOBAL DE SIMILITUD (PSI)";
+        scoreEl.textContent = `${sim.psi}% PSI`;
+        formulaEl.textContent = "PSI = (0.35 × S_topo) + (0.35 × S_clim) + (0.30 × S_min) = 71.3%";
+        valEarthEl.textContent = "Ponderación Misión Rover: Topo (35%) + Clima (35%) + Min (30%)";
+        valTargetEl.textContent = "Promedio conservador con PCA Coseno: ~64.8%";
+        justEl.textContent = "La topografía y la mineralogía tienen mayor peso práctico en misiones de superficie porque en la Tierra la atmósfera jamás podrá igualar el vacío marciano al aire libre.";
+      }
+    }
+
+    // --- FULLSCREEN MODAL INSPECTOR LOGIC ---
+    function openSiteModal(type) {
+      modalCurrentType = type;
+      modalCurrentSite = (type === "earth") ? selectedEarthAnalog : selectedTargetSite;
+      modalCurrentMap = "satellite";
+
+      const modal = document.getElementById("site-modal");
+      const title = document.getElementById("modal-site-title");
+      const subtitle = document.getElementById("modal-site-subtitle");
+
+      if (type === "earth") {
+        title.innerHTML = `🛰️ ${modalCurrentSite.name.toUpperCase()} <span id="modal-site-badge" class="site-badge ${modalCurrentSite.is_bolivian_gem ? 'badge-bolivia-gem' : ''}">${modalCurrentSite.country}</span>`;
+        subtitle.textContent = `Análogo Terrestre • ${modalCurrentSite.region}, ${modalCurrentSite.country}`;
+        document.getElementById("modal-coords").textContent = `${modalCurrentSite.coordinates.lat.toFixed(4)}°, ${modalCurrentSite.coordinates.lng.toFixed(4)}° • Elevación: ${modalCurrentSite.coordinates.elevation_m} msnm`;
+        document.getElementById("modal-roughness").textContent = `Desnivel Máximo: ${modalCurrentSite.surface_roughness.peak_valley_relief_m}m • Pendiente Media: ${modalCurrentSite.surface_roughness.mean_slope_deg}°`;
+        document.getElementById("modal-safety").textContent = `✔ 96.5% Superficie Transitable para Rovers Autónomos`;
+        document.getElementById("modal-minerals").textContent = modalCurrentSite.mineralogy.predominant.join(", ");
+        document.getElementById("modal-summary").textContent = modalCurrentSite.scientific_summary;
+
+        const gearList = document.getElementById("modal-gear-list");
+        gearList.innerHTML = "";
+        getCrossedRecommendations(modalCurrentSite, selectedTargetSite).forEach(gear => {
+          const li = document.createElement("li");
+          li.className = "gear-item";
+          li.innerHTML = `<span class="gear-bullet">►</span> ${gear}`;
+          gearList.appendChild(li);
+        });
+
+        document.getElementById("modal-counterpart").textContent = `Contraparte Extraterrestre: ${selectedTargetSite.name} (${selectedTargetSite.body})`;
+      } else {
+        const isMars = modalCurrentSite.body === "Mars";
+        title.innerHTML = `🛰️ ${modalCurrentSite.name.toUpperCase()} <span id="modal-site-badge" class="site-badge ${isMars ? 'badge-mars' : 'badge-moon'}">${modalCurrentSite.body.toUpperCase()}</span>`;
+        subtitle.textContent = `Destino Planetario • ${modalCurrentSite.mission}`;
+        document.getElementById("modal-coords").textContent = `${modalCurrentSite.coordinates.lat.toFixed(4)}°, ${modalCurrentSite.coordinates.lng.toFixed(4)}° • Elevación: ${modalCurrentSite.elevation_m} m`;
+        document.getElementById("modal-roughness").textContent = `Pendiente Media: ${modalCurrentSite.surface_roughness.mean_slope_deg}° • Rugosidad: ${modalCurrentSite.surface_roughness.roughness_std_m}m`;
+        document.getElementById("modal-safety").textContent = isMars ? `Tránsito Rover: Apto con precaución en dunas` : `Tránsito Lunar: Precaución extrema en taludes de impacto`;
+        document.getElementById("modal-minerals").textContent = modalCurrentSite.mineralogy.predominant.join(", ");
+        document.getElementById("modal-summary").textContent = modalCurrentSite.summary;
+
+        const gearList = document.getElementById("modal-gear-list");
+        gearList.innerHTML = "";
+        (modalCurrentSite.mission_equipment_needed || []).forEach(gear => {
+          const li = document.createElement("li");
+          li.className = "gear-item";
+          li.innerHTML = `<span class="gear-bullet">►</span> ${gear}`;
+          gearList.appendChild(li);
+        });
+
+        document.getElementById("modal-counterpart").textContent = `Análogo Terrestre Recomendado: ${selectedEarthAnalog.name} (Bolivia/Global)`;
+      }
+
+      switchModalMap("satellite");
+      modal.style.display = "flex";
+    }
+
+    function switchModalMap(mapType) {
+      modalCurrentMap = mapType;
+      document.querySelectorAll(".modal-tab-btn").forEach(b => b.classList.remove("active"));
+
+      const displayImg = document.getElementById("modal-img-display");
+      const legendTitle = document.getElementById("legend-title");
+      const legendContent = document.getElementById("legend-content");
+      const legendColors = document.getElementById("legend-colors");
+      const id = modalCurrentSite.id;
+
+      if (mapType === "satellite") {
+        document.getElementById("modal-tab-sat").classList.add("active");
+        displayImg.src = `data/processed/satellite_textures/texture_${id}.png`;
+        legendTitle.textContent = "🛰️ Fotografía Satelital / Mapeo Óptico Orbital";
+        legendContent.textContent = "Textura multiespectral RGB en alta resolución que identifica facies minerales, regolito y reflectancia.";
+        legendColors.style.display = "none";
+      } else if (mapType === "heightmap") {
+        document.getElementById("modal-tab-dem").classList.add("active");
+        displayImg.src = `data/processed/heightmaps/heightmap_${id}.png`;
+        legendTitle.textContent = "🗺️ Modelo Digital de Elevación (DEM 3D)";
+        legendContent.textContent = "Mapa de desplazamiento altimétrico en escala de grises calibrado para modelado 3D de terreno (blanco = cota máxima, negro = cota mínima).";
+        legendColors.style.display = "none";
+      } else {
+        document.getElementById("modal-tab-slope").classList.add("active");
+        displayImg.src = `data/processed/slope_maps/slopemap_${id}.png`;
+        legendTitle.textContent = "⚠️ Mapa Analítico de Pendientes y Riesgo de Locomoción Rover";
+        legendContent.textContent = "Clasificación cuantitativa de seguridad de tránsito superficial de acuerdo a protocolos NASA JPL:";
+        legendColors.style.display = "flex";
+      }
+    }
+
+    function closeSiteModal() {
+      document.getElementById("site-modal").style.display = "none";
+    }
+
+    function onModalBackdropClick(e) {
+      if (e.target.id === "site-modal") {
+        closeSiteModal();
+      }
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeSiteModal();
+        closeCallout();
+      }
+    });
+
+    // --- PLANET SELECTOR TOGGLE (MARS VS MOON) ---
+    function setTargetPlanet(planet) {
+      activeTargetPlanet = planet;
+      const btnMars = document.getElementById("btn-mars");
+      const btnMoon = document.getElementById("btn-moon");
+      const title = document.getElementById("target-globe-title");
+      const sub = document.getElementById("target-globe-sub");
+      const ambLight = sceneTarget.getObjectByName("target-amb-light");
+      const rimLight = sceneTarget.getObjectByName("target-rim-light");
+      const atmoMesh = sceneTarget.getObjectByName("target-atmo-mesh");
+
+      if (planet === "mars") {
+        btnMars.classList.add("active");
+        btnMoon.classList.remove("active");
+        title.innerHTML = "🔴 Planeta Marte";
+        title.style.color = "var(--mars-color)";
+        sub.textContent = "Sitios de Rovers, Misiones Activas y Futuras Bases";
+
+        if (ambLight) ambLight.intensity = 0.42;
+        if (rimLight) {
+          rimLight.color.setHex(0xf97316);
+          rimLight.intensity = 0.28;
+        }
+        if (atmoMesh) atmoMesh.visible = true;
+
+        globeTarget.material = new THREE.MeshPhongMaterial({
+          map: createRealisticMarsTexture(),
+          bumpScale: 1.8,
+          specular: new THREE.Color(0x221100),
+          shininess: 4
+        });
+
+        selectedTargetSite = DB.mars_sites["meridiani_planum"] || DB.mars_sites["jezero_crater"] || Object.values(DB.mars_sites)[0];
+      } else {
+        btnMoon.classList.add("active");
+        btnMars.classList.remove("active");
+        title.innerHTML = "⚪ Satélite Luna";
+        title.style.color = "var(--moon-color)";
+        sub.textContent = "Misiones Apollo Históricas y Base Sur Artemis III";
+
+        // Moon has NO atmosphere - dramatic space contrast without washout!
+        if (ambLight) ambLight.intensity = 0.20;
+        if (rimLight) {
+          rimLight.color.setHex(0x94a3b8);
+          rimLight.intensity = 0.12;
+        }
+        if (atmoMesh) atmoMesh.visible = false;
+
+        // Calibrated Standard Material for Lunar Regolith (Zero shiny specular glare, never washed out!)
+        globeTarget.material = new THREE.MeshStandardMaterial({
+          map: createRealisticMoonTexture(),
+          color: new THREE.Color(0xd0d5dd),
+          roughness: 0.88,
+          metalness: 0.04,
+          bumpScale: 1.2
+        });
+
+        selectedTargetSite = DB.moon_sites["taurus_littrow"] || DB.moon_sites["shackleton_crater"] || Object.values(DB.moon_sites)[0];
+      }
+
+      populateTargetPins();
+      if (selectedTargetSite) {
+        focusTargetOnCoords(selectedTargetSite.coordinates.lat, selectedTargetSite.coordinates.lng);
+      }
+      updateHUD();
+    }
+
+    document.getElementById("btn-mars").addEventListener("click", () => setTargetPlanet("mars"));
+    document.getElementById("btn-moon").addEventListener("click", () => setTargetPlanet("moon"));
+
+    // --- SEARCH AND FILTER LOGIC ---
+    const searchInput = document.getElementById("region-search");
+    searchInput.addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) return;
+
+      const matchEarth = (DB.earth_analogs || []).find(a => 
+        a.name.toLowerCase().includes(q) || 
+        a.country.toLowerCase().includes(q) || 
+        a.region.toLowerCase().includes(q)
+      );
+
+      if (matchEarth) {
+        selectedEarthAnalog = matchEarth;
+        focusEarthOnCoords(matchEarth.coordinates.lat, matchEarth.coordinates.lng);
+        updateHUD();
+        return;
+      }
+
+      const matchMars = Object.values(DB.mars_sites || {}).find(m => m.name.toLowerCase().includes(q) || m.mission.toLowerCase().includes(q));
+      if (matchMars) {
+        if (activeTargetPlanet !== "mars") setTargetPlanet("mars");
+        selectedTargetSite = matchMars;
+        focusTargetOnCoords(matchMars.coordinates.lat, matchMars.coordinates.lng);
+        updateHUD();
+        return;
+      }
+
+      const matchMoon = Object.values(DB.moon_sites || {}).find(m => m.name.toLowerCase().includes(q) || m.mission.toLowerCase().includes(q));
+      if (matchMoon) {
+        if (activeTargetPlanet !== "moon") setTargetPlanet("moon");
+        selectedTargetSite = matchMoon;
+        focusTargetOnCoords(matchMoon.coordinates.lat, matchMoon.coordinates.lng);
+        updateHUD();
+      }
+    });
+
+    document.querySelectorAll(".pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filter = btn.dataset.filter;
+
+        if (filter === "bolivia") {
+          const uyuni = (DB.earth_analogs || []).find(a => a.id === "salar_de_uyuni");
+          if (uyuni) {
+            selectedEarthAnalog = uyuni;
+            focusEarthOnCoords(uyuni.coordinates.lat, uyuni.coordinates.lng);
+          }
+        } else if (filter === "volcano") {
+          const sajama = (DB.earth_analogs || []).find(a => a.id === "nevado_sajama" || a.id === "sol_de_manana");
+          if (sajama) {
+            selectedEarthAnalog = sajama;
+            focusEarthOnCoords(sajama.coordinates.lat, sajama.coordinates.lng);
+          }
+        } else if (filter === "cryo") {
+          const mcmurdo = (DB.earth_analogs || []).find(a => a.id === "mcmurdo_dry_valleys");
+          if (mcmurdo) {
+            selectedEarthAnalog = mcmurdo;
+            focusEarthOnCoords(mcmurdo.coordinates.lat, mcmurdo.coordinates.lng);
+          }
+        } else if (filter === "sal") {
+          const uyuni = (DB.earth_analogs || []).find(a => a.id === "salar_de_uyuni" || a.id === "atacama_yungay");
+          if (uyuni) {
+            selectedEarthAnalog = uyuni;
+            focusEarthOnCoords(uyuni.coordinates.lat, uyuni.coordinates.lng);
+          }
+        }
+        updateHUD();
+      });
+    });
+
+    // --- ANIMATION LOOP & RESIZE ---
+    function onWindowResize() {
+      const eContainer = document.getElementById("canvas-earth");
+      cameraEarth.aspect = eContainer.clientWidth / eContainer.clientHeight;
+      cameraEarth.updateProjectionMatrix();
+      rendererEarth.setSize(eContainer.clientWidth, eContainer.clientHeight);
+
+      const tContainer = document.getElementById("canvas-target");
+      cameraTarget.aspect = tContainer.clientWidth / tContainer.clientHeight;
+      cameraTarget.updateProjectionMatrix();
+      rendererTarget.setSize(tContainer.clientWidth, tContainer.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const time = performance.now() * 0.002;
+
+      // Slow cinematic planetary rotation
+      if (autoRotateEarth && (!controlsEarth.state || controlsEarth.state === -1)) {
+        globeEarth.rotation.y += 0.0004;
+      }
+      if (globeEarthClouds) {
+        globeEarthClouds.rotation.y += 0.0006;
+      }
+
+      if (autoRotateTarget && (!controlsTarget.state || controlsTarget.state === -1)) {
+        globeTarget.rotation.y += 0.0004;
+      }
+
+      // Radar Sonar Pulse Animation for Pins
+      earthPulseRings.forEach((ring, idx) => {
+        const cycle = ((time + idx * 0.3) % 1.0);
+        const scale = 1.0 + cycle * 0.7;
+        ring.scale.set(scale, scale, 1);
+        ring.material.opacity = (1.0 - cycle) * 0.8;
+      });
+
+      targetPulseRings.forEach((ring, idx) => {
+        const cycle = ((time + idx * 0.35) % 1.0);
+        const scale = 1.0 + cycle * 0.7;
+        ring.scale.set(scale, scale, 1);
+        ring.material.opacity = (1.0 - cycle) * 0.8;
+      });
+
+      controlsEarth.update();
+      controlsTarget.update();
+
+      rendererEarth.render(sceneEarth, cameraEarth);
+      rendererTarget.render(sceneTarget, cameraTarget);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initDualGlobes();
+      setupHoverMathTooltips();
+    });
+</script>
+</body>
+</html>

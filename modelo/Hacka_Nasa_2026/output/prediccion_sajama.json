@@ -1,0 +1,94 @@
+{
+  "input_earth_site": {
+    "name": "Ubicación Terrestre (-18.11°, -68.88°)",
+    "lat": -18.11,
+    "lon": -68.88,
+    "area_km2": 20.0,
+    "surface_description": "Estratovolcán & Complejo Volcánico (asociado a Nevado Sajama) (Área: 20.0 km²)",
+    "elevation": 6542.0,
+    "terrain": 26.0,
+    "relief": 1402.3,
+    "roughness": 18.5,
+    "temp": -8.8,
+    "temp_swing": 25.8,
+    "precip": 313.5,
+    "solar_flux": 25.1,
+    "uv_index": 22.0,
+    "atm_pressure": 43.78,
+    "geology": "volcanic_peak",
+    "minerals": [
+      "Andesita basáltica",
+      "Piroxeno (Augita)",
+      "Plagioclasa",
+      "Azufre elemental nativo",
+      "Magnetita"
+    ]
+  },
+  "assigned_cluster": {
+    "nombre": "Cluster 1: Complejos Volcánicos & Estratovolcanes Andinos",
+    "centroide_representativo": "Nevado Sajama / Licancabur",
+    "descripcion": "Altas cumbres andinas, pendientes pronunciadas, frío extremo nocturno, muy baja presión y litología andesítica/azufre.",
+    "analogia_primaria": "Cráteres polares lunares / Regiones de alta pendiente y cañones de Marte (Valles Marineris)."
+  },
+  "matched_target": {
+    "id": "valles_marineris",
+    "name": "Valles Marineris (Cañón Marciano)",
+    "body": "Marte",
+    "mission": "Futuras Misiones Tripuladas de Exploración Profunda",
+    "lat": -13.9,
+    "lon": -59.2,
+    "elevation": -3800.0,
+    "terrain": 28.5,
+    "relief": 3500.0,
+    "roughness": 22.0,
+    "temp": -45.0,
+    "temp_swing": 75.0,
+    "precip": 0.0,
+    "solar_flux": 10.4,
+    "atm_pressure": 0.85,
+    "geology": "canyon_rift",
+    "minerals": [
+      "Capas de basalto estratificado",
+      "Sulfatos masivos",
+      "Óxidos de hierro",
+      "Silicatos"
+    ],
+    "summary": "El cañón más gigantesco del Sistema Solar (4,000 km longitud y 7 km profundidad). Máxima presión marciana."
+  },
+  "similarity_breakdown": {
+    "psi_global_pct": 61.7,
+    "topography_pct": 46.6,
+    "climate_pct": 48.2,
+    "mineralogy_pct": 95.0,
+    "pca_cosine_pct": 84.9,
+    "pca_latent_distance": 0.7,
+    "formula": "PSI = 0.35*S_topo + 0.35*S_clim + 0.30*S_min"
+  },
+  "top_3_targets": [
+    {
+      "name": "Valles Marineris (Cañón Marciano)",
+      "body": "Marte",
+      "psi": 61.7
+    },
+    {
+      "name": "Valle Taurus-Littrow (Apollo 17)",
+      "body": "Luna",
+      "psi": 57.6
+    },
+    {
+      "name": "Cráter Gusev (Colinas Columbia)",
+      "body": "Marte",
+      "psi": 48.9
+    }
+  ],
+  "mission_recommendations": [
+    "EXPLORACIÓN EN PENDIENTES CRÍTICAS: Ensayos de locomoción robótica con grousers de titanio y descenso con anclajes en escarpes rocosos basálticos/andesíticos de 20°-30°.",
+    "CRIOGÉNESIS Y AISLAMIENTO TÉRMICO: Pruebas de degradación de lubricantes espaciales y calentadores de radioisótopos (RHU) bajo temperaturas nocturnas extremas (-20°C a -30°C).",
+    "COMUNICACIONES EN LÍNEA VISUAL BLOQUEADA: Despliegue de repetidores autónomos de radiofrecuencia y enlaces ópticos láser en terreno montañoso quebrado."
+  ],
+  "analogy_limitations": [
+    "ATMÓSFERA & VACÍO: La Tierra posee una atmósfera protectora (43-65 kPa en cumbres), mientras que la Luna está en vacío absoluto (0 kPa) y Marte en casi vacío (0.85 kPa), sin dispersión Rayleigh ni atenuación de radiación cósmica.",
+    "TIPO DE REGOLITO: Las rocas andinas terrestres son bloques cohesivos erosionados por agua y viento; el regolito lunar y marciano consiste en polvo vítreo hiper-abrasivo triturado por impactos micrometeóricos sin meteorización química.",
+    "DIFERENCIAL GRAVITATORIO: Gravedad terrestre (1.0 g) frente a microgravedad lunar (0.166 g) o marciana (0.38 g), lo que altera las fuerzas de corte en pendientes y el par motor de ruedas."
+  ]
+}
